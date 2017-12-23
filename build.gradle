@@ -1,0 +1,66 @@
+buildscript {
+	repositories {
+		jcenter()
+		maven { url = "http://files.minecraftforge.net/maven" }
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+	}
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'idea'
+
+version = version_major + '.' + version_minor + '.' + version_patch
+if (project.hasProperty('buildQualifier')) {
+	version = project.version + '-' + project.buildQualifier
+}
+group= "nedelosk.crispr" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "crispr_" + mcversion
+
+// java version
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+minecraft {
+	version = mcversion + "-" + forgeversion
+	runDir = "run"
+	mappings = mcp_mappings
+
+	replace '@VERSION@', project.version
+}
+
+repositories {
+	maven {
+		url "http://dvs1.progwml6.com/files/maven"
+	}
+	maven {
+		name = "forestry"
+		url = "http://maven.ic2.player.to/"
+	}
+}
+
+dependencies {
+	deobfCompile("net.sengir.forestry:forestry_${forestry_mcversion}:${forestry_version}")
+}
+
+processResources {
+
+	// this will ensure that this task is redone when the versions change.
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
+
+	// replace stuff in mcmod.info, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
+
+		// replace version and mcversion
+		expand 'version':project.version, 'mcversion':project.minecraft.version
+	}
+
+	// copy everything else, thats not the mcmod.info
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+		exclude '**/*.md'
+	}
+}
