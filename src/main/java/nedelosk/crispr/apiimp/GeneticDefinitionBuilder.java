@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import nedelosk.crispr.api.CrisprAPI;
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticDefinitionBuilder;
+import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.IGeneticTransformer;
 import nedelosk.crispr.api.gene.IGeneticStat;
 import nedelosk.crispr.api.gene.IGenome;
@@ -19,7 +20,6 @@ import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IGeneticHandler;
 import nedelosk.crispr.api.individual.IGeneticType;
 import nedelosk.crispr.api.individual.IIndividual;
-import nedelosk.crispr.api.individual.IIndividualFactory;
 import nedelosk.crispr.api.translators.IBlockTranslator;
 import nedelosk.crispr.api.translators.IGeneticTranslator;
 import nedelosk.crispr.api.translators.IItemTranslator;
@@ -27,7 +27,7 @@ import nedelosk.crispr.api.translators.IItemTranslator;
 public class GeneticDefinitionBuilder<I extends IIndividual> implements IGeneticDefinitionBuilder<I> {
 	private final Map<IGeneticType, IGeneticHandler<I>> types = new HashMap<>();
 	private final IKaryotype karyotype;
-	private final IIndividualFactory<I> factory;
+	private final Function<IGeneticDefinition<I>, IGeneticRoot<I>> rootFactory;
 	private final String name;
 	private final Map<Item, IItemTranslator<I>> itemTranslators = new HashMap<>();
 	private final Map<Block, IBlockTranslator<I>> blockTranslators = new HashMap<>();
@@ -36,10 +36,10 @@ public class GeneticDefinitionBuilder<I extends IIndividual> implements IGenetic
 	private Function<Map<IGeneticType, IGeneticHandler<I>>, IGeneticTypes<I>> typesFactory = GeneticTypes::new;
 	private Function<IGenome, IGeneticStat> statFactory = (g) -> (IGeneticStat) () -> g;
 
-	public GeneticDefinitionBuilder(String name, IKaryotype karyotype, IIndividualFactory<I> factory) {
+	public GeneticDefinitionBuilder(String name, IKaryotype karyotype, Function<IGeneticDefinition<I>, IGeneticRoot<I>> rootFactory) {
 		this.name = name;
 		this.karyotype = karyotype;
-		this.factory = factory;
+		this.rootFactory = rootFactory;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class GeneticDefinitionBuilder<I extends IIndividual> implements IGenetic
 		IGeneticTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
 		IGeneticTransformer<I> transformer = transformerFactory.get();
 		IGeneticTypes<I> types = typesFactory.apply(this.types);
-		IGeneticDefinition<I> definition = new GeneticDefinition<>(types, translator, transformer, statFactory, karyotype, name, factory);
+		IGeneticDefinition<I> definition = new GeneticDefinition<>(types, translator, transformer, statFactory, karyotype, name, rootFactory);
 		CrisprAPI.geneRegistry.registerDefinition(definition);
 		return definition;
 	}

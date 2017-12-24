@@ -20,13 +20,18 @@ public class GeneBuilder<V> implements IGeneBuilder<V> {
 	@Nullable
 	private String name;
 
-	GeneBuilder(Class<? extends V> valueClass) {
+	GeneBuilder(Class<? extends V> valueClass, String name) {
 		this.valueClass = valueClass;
+		this.name = name;
 	}
 
 	@Override
 	public Allele<V> registerAllele(String unlocalizedName, V value, boolean dominant) {
-		return new Allele<>(dominant, unlocalizedName, value);
+		Allele<V> allele = new Allele<>(dominant, unlocalizedName, value);
+		if (defaultAllele == null) {
+			defaultAllele = allele;
+		}
+		return allele;
 	}
 
 	@Override
@@ -35,14 +40,8 @@ public class GeneBuilder<V> implements IGeneBuilder<V> {
 	}
 
 	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
 	public final IGene<V> register(IGeneKey... keys) {
 		Preconditions.checkNotNull(defaultAllele);
-		Preconditions.checkNotNull(name);
 		Gene<V> gene = new Gene<>(alleles, valueClass, defaultAllele, name);
 		CrisprAPI.geneRegistry.registerGene(gene, keys);
 		return gene;

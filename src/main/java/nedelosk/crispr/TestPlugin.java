@@ -1,5 +1,6 @@
 package nedelosk.crispr;
 
+import nedelosk.crispr.api.GeneticPlugin;
 import nedelosk.crispr.api.IGeneticDefinitionBuilder;
 import nedelosk.crispr.api.IGeneticFactory;
 import nedelosk.crispr.api.IGeneticPlugin;
@@ -10,13 +11,14 @@ import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.gene.IKaryotypeBuilder;
 import nedelosk.crispr.apiimp.GeneticDefinitionBuilder;
 
+@GeneticPlugin
 public class TestPlugin implements IGeneticPlugin {
 	private IGeneKey<Integer> fertility = (IGeneKey<Integer>) () -> 0;
 	private IKaryotype karyotype;
 
 	@Override
 	public void registerGenes(IGeneRegistry registry, IGeneticFactory factory) {
-		IGeneBuilder<Integer> builder = registry.createGene(Integer.class);
+		IGeneBuilder<Integer> builder = registry.createGene(Integer.class, "fertility");
 		builder.registerAllele("average", 1, true);
 		builder.register(fertility);
 		IKaryotypeBuilder karyotypeBuilder = registry.createKaryotype();

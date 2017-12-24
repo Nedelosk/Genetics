@@ -8,10 +8,5 @@ public interface IGeneBuilder<V> {
 
 	void setDefaultAllele(Allele<V> allele);
 
-	/**
-	 * @param geneName The name of the given gene. Used for the localized name and the short localized name.
-	 */
-	void setName(String geneName);
-
 	IGene<V> register(IGeneKey... keys);
 }
