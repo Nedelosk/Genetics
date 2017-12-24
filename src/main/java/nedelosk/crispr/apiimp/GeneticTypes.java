@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
-import nedelosk.crispr.api.IGeneticTypes;
 import nedelosk.crispr.api.individual.IGeneticHandler;
 import nedelosk.crispr.api.individual.IGeneticIndividual;
 import nedelosk.crispr.api.individual.IGeneticType;
@@ -14,7 +13,7 @@ import nedelosk.crispr.api.individual.IGeneticType;
 public class GeneticTypes<I extends IGeneticIndividual> implements IGeneticTypes<I> {
 	private final Map<IGeneticType, IGeneticHandler<I>> types;
 
-	public GeneticTypes(Map<IGeneticType, IGeneticHandler<I>> types) {
+	GeneticTypes(Map<IGeneticType, IGeneticHandler<I>> types) {
 		this.types = types;
 	}
 

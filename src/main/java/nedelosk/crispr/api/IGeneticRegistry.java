@@ -1,15 +1,21 @@
 package nedelosk.crispr.api;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.Optional;
+
+import nedelosk.crispr.api.gene.IGene;
+import nedelosk.crispr.api.gene.IGeneKey;
 
 public interface IGeneticRegistry {
-	void registerRoot(IGeneticDefinition root);
+	Collection<IGeneticDefinition> getDefinitions();
 
-	Collection<IGeneticDefinition> getRoots();
+	Optional<IGeneticDefinition> getDefinition(String name);
 
-	@Nullable
-	IGeneticDefinition getRoot(String name);
+	<V> Optional<IGene<V>> getGene(IGeneKey<V> key);
+
+	Collection<IGeneKey> getKeys();
+
+	<V> Collection<IGeneKey<V>> getKeys(IGene<V> gene);
 
 	IGeneticFactory factory();
 }

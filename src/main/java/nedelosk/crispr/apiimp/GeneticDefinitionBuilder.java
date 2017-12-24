@@ -1,8 +1,6 @@
 package nedelosk.crispr.apiimp;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -14,10 +12,9 @@ import net.minecraft.item.Item;
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticDefinitionBuilder;
 import nedelosk.crispr.api.IGeneticTransformer;
-import nedelosk.crispr.api.IGeneticTypes;
-import nedelosk.crispr.api.gene.IGene;
 import nedelosk.crispr.api.gene.IGeneticStat;
 import nedelosk.crispr.api.gene.IGenome;
+import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IGeneticHandler;
 import nedelosk.crispr.api.individual.IGeneticIndividual;
 import nedelosk.crispr.api.individual.IGeneticType;
@@ -27,7 +24,7 @@ import nedelosk.crispr.api.translators.IItemTranslator;
 
 public class GeneticDefinitionBuilder<I extends IGeneticIndividual> implements IGeneticDefinitionBuilder<I> {
 	private final Map<IGeneticType, IGeneticHandler<I>> types = new HashMap<>();
-	private final List<IGene> genes = new LinkedList<>();
+	private final IKaryotype karyotype;
 	private final String name;
 	private final Map<Item, IItemTranslator<I>> itemTranslators = new HashMap<>();
 	private final Map<Block, IBlockTranslator<I>> blockTranslators = new HashMap<>();
@@ -36,19 +33,14 @@ public class GeneticDefinitionBuilder<I extends IGeneticIndividual> implements I
 	private Function<Map<IGeneticType, IGeneticHandler<I>>, IGeneticTypes<I>> typesFactory = GeneticTypes::new;
 	private Function<IGenome, IGeneticStat> statFactory = (g) -> (IGeneticStat) () -> g;
 
-	public GeneticDefinitionBuilder(String name) {
+	public GeneticDefinitionBuilder(String name, IKaryotype karyotype) {
 		this.name = name;
+		this.karyotype = karyotype;
 	}
 
 	@Override
 	public IGeneticDefinitionBuilder<I> registerType(IGeneticType type, IGeneticHandler<I> handler) {
 		types.put(type, handler);
-		return this;
-	}
-
-	@Override
-	public IGeneticDefinitionBuilder<I> addGene(IGene gene) {
-		genes.add(gene);
 		return this;
 	}
 
@@ -89,10 +81,10 @@ public class GeneticDefinitionBuilder<I extends IGeneticIndividual> implements I
 	}
 
 	@Override
-	public IGeneticDefinition<I> build() {
+	public IGeneticDefinition<I> register() {
 		IGeneticTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
 		IGeneticTransformer<I> transformer = transformerFactory.get();
 		IGeneticTypes<I> types = typesFactory.apply(this.types);
-		return new GeneticDefinition<>(types, translator, transformer, statFactory, genes, name);
+		return new GeneticDefinition<>(types, translator, transformer, statFactory, karyotype, name);
 	}
 }

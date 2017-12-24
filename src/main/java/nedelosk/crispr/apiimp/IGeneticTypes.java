@@ -1,4 +1,4 @@
-package nedelosk.crispr.api;
+package nedelosk.crispr.apiimp;
 
 import java.util.Collection;
 import java.util.Optional;

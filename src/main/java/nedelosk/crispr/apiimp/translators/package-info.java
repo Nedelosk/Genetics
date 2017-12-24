@@ -1,9 +1,0 @@
-@ParametersAreNonnullByDefault
-@FieldsAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-package nedelosk.crispr.apiimp.translators;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-
-import mcp.MethodsReturnNonnullByDefault;
-import nedelosk.crispr.FieldsAreNonnullByDefault;

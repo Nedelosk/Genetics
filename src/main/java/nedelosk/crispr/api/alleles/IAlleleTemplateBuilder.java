@@ -1,8 +1,8 @@
 package nedelosk.crispr.api.alleles;
 
-import nedelosk.crispr.api.gene.IGene;
 import nedelosk.crispr.api.IGeneticFactory;
-import nedelosk.crispr.api.IGeneticDefinition;
+import nedelosk.crispr.api.gene.IGeneKey;
+import nedelosk.crispr.api.gene.IKaryotype;
 
 /**
  * Can be used to create allele templates.
@@ -16,19 +16,19 @@ public interface IAlleleTemplateBuilder {
 	 * Sets a allele at a position of the chromosome.
 	 *
 	 * @param allele The allele that should be set at the position.
-	 * @param chromosomeType The position at the chromosome array.
+	 * @param key The position at the chromosome array.
 	 */
-	<V, G extends IGene<V>> IAlleleTemplateBuilder set(G chromosomeType, Allele<V> allele);
+	<V, K extends IGeneKey<V>> IAlleleTemplateBuilder set(K key, Allele<V> allele);
 
 	/**
 	 * Sets a allele, that represents the given value, at a position of the chromosome.
 	 *
 	 * @param value The value that the allele should be represent.
-	 * @param chromosomeType The position at the chromosome array.
+	 * @param key The position at the chromosome array.
 	 */
-	<V, G extends IGene<V>> IAlleleTemplateBuilder set(G chromosomeType, V value);
+	<V, K extends IGeneKey<V>> IAlleleTemplateBuilder set(K key, V value);
 
-	IGeneticDefinition getRoot();
+	IKaryotype getKaryotype();
 
 	/**
 	 * @return The count of genes.

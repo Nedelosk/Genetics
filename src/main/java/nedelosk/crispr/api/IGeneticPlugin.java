@@ -8,6 +8,6 @@ public interface IGeneticPlugin {
 
 	}
 
-	default void register(IGeneticRegistry registry){
+	default void register(IGeneRegistry registry) {
 	}
 }

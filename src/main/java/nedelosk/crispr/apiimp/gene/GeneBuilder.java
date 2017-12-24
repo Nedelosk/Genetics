@@ -6,9 +6,11 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
+import nedelosk.crispr.api.CrisprAPI;
 import nedelosk.crispr.api.alleles.Allele;
 import nedelosk.crispr.api.gene.IGene;
 import nedelosk.crispr.api.gene.IGeneBuilder;
+import nedelosk.crispr.api.gene.IGeneKey;
 
 public class GeneBuilder<V> implements IGeneBuilder<V> {
 	private final Class<? extends V> valueClass;
@@ -18,7 +20,7 @@ public class GeneBuilder<V> implements IGeneBuilder<V> {
 	@Nullable
 	private String name;
 
-	public GeneBuilder(Class<? extends V> valueClass) {
+	GeneBuilder(Class<? extends V> valueClass) {
 		this.valueClass = valueClass;
 	}
 
@@ -38,9 +40,11 @@ public class GeneBuilder<V> implements IGeneBuilder<V> {
 	}
 
 	@Override
-	public IGene<V> register() {
+	public final IGene<V> register(IGeneKey... keys) {
 		Preconditions.checkNotNull(defaultAllele);
 		Preconditions.checkNotNull(name);
-		return new Gene<>(alleles, valueClass, defaultAllele, name);
+		Gene<V> gene = new Gene<>(alleles, valueClass, defaultAllele, name);
+		CrisprAPI.geneRegistry.registerGene(gene, keys);
+		return gene;
 	}
 }

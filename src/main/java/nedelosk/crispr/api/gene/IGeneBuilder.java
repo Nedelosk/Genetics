@@ -13,5 +13,5 @@ public interface IGeneBuilder<V> {
 	 */
 	void setName(String geneName);
 
-	IGene register();
+	IGene<V> register(IGeneKey... keys);
 }

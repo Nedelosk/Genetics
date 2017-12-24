@@ -2,28 +2,30 @@ package nedelosk.crispr.apiimp.alleles;
 
 import javax.annotation.Nullable;
 
-import nedelosk.crispr.api.IGeneticDefinition;
+import nedelosk.crispr.api.IGeneticTransformer;
 import nedelosk.crispr.api.alleles.Allele;
 import nedelosk.crispr.api.alleles.IAlleleTemplate;
 import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
 import nedelosk.crispr.api.gene.IChromosome;
-import nedelosk.crispr.api.gene.IGene;
+import nedelosk.crispr.api.gene.IGeneKey;
 import nedelosk.crispr.api.gene.IGenome;
+import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IGeneticIndividual;
 
-public class AlleleTemplate implements IAlleleTemplate {
+public final class AlleleTemplate implements IAlleleTemplate {
 	public final Allele[] alleles;
-	private final IGeneticDefinition definition;
+	private final IKaryotype karyotype;
 
-	public AlleleTemplate(Allele[] alleles, IGeneticDefinition definition) {
+	AlleleTemplate(Allele[] alleles, IKaryotype karyotype) {
 		this.alleles = alleles;
-		this.definition = definition;
+		this.karyotype = karyotype;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Nullable
 	@Override
-	public <V> Allele<V> get(IGene<V> gene) {
-		return (Allele<V>) alleles[definition.getGeneIndex(gene)];
+	public <V> Allele<V> get(IGeneKey<V> key) {
+		return (Allele<V>) alleles[key.getIndex()];
 	}
 
 	@Override
@@ -38,31 +40,31 @@ public class AlleleTemplate implements IAlleleTemplate {
 
 	@Override
 	public IAlleleTemplate copy() {
-		return new AlleleTemplate(alleles, definition);
+		return new AlleleTemplate(alleles, karyotype);
 	}
 
 	@Override
 	public IAlleleTemplateBuilder createBuilder() {
-		return new AlleleTemplateBuilder(definition, alleles);
+		return new AlleleTemplateBuilder(karyotype, alleles);
 	}
 
 	@Override
-	public IGeneticDefinition getDefinition() {
-		return definition;
+	public IKaryotype getKaryotype() {
+		return karyotype;
 	}
 
 	@Override
-	public IGeneticIndividual toIndividual(@Nullable IAlleleTemplate inactiveTemplate) {
-		return definition.transformer().templateAsIndividual(alleles);
+	public <I extends IGeneticIndividual> I toIndividual(IGeneticTransformer<I> transformer, @Nullable IAlleleTemplate inactiveTemplate) {
+		return transformer.templateAsIndividual(alleles);
 	}
 
 	@Override
-	public IGenome toGenome(@Nullable IAlleleTemplate inactiveTemplate) {
-		return definition.transformer().templateAsGenome(alleles);
+	public IGenome toGenome(IGeneticTransformer transformer, @Nullable IAlleleTemplate inactiveTemplate) {
+		return transformer.templateAsGenome(alleles);
 	}
 
 	@Override
-	public IChromosome[] toChromosomes(@Nullable IAlleleTemplate inactiveTemplate) {
-		return definition.transformer().templateAsChromosomes(alleles);
+	public IChromosome[] toChromosomes(IGeneticTransformer transformer, @Nullable IAlleleTemplate inactiveTemplate) {
+		return transformer.templateAsChromosomes(alleles);
 	}
 }
