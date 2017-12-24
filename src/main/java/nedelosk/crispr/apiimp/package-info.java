@@ -1,10 +1,9 @@
 @ParametersAreNonnullByDefault
+@FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-@API(apiVersion = "1.0.0", owner = "crispr", provides = "crispr|api")
-package nedelosk.crispr.api;
+package nedelosk.crispr.apiimp;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraftforge.fml.common.API;
-
 import mcp.MethodsReturnNonnullByDefault;
+import nedelosk.crispr.FieldsAreNonnullByDefault;
