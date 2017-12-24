@@ -7,10 +7,10 @@ import nedelosk.crispr.api.gene.IChromosome;
 import nedelosk.crispr.api.gene.IGeneKey;
 import nedelosk.crispr.api.gene.IGenome;
 import nedelosk.crispr.api.gene.IKaryotype;
-import nedelosk.crispr.api.individual.IGeneticIndividual;
+import nedelosk.crispr.api.individual.IIndividual;
 
 /**
- * Can be used to create {@link IGenome}s, {@link IGeneticIndividual}s or {@link IChromosome}s or get a allele.
+ * Can be used to create {@link IGenome}s, {@link IIndividual}s or {@link IChromosome}s or get a allele.
  */
 public interface IAlleleTemplate {
 
@@ -46,7 +46,7 @@ public interface IAlleleTemplate {
 	 * Creates an individual with the help of the species root using
 	 * {@link IGeneticTransformer#templateAsIndividual(Allele[], Allele[])}.
 	 */
-	<I extends IGeneticIndividual> I toIndividual(IGeneticTransformer<I> transformer, @Nullable IAlleleTemplate inactiveTemplate);
+	<I extends IIndividual> I toIndividual(IGeneticTransformer<I> transformer, @Nullable IAlleleTemplate inactiveTemplate);
 
 	/**
 	 * Creates a genome with the help of the species root using

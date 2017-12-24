@@ -10,6 +10,8 @@ import nedelosk.crispr.api.gene.IGeneKey;
 import nedelosk.crispr.api.gene.IGeneRegistry;
 import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.gene.IKaryotypeBuilder;
+import nedelosk.crispr.api.individual.IIndividual;
+import nedelosk.crispr.api.individual.IIndividualFactory;
 import nedelosk.crispr.apiimp.GeneticDefinitionBuilder;
 import nedelosk.crispr.apiimp.KaryotypeBuilder;
 
@@ -35,8 +37,8 @@ public class GeneRegistry implements IGeneRegistry {
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder createDefinition(String name, IKaryotype karyotype) {
-		return new GeneticDefinitionBuilder(name, karyotype);
+	public <I extends IIndividual> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, IIndividualFactory<I> factory) {
+		return new GeneticDefinitionBuilder(name, karyotype, factory);
 	}
 
 	@Override

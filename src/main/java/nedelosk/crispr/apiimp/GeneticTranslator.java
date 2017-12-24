@@ -8,12 +8,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import nedelosk.crispr.api.individual.IGeneticIndividual;
+import nedelosk.crispr.api.individual.IIndividual;
 import nedelosk.crispr.api.translators.IBlockTranslator;
 import nedelosk.crispr.api.translators.IGeneticTranslator;
 import nedelosk.crispr.api.translators.IItemTranslator;
 
-public class GeneticTranslator<I extends IGeneticIndividual> implements IGeneticTranslator<I> {
+public class GeneticTranslator<I extends IIndividual> implements IGeneticTranslator<I> {
 	private final Map<Item, IItemTranslator<I>> itemTranslators;
 	private final Map<Block, IBlockTranslator<I>> blockTranslators;
 

@@ -2,6 +2,8 @@ package nedelosk.crispr.api.gene;
 
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticDefinitionBuilder;
+import nedelosk.crispr.api.individual.IIndividual;
+import nedelosk.crispr.api.individual.IIndividualFactory;
 
 public interface IGeneRegistry {
 
@@ -14,7 +16,7 @@ public interface IGeneRegistry {
 
 	IKaryotypeBuilder createKaryotype();
 
-	IGeneticDefinitionBuilder createDefinition(String name, IKaryotype karyotype);
+	<I extends IIndividual> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, IIndividualFactory<I> factory);
 
 	void registerDefinition(IGeneticDefinition definition);
 

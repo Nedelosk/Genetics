@@ -6,10 +6,10 @@ import java.util.Optional;
 import net.minecraft.item.ItemStack;
 
 import nedelosk.crispr.api.individual.IGeneticHandler;
-import nedelosk.crispr.api.individual.IGeneticIndividual;
+import nedelosk.crispr.api.individual.IIndividual;
 import nedelosk.crispr.api.individual.IGeneticType;
 
-public interface IGeneticTypes<I extends IGeneticIndividual> {
+public interface IGeneticTypes<I extends IIndividual> {
 	ItemStack getMember(I individual, IGeneticType type);
 
 	Optional<I> getMember(ItemStack itemStack);

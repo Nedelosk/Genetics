@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 import nedelosk.crispr.api.alleles.Allele;
 import nedelosk.crispr.api.gene.IChromosome;
 import nedelosk.crispr.api.gene.IGenome;
-import nedelosk.crispr.api.individual.IGeneticIndividual;
+import nedelosk.crispr.api.individual.IIndividual;
 
-public interface IGeneticTransformer<I extends IGeneticIndividual> {
+public interface IGeneticTransformer<I extends IIndividual> {
 	default I templateAsIndividual(Allele[] template){
 		return templateAsIndividual(template, null);
 	}

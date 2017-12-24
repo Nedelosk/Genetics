@@ -4,9 +4,9 @@ import nedelosk.crispr.api.IGeneticTransformer;
 import nedelosk.crispr.api.alleles.Allele;
 import nedelosk.crispr.api.gene.IChromosome;
 import nedelosk.crispr.api.gene.IGenome;
-import nedelosk.crispr.api.individual.IGeneticIndividual;
+import nedelosk.crispr.api.individual.IIndividual;
 
-public class GeneticTransformer<I extends IGeneticIndividual> implements IGeneticTransformer<I> {
+public class GeneticTransformer<I extends IIndividual> implements IGeneticTransformer<I> {
 
 	@Override
 	public I templateAsIndividual(Allele[] template) {

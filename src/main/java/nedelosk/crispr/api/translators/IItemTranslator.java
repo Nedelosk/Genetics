@@ -4,9 +4,9 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 
-import nedelosk.crispr.api.individual.IGeneticIndividual;
+import nedelosk.crispr.api.individual.IIndividual;
 
-public interface IItemTranslator<I extends IGeneticIndividual> {
+public interface IItemTranslator<I extends IIndividual> {
 	@Nullable
 	I getIndividualFromObject(ItemStack itemStack);
 

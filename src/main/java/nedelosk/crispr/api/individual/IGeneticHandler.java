@@ -2,7 +2,7 @@ package nedelosk.crispr.api.individual;
 
 import net.minecraft.item.ItemStack;
 
-public interface IGeneticHandler<I extends IGeneticIndividual> {
+public interface IGeneticHandler<I extends IIndividual> {
 
 	boolean isMember(ItemStack itemStack);
 

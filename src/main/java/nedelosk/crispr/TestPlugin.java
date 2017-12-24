@@ -26,7 +26,7 @@ public class TestPlugin implements IGeneticPlugin {
 
 	@Override
 	public void register(IGeneRegistry registry) {
-		IGeneticDefinitionBuilder builder = new GeneticDefinitionBuilder("tree", karyotype);
+		IGeneticDefinitionBuilder builder = new GeneticDefinitionBuilder("tree", karyotype, null);
 		registry.registerDefinition(builder.register());
 	}
 }

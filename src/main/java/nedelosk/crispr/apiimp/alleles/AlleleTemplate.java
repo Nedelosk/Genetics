@@ -10,7 +10,7 @@ import nedelosk.crispr.api.gene.IChromosome;
 import nedelosk.crispr.api.gene.IGeneKey;
 import nedelosk.crispr.api.gene.IGenome;
 import nedelosk.crispr.api.gene.IKaryotype;
-import nedelosk.crispr.api.individual.IGeneticIndividual;
+import nedelosk.crispr.api.individual.IIndividual;
 
 public final class AlleleTemplate implements IAlleleTemplate {
 	public final Allele[] alleles;
@@ -54,7 +54,7 @@ public final class AlleleTemplate implements IAlleleTemplate {
 	}
 
 	@Override
-	public <I extends IGeneticIndividual> I toIndividual(IGeneticTransformer<I> transformer, @Nullable IAlleleTemplate inactiveTemplate) {
+	public <I extends IIndividual> I toIndividual(IGeneticTransformer<I> transformer, @Nullable IAlleleTemplate inactiveTemplate) {
 		return transformer.templateAsIndividual(alleles);
 	}
 
