@@ -6,4 +6,6 @@ public interface IAlleleData<V> {
 	boolean isDominant();
 
 	String getName();
+
+	IAlleleKey getKey();
 }
