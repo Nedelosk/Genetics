@@ -26,15 +26,15 @@ public interface IGeneticDefinitionBuilder<I extends IIndividual> {
 
 	/**
 	 * @param translatorKey The key of the translator the block of {@link IBlockState} that you want to translate
-	 *                         with the translator.
-	 * @param translator A translator that should be used to translate the data.
+	 *                      with the translator.
+	 * @param translator    A translator that should be used to translate the data.
 	 */
 	IGeneticDefinitionBuilder<I> registerTranslator(Block translatorKey, IBlockTranslator<I> translator);
 
 	/**
 	 * @param translatorKey The key of the translator it is the item of the {@link ItemStack} that you want to translate
 	 *                      with the translator.
-	 * @param translator A translator that should be used to translate the data.
+	 * @param translator    A translator that should be used to translate the data.
 	 */
 	IGeneticDefinitionBuilder<I> registerTranslator(Item translatorKey, IItemTranslator<I> translator);
 
@@ -46,5 +46,5 @@ public interface IGeneticDefinitionBuilder<I extends IIndividual> {
 
 	IGeneticDefinitionBuilder<I> setStat(Function<IGenome, IGeneticStat> statFactory);
 
-	IGeneticDefinition<I> register();
+	IGeneticDefinition<I> build();
 }

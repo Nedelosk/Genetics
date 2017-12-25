@@ -10,26 +10,31 @@ import java.util.Set;
 import net.minecraft.client.resources.I18n;
 
 import nedelosk.crispr.api.alleles.Allele;
+import nedelosk.crispr.api.alleles.IAlleleKey;
 import nedelosk.crispr.api.gene.IGene;
 
 public class Gene<V> implements IGene<V> {
-	private final Map<V, Allele<V>> alleles;
+	private final Map<V, Allele<V>> alleleByValue;
+	private final Map<IAlleleKey, Allele<V>> alleleByKey;
 	private final Class<? extends V> valueClass;
 	private final Allele<V> defaultAllele;
 	private final String name;
 
-	Gene(Set<Allele<V>> alleles, Class<? extends V> valueClass, Allele<V> defaultAllele, String name) {
+	public Gene(Set<Allele<V>> alleles, Class<? extends V> valueClass, IAlleleKey defaultKey, String name) {
 		this.valueClass = valueClass;
-		this.defaultAllele = defaultAllele;
 		this.name = name;
 		ImmutableMap.Builder<V, Allele<V>> builder = ImmutableMap.builder();
 		alleles.forEach(a -> builder.put(a.get(), a));
-		this.alleles = builder.build();
+		this.alleleByValue = builder.build();
+		ImmutableMap.Builder<IAlleleKey, Allele<V>> keyBuilder = ImmutableMap.builder();
+		alleles.forEach(a -> keyBuilder.put(a.key(), a));
+		this.alleleByKey = keyBuilder.build();
+		this.defaultAllele = alleleByKey.get(defaultKey);
 	}
 
 	@Override
 	public Collection<Allele<V>> getValidAlleles() {
-		return alleles.values();
+		return alleleByValue.values();
 	}
 
 	@Override
@@ -39,13 +44,24 @@ public class Gene<V> implements IGene<V> {
 	}
 
 	@Override
+	public Optional<Allele<V>> getAllele(IAlleleKey key) {
+		return Optional.ofNullable(alleleByKey.get(key));
+	}
+
+	@Override
+	public Optional<V> getValue(IAlleleKey key) {
+		Optional<Allele<V>> allele = getAllele(key);
+		return allele.map(Allele::get);
+	}
+
+	@Override
 	public Collection<V> getValidValues() {
-		return alleles.keySet();
+		return alleleByValue.keySet();
 	}
 
 	@Override
 	public Optional<Allele<V>> getAllele(V value) {
-		return Optional.ofNullable(alleles.get(value));
+		return Optional.ofNullable(alleleByValue.get(value));
 	}
 
 	@Override

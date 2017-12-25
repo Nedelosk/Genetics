@@ -10,7 +10,7 @@ public interface IItemTranslator<I extends IIndividual> {
 	@Nullable
 	I getIndividualFromObject(ItemStack itemStack);
 
-	default ItemStack getGeneticEquivalent(ItemStack itemStack){
+	default ItemStack getGeneticEquivalent(ItemStack itemStack) {
 		return ItemStack.EMPTY;
 	}
 }

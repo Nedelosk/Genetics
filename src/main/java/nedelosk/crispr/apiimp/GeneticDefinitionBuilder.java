@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-import nedelosk.crispr.api.CrisprAPI;
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticDefinitionBuilder;
 import nedelosk.crispr.api.IGeneticRoot;
@@ -85,12 +84,10 @@ public class GeneticDefinitionBuilder<I extends IIndividual> implements IGenetic
 	}
 
 	@Override
-	public IGeneticDefinition<I> register() {
+	public IGeneticDefinition<I> build() {
 		IGeneticTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
 		IGeneticTransformer<I> transformer = transformerFactory.get();
 		IGeneticTypes<I> types = typesFactory.apply(this.types);
-		IGeneticDefinition<I> definition = new GeneticDefinition<>(types, translator, transformer, statFactory, karyotype, name, rootFactory);
-		CrisprAPI.geneRegistry.registerDefinition(definition);
-		return definition;
+		return new GeneticDefinition<>(types, translator, transformer, statFactory, karyotype, name, rootFactory);
 	}
 }

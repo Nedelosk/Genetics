@@ -8,7 +8,7 @@ import nedelosk.crispr.api.gene.IKaryotype;
  * Can be used to create allele templates.
  * <p>
  * You can get an instance of this from the species root with
- * {@link IGeneticFactory#createTemplate()} or {@link IGeneticFactory#createTemplate(Allele[])}.
+ * {@link IGeneticFactory#createTemplate(IKaryotype)} or {@link IGeneticFactory#createTemplate(IKaryotype, Allele[])}.
  */
 public interface IAlleleTemplateBuilder {
 
@@ -16,7 +16,7 @@ public interface IAlleleTemplateBuilder {
 	 * Sets a allele at a position of the chromosome.
 	 *
 	 * @param allele The allele that should be set at the position.
-	 * @param key The position at the chromosome array.
+	 * @param key    The position at the chromosome array.
 	 */
 	<V, K extends IGeneKey<V>> IAlleleTemplateBuilder set(K key, Allele<V> allele);
 
@@ -24,7 +24,7 @@ public interface IAlleleTemplateBuilder {
 	 * Sets a allele, that represents the given value, at a position of the chromosome.
 	 *
 	 * @param value The value that the allele should be represent.
-	 * @param key The position at the chromosome array.
+	 * @param key   The position at the chromosome array.
 	 */
 	<V, K extends IGeneKey<V>> IAlleleTemplateBuilder set(K key, V value);
 

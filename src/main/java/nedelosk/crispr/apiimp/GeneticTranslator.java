@@ -35,7 +35,7 @@ public class GeneticTranslator<I extends IIndividual> implements IGeneticTransla
 	@Override
 	public Optional<I> translateMember(IBlockState objectToTranslate) {
 		Optional<IBlockTranslator<I>> optional = getTranslator(objectToTranslate.getBlock());
-		if(!optional.isPresent()){
+		if (!optional.isPresent()) {
 			return Optional.empty();
 		}
 		return Optional.ofNullable(optional.get().getIndividualFromObject(objectToTranslate));
@@ -44,7 +44,7 @@ public class GeneticTranslator<I extends IIndividual> implements IGeneticTransla
 	@Override
 	public Optional<I> translateMember(ItemStack objectToTranslate) {
 		Optional<IItemTranslator<I>> optional = getTranslator(objectToTranslate.getItem());
-		if(!optional.isPresent()){
+		if (!optional.isPresent()) {
 			return Optional.empty();
 		}
 		return Optional.ofNullable(optional.get().getIndividualFromObject(objectToTranslate));
