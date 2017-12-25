@@ -20,7 +20,7 @@ public interface IGeneticRegistry {
 
 	void registerGene(IGene gene, IGeneKey... keys);
 
-	<V> Optional<IGene<V>> getGene(IGeneKey<V> key);
+	Optional<IGene> getGene(IGeneKey key);
 
 	Collection<IGeneKey> getKeys();
 

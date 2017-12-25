@@ -24,7 +24,7 @@ public final class AlleleTemplate implements IAlleleTemplate {
 	@SuppressWarnings("unchecked")
 	@Nullable
 	@Override
-	public <V> Allele<V> get(IGeneKey<V> key) {
+	public <V> Allele<V> get(IGeneKey key) {
 		return (Allele<V>) alleles[key.getIndex()];
 	}
 

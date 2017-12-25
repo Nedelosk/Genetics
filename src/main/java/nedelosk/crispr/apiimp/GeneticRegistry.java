@@ -53,7 +53,7 @@ public class GeneticRegistry implements IGeneticRegistry {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <V> Optional<IGene<V>> getGene(IGeneKey<V> key) {
+	public Optional<IGene> getGene(IGeneKey key) {
 		return Optional.ofNullable(geneByKey.get(key));
 	}
 

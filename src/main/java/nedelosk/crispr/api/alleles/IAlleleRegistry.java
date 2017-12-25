@@ -12,5 +12,5 @@ public interface IAlleleRegistry<V> {
 
 	IAlleleRegistry<V> setDefaultAllele(IAlleleKey key);
 
-	IAlleleRegistry<V> addKey(IGeneKey<V> key);
+	IAlleleRegistry<V> addKey(IGeneKey key);
 }

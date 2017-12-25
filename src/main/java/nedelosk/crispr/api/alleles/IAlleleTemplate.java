@@ -18,7 +18,7 @@ public interface IAlleleTemplate {
 	 * @return The allele at the position of the chromosomeType at the allele array.
 	 */
 	@Nullable
-	<V> Allele<V> get(IGeneKey<V> key);
+	<V> Allele<V> get(IGeneKey key);
 
 	/**
 	 * @return A copy of the allele array.

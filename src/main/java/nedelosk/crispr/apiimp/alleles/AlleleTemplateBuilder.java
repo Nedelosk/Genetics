@@ -19,12 +19,13 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 		this.karyotype = karyotype;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <V, K extends IGeneKey<V>> IAlleleTemplateBuilder set(K key, Allele<V> allele) {
+	public <V, K extends IGeneKey> IAlleleTemplateBuilder set(K key, Allele<V> allele) {
 		if (!karyotype.contains(key)) {
 			throw new IllegalArgumentException("Gene key is not valid for the karyotype of this template.");
 		}
-		Optional<IGene<V>> optionalGene = CrisprAPI.registry.getGene(key);
+		Optional<IGene> optionalGene = CrisprAPI.registry.getGene(key);
 		if (!optionalGene.isPresent()) {
 			throw new IllegalArgumentException("Gene key is not registered.");
 		}
@@ -36,12 +37,13 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <V, K extends IGeneKey<V>> IAlleleTemplateBuilder set(K key, V value) {
+	public <V, K extends IGeneKey> IAlleleTemplateBuilder set(K key, V value) {
 		if (!karyotype.contains(key)) {
 			throw new IllegalArgumentException("Gene key is not valid for the karyotype of this template.");
 		}
-		Optional<IGene<V>> optionalGene = CrisprAPI.registry.getGene(key);
+		Optional<IGene> optionalGene = CrisprAPI.registry.getGene(key);
 		if (!optionalGene.isPresent()) {
 			throw new IllegalArgumentException("Gene key is not registered.");
 		}

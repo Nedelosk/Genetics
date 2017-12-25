@@ -15,7 +15,7 @@ import nedelosk.crispr.apiimp.gene.Gene;
 public class AlleleRegistry<V> implements IAlleleRegistry<V> {
 	private final Class<? extends V> valueClass;
 	private final Set<Allele<V>> alleles = new HashSet<>();
-	private final Set<IGeneKey<V>> keys = new HashSet<>();
+	private final Set<IGeneKey> keys = new HashSet<>();
 	private final String name;
 	@Nullable
 	private IAlleleKey defaultKey;
@@ -32,7 +32,7 @@ public class AlleleRegistry<V> implements IAlleleRegistry<V> {
 	}
 
 	@Override
-	public IAlleleRegistry<V> addKey(IGeneKey<V> key) {
+	public IAlleleRegistry<V> addKey(IGeneKey key) {
 		this.keys.add(key);
 		return this;
 	}
@@ -43,7 +43,7 @@ public class AlleleRegistry<V> implements IAlleleRegistry<V> {
 		return this;
 	}
 
-	public Set<IGeneKey<V>> getKeys() {
+	public Set<IGeneKey> getKeys() {
 		return keys;
 	}
 

@@ -18,7 +18,7 @@ public interface IAlleleTemplateBuilder {
 	 * @param allele The allele that should be set at the position.
 	 * @param key    The position at the chromosome array.
 	 */
-	<V, K extends IGeneKey<V>> IAlleleTemplateBuilder set(K key, Allele<V> allele);
+	<V, K extends IGeneKey> IAlleleTemplateBuilder set(K key, Allele<V> allele);
 
 	/**
 	 * Sets a allele, that represents the given value, at a position of the chromosome.
@@ -26,7 +26,7 @@ public interface IAlleleTemplateBuilder {
 	 * @param value The value that the allele should be represent.
 	 * @param key   The position at the chromosome array.
 	 */
-	<V, K extends IGeneKey<V>> IAlleleTemplateBuilder set(K key, V value);
+	<V, K extends IGeneKey> IAlleleTemplateBuilder set(K key, V value);
 
 	IKaryotype getKaryotype();
 

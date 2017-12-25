@@ -1,5 +1,5 @@
 package nedelosk.crispr.api.gene;
 
-public interface IGeneKey<V> {
+public interface IGeneKey {
 	int getIndex();
 }
