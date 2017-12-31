@@ -3,10 +3,10 @@ package nedelosk.crispr.api.alleles;
 import javax.annotation.Nullable;
 
 import nedelosk.crispr.api.IGeneticTransformer;
-import nedelosk.crispr.api.gene.IChromosome;
-import nedelosk.crispr.api.gene.IGeneKey;
-import nedelosk.crispr.api.gene.IGenome;
+import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
+import nedelosk.crispr.api.individual.IChromosome;
+import nedelosk.crispr.api.individual.IGenome;
 import nedelosk.crispr.api.individual.IIndividual;
 
 /**
@@ -17,13 +17,12 @@ public interface IAlleleTemplate {
 	/**
 	 * @return The allele at the position of the chromosomeType at the allele array.
 	 */
-	@Nullable
-	<V> Allele<V> get(IGeneKey key);
+	<V> IAllele<V> get(IGeneType type);
 
 	/**
 	 * @return A copy of the allele array.
 	 */
-	Allele[] alleles();
+	IAllele[] alleles();
 
 	/**
 	 * @return The size of the allele array.
@@ -44,19 +43,19 @@ public interface IAlleleTemplate {
 
 	/**
 	 * Creates an individual with the help of the species root using
-	 * {@link IGeneticTransformer#templateAsIndividual(Allele[], Allele[])}.
+	 * {@link IGeneticTransformer#templateAsIndividual(IAllele[], IAllele[])}.
 	 */
 	<I extends IIndividual> I toIndividual(IGeneticTransformer<I> transformer, @Nullable IAlleleTemplate inactiveTemplate);
 
 	/**
 	 * Creates a genome with the help of the species root using
-	 * {@link IGeneticTransformer#templateAsGenome(Allele[], Allele[])}.
+	 * {@link IGeneticTransformer#templateAsGenome(IAllele[], IAllele[])}.
 	 */
 	IGenome toGenome(IGeneticTransformer transformer, @Nullable IAlleleTemplate inactiveTemplate);
 
 	/**
 	 * Creates a chromosome array with the help of the species root using
-	 * {@link IGeneticTransformer#templateAsChromosomes(Allele[], Allele[])}.
+	 * {@link IGeneticTransformer#templateAsChromosomes(IAllele[], IAllele[])}.
 	 */
 	IChromosome[] toChromosomes(IGeneticTransformer transformer, @Nullable IAlleleTemplate inactiveTemplate);
 }

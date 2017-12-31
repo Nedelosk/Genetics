@@ -1,13 +1,13 @@
 package nedelosk.crispr.api;
 
 import nedelosk.crispr.api.gene.IGeneticStat;
-import nedelosk.crispr.api.gene.IGenome;
 import nedelosk.crispr.api.gene.IKaryotype;
+import nedelosk.crispr.api.individual.IGenome;
 import nedelosk.crispr.api.individual.IIndividual;
 import nedelosk.crispr.api.translators.IGeneticTranslator;
 import nedelosk.crispr.apiimp.IGeneticTypes;
 
-public interface IGeneticDefinition<I extends IIndividual> {
+public interface IGeneticDefinition<I extends IIndividual> extends IGeneticTranslator<I>, IGeneticTransformer<I>, IGeneticTypes<I> {
 
 	String getName();
 
@@ -17,11 +17,5 @@ public interface IGeneticDefinition<I extends IIndividual> {
 
 	IGeneticRoot root();
 
-	IKaryotype karyotype();
-
-	IGeneticTypes<I> types();
-
-	IGeneticTransformer<I> transformer();
-
-	IGeneticTranslator<I> translator();
+	IKaryotype getKaryotype();
 }

@@ -11,16 +11,16 @@ import java.util.function.Function;
 
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticDefinitionBuilder;
-import nedelosk.crispr.api.IGeneticRegistry;
 import nedelosk.crispr.api.IGeneticRoot;
+import nedelosk.crispr.api.IGeneticSystem;
 import nedelosk.crispr.api.gene.IGene;
-import nedelosk.crispr.api.gene.IGeneKey;
+import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IIndividual;
 
-public class GeneticRegistry implements IGeneticRegistry {
-	private final HashMap<IGeneKey, IGene> geneByKey = new HashMap<>();
-	private final Multimap<IGene, IGeneKey> keysByGene = HashMultimap.create();
+public class GeneticSystem implements IGeneticSystem {
+	private final HashMap<IGeneType, IGene> geneByType = new HashMap<>();
+	private final Multimap<IGene, IGeneType> typesByGene = HashMultimap.create();
 	private final HashMap<String, IGeneticDefinition> definitions = new HashMap<>();
 
 	@Override
@@ -28,8 +28,9 @@ public class GeneticRegistry implements IGeneticRegistry {
 		return definitions.values();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <I extends IIndividual> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I>, IGeneticRoot<I>> rootFactory) {
+	public <I extends IIndividual> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I>, IGeneticRoot<I, ?>> rootFactory) {
 		return new GeneticDefinitionBuilder(name, karyotype, rootFactory);
 	}
 
@@ -44,26 +45,25 @@ public class GeneticRegistry implements IGeneticRegistry {
 	}
 
 	@Override
-	public void registerGene(IGene gene, IGeneKey... keys) {
-		Arrays.stream(keys).forEach(k -> {
-			geneByKey.put(k, gene);
-			keysByGene.put(gene, k);
+	public void registerGene(IGene gene, IGeneType... types) {
+		Arrays.stream(types).forEach(k -> {
+			geneByType.put(k, gene);
+			typesByGene.put(gene, k);
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Optional<IGene> getGene(IGeneKey key) {
-		return Optional.ofNullable(geneByKey.get(key));
+	public Optional<IGene> getGene(IGeneType type) {
+		return Optional.ofNullable(geneByType.get(type));
 	}
 
 	@Override
-	public Collection<IGeneKey> getKeys() {
-		return geneByKey.keySet();
+	public Collection<IGeneType> getTypes() {
+		return geneByType.keySet();
 	}
 
 	@Override
-	public Collection<IGeneKey> getKeys(IGene gene) {
-		return keysByGene.get(gene);
+	public Collection<IGeneType> getTypes(IGene gene) {
+		return typesByGene.get(gene);
 	}
 }

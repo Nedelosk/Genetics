@@ -11,9 +11,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import nedelosk.crispr.api.gene.IGeneticStat;
-import nedelosk.crispr.api.gene.IGenome;
 import nedelosk.crispr.api.individual.IGeneticHandler;
 import nedelosk.crispr.api.individual.IGeneticType;
+import nedelosk.crispr.api.individual.IGenome;
 import nedelosk.crispr.api.individual.IIndividual;
 import nedelosk.crispr.api.translators.IBlockTranslator;
 import nedelosk.crispr.api.translators.IGeneticTranslator;

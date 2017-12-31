@@ -1,40 +1,40 @@
 package nedelosk.crispr.apiimp;
 
 import nedelosk.crispr.api.IGeneticTransformer;
-import nedelosk.crispr.api.alleles.Allele;
-import nedelosk.crispr.api.gene.IChromosome;
-import nedelosk.crispr.api.gene.IGenome;
+import nedelosk.crispr.api.alleles.IAllele;
+import nedelosk.crispr.api.individual.IChromosome;
+import nedelosk.crispr.api.individual.IGenome;
 import nedelosk.crispr.api.individual.IIndividual;
 
 public class GeneticTransformer<I extends IIndividual> implements IGeneticTransformer<I> {
 
 	@Override
-	public I templateAsIndividual(Allele[] template) {
+	public I templateAsIndividual(IAllele[] template) {
 		return null;
 	}
 
 	@Override
-	public I templateAsIndividual(Allele[] templateActive, Allele[] templateInactive) {
+	public I templateAsIndividual(IAllele[] templateActive, IAllele[] templateInactive) {
 		return null;
 	}
 
 	@Override
-	public IChromosome[] templateAsChromosomes(Allele[] template) {
+	public IChromosome[] templateAsChromosomes(IAllele[] template) {
 		return new IChromosome[0];
 	}
 
 	@Override
-	public IChromosome[] templateAsChromosomes(Allele[] templateActive, Allele[] templateInactive) {
+	public IChromosome[] templateAsChromosomes(IAllele[] templateActive, IAllele[] templateInactive) {
 		return new IChromosome[0];
 	}
 
 	@Override
-	public IGenome templateAsGenome(Allele[] template) {
+	public IGenome templateAsGenome(IAllele[] template) {
 		return null;
 	}
 
 	@Override
-	public IGenome templateAsGenome(Allele[] templateActive, Allele[] templateInactive) {
+	public IGenome templateAsGenome(IAllele[] templateActive, IAllele[] templateInactive) {
 		return null;
 	}
 }

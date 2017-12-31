@@ -3,58 +3,52 @@ package nedelosk.crispr.apiimp.alleles;
 import java.util.Optional;
 
 import nedelosk.crispr.api.CrisprAPI;
-import nedelosk.crispr.api.alleles.Allele;
+import nedelosk.crispr.api.alleles.IAllele;
+import nedelosk.crispr.api.alleles.IAlleleKey;
 import nedelosk.crispr.api.alleles.IAlleleTemplate;
 import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
 import nedelosk.crispr.api.gene.IGene;
-import nedelosk.crispr.api.gene.IGeneKey;
+import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
 
 public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
-	public final Allele[] alleles;
+	public final IAllele[] alleles;
 	public final IKaryotype karyotype;
 
-	public AlleleTemplateBuilder(IKaryotype karyotype, Allele[] alleles) {
+	public AlleleTemplateBuilder(IKaryotype karyotype, IAllele[] alleles) {
 		this.alleles = alleles;
 		this.karyotype = karyotype;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <V, K extends IGeneKey> IAlleleTemplateBuilder set(K key, Allele<V> allele) {
-		if (!karyotype.contains(key)) {
+	public IAlleleTemplateBuilder set(IGeneType geneKey, IAllele<?> allele) {
+		if (!karyotype.contains(geneKey)) {
 			throw new IllegalArgumentException("Gene key is not valid for the karyotype of this template.");
 		}
-		Optional<IGene> optionalGene = CrisprAPI.registry.getGene(key);
+		Optional<IGene> optionalGene = CrisprAPI.geneticSystem.getGene(geneKey);
 		if (!optionalGene.isPresent()) {
 			throw new IllegalArgumentException("Gene key is not registered.");
 		}
-		IGene<V> gene = optionalGene.get();
+		IGene gene = optionalGene.get();
 		if (!gene.isValidAllele(allele)) {
 			throw new IllegalArgumentException("The given allele is not a valid allele for the gene of the given gene key.");
 		}
-		alleles[key.getIndex()] = allele;
+		alleles[geneKey.getIndex()] = allele;
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <V, K extends IGeneKey> IAlleleTemplateBuilder set(K key, V value) {
-		if (!karyotype.contains(key)) {
+	public IAlleleTemplateBuilder set(IGeneType geneKey, IAlleleKey alleleKey) {
+		if (!karyotype.contains(geneKey)) {
 			throw new IllegalArgumentException("Gene key is not valid for the karyotype of this template.");
 		}
-		Optional<IGene> optionalGene = CrisprAPI.registry.getGene(key);
+		Optional<IGene> optionalGene = CrisprAPI.geneticSystem.getGene(geneKey);
 		if (!optionalGene.isPresent()) {
 			throw new IllegalArgumentException("Gene key is not registered.");
 		}
-		IGene<V> gene = optionalGene.get();
-
-		Class<? extends V> valueClass = gene.getValueClass();
-		if (!valueClass.isInstance(value)) {
-			throw new IllegalArgumentException("The given value is not valid.");
-		}
-		Optional<Allele<V>> allele = gene.getAllele(value);
-		allele.ifPresent(a -> alleles[key.getIndex()] = a);
+		IGene gene = optionalGene.get();
+		Optional<IAllele<?>> allele = CrisprAPI.alleleRegistry.getAllele(alleleKey);
+		allele.ifPresent(a -> alleles[geneKey.getIndex()] = a);
 		return this;
 	}
 

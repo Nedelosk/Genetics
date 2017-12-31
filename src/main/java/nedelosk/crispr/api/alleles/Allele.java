@@ -1,42 +1,57 @@
 package nedelosk.crispr.api.alleles;
 
-import java.util.function.Supplier;
-
 import net.minecraft.client.resources.I18n;
 
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public final class Allele<V> extends IForgeRegistryEntry.Impl<Allele<V>> implements Supplier<V> {
+/**
+ * A default implementation for a simple allele that only contains a value.
+ */
+public final class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implements IAllele<V> {
+	private final V value;
 	private final boolean dominant;
 	private final String unlocalizedName;
-	private final V value;
-	private final IAlleleKey key;
 
-	public Allele(IAlleleKey key, boolean dominant, String unlocalizedName, V value) {
-		this.key = key;
+	public Allele(V value, boolean dominant, String unlocalizedName) {
+		this.value = value;
 		this.dominant = dominant;
 		this.unlocalizedName = unlocalizedName;
-		this.value = value;
 	}
 
+	@Override
+	public V getValue() {
+		return value;
+	}
+
+	@Override
 	public boolean isDominant() {
 		return dominant;
 	}
 
-	public String getLocalizedName() {
-		return I18n.format(unlocalizedName);
-	}
-
+	@Override
 	public String getUnlocalizedName() {
 		return unlocalizedName;
 	}
 
-	public IAlleleKey key() {
-		return key;
+	@Override
+	public String getLocalizedName() {
+		return I18n.format(unlocalizedName);
 	}
 
 	@Override
-	public V get() {
-		return value;
+	public boolean equals(Object obj) {
+		if (!(obj instanceof IAllele)) {
+			return false;
+		}
+		IAllele otherAllele = (IAllele) obj;
+		return value.equals(otherAllele.getValue()) && dominant == otherAllele.isDominant();
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = hash * 31 + value.hashCode();
+		hash = hash * 31 + Boolean.hashCode(dominant);
+		return hash;
 	}
 }

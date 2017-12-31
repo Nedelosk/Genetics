@@ -1,49 +1,68 @@
 package nedelosk.crispr.apiimp;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.BiFunction;
 
 import nedelosk.crispr.api.CrisprAPI;
 import nedelosk.crispr.api.alleles.Allele;
+import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleTemplate;
 import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
 import nedelosk.crispr.api.gene.IGene;
-import nedelosk.crispr.api.gene.IGeneKey;
+import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
 
 public class Karyotype implements IKaryotype {
-	private final IGeneKey[] genes;
-	private final BiFunction<IKaryotype, Allele[], IAlleleTemplateBuilder> templateFactory;
+	private final IGeneType[] geneTypes;
+	private final IGeneType templateType;
+	private final BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory;
+	protected final HashMap<String, IAllele[]> templates;
+	@Nullable
+	private IAlleleTemplate defaultTemplate = null;
 
-	Karyotype(Set<IGeneKey> keys, BiFunction<IKaryotype, Allele[], IAlleleTemplateBuilder> templateFactory) {
+	Karyotype(Set<IGeneType> geneTypes, BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory, IGeneType templateType, HashMap<String, IAllele[]> templates) {
 		this.templateFactory = templateFactory;
-		this.genes = new IGeneKey[keys.size()];
-		for (IGeneKey key : keys) {
-			this.genes[key.getIndex()] = key;
+		this.templateType = templateType;
+		this.templates = templates;
+		this.geneTypes = new IGeneType[geneTypes.size()];
+		for (IGeneType key : geneTypes) {
+			this.geneTypes[key.getIndex()] = key;
 		}
 	}
 
 	@Override
-	public IGeneKey[] getKeys() {
-		return genes;
+	public IGeneType[] getGeneTypes() {
+		return geneTypes;
 	}
 
 	@Override
-	public boolean contains(IGeneKey key) {
-		return Arrays.asList(genes).contains(key);
+	public IGeneType getTemplateType() {
+		return templateType;
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+	public boolean contains(IGeneType type) {
+		return Arrays.asList(geneTypes).contains(type);
+	}
+
 	@Override
 	public IAlleleTemplate getDefaultTemplate() {
-		Allele[] alleles = new Allele[genes.length];
-		for (IGeneKey key : genes) {
-			Optional<IGene> optional = CrisprAPI.registry.getGene(key);
-			optional.ifPresent(g -> alleles[key.getIndex()] = g.getDefaultAllele());
+		if (defaultTemplate == null) {
+			IAllele[] alleles = new Allele[geneTypes.length];
+			for (IGeneType key : geneTypes) {
+				Optional<IGene> optional = CrisprAPI.geneticSystem.getGene(key);
+				optional.ifPresent(g -> alleles[key.getIndex()] = g.getDefaultAllele());
+			}
+			defaultTemplate = templateFactory.apply(this, alleles).build();
 		}
-		return templateFactory.apply(this, alleles).build();
+		return defaultTemplate;
 	}
 
 	@Override
@@ -52,7 +71,29 @@ public class Karyotype implements IKaryotype {
 	}
 
 	@Override
-	public IAlleleTemplateBuilder createTemplate(Allele[] alleles) {
+	public IAlleleTemplateBuilder createTemplate(IAllele[] alleles) {
 		return templateFactory.apply(this, alleles);
+	}
+
+	@Override
+	public Map<String, IAllele[]> getGenomeTemplates() {
+		return templates;
+	}
+
+	@Override
+	public Allele[] getRandomTemplate(Random rand) {
+		Collection<IAllele[]> templates = this.templates.values();
+		int size = templates.size();
+		Allele[][] templatesArray = templates.toArray(new Allele[size][]);
+		return templatesArray[rand.nextInt(size)];
+	}
+
+	@Override
+	public IAllele[] getTemplate(String identifier) {
+		IAllele[] template = templates.get(identifier);
+		if (template == null) {
+			return null;
+		}
+		return Arrays.copyOf(template, template.length);
 	}
 }

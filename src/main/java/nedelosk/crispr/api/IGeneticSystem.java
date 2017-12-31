@@ -5,24 +5,24 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import nedelosk.crispr.api.gene.IGene;
-import nedelosk.crispr.api.gene.IGeneKey;
+import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IIndividual;
 
-public interface IGeneticRegistry {
+public interface IGeneticSystem {
 	Collection<IGeneticDefinition> getDefinitions();
 
 	Optional<IGeneticDefinition> getDefinition(String name);
 
-	<I extends IIndividual> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I>, IGeneticRoot<I>> rootFactory);
+	<I extends IIndividual> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I>, IGeneticRoot<I, ?>> rootFactory);
 
 	void registerDefinition(IGeneticDefinition definition);
 
-	void registerGene(IGene gene, IGeneKey... keys);
+	void registerGene(IGene gene, IGeneType... types);
 
-	Optional<IGene> getGene(IGeneKey key);
+	Optional<IGene> getGene(IGeneType type);
 
-	Collection<IGeneKey> getKeys();
+	Collection<IGeneType> getTypes();
 
-	Collection<IGeneKey> getKeys(IGene gene);
+	Collection<IGeneType> getTypes(IGene gene);
 }

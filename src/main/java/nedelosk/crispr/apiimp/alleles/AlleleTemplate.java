@@ -3,33 +3,32 @@ package nedelosk.crispr.apiimp.alleles;
 import javax.annotation.Nullable;
 
 import nedelosk.crispr.api.IGeneticTransformer;
-import nedelosk.crispr.api.alleles.Allele;
+import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleTemplate;
 import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
-import nedelosk.crispr.api.gene.IChromosome;
-import nedelosk.crispr.api.gene.IGeneKey;
-import nedelosk.crispr.api.gene.IGenome;
+import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
+import nedelosk.crispr.api.individual.IChromosome;
+import nedelosk.crispr.api.individual.IGenome;
 import nedelosk.crispr.api.individual.IIndividual;
 
 public final class AlleleTemplate implements IAlleleTemplate {
-	public final Allele[] alleles;
+	public final IAllele[] alleles;
 	private final IKaryotype karyotype;
 
-	AlleleTemplate(Allele[] alleles, IKaryotype karyotype) {
+	AlleleTemplate(IAllele[] alleles, IKaryotype karyotype) {
 		this.alleles = alleles;
 		this.karyotype = karyotype;
 	}
 
 	@SuppressWarnings("unchecked")
-	@Nullable
 	@Override
-	public <V> Allele<V> get(IGeneKey key) {
-		return (Allele<V>) alleles[key.getIndex()];
+	public <V> IAllele<V> get(IGeneType type) {
+		return (IAllele<V>) alleles[type.getIndex()];
 	}
 
 	@Override
-	public Allele[] alleles() {
+	public IAllele[] alleles() {
 		return alleles;
 	}
 

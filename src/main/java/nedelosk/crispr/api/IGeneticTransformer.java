@@ -2,27 +2,27 @@ package nedelosk.crispr.api;
 
 import javax.annotation.Nullable;
 
-import nedelosk.crispr.api.alleles.Allele;
-import nedelosk.crispr.api.gene.IChromosome;
-import nedelosk.crispr.api.gene.IGenome;
+import nedelosk.crispr.api.alleles.IAllele;
+import nedelosk.crispr.api.individual.IChromosome;
+import nedelosk.crispr.api.individual.IGenome;
 import nedelosk.crispr.api.individual.IIndividual;
 
 public interface IGeneticTransformer<I extends IIndividual> {
-	default I templateAsIndividual(Allele[] template) {
+	default I templateAsIndividual(IAllele[] template) {
 		return templateAsIndividual(template, null);
 	}
 
-	I templateAsIndividual(Allele[] templateActive, @Nullable Allele[] templateInactive);
+	I templateAsIndividual(IAllele[] templateActive, @Nullable IAllele[] templateInactive);
 
-	default IChromosome[] templateAsChromosomes(Allele[] template) {
+	default IChromosome[] templateAsChromosomes(IAllele[] template) {
 		return templateAsChromosomes(template, null);
 	}
 
-	IChromosome[] templateAsChromosomes(Allele[] templateActive, @Nullable Allele[] templateInactive);
+	IChromosome[] templateAsChromosomes(IAllele[] templateActive, @Nullable IAllele[] templateInactive);
 
-	default IGenome templateAsGenome(Allele[] template) {
+	default IGenome templateAsGenome(IAllele[] template) {
 		return templateAsGenome(template, null);
 	}
 
-	IGenome templateAsGenome(Allele[] templateActive, @Nullable Allele[] templateInactive);
+	IGenome templateAsGenome(IAllele[] templateActive, @Nullable IAllele[] templateInactive);
 }

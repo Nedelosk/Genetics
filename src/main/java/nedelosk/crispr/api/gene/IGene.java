@@ -3,25 +3,25 @@ package nedelosk.crispr.api.gene;
 import java.util.Collection;
 import java.util.Optional;
 
-import nedelosk.crispr.api.alleles.Allele;
+import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleKey;
 
-public interface IGene<V> {
-	Collection<Allele<V>> getValidAlleles();
+public interface IGene {
+	Collection<IAllele> getVariants();
 
-	Collection<V> getValidValues();
+	Collection<IAlleleKey> getKeys();
 
-	boolean isValidAllele(Allele<V> allele);
+	boolean isValidAllele(IAllele<?> allele);
 
-	Optional<Allele<V>> getAllele(V value);
+	Optional getValue(IAlleleKey key);
 
-	Optional<Allele<V>> getAllele(IAlleleKey key);
+	Optional<IAllele> getAllele(IAlleleKey key);
 
-	Optional<V> getValue(IAlleleKey key);
+	Class<?> getValueClass();
 
-	Class<? extends V> getValueClass();
+	IAllele<?> getDefaultAllele();
 
-	Allele<V> getDefaultAllele();
+
 
 	String getShortName();
 
@@ -30,4 +30,6 @@ public interface IGene<V> {
 	String getLocalizedName();
 
 	String getUnlocalizedName();
+
+	String getAlleleName(IAllele<?> allele);
 }
