@@ -6,9 +6,9 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -18,24 +18,32 @@ import net.minecraftforge.registries.RegistryBuilder;
 import nedelosk.crispr.Crispr;
 import nedelosk.crispr.api.alleles.Allele;
 import nedelosk.crispr.api.alleles.IAllele;
-import nedelosk.crispr.api.alleles.IAlleleCategory;
 import nedelosk.crispr.api.alleles.IAlleleData;
 import nedelosk.crispr.api.alleles.IAlleleHandler;
 import nedelosk.crispr.api.alleles.IAlleleKey;
 import nedelosk.crispr.api.alleles.IAlleleRegistry;
-import nedelosk.crispr.apiimp.alleles.AlleleCategory;
 
 public class AlleleRegistry implements IAlleleRegistry {
 
+	private static final int ALLELE_ARRAY_SIZE = 2048;
+
+	/* ALLELES */
 	private final HashMultimap<IAllele<?>, IAlleleKey> keysByAllele = HashMultimap.create();
-	private final HashMap<IAlleleKey, IAllele<?>> alleleByKey = new HashMap<>();
-	private final Set<IAlleleHandler> handlers = new HashSet<>();
-	private final HashMap<String, IAlleleCategory<?>> categories = new HashMap<>();
+	private final HashMap<IAlleleKey, IAllele<?>> alleleByKey = new LinkedHashMap<>(ALLELE_ARRAY_SIZE);
 	private final ForgeRegistry<IAllele<?>> alleleRegistry;
+	/*
+	 * Internal Set of all alleleHandlers, which trigger when an allele or branch is registered
+	 */
+	private final Set<IAlleleHandler> handlers = new HashSet<>();
 
 	@SuppressWarnings("unchecked")
 	public AlleleRegistry() {
-		this.alleleRegistry = (ForgeRegistry<IAllele<?>>) new RegistryBuilder().setMaxID(2048).setName(new ResourceLocation(Crispr.MOD_ID, "alleles")).setType(IAllele.class).create();
+		RegistryBuilder<IAllele<?>> builder = new RegistryBuilder()
+			.setMaxID(2048)
+			.setName(new ResourceLocation(Crispr.MOD_ID, "alleles"))
+			.setType(IAllele.class);
+		//Cast the registry to the class type so we can get the ids of the alleles
+		this.alleleRegistry = (ForgeRegistry<IAllele<?>>) builder.create();
 	}
 
 	@Override
@@ -55,7 +63,7 @@ public class AlleleRegistry implements IAlleleRegistry {
 
 	@Override
 	public <V> IAlleleRegistry registerAllele(V value, boolean dominant, ResourceLocation registryName, IAlleleKey... keys) {
-		return registerAllele(new Allele<>(value, dominant, "allele." + registryName.getResourceDomain() + "." + registryName.getResourcePath()).setRegistryName(registryName), keys);
+		return registerAllele(new Allele<>(value, dominant).setRegistryName(registryName), keys);
 	}
 
 	@Override
@@ -75,24 +83,6 @@ public class AlleleRegistry implements IAlleleRegistry {
 		}
 		handlers.forEach(h -> h.onAddKeys(allele, keys));
 		return this;
-	}
-
-	@Override
-	public <V> IAlleleCategory<V> createCategory(String uid, BiFunction<V, Boolean, IAllele<V>> alleleFactory) {
-		AlleleCategory<V> category = new AlleleCategory<>(uid, alleleFactory);
-		categories.put(uid, category);
-		return category;
-	}
-
-	@Override
-	public <V> IAlleleCategory<V> addCategory(IAlleleCategory<V> category) {
-		categories.put(category.getUID(), category);
-		return category;
-	}
-
-	@Override
-	public Optional<IAlleleCategory> getCategory(String uid) {
-		return Optional.ofNullable(categories.get(uid));
 	}
 
 	@Override
@@ -133,8 +123,9 @@ public class AlleleRegistry implements IAlleleRegistry {
 		return getAllele(new ResourceLocation(registryName));
 	}
 
-	public void registerCategoryAlleles() {
-		categories.values().forEach(IAlleleCategory::registerAlleles);
+	@Override
+	public Collection<IAlleleKey> getKeys(IAllele<?> allele) {
+		return keysByAllele.get(allele);
 	}
 
 }

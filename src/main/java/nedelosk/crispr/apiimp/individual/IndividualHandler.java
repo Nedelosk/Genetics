@@ -13,6 +13,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import nedelosk.crispr.Crispr;
 import nedelosk.crispr.api.IGeneticDefinition;
+import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.individual.IGeneticType;
@@ -21,10 +22,10 @@ import nedelosk.crispr.api.individual.IIndividualHandler;
 
 public class IndividualHandler<I extends IIndividual> implements IIndividualHandler<I>, ICapabilityProvider {
 	private final ItemStack container;
-	private final Supplier<IGeneticDefinition<I>> definitionSupplier;
+	private final Supplier<IGeneticDefinition<I, IGeneticRoot>> definitionSupplier;
 	private final Supplier<IGeneticType> typeSupplier;
 
-	public IndividualHandler(ItemStack container, Supplier<IGeneticDefinition<I>> geneticDefinitionSupplier, Supplier<IGeneticType> typeSupplier) {
+	public IndividualHandler(ItemStack container, Supplier<IGeneticDefinition<I, IGeneticRoot>> geneticDefinitionSupplier, Supplier<IGeneticType> typeSupplier) {
 		this.container = container;
 		this.definitionSupplier = geneticDefinitionSupplier;
 		this.typeSupplier = typeSupplier;
@@ -36,7 +37,7 @@ public class IndividualHandler<I extends IIndividual> implements IIndividualHand
 	}
 
 	@Override
-	public IGeneticDefinition<I> getDefinition() {
+	public IGeneticDefinition<I, IGeneticRoot> getDefinition() {
 		return definitionSupplier.get();
 	}
 

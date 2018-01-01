@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticFactory;
+import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.gene.IGeneType;
 
@@ -27,7 +28,7 @@ public interface IIndividualHandler<I extends IIndividual> {
 	/**
 	 * @return The root of the individual.
 	 */
-	IGeneticDefinition<I> getDefinition();
+	IGeneticDefinition<I, IGeneticRoot> getDefinition();
 
 	/**
 	 * @return The species type of the individual.

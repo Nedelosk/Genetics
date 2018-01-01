@@ -15,13 +15,11 @@ public interface IGene {
 
 	Optional getValue(IAlleleKey key);
 
+	Optional<IAlleleKey> getKey(IAllele<?> allele);
+
 	Optional<IAllele> getAllele(IAlleleKey key);
 
-	Class<?> getValueClass();
-
 	IAllele<?> getDefaultAllele();
-
-
 
 	String getShortName();
 
@@ -31,5 +29,7 @@ public interface IGene {
 
 	String getUnlocalizedName();
 
-	String getAlleleName(IAllele<?> allele);
+	String getUnlocalizedName(IAllele<?> allele);
+
+	String getLocalizedName(IAllele<?> allele);
 }

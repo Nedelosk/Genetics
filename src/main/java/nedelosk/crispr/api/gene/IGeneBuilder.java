@@ -1,15 +1,12 @@
 package nedelosk.crispr.api.gene;
 
 import nedelosk.crispr.api.alleles.IAlleleKey;
-import nedelosk.crispr.api.alleles.IAlleleNameFormatter;
 
-public interface IGeneBuilder<V> {
+public interface IGeneBuilder {
 
-	IGeneBuilder<V> addAllele(IAlleleKey key);
+	IGeneBuilder addAllele(IAlleleKey key, String unlocalizedName);
 
-	IGeneBuilder<V> setDefaultAllele(IAlleleKey key);
+	IGeneBuilder setDefaultAllele(IAlleleKey key);
 
-	IGeneBuilder<V> setNameFormatter(IAlleleNameFormatter<V> formatter);
-
-	IGeneBuilder<V> addType(IGeneType type);
+	IGeneBuilder addType(IGeneType type);
 }

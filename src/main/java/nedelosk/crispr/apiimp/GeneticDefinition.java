@@ -2,7 +2,9 @@ package nedelosk.crispr.apiimp;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Function;
 
 import net.minecraft.block.Block;
@@ -13,7 +15,11 @@ import net.minecraft.item.ItemStack;
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.IGeneticTransformer;
+import nedelosk.crispr.api.ITemplateContainer;
 import nedelosk.crispr.api.alleles.IAllele;
+import nedelosk.crispr.api.alleles.IAlleleTemplate;
+import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
+import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IGeneticStat;
 import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IChromosome;
@@ -25,22 +31,24 @@ import nedelosk.crispr.api.translators.IBlockTranslator;
 import nedelosk.crispr.api.translators.IGeneticTranslator;
 import nedelosk.crispr.api.translators.IItemTranslator;
 
-public class GeneticDefinition<I extends IIndividual> implements IGeneticDefinition<I> {
+public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, ?>> implements IGeneticDefinition<I, R> {
 	private final IGeneticTypes<I> types;
 	private final IGeneticTranslator<I> translator;
 	private final IGeneticTransformer<I> transformer;
+	private final ITemplateContainer templateContainer;
 	private final IKaryotype karyotype;
 	private final String name;
 	private final Function<IGenome, IGeneticStat> statFactory;
-	private final IGeneticRoot<I, ?> root;
+	private final R root;
 
-	GeneticDefinition(IGeneticTypes<I> types, IGeneticTranslator<I> translator, IGeneticTransformer<I> transformer, Function<IGenome, IGeneticStat> statFactory, IKaryotype karyotype, String name, Function<IGeneticDefinition<I>, IGeneticRoot<I, ?>> rootFactory) {
+	GeneticDefinition(IGeneticTypes<I> types, IGeneticTranslator<I> translator, IGeneticTransformer<I> transformer, Function<IGenome, IGeneticStat> statFactory, ITemplateContainer templateContainer, String name, Function<IGeneticDefinition<I, R>, R> rootFactory) {
 		this.types = types;
 		this.translator = translator;
 		this.transformer = transformer;
 		this.statFactory = statFactory;
 		this.name = name;
-		this.karyotype = karyotype;
+		this.karyotype = templateContainer.getKaryotype();
+		this.templateContainer = templateContainer;
 		this.root = rootFactory.apply(this);
 	}
 
@@ -55,7 +63,7 @@ public class GeneticDefinition<I extends IIndividual> implements IGeneticDefinit
 	}
 
 	@Override
-	public IGeneticRoot root() {
+	public R root() {
 		return root;
 	}
 
@@ -142,5 +150,51 @@ public class GeneticDefinition<I extends IIndividual> implements IGeneticDefinit
 	@Override
 	public Collection<IGeneticHandler<I>> getHandlers() {
 		return types.getHandlers();
+	}
+
+	@Override
+	public IAlleleTemplate getDefaultTemplate() {
+		return templateContainer.getDefaultTemplate();
+	}
+
+	@Override
+	public IAlleleTemplateBuilder createTemplate() {
+		return templateContainer.createTemplate();
+	}
+
+	@Override
+	public IAlleleTemplateBuilder createTemplate(IAllele[] alleles) {
+		return templateContainer.createTemplate(alleles);
+	}
+
+	@Nullable
+	@Override
+	public IAllele[] getTemplate(String identifier) {
+		return templateContainer.getTemplate(identifier);
+	}
+
+	@Override
+	public IAllele[] getRandomTemplate(Random rand) {
+		return templateContainer.getRandomTemplate(rand);
+	}
+
+	@Override
+	public Map<String, IAllele[]> getGenomeTemplates() {
+		return templateContainer.getGenomeTemplates();
+	}
+
+	@Override
+	public IGeneType[] getGeneTypes() {
+		return karyotype.getGeneTypes();
+	}
+
+	@Override
+	public boolean contains(IGeneType type) {
+		return karyotype.contains(type);
+	}
+
+	@Override
+	public IGeneType getTemplateType() {
+		return karyotype.getTemplateType();
 	}
 }

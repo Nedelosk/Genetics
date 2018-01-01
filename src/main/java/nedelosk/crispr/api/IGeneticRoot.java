@@ -8,7 +8,7 @@ import nedelosk.crispr.api.individual.IIndividual;
 
 public interface IGeneticRoot<I extends IIndividual, S extends IGeneticStat> {
 
-	IGeneticDefinition<I> getDefinition();
+	IGeneticDefinition<I, IGeneticRoot<I, S>> getDefinition();
 
 	I create(NBTTagCompound compound);
 

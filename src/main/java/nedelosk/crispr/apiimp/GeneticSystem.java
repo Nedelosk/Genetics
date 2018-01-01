@@ -13,6 +13,7 @@ import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticDefinitionBuilder;
 import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.IGeneticSystem;
+import nedelosk.crispr.api.ITemplateContainer;
 import nedelosk.crispr.api.gene.IGene;
 import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
@@ -22,6 +23,7 @@ public class GeneticSystem implements IGeneticSystem {
 	private final HashMap<IGeneType, IGene> geneByType = new HashMap<>();
 	private final Multimap<IGene, IGeneType> typesByGene = HashMultimap.create();
 	private final HashMap<String, IGeneticDefinition> definitions = new HashMap<>();
+	private final HashMap<IKaryotype, ITemplateContainer> containers = new HashMap<>();
 
 	@Override
 	public Collection<IGeneticDefinition> getDefinitions() {
@@ -30,8 +32,8 @@ public class GeneticSystem implements IGeneticSystem {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <I extends IIndividual> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I>, IGeneticRoot<I, ?>> rootFactory) {
-		return new GeneticDefinitionBuilder(name, karyotype, rootFactory);
+	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I, R> createDefinition(String name, ITemplateContainer templateContainer, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+		return new GeneticDefinitionBuilder(name, templateContainer, rootFactory);
 	}
 
 	@Override
@@ -65,5 +67,15 @@ public class GeneticSystem implements IGeneticSystem {
 	@Override
 	public Collection<IGeneType> getTypes(IGene gene) {
 		return typesByGene.get(gene);
+	}
+
+	@Override
+	public void registerTemplates(ITemplateContainer container) {
+		containers.put(container.getKaryotype(), container);
+	}
+
+	@Override
+	public Optional<ITemplateContainer> getTemplates(IKaryotype karyotype) {
+		return Optional.ofNullable(containers.get(karyotype));
 	}
 }

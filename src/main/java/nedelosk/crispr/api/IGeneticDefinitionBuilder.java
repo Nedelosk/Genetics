@@ -20,31 +20,31 @@ import nedelosk.crispr.api.translators.IGeneticTranslator;
 import nedelosk.crispr.api.translators.IItemTranslator;
 import nedelosk.crispr.apiimp.IGeneticTypes;
 
-public interface IGeneticDefinitionBuilder<I extends IIndividual> {
+public interface IGeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticRoot<I, ?>> {
 
-	IGeneticDefinitionBuilder<I> registerType(IGeneticType type, IGeneticHandler<I> handler);
+	IGeneticDefinitionBuilder<I, R> registerType(IGeneticType type, IGeneticHandler<I> handler);
 
 	/**
 	 * @param translatorKey The key of the translator the block of {@link IBlockState} that you want to translate
 	 *                      with the translator.
 	 * @param translator    A translator that should be used to translate the data.
 	 */
-	IGeneticDefinitionBuilder<I> registerTranslator(Block translatorKey, IBlockTranslator<I> translator);
+	IGeneticDefinitionBuilder<I, R> registerTranslator(Block translatorKey, IBlockTranslator<I> translator);
 
 	/**
 	 * @param translatorKey The key of the translator it is the item of the {@link ItemStack} that you want to translate
 	 *                      with the translator.
 	 * @param translator    A translator that should be used to translate the data.
 	 */
-	IGeneticDefinitionBuilder<I> registerTranslator(Item translatorKey, IItemTranslator<I> translator);
+	IGeneticDefinitionBuilder<I, R> registerTranslator(Item translatorKey, IItemTranslator<I> translator);
 
-	IGeneticDefinitionBuilder<I> setTransformer(Supplier<IGeneticTransformer<I>> transformerFactory);
+	IGeneticDefinitionBuilder<I, R> setTransformer(Supplier<IGeneticTransformer<I>> transformerFactory);
 
-	IGeneticDefinitionBuilder<I> setTranslator(BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IGeneticTranslator<I>> translatorFactory);
+	IGeneticDefinitionBuilder<I, R> setTranslator(BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IGeneticTranslator<I>> translatorFactory);
 
-	IGeneticDefinitionBuilder<I> setTypes(Function<Map<IGeneticType, IGeneticHandler<I>>, IGeneticTypes<I>> typesFactory);
+	IGeneticDefinitionBuilder<I, R> setTypes(Function<Map<IGeneticType, IGeneticHandler<I>>, IGeneticTypes<I>> typesFactory);
 
-	IGeneticDefinitionBuilder<I> setStat(Function<IGenome, IGeneticStat> statFactory);
+	IGeneticDefinitionBuilder<I, R> setStat(Function<IGenome, IGeneticStat> statFactory);
 
-	IGeneticDefinition<I> build();
+	IGeneticDefinition<I, R> build();
 }

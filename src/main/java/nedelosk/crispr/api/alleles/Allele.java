@@ -1,21 +1,17 @@
 package nedelosk.crispr.api.alleles;
 
-import net.minecraft.client.resources.I18n;
-
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
- * A default implementation for a simple allele that only contains a value.
+ * A default implementation for a simple allele.
  */
-public final class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implements IAllele<V> {
+public class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implements IAllele<V> {
 	private final V value;
 	private final boolean dominant;
-	private final String unlocalizedName;
 
-	public Allele(V value, boolean dominant, String unlocalizedName) {
+	public Allele(V value, boolean dominant) {
 		this.value = value;
 		this.dominant = dominant;
-		this.unlocalizedName = unlocalizedName;
 	}
 
 	@Override
@@ -26,16 +22,6 @@ public final class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implem
 	@Override
 	public boolean isDominant() {
 		return dominant;
-	}
-
-	@Override
-	public String getUnlocalizedName() {
-		return unlocalizedName;
-	}
-
-	@Override
-	public String getLocalizedName() {
-		return I18n.format(unlocalizedName);
 	}
 
 	@Override

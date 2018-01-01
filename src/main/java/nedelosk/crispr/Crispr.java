@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import forestry.core.capabilities.NullStorage;
 
 import nedelosk.crispr.api.IGeneticDefinition;
+import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.individual.IGeneticType;
@@ -51,7 +52,7 @@ public class Crispr {
 			}
 
 			@Override
-			public IGeneticDefinition<IIndividual> getDefinition() {
+			public IGeneticDefinition<IIndividual, IGeneticRoot> getDefinition() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 

@@ -1,6 +1,7 @@
 package nedelosk.crispr.apiimp.gene;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -10,48 +11,42 @@ import net.minecraft.client.resources.I18n;
 import nedelosk.crispr.api.CrisprAPI;
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleKey;
-import nedelosk.crispr.api.alleles.IAlleleNameFormatter;
 import nedelosk.crispr.api.alleles.IAlleleRegistry;
-import nedelosk.crispr.api.alleles.INamedAlleleValue;
 import nedelosk.crispr.api.gene.IGene;
 
 public class Gene implements IGene {
-	private final ImmutableSet<IAlleleKey> keys;
-	private final ImmutableSet<IAllele> alleles;
-	private final Class<?> valueClass;
+	private final ImmutableMap<IAlleleKey, String> alleleInstances;
+	private final ImmutableBiMap<IAllele, IAlleleKey> alleles;
 	private final IAllele defaultAllele;
 	private final String name;
-	private final IAlleleNameFormatter nameFormatter;
 
-	public Gene(ImmutableSet<IAlleleKey> keys, Class<?> valueClass, IAlleleKey defaultKey, String name, IAlleleNameFormatter<?> nameFormatter) {
-		this.valueClass = valueClass;
+	public Gene(ImmutableMap<IAlleleKey, String> alleleInstances, IAlleleKey defaultKey, String name) {
 		this.name = name;
-		this.keys = keys;
+		this.alleleInstances = alleleInstances;
 		IAlleleRegistry alleleRegistry = CrisprAPI.alleleRegistry;
-		ImmutableSet.Builder<IAllele> builder = ImmutableSet.builder();
-		keys.forEach(k -> alleleRegistry.getAllele(k).ifPresent(builder::add));
+		ImmutableBiMap.Builder<IAllele, IAlleleKey> builder = ImmutableBiMap.builder();
+		alleleInstances.forEach((k, v) -> alleleRegistry.getAllele(k).ifPresent(a -> builder.put(a, k)));
 		this.alleles = builder.build();
 		Optional<IAllele> optional = getAllele(defaultKey);
 		if (!optional.isPresent()) {
 			throw new RuntimeException();
 		}
 		this.defaultAllele = optional.get();
-		this.nameFormatter = nameFormatter;
 	}
 
 	@Override
 	public Collection<IAllele> getVariants() {
-		return alleles;
+		return alleles.keySet();
 	}
 
 	@Override
 	public Collection<IAlleleKey> getKeys() {
-		return keys;
+		return alleleInstances.keySet();
 	}
 
 	@Override
 	public boolean isValidAllele(IAllele<?> allele) {
-		return alleles.contains(allele);
+		return alleles.containsKey(allele);
 	}
 
 	@Override
@@ -62,20 +57,12 @@ public class Gene implements IGene {
 
 	@Override
 	public Optional<IAllele> getAllele(IAlleleKey key) {
-		Optional<IAllele<?>> optional = CrisprAPI.alleleRegistry.getAllele(key);
-		if (!optional.isPresent()) {
-			return Optional.empty();
-		}
-		IAllele<?> allele = optional.get();
-		if (!valueClass.isInstance(allele.getValue())) {
-			return Optional.empty();
-		}
-		return Optional.of(allele);
+		return Optional.ofNullable(alleles.inverse().get(key));
 	}
 
 	@Override
-	public Class<?> getValueClass() {
-		return valueClass;
+	public Optional<IAlleleKey> getKey(IAllele<?> allele) {
+		return Optional.ofNullable(alleles.get(allele));
 	}
 
 	@Override
@@ -104,16 +91,11 @@ public class Gene implements IGene {
 	}
 
 	@Override
-	public String getAlleleName(IAllele<?> allele) {
-		String unlocalizedName = getUnlocalizedName(allele);
-		return I18n.format("allele." + unlocalizedName + ".name");
+	public String getLocalizedName(IAllele<?> allele) {
+		return I18n.format(getUnlocalizedName(allele));
 	}
 
-	private String getUnlocalizedName(IAllele<?> allele) {
-		Object value = allele.getValue();
-		if (value instanceof INamedAlleleValue) {
-			return ((INamedAlleleValue) value).getName();
-		}
-		return nameFormatter.getName(allele, this);
+	public String getUnlocalizedName(IAllele<?> allele) {
+		return "allele." + alleleInstances.get(alleles.get(allele)) + ".name";
 	}
 }

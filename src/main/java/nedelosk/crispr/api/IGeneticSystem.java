@@ -14,9 +14,13 @@ public interface IGeneticSystem {
 
 	Optional<IGeneticDefinition> getDefinition(String name);
 
-	<I extends IIndividual> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I>, IGeneticRoot<I, ?>> rootFactory);
+	<I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I, R> createDefinition(String name, ITemplateContainer templateContainer, Function<IGeneticDefinition<I, R>, R> rootFactory);
 
 	void registerDefinition(IGeneticDefinition definition);
+
+	void registerTemplates(ITemplateContainer container);
+
+	Optional<ITemplateContainer> getTemplates(IKaryotype karyotype);
 
 	void registerGene(IGene gene, IGeneType... types);
 

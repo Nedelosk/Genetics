@@ -1,13 +1,20 @@
 package nedelosk.crispr.api.gene;
 
+import java.util.Optional;
+
+import nedelosk.crispr.api.ITemplateRegistry;
+
 public interface IGeneRegistry {
-	/**
-	 * @param valueClass Get class which all values of the alleles of this gene must interface
-	 * @param name       The name of the given gene. Used for the localized name and the short localized name.
-	 */
-	<V> IGeneBuilder<V> createRegistry(Class<? extends V> valueClass, String name);
+	IGeneBuilder addGene(String name);
+
+	Optional<IGeneBuilder> getGene(String name);
 
 	IKaryotypeBuilder createKaryotype(IGeneType templateType);
 
+	ITemplateRegistry createRegistry(IKaryotype karyotype);
+
+	Optional<ITemplateRegistry> getRegistry(IKaryotype karyotype);
+
+	<T extends Enum<T> & IGeneType> IKaryotype createKaryotype(Class<? extends T> enumClass);
 
 }

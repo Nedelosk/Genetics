@@ -1,9 +1,13 @@
 package nedelosk.crispr.api.gene;
 
+import nedelosk.crispr.api.ITemplateContainer;
+
 public interface IGeneType {
 	int getIndex();
 
-	void setKaryotype(IKaryotype karyotype);
+	default IKaryotype getKaryotype() {
+		return getContainer().getKaryotype();
+	}
 
-	IKaryotype getKaryotype();
+	ITemplateContainer getContainer();
 }

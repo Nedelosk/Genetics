@@ -40,7 +40,6 @@ public class PluginManager {
 		AlleleRegistry alleleRegistry = new AlleleRegistry();
 		CrisprAPI.alleleRegistry = Crispr.alleleRegistry = alleleRegistry;
 		plugins.forEach(p -> p.registerAlleles(alleleRegistry));
-		alleleRegistry.registerCategoryAlleles();
 		//
 		GeneRegistry geneRegistry = new GeneRegistry();
 		CrisprAPI.geneRegistry = geneRegistry;

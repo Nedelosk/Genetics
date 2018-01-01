@@ -9,10 +9,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 import nedelosk.crispr.api.CrisprAPI;
+import nedelosk.crispr.api.ITemplateContainer;
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.gene.IGene;
 import nedelosk.crispr.api.gene.IGeneType;
-import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IChromosome;
 
 @SuppressWarnings("unchecked")
@@ -67,14 +67,14 @@ public class Chromosome<V> implements IChromosome<V> {
 	}
 
 	private static <V> IAllele<V> getDefaultAllele(@Nullable IGene gene, @Nullable String templateIdentifier, IGeneType type) {
-		IKaryotype karyotype = type.getKaryotype();
+		ITemplateContainer container = type.getContainer();
 		if (gene == null) {
-			return karyotype.getDefaultTemplate().get(type);
+			return container.getDefaultTemplate().get(type);
 		}
 		IAllele[] template = null;
 
 		if (templateIdentifier != null) {
-			template = karyotype.getTemplate(templateIdentifier);
+			template = container.getTemplate(templateIdentifier);
 		}
 
 		if (template == null) {

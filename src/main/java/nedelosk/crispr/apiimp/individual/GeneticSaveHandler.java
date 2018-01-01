@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import nedelosk.crispr.Log;
 import nedelosk.crispr.api.CrisprAPI;
+import nedelosk.crispr.api.ITemplateContainer;
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleTemplate;
 import nedelosk.crispr.api.gene.IGene;
@@ -70,7 +71,7 @@ public class GeneticSaveHandler {
 		}
 		IAllele allele = getAlleleDirectly(genomeNBT, geneType, active);
 		IGene gene = CrisprAPI.geneticSystem.getGene(geneType).orElse(null);
-		if (allele == null || gene == null || !gene.getValueClass().isInstance(allele.getValue())) {
+		if (gene == null || allele == null || !gene.isValidAllele(allele)) {
 			return null;
 		}
 		return allele;
@@ -96,8 +97,8 @@ public class GeneticSaveHandler {
 			Log.error("Got a genetic item with no genome, setting it to a default value.");
 			genomeNBT = new NBTTagCompound();
 
-			IKaryotype speciesRoot = geneType.getKaryotype();
-			IAlleleTemplate defaultTemplate = speciesRoot.getDefaultTemplate();
+			ITemplateContainer container = geneType.getContainer();
+			IAlleleTemplate defaultTemplate = container.getDefaultTemplate();
 			IGenome genome = defaultTemplate.toGenome(CrisprAPI.defaultTransformer, null);
 			genome.writeToNBT(genomeNBT);
 			nbtTagCompound.setTag(GENOME_TAG, genomeNBT);
