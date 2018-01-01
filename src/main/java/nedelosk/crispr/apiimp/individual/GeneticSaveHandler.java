@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import nedelosk.crispr.Log;
 import nedelosk.crispr.api.CrisprAPI;
+import nedelosk.crispr.api.IGeneticSaveHandler;
 import nedelosk.crispr.api.ITemplateContainer;
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleTemplate;
@@ -16,7 +17,8 @@ import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IChromosome;
 import nedelosk.crispr.api.individual.IGenome;
 
-public class GeneticSaveHandler {
+public enum GeneticSaveHandler implements IGeneticSaveHandler {
+	INSTANCE;
 	public static final String GENOME_TAG = "Genome";
 	private static SaveFormat writeFormat = SaveFormat.UID;
 
@@ -24,7 +26,7 @@ public class GeneticSaveHandler {
 		GeneticSaveHandler.writeFormat = writeFormat;
 	}
 
-	public static SaveFormat getFormat(NBTTagCompound tagCompound) {
+	public SaveFormat getFormat(NBTTagCompound tagCompound) {
 		for (SaveFormat format : SaveFormat.values()) {
 			if (format.canLoad(tagCompound)) {
 				return format;
@@ -33,22 +35,22 @@ public class GeneticSaveHandler {
 		return SaveFormat.UID;
 	}
 
-	public static NBTTagCompound writeTag(IChromosome[] chromosomes, IKaryotype karyotype, NBTTagCompound tagCompound) {
+	public NBTTagCompound writeTag(IChromosome[] chromosomes, IKaryotype karyotype, NBTTagCompound tagCompound) {
 		return writeFormat.writeTag(chromosomes, karyotype, tagCompound);
 	}
 
-	public static IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
+	public IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
 		SaveFormat format = getFormat(tagCompound);
 		return format.readTag(karyotype, tagCompound);
 	}
 
 	@Nullable
-	public static IAllele<?> getAlleleDirectly(NBTTagCompound genomeNBT, IGeneType geneType, boolean active) {
+	public IAllele<?> getAlleleDirectly(NBTTagCompound genomeNBT, IGeneType geneType, boolean active) {
 		SaveFormat format = getFormat(genomeNBT);
 		return format.getAlleleDirectly(genomeNBT, geneType, active);
 	}
 
-	public static IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneType) {
+	public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneType) {
 		SaveFormat format = getFormat(genomeNBT);
 		return format.getSpecificChromosome(genomeNBT, geneType);
 	}
@@ -59,7 +61,7 @@ public class GeneticSaveHandler {
 	 * Quickly gets the species without loading the whole genome. And without creating absent chromosomes.
 	 */
 	@Nullable
-	public static IAllele getAlleleDirectly(IGeneType geneType, boolean active, ItemStack itemStack) {
+	public IAllele getAlleleDirectly(IGeneType geneType, boolean active, ItemStack itemStack) {
 		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
 		if (nbtTagCompound == null) {
 			return null;
@@ -77,7 +79,7 @@ public class GeneticSaveHandler {
 		return allele;
 	}
 
-	public static IAllele getAllele(ItemStack itemStack, IGeneType geneType, boolean active) {
+	public IAllele getAllele(ItemStack itemStack, IGeneType geneType, boolean active) {
 		IChromosome chromosome = getSpecificChromosome(itemStack, geneType);
 		return active ? chromosome.getActiveAllele() : chromosome.getInactiveAllele();
 	}
@@ -85,7 +87,7 @@ public class GeneticSaveHandler {
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
 	 */
-	private static IChromosome getSpecificChromosome(ItemStack itemStack, IGeneType geneType) {
+	public IChromosome getSpecificChromosome(ItemStack itemStack, IGeneType geneType) {
 		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
 		if (nbtTagCompound == null) {
 			nbtTagCompound = new NBTTagCompound();
@@ -97,9 +99,9 @@ public class GeneticSaveHandler {
 			Log.error("Got a genetic item with no genome, setting it to a default value.");
 			genomeNBT = new NBTTagCompound();
 
-			ITemplateContainer container = geneType.getContainer();
+			ITemplateContainer container = geneType.getDefinition();
 			IAlleleTemplate defaultTemplate = container.getDefaultTemplate();
-			IGenome genome = defaultTemplate.toGenome(CrisprAPI.defaultTransformer, null);
+			IGenome genome = defaultTemplate.toGenome(null);
 			genome.writeToNBT(genomeNBT);
 			nbtTagCompound.setTag(GENOME_TAG, genomeNBT);
 		}

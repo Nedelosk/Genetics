@@ -2,8 +2,9 @@ package nedelosk.crispr.api.alleles;
 
 import javax.annotation.Nullable;
 
-import nedelosk.crispr.api.IGeneticTransformer;
+import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.gene.IGeneType;
+import nedelosk.crispr.api.gene.IGeneticStat;
 import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IChromosome;
 import nedelosk.crispr.api.individual.IGenome;
@@ -42,20 +43,32 @@ public interface IAlleleTemplate {
 	IKaryotype getKaryotype();
 
 	/**
-	 * Creates an individual with the help of the species root using
-	 * {@link IGeneticTransformer#templateAsIndividual(IAllele[], IAllele[])}.
+	 * Creates an individual with the help of the genetic root using
+	 * {@link IGeneticRoot#templateAsIndividual(IAllele[], IAllele[])}.
 	 */
-	<I extends IIndividual> I toIndividual(IGeneticTransformer<I> transformer, @Nullable IAlleleTemplate inactiveTemplate);
+	<I extends IIndividual> I toIndividual(IGeneticRoot<I, IGeneticStat> root, @Nullable IAlleleTemplate inactiveTemplate);
+
+	default <I extends IIndividual> I toIndividual(IGeneticRoot<I, IGeneticStat> root) {
+		return toIndividual(root, null);
+	}
 
 	/**
-	 * Creates a genome with the help of the species root using
-	 * {@link IGeneticTransformer#templateAsGenome(IAllele[], IAllele[])}.
+	 * Creates a genome with the help of the karyotype using
+	 * {@link IKaryotype#templateAsGenome(IAllele[], IAllele[])}.
 	 */
-	IGenome toGenome(IGeneticTransformer transformer, @Nullable IAlleleTemplate inactiveTemplate);
+	IGenome toGenome(@Nullable IAlleleTemplate inactiveTemplate);
+
+	default IGenome toGenome() {
+		return toGenome(null);
+	}
 
 	/**
-	 * Creates a chromosome array with the help of the species root using
-	 * {@link IGeneticTransformer#templateAsChromosomes(IAllele[], IAllele[])}.
+	 * Creates a chromosome array with the help of the karyotype using
+	 * {@link IKaryotype#templateAsChromosomes(IAllele[], IAllele[])}.
 	 */
-	IChromosome[] toChromosomes(IGeneticTransformer transformer, @Nullable IAlleleTemplate inactiveTemplate);
+	IChromosome[] toChromosomes(@Nullable IAlleleTemplate inactiveTemplate);
+
+	default IChromosome[] toChromosomes() {
+		return toChromosomes(null);
+	}
 }

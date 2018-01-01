@@ -7,5 +7,5 @@ public class CrisprAPI {
 	public static IAlleleRegistry alleleRegistry;
 	public static IGeneRegistry geneRegistry;
 	public static IGeneticSystem geneticSystem;
-	public static IGeneticTransformer defaultTransformer;
+	public static IGeneticSaveHandler saveHandler;
 }

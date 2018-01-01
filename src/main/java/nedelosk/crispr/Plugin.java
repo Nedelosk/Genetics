@@ -1,11 +1,12 @@
 package nedelosk.crispr;
 
+import nedelosk.crispr.api.CrisprAPI;
 import nedelosk.crispr.api.GeneticPlugin;
+import nedelosk.crispr.api.IGeneticDefinition;
+import nedelosk.crispr.api.IGeneticDefinitionBuilder;
 import nedelosk.crispr.api.IGeneticFactory;
 import nedelosk.crispr.api.IGeneticPlugin;
 import nedelosk.crispr.api.IGeneticSystem;
-import nedelosk.crispr.api.ITemplateContainer;
-import nedelosk.crispr.api.ITemplateRegistry;
 import nedelosk.crispr.api.alleles.IAlleleKey;
 import nedelosk.crispr.api.alleles.IAlleleRegistry;
 import nedelosk.crispr.api.gene.IGeneRegistry;
@@ -18,7 +19,7 @@ public class Plugin implements IGeneticPlugin {
 		FERTILITY_0
 	}
 
-	private static ITemplateContainer container;
+	private static IGeneticDefinition definition;
 
 	public enum GeneType implements IGeneType {
 		FERTILITY;
@@ -29,8 +30,8 @@ public class Plugin implements IGeneticPlugin {
 		}
 
 		@Override
-		public ITemplateContainer getContainer() {
-			return container;
+		public IGeneticDefinition getDefinition() {
+			return CrisprAPI.geneticSystem.getDefinition("plants").orElse(null);
 		}
 	}
 
@@ -45,7 +46,7 @@ public class Plugin implements IGeneticPlugin {
 	public void registerGenes(IGeneRegistry registry, IGeneticFactory factory) {
 		//karyotype = registry.createKaryotype().
 		IKaryotype karyotype = registry.createKaryotype(GeneType.class);
-		ITemplateRegistry templateRegistry = registry.createRegistry(karyotype);
+		IGeneticDefinitionBuilder definitionBuilder = registry.createDefinition("plants", karyotype, r -> null);
 		registry.addGene("fertility").addAllele(AlleleKey.FERTILITY_0, "fertility.average").setDefaultAllele(AlleleKey.FERTILITY_0).addType(GeneType.FERTILITY);
 	}
 

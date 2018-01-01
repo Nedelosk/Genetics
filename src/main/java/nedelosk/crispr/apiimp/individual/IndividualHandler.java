@@ -48,9 +48,9 @@ public class IndividualHandler<I extends IIndividual> implements IIndividualHand
 
 	@Override
 	public IAllele<?> getAlleleDirectly(IGeneType type, boolean active) {
-		IAllele allele = GeneticSaveHandler.getAlleleDirectly(type, active, container);
+		IAllele allele = GeneticSaveHandler.INSTANCE.getAlleleDirectly(type, active, container);
 		if (allele == null) {
-			allele = GeneticSaveHandler.getAllele(container, type, active);
+			allele = GeneticSaveHandler.INSTANCE.getAllele(container, type, active);
 		}
 		return allele;
 	}

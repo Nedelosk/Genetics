@@ -14,13 +14,11 @@ import net.minecraft.item.ItemStack;
 
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticRoot;
-import nedelosk.crispr.api.IGeneticTransformer;
 import nedelosk.crispr.api.ITemplateContainer;
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleTemplate;
 import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
 import nedelosk.crispr.api.gene.IGeneType;
-import nedelosk.crispr.api.gene.IGeneticStat;
 import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IChromosome;
 import nedelosk.crispr.api.individual.IGeneticHandler;
@@ -34,18 +32,14 @@ import nedelosk.crispr.api.translators.IItemTranslator;
 public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, ?>> implements IGeneticDefinition<I, R> {
 	private final IGeneticTypes<I> types;
 	private final IGeneticTranslator<I> translator;
-	private final IGeneticTransformer<I> transformer;
 	private final ITemplateContainer templateContainer;
 	private final IKaryotype karyotype;
 	private final String name;
-	private final Function<IGenome, IGeneticStat> statFactory;
 	private final R root;
 
-	GeneticDefinition(IGeneticTypes<I> types, IGeneticTranslator<I> translator, IGeneticTransformer<I> transformer, Function<IGenome, IGeneticStat> statFactory, ITemplateContainer templateContainer, String name, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+	GeneticDefinition(IGeneticTypes<I> types, IGeneticTranslator<I> translator, ITemplateContainer templateContainer, String name, Function<IGeneticDefinition<I, R>, R> rootFactory) {
 		this.types = types;
 		this.translator = translator;
-		this.transformer = transformer;
-		this.statFactory = statFactory;
 		this.name = name;
 		this.karyotype = templateContainer.getKaryotype();
 		this.templateContainer = templateContainer;
@@ -58,11 +52,6 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	}
 
 	@Override
-	public I getDefaultMember() {
-		return null;
-	}
-
-	@Override
 	public R root() {
 		return root;
 	}
@@ -70,26 +59,6 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	@Override
 	public IKaryotype getKaryotype() {
 		return karyotype;
-	}
-
-	@Override
-	public IGeneticStat createStat(IGenome genome) {
-		return statFactory.apply(genome);
-	}
-
-	@Override
-	public I templateAsIndividual(IAllele[] templateActive, @Nullable IAllele[] templateInactive) {
-		return transformer.templateAsIndividual(templateActive, templateInactive);
-	}
-
-	@Override
-	public IChromosome[] templateAsChromosomes(IAllele[] templateActive, @Nullable IAllele[] templateInactive) {
-		return transformer.templateAsChromosomes(templateActive, templateInactive);
-	}
-
-	@Override
-	public IGenome templateAsGenome(IAllele[] templateActive, @Nullable IAllele[] templateInactive) {
-		return transformer.templateAsGenome(templateActive, templateInactive);
 	}
 
 	@Override
@@ -196,5 +165,15 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	@Override
 	public IGeneType getTemplateType() {
 		return karyotype.getTemplateType();
+	}
+
+	@Override
+	public IChromosome[] templateAsChromosomes(IAllele[] templateActive, @Nullable IAllele[] templateInactive) {
+		return karyotype.templateAsChromosomes(templateActive, templateInactive);
+	}
+
+	@Override
+	public IGenome templateAsGenome(IAllele[] templateActive, @Nullable IAllele[] templateInactive) {
+		return karyotype.templateAsGenome(templateActive, templateInactive);
 	}
 }

@@ -67,7 +67,7 @@ public class Chromosome<V> implements IChromosome<V> {
 	}
 
 	private static <V> IAllele<V> getDefaultAllele(@Nullable IGene gene, @Nullable String templateIdentifier, IGeneType type) {
-		ITemplateContainer container = type.getContainer();
+		ITemplateContainer container = type.getDefinition();
 		if (gene == null) {
 			return container.getDefaultTemplate().get(type);
 		}

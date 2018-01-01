@@ -3,17 +3,18 @@ package nedelosk.crispr.api;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import nedelosk.crispr.api.gene.IGeneticStat;
+import nedelosk.crispr.api.alleles.IAllele;
+import nedelosk.crispr.api.alleles.IAlleleTemplate;
+import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
+import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IGeneticHandler;
 import nedelosk.crispr.api.individual.IGeneticType;
-import nedelosk.crispr.api.individual.IGenome;
 import nedelosk.crispr.api.individual.IIndividual;
 import nedelosk.crispr.api.translators.IBlockTranslator;
 import nedelosk.crispr.api.translators.IGeneticTranslator;
@@ -38,13 +39,35 @@ public interface IGeneticDefinitionBuilder<I extends IIndividual, R extends IGen
 	 */
 	IGeneticDefinitionBuilder<I, R> registerTranslator(Item translatorKey, IItemTranslator<I> translator);
 
-	IGeneticDefinitionBuilder<I, R> setTransformer(Supplier<IGeneticTransformer<I>> transformerFactory);
+	/**
+	 * Registers a allele template using the UID of the first allele as identifier.
+	 */
+	IGeneticDefinitionBuilder<I, R> registerTemplate(IAllele[] template);
+
+	/**
+	 * Registers a allele template using the passed identifier.
+	 */
+	//TODO: REMOVE ?
+	IGeneticDefinitionBuilder<I, R> registerTemplate(String identifier, IAllele[] template);
+
+	/**
+	 * Registers a allele template using the UID of the first allele as identifier.
+	 */
+	IGeneticDefinitionBuilder<I, R> registerTemplate(IAlleleTemplate template);
+
+	/**
+	 * Registers a allele template using the passed identifier.
+	 */
+	//TODO: REMOVE ?
+	IGeneticDefinitionBuilder<I, R> registerTemplate(String identifier, IAlleleTemplate template);
 
 	IGeneticDefinitionBuilder<I, R> setTranslator(BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IGeneticTranslator<I>> translatorFactory);
 
 	IGeneticDefinitionBuilder<I, R> setTypes(Function<Map<IGeneticType, IGeneticHandler<I>>, IGeneticTypes<I>> typesFactory);
 
-	IGeneticDefinitionBuilder<I, R> setStat(Function<IGenome, IGeneticStat> statFactory);
+	IGeneticDefinitionBuilder<I, R> setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory);
+
+	IGeneticDefinitionBuilder<I, R> setTemplateNameFactory(BiFunction<IKaryotype, IAllele[], String> templateNameFactory);
 
 	IGeneticDefinition<I, R> build();
 }

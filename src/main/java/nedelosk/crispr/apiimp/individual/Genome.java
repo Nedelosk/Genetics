@@ -8,6 +8,9 @@ import nedelosk.crispr.api.individual.IChromosome;
 import nedelosk.crispr.api.individual.IGenome;
 
 public class Genome implements IGenome {
+	public Genome(IChromosome[] chromosomes) {
+	}
+
 	@Override
 	public <V> IChromosome<V> getChromosome(IGene gene) {
 		return null;

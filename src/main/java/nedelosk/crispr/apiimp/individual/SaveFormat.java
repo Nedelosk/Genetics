@@ -72,7 +72,7 @@ public enum SaveFormat {
 
 		@Override
 		public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType chromosomeType) {
-			IChromosome[] chromosomes = readTag(chromosomeType.getKaryotype(), genomeNBT);
+			IChromosome[] chromosomes = readTag(chromosomeType.getDefinition(), genomeNBT);
 			return chromosomes[chromosomeType.getIndex()];
 		}
 
@@ -132,7 +132,7 @@ public enum SaveFormat {
 
 		@Override
 		public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneType) {
-			IChromosome[] chromosomes = readTag(geneType.getKaryotype(), genomeNBT);
+			IChromosome[] chromosomes = readTag(geneType.getDefinition(), genomeNBT);
 			return chromosomes[geneType.getIndex()];
 		}
 
@@ -189,7 +189,7 @@ public enum SaveFormat {
 
 		private IChromosome fixData(NBTTagCompound genomeNBT, ChromosomeInfo missingChromosome) {
 			IGeneType geneType = missingChromosome.geneKey;
-			IKaryotype karyotype = geneType.getKaryotype();
+			IKaryotype karyotype = geneType.getDefinition();
 			IChromosome[] chromosomes = readTag(karyotype, genomeNBT);
 			IChromosome chromosome = Chromosome.create(missingChromosome.activeSpeciesUid, missingChromosome.inactiveSpeciesUid, geneType, null, null);
 			chromosomes[geneType.getIndex()] = chromosome;

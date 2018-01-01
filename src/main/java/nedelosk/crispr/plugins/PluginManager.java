@@ -44,7 +44,7 @@ public class PluginManager {
 		GeneRegistry geneRegistry = new GeneRegistry();
 		CrisprAPI.geneRegistry = geneRegistry;
 		plugins.forEach(p -> p.registerGenes(geneRegistry, GeneticFactory.INSTANCE));
-		GeneticSystem geneticSystem = Crispr.system = geneRegistry.createGeneticRegistry();
+		GeneticSystem geneticSystem = Crispr.system = geneRegistry.createGeneticSystem();
 		//
 		CrisprAPI.geneticSystem = geneticSystem;
 		plugins.forEach(p -> p.registerDefinitions(geneticSystem));

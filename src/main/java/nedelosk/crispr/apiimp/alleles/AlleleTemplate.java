@@ -2,11 +2,12 @@ package nedelosk.crispr.apiimp.alleles;
 
 import javax.annotation.Nullable;
 
-import nedelosk.crispr.api.IGeneticTransformer;
+import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleTemplate;
 import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
 import nedelosk.crispr.api.gene.IGeneType;
+import nedelosk.crispr.api.gene.IGeneticStat;
 import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IChromosome;
 import nedelosk.crispr.api.individual.IGenome;
@@ -53,17 +54,17 @@ public final class AlleleTemplate implements IAlleleTemplate {
 	}
 
 	@Override
-	public <I extends IIndividual> I toIndividual(IGeneticTransformer<I> transformer, @Nullable IAlleleTemplate inactiveTemplate) {
-		return transformer.templateAsIndividual(alleles);
+	public <I extends IIndividual> I toIndividual(IGeneticRoot<I, IGeneticStat> root, @Nullable IAlleleTemplate inactiveTemplate) {
+		return root.templateAsIndividual(alleles, inactiveTemplate == null ? null : inactiveTemplate.alleles());
 	}
 
 	@Override
-	public IGenome toGenome(IGeneticTransformer transformer, @Nullable IAlleleTemplate inactiveTemplate) {
-		return transformer.templateAsGenome(alleles);
+	public IGenome toGenome(@Nullable IAlleleTemplate inactiveTemplate) {
+		return karyotype.templateAsGenome(alleles, inactiveTemplate == null ? null : inactiveTemplate.alleles());
 	}
 
 	@Override
-	public IChromosome[] toChromosomes(IGeneticTransformer transformer, @Nullable IAlleleTemplate inactiveTemplate) {
-		return transformer.templateAsChromosomes(alleles);
+	public IChromosome[] toChromosomes(@Nullable IAlleleTemplate inactiveTemplate) {
+		return karyotype.templateAsChromosomes(alleles, inactiveTemplate == null ? null : inactiveTemplate.alleles());
 	}
 }

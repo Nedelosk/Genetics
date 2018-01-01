@@ -10,9 +10,9 @@ import nedelosk.crispr.api.individual.IIndividualHandler;
 
 public interface IGeneticFactory {
 
-	IAlleleTemplateBuilder createTemplate(ITemplateContainer container);
+	IAlleleTemplateBuilder createTemplate(IGeneticDefinition definition);
 
-	IAlleleTemplateBuilder createTemplate(ITemplateContainer container, Allele[] alleles);
+	IAlleleTemplateBuilder createTemplate(IGeneticDefinition definition, Allele[] alleles);
 
 	<I extends IIndividual> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IGeneticType type, IGeneticDefinition<I, IGeneticRoot> definition);
 }

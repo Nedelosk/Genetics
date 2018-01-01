@@ -1,10 +1,12 @@
 package nedelosk.crispr.apiimp;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -12,33 +14,36 @@ import net.minecraft.item.Item;
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticDefinitionBuilder;
 import nedelosk.crispr.api.IGeneticRoot;
-import nedelosk.crispr.api.IGeneticTransformer;
-import nedelosk.crispr.api.ITemplateContainer;
-import nedelosk.crispr.api.gene.IGeneticStat;
+import nedelosk.crispr.api.alleles.IAllele;
+import nedelosk.crispr.api.alleles.IAlleleTemplate;
+import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
+import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IGeneticHandler;
 import nedelosk.crispr.api.individual.IGeneticType;
-import nedelosk.crispr.api.individual.IGenome;
 import nedelosk.crispr.api.individual.IIndividual;
 import nedelosk.crispr.api.translators.IBlockTranslator;
 import nedelosk.crispr.api.translators.IGeneticTranslator;
 import nedelosk.crispr.api.translators.IItemTranslator;
+import nedelosk.crispr.apiimp.alleles.AlleleTemplateBuilder;
 
 public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticRoot<I, ?>> implements IGeneticDefinitionBuilder<I, R> {
 	private final Map<IGeneticType, IGeneticHandler<I>> types = new HashMap<>();
-	private final ITemplateContainer templateContainer;
 	private final Function<IGeneticDefinition<I, R>, R> rootFactory;
 	private final String name;
+	private final IKaryotype karyotype;
+	private final HashMap<String, IAllele[]> templates = new HashMap<>();
 	private final Map<Item, IItemTranslator<I>> itemTranslators = new HashMap<>();
 	private final Map<Block, IBlockTranslator<I>> blockTranslators = new HashMap<>();
-	private Supplier<IGeneticTransformer<I>> transformerFactory = GeneticTransformer::new;
 	private BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IGeneticTranslator<I>> translatorFactory = GeneticTranslator::new;
 	private Function<Map<IGeneticType, IGeneticHandler<I>>, IGeneticTypes<I>> typesFactory = GeneticTypes::new;
-	private Function<IGenome, IGeneticStat> statFactory = (g) -> (IGeneticStat) () -> g;
+	private BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory = AlleleTemplateBuilder::new;
+	private BiFunction<IKaryotype, IAllele[], String> templateNameFactory;
 
-	public GeneticDefinitionBuilder(String name, ITemplateContainer templateContainer, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+	public GeneticDefinitionBuilder(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
 		this.name = name;
-		this.templateContainer = templateContainer;
+		this.karyotype = karyotype;
 		this.rootFactory = rootFactory;
+		this.templateNameFactory = (k, a) -> a[this.karyotype.getTemplateType().getIndex()].getRegistryName().toString();
 	}
 
 	@Override
@@ -60,9 +65,31 @@ public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticR
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> setTransformer(Supplier<IGeneticTransformer<I>> transformerFactory) {
-		this.transformerFactory = transformerFactory;
+	public IGeneticDefinitionBuilder<I, R> registerTemplate(IAllele[] template) {
+		Preconditions.checkNotNull(template, "Tried to register null template");
+		Preconditions.checkArgument(template.length > 0, "Tried to register empty template");
+
+		registerTemplate(templateNameFactory.apply(karyotype, template), template);
 		return this;
+	}
+
+	@Override
+	public IGeneticDefinitionBuilder<I, R> registerTemplate(String identifier, IAllele[] template) {
+		Preconditions.checkNotNull(template, "Tried to register null template");
+		Preconditions.checkArgument(template.length > 0, "Tried to register empty template");
+
+		templates.put(identifier, template);
+		return this;
+	}
+
+	@Override
+	public IGeneticDefinitionBuilder<I, R> registerTemplate(IAlleleTemplate template) {
+		return registerTemplate(template.alleles());
+	}
+
+	@Override
+	public IGeneticDefinitionBuilder<I, R> registerTemplate(String identifier, IAlleleTemplate template) {
+		return registerTemplate(identifier, template.alleles());
 	}
 
 	@Override
@@ -78,16 +105,21 @@ public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticR
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> setStat(Function<IGenome, IGeneticStat> statFactory) {
-		this.statFactory = statFactory;
+	public IGeneticDefinitionBuilder<I, R> setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
+		this.templateFactory = templateFactory;
+		return this;
+	}
+
+	@Override
+	public IGeneticDefinitionBuilder<I, R> setTemplateNameFactory(BiFunction<IKaryotype, IAllele[], String> templateNameFactory) {
+		this.templateNameFactory = templateNameFactory;
 		return this;
 	}
 
 	@Override
 	public IGeneticDefinition<I, R> build() {
 		IGeneticTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
-		IGeneticTransformer<I> transformer = transformerFactory.get();
 		IGeneticTypes<I> types = typesFactory.apply(this.types);
-		return new GeneticDefinition<>(types, translator, transformer, statFactory, templateContainer, name, rootFactory);
+		return new GeneticDefinition<>(types, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates), templateFactory), name, rootFactory);
 	}
 }

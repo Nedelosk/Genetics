@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+import nedelosk.crispr.api.CrisprAPI;
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.alleles.IAllele;
@@ -87,6 +88,7 @@ public class Crispr {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 		});
+		CrisprAPI.saveHandler = GeneticSaveHandler.INSTANCE;
 
 		PluginManager.create(event);
 

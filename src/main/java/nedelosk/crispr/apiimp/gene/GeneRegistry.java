@@ -3,23 +3,26 @@ package nedelosk.crispr.apiimp.gene;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 import nedelosk.crispr.api.IGeneticDefinition;
-import nedelosk.crispr.api.ITemplateRegistry;
+import nedelosk.crispr.api.IGeneticDefinitionBuilder;
+import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.gene.IGeneBuilder;
 import nedelosk.crispr.api.gene.IGeneRegistry;
 import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.gene.IKaryotypeBuilder;
+import nedelosk.crispr.api.individual.IIndividual;
+import nedelosk.crispr.apiimp.GeneticDefinitionBuilder;
 import nedelosk.crispr.apiimp.GeneticSystem;
 import nedelosk.crispr.apiimp.KaryotypeBuilder;
-import nedelosk.crispr.apiimp.TemplateRegistry;
 import nedelosk.crispr.apiimp.alleles.GeneBuilder;
 
 public class GeneRegistry implements IGeneRegistry {
 	private final HashMap<String, GeneBuilder> geneBuilders = new HashMap<>();
 	private final HashMap<String, IGeneticDefinition> definitions = new HashMap<>();
-	private final HashMap<IKaryotype, ITemplateRegistry> registries = new HashMap<>();
+	private final HashMap<String, IGeneticDefinitionBuilder> definitionBuilders = new HashMap<>();
 
 	@Override
 	public IGeneBuilder addGene(String name) {
@@ -52,23 +55,25 @@ public class GeneRegistry implements IGeneRegistry {
 	}
 
 	@Override
-	public ITemplateRegistry createRegistry(IKaryotype karyotype) {
-		ITemplateRegistry registry = new TemplateRegistry(karyotype);
-		registries.put(karyotype, registry);
-		return registry;
+	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I, R> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+		IGeneticDefinitionBuilder<I, R> definitionBuilder = new GeneticDefinitionBuilder<>(name, karyotype, rootFactory);
+		definitionBuilders.put(name, definitionBuilder);
+		return definitionBuilder;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Optional<ITemplateRegistry> getRegistry(IKaryotype karyotype) {
-		return Optional.ofNullable(registries.get(karyotype));
+	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinitionBuilder<I, R>> getDefinition(String name) {
+		return Optional.ofNullable((IGeneticDefinitionBuilder<I, R>) definitionBuilders.get(name));
 	}
 
-	public GeneticSystem createGeneticRegistry() {
-		GeneticSystem registry = new GeneticSystem();
+	public GeneticSystem createGeneticSystem() {
+		GeneticSystem geneticSystem = new GeneticSystem();
 		geneBuilders.values().forEach(r -> {
 			Set<IGeneType> types = r.getTypes();
-			registry.registerGene(r.createGene(), types.toArray(new IGeneType[types.size()]));
+			geneticSystem.registerGene(r.createGene(), types.toArray(new IGeneType[types.size()]));
 		});
-		return registry;
+		definitions.values().forEach(geneticSystem::registerDefinition);
+		return geneticSystem;
 	}
 }
