@@ -1,13 +1,13 @@
 package nedelosk.crispr.api.gene;
 
 import nedelosk.crispr.api.IGeneticDefinition;
-import nedelosk.crispr.api.alleles.Allele;
+import nedelosk.crispr.api.alleles.IAllele;
 
 public interface IGeneTemplate {
 
-	Allele getAllele();
+	IAllele getAllele();
 
 	IGeneType getType();
 
-	IGeneticDefinition<?> getDescription();
+	IGeneticDefinition getDescription();
 }

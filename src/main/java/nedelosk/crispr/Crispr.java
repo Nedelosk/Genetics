@@ -17,8 +17,6 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-import forestry.core.capabilities.NullStorage;
-
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.alleles.IAllele;
@@ -75,7 +73,7 @@ public class Crispr {
 		});
 		CapabilityManager.INSTANCE.register(IGeneTemplate.class, new NullStorage<>(), () -> new IGeneTemplate() {
 			@Override
-			public Allele getAllele() {
+			public IAllele getAllele() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
@@ -85,7 +83,7 @@ public class Crispr {
 			}
 
 			@Override
-			public IGeneticDefinition<?> getDescription() {
+			public IGeneticDefinition getDescription() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 		});
