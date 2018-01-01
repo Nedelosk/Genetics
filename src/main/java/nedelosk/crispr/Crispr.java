@@ -1,6 +1,10 @@
 package nedelosk.crispr;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
+
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.util.EnumFacing;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -16,7 +20,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import forestry.core.capabilities.NullStorage;
 
 import nedelosk.crispr.api.IGeneticDefinition;
+import nedelosk.crispr.api.alleles.Allele;
 import nedelosk.crispr.api.alleles.IAllele;
+import nedelosk.crispr.api.gene.IGeneTemplate;
 import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.individual.IGeneticType;
 import nedelosk.crispr.api.individual.IIndividual;
@@ -41,6 +47,8 @@ public class Crispr {
 	 */
 	@CapabilityInject(IIndividualHandler.class)
 	public static Capability<IIndividualHandler> INDIVIDUAL_HANDLER;
+	@CapabilityInject(IGeneTemplate.class)
+	public static Capability<IGeneTemplate> GENE_TEMPLATE;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -65,13 +73,29 @@ public class Crispr {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 		});
+		CapabilityManager.INSTANCE.register(IGeneTemplate.class, new NullStorage<>(), () -> new IGeneTemplate() {
+			@Override
+			public Allele getAllele() {
+				throw new UnsupportedOperationException("Cannot use default implementation");
+			}
+
+			@Override
+			public IGeneType getType() {
+				throw new UnsupportedOperationException("Cannot use default implementation");
+			}
+
+			@Override
+			public IGeneticDefinition<?> getDescription() {
+				throw new UnsupportedOperationException("Cannot use default implementation");
+			}
+		});
 
 		PluginManager.create(event);
 
 		PluginManager.initPlugins();
 	}
 
-	@EventHandler
+	/*@EventHandler
 	public void init(FMLInitializationEvent event) {
 
 	}
@@ -79,10 +103,22 @@ public class Crispr {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
-	}
+	}*/
 
 	@EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event) {
 		GeneticSaveHandler.setWriteFormat(SaveFormat.BINARY);
+	}
+
+	public class NullStorage <T> implements Capability.IStorage<T> {
+		public NullStorage() { /* compiled code */ }
+
+		@Nullable
+		public NBTBase writeNBT(Capability<T> capability, T instance, EnumFacing side) {
+			/* compiled code */
+			return null;
+		}
+
+		public void readNBT(Capability<T> capability, T instance, EnumFacing side, NBTBase nbt) { /* compiled code */ }
 	}
 }
