@@ -67,11 +67,6 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	@Override
-	public <V> IAlleleRegistry registerAllele(IAllele<V> allele, Collection<IAlleleKey> keys) {
-		return registerAllele(allele, keys.toArray(new IAlleleKey[keys.size()]));
-	}
-
-	@Override
 	public <V> IAlleleRegistry registerAllele(IAllele<V> allele, IAlleleKey... keys) {
 		if (!alleleRegistry.containsKey(allele.getRegistryName())) {
 			alleleRegistry.register(allele);
@@ -86,6 +81,31 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	@Override
+	public <V> IAlleleRegistry registerAllele(IAllele<V> allele, Collection<IAlleleKey> keys) {
+		return registerAllele(allele, keys.toArray(new IAlleleKey[keys.size()]));
+	}
+
+	@Override
+	public Optional<IAllele<?>> getAllele(IAlleleKey key) {
+		return Optional.ofNullable(alleleByKey.get(key));
+	}
+
+	@Override
+	public Optional<IAllele<?>> getAllele(String registryName) {
+		return getAllele(new ResourceLocation(registryName));
+	}
+
+	@Override
+	public Optional<IAllele<?>> getAllele(ResourceLocation location) {
+		return Optional.ofNullable(alleleRegistry.getValue(location));
+	}
+
+	@Override
+	public Collection<IAlleleKey> getKeys(IAllele<?> allele) {
+		return keysByAllele.get(allele);
+	}
+
+	@Override
 	public void registerHandler(IAlleleHandler handler) {
 		this.handlers.add(handler);
 	}
@@ -93,11 +113,6 @@ public class AlleleRegistry implements IAlleleRegistry {
 	@Override
 	public Set<IAlleleHandler> getHandlers() {
 		return handlers;
-	}
-
-	@Override
-	public Optional<IAllele<?>> getAllele(IAlleleKey key) {
-		return Optional.ofNullable(alleleByKey.get(key));
 	}
 
 	public int getId(IAllele<?> allele) {
@@ -111,21 +126,6 @@ public class AlleleRegistry implements IAlleleRegistry {
 	@Nullable
 	public IAllele<?> getAllele(int id) {
 		return alleleRegistry.getValue(id);
-	}
-
-	@Override
-	public Optional<IAllele<?>> getAllele(ResourceLocation location) {
-		return Optional.ofNullable(alleleRegistry.getValue(location));
-	}
-
-	@Override
-	public Optional<IAllele<?>> getAllele(String registryName) {
-		return getAllele(new ResourceLocation(registryName));
-	}
-
-	@Override
-	public Collection<IAlleleKey> getKeys(IAllele<?> allele) {
-		return keysByAllele.get(allele);
 	}
 
 }

@@ -16,8 +16,8 @@ public interface IAlleleTemplateBuilder {
 	/**
 	 * Sets a allele at a position of the chromosome.
 	 *
-	 * @param allele The allele that should be set at the position.
-	 * @param geneKey    The position at the chromosome array.
+	 * @param allele  The allele that should be set at the position.
+	 * @param geneKey The position at the chromosome array.
 	 */
 	IAlleleTemplateBuilder set(IGeneType geneKey, IAllele<?> allele);
 

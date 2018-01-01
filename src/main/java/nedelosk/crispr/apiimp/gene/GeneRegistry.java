@@ -41,6 +41,19 @@ public class GeneRegistry implements IGeneRegistry {
 	}
 
 	@Override
+	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I, R> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+		IGeneticDefinitionBuilder<I, R> definitionBuilder = new GeneticDefinitionBuilder<>(name, karyotype, rootFactory);
+		definitionBuilders.put(name, definitionBuilder);
+		return definitionBuilder;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinitionBuilder<I, R>> getDefinition(String name) {
+		return Optional.ofNullable((IGeneticDefinitionBuilder<I, R>) definitionBuilders.get(name));
+	}
+
+	@Override
 	public <T extends Enum<T> & IGeneType> IKaryotype createKaryotype(Class<? extends T> enumClass) {
 		T[] types = enumClass.getEnumConstants();
 		if (types.length <= 0) {
@@ -52,19 +65,6 @@ public class GeneRegistry implements IGeneRegistry {
 			builder.add(type);
 		}
 		return builder.build();
-	}
-
-	@Override
-	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I, R> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
-		IGeneticDefinitionBuilder<I, R> definitionBuilder = new GeneticDefinitionBuilder<>(name, karyotype, rootFactory);
-		definitionBuilders.put(name, definitionBuilder);
-		return definitionBuilder;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinitionBuilder<I, R>> getDefinition(String name) {
-		return Optional.ofNullable((IGeneticDefinitionBuilder<I, R>) definitionBuilders.get(name));
 	}
 
 	public GeneticSystem createGeneticSystem() {

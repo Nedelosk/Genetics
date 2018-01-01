@@ -57,11 +57,6 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	}
 
 	@Override
-	public IKaryotype getKaryotype() {
-		return karyotype;
-	}
-
-	@Override
 	public Optional<IItemTranslator<I>> getTranslator(Item translatorKey) {
 		return translator.getTranslator(translatorKey);
 	}
@@ -150,6 +145,11 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	@Override
 	public Map<String, IAllele[]> getGenomeTemplates() {
 		return templateContainer.getGenomeTemplates();
+	}
+
+	@Override
+	public IKaryotype getKaryotype() {
+		return karyotype;
 	}
 
 	@Override

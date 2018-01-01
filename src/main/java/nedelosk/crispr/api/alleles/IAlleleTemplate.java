@@ -42,14 +42,18 @@ public interface IAlleleTemplate {
 
 	IKaryotype getKaryotype();
 
+	default <I extends IIndividual> I toIndividual(IGeneticRoot<I, IGeneticStat> root) {
+		return toIndividual(root, null);
+	}
+
 	/**
 	 * Creates an individual with the help of the genetic root using
 	 * {@link IGeneticRoot#templateAsIndividual(IAllele[], IAllele[])}.
 	 */
 	<I extends IIndividual> I toIndividual(IGeneticRoot<I, IGeneticStat> root, @Nullable IAlleleTemplate inactiveTemplate);
 
-	default <I extends IIndividual> I toIndividual(IGeneticRoot<I, IGeneticStat> root) {
-		return toIndividual(root, null);
+	default IGenome toGenome() {
+		return toGenome(null);
 	}
 
 	/**
@@ -58,8 +62,8 @@ public interface IAlleleTemplate {
 	 */
 	IGenome toGenome(@Nullable IAlleleTemplate inactiveTemplate);
 
-	default IGenome toGenome() {
-		return toGenome(null);
+	default IChromosome[] toChromosomes() {
+		return toChromosomes(null);
 	}
 
 	/**
@@ -67,8 +71,4 @@ public interface IAlleleTemplate {
 	 * {@link IKaryotype#templateAsChromosomes(IAllele[], IAllele[])}.
 	 */
 	IChromosome[] toChromosomes(@Nullable IAlleleTemplate inactiveTemplate);
-
-	default IChromosome[] toChromosomes() {
-		return toChromosomes(null);
-	}
 }

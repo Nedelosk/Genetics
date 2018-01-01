@@ -25,15 +25,15 @@ public class GeneticSystem implements IGeneticSystem {
 		return definitions.values();
 	}
 
-	@Override
-	public void registerDefinition(IGeneticDefinition definition) {
-		definitions.put(definition.getName(), definition);
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinition<I, R>> getDefinition(String name) {
 		return Optional.ofNullable((IGeneticDefinition<I, R>) definitions.get(name));
+	}
+
+	@Override
+	public void registerDefinition(IGeneticDefinition definition) {
+		definitions.put(definition.getName(), definition);
 	}
 
 	@Override

@@ -25,19 +25,19 @@ public class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implements I
 	}
 
 	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = hash * 31 + value.hashCode();
+		hash = hash * 31 + Boolean.hashCode(dominant);
+		return hash;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof IAllele)) {
 			return false;
 		}
 		IAllele otherAllele = (IAllele) obj;
 		return value.equals(otherAllele.getValue()) && dominant == otherAllele.isDominant();
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 1;
-		hash = hash * 31 + value.hashCode();
-		hash = hash * 31 + Boolean.hashCode(dominant);
-		return hash;
 	}
 }

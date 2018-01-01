@@ -56,13 +56,13 @@ public class Gene implements IGene {
 	}
 
 	@Override
-	public Optional<IAllele> getAllele(IAlleleKey key) {
-		return Optional.ofNullable(alleles.inverse().get(key));
+	public Optional<IAlleleKey> getKey(IAllele<?> allele) {
+		return Optional.ofNullable(alleles.get(allele));
 	}
 
 	@Override
-	public Optional<IAlleleKey> getKey(IAllele<?> allele) {
-		return Optional.ofNullable(alleles.get(allele));
+	public Optional<IAllele> getAllele(IAlleleKey key) {
+		return Optional.ofNullable(alleles.inverse().get(key));
 	}
 
 	@Override
@@ -90,12 +90,12 @@ public class Gene implements IGene {
 		return "gene." + name + ".name";
 	}
 
+	public String getUnlocalizedName(IAllele<?> allele) {
+		return "allele." + alleleInstances.get(alleles.get(allele)) + ".name";
+	}
+
 	@Override
 	public String getLocalizedName(IAllele<?> allele) {
 		return I18n.format(getUnlocalizedName(allele));
-	}
-
-	public String getUnlocalizedName(IAllele<?> allele) {
-		return "allele." + alleleInstances.get(alleles.get(allele)) + ".name";
 	}
 }

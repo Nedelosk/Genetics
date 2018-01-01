@@ -110,7 +110,7 @@ public class Crispr {
 		GeneticSaveHandler.setWriteFormat(SaveFormat.BINARY);
 	}
 
-	public class NullStorage <T> implements Capability.IStorage<T> {
+	public class NullStorage<T> implements Capability.IStorage<T> {
 		public NullStorage() { /* compiled code */ }
 
 		@Nullable

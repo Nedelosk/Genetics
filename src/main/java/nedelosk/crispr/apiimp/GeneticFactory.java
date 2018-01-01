@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticFactory;
 import nedelosk.crispr.api.IGeneticRoot;
-import nedelosk.crispr.api.alleles.Allele;
+import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
 import nedelosk.crispr.api.individual.IGeneticType;
 import nedelosk.crispr.api.individual.IIndividual;
@@ -22,7 +22,7 @@ public enum GeneticFactory implements IGeneticFactory {
 	}
 
 	@Override
-	public IAlleleTemplateBuilder createTemplate(IGeneticDefinition definition, Allele[] alleles) {
+	public IAlleleTemplateBuilder createTemplate(IGeneticDefinition definition, IAllele[] alleles) {
 		return new AlleleTemplateBuilder(definition, alleles);
 	}
 

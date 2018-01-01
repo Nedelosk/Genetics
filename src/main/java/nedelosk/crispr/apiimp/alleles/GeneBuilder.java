@@ -31,14 +31,14 @@ public class GeneBuilder implements IGeneBuilder {
 	}
 
 	@Override
-	public IGeneBuilder addType(IGeneType type) {
-		this.types.add(type);
+	public IGeneBuilder setDefaultAllele(IAlleleKey key) {
+		this.defaultKey = key;
 		return this;
 	}
 
 	@Override
-	public IGeneBuilder setDefaultAllele(IAlleleKey key) {
-		this.defaultKey = key;
+	public IGeneBuilder addType(IGeneType type) {
+		this.types.add(type);
 		return this;
 	}
 

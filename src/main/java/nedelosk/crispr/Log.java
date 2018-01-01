@@ -8,6 +8,10 @@ public class Log {
 		log(Level.TRACE, message, params);
 	}
 
+	private static void log(Level logLevel, String message, Object... params) {
+		LogManager.getLogger(Crispr.MOD_ID).log(logLevel, message, params);
+	}
+
 	public static void debug(String message, Object... params) {
 		log(Level.DEBUG, message, params);
 	}
@@ -22,9 +26,5 @@ public class Log {
 
 	public static void error(String message, Object... params) {
 		log(Level.ERROR, message, params);
-	}
-
-	private static void log(Level logLevel, String message, Object... params) {
-		LogManager.getLogger(Crispr.MOD_ID).log(logLevel, message, params);
 	}
 }

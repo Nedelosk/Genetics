@@ -31,19 +31,19 @@ public class SimpleByteBuf {
 	private int index;
 
 	/**
+	 * Creates a byte buffer with the default initial capacity.
+	 */
+	public SimpleByteBuf() {
+		this(DEFAULT_INITIAL_CAPACITY);
+	}
+
+	/**
 	 * Creates a byte buffer with a specific initial capacity.
 	 *
 	 * @param initialCapacity The initial capacity that the internal array should have.
 	 */
 	public SimpleByteBuf(int initialCapacity) {
 		this.data = new byte[initialCapacity];
-	}
-
-	/**
-	 * Creates a byte buffer with the default initial capacity.
-	 */
-	public SimpleByteBuf() {
-		this(DEFAULT_INITIAL_CAPACITY);
 	}
 
 	/**
@@ -61,29 +61,6 @@ public class SimpleByteBuf {
 	}
 
 	/**
-	 * Write the internal id of the allele to the byte array as a varint.
-	 */
-	public void writeAllele(IAllele allele) {
-		AlleleRegistry registry = Crispr.alleleRegistry;
-		int id = registry.getId(allele);
-		if (id < 0) {
-			writeVarInt(0);
-			return;
-		}
-		writeVarInt(id);
-	}
-
-	/**
-	 * Read a allele from the byte array using the internal id of the allele written to the array as a varint.
-	 */
-	@Nullable
-	public IAllele readAllele() {
-		AlleleRegistry registry = Crispr.alleleRegistry;
-		int id = readVarInt();
-		return registry.getAllele(id);
-	}
-
-	/**
 	 * Writes the chromosomes to the internal byte array.
 	 *
 	 * @param chromosomes The chromosomes that should be written.
@@ -98,6 +75,52 @@ public class SimpleByteBuf {
 			IChromosome chromosome = chromosomes[index];
 			writeAllele(chromosome.getActiveAllele());
 			writeAllele(chromosome.getInactiveAllele());
+		}
+	}
+
+	/**
+	 * Write the internal id of the allele to the byte array as a varint.
+	 */
+	public void writeAllele(IAllele allele) {
+		AlleleRegistry registry = Crispr.alleleRegistry;
+		int id = registry.getId(allele);
+		if (id < 0) {
+			writeVarInt(0);
+			return;
+		}
+		writeVarInt(id);
+	}
+
+	/**
+	 * Write a varint to the array.
+	 */
+	public void writeVarInt(int input) {
+		while ((input & -128) != 0) {
+			writeByte((byte) (input & 127 | 128));
+			input >>>= 7;
+		}
+
+		writeByte((byte) input);
+	}
+
+	/**
+	 * Write a byte to the array
+	 */
+	private void writeByte(int input) {
+		if (input > 255) {
+			throw new IllegalArgumentException();
+		}
+		ensureCapacity(index + 1);
+		data[index++] = (byte) input;
+	}
+
+	/**
+	 * Checks if the byte array has a specific length. If the array is to short, it creates a new array with the length
+	 * and copies the content from the old array into the new array.
+	 */
+	private void ensureCapacity(int capacity) {
+		if (capacity - data.length > 0) {
+			data = Arrays.copyOf(data, data.length + 1);
 		}
 	}
 
@@ -128,10 +151,6 @@ public class SimpleByteBuf {
 		return chromosomes;
 	}
 
-	private Chromosome readChromosome(IGeneType type, ChromosomeInfo info) {
-		return readChromosome(type, info.activeSpeciesUid, info.inactiveSpeciesUid);
-	}
-
 	private Chromosome readChromosome(IGeneType type, @Nullable ResourceLocation activeSpeciesUid, @Nullable ResourceLocation inactiveSpeciesUid) {
 		IAllele firstAllele = readAllele();
 		IAllele secondAllele = readAllele();
@@ -139,57 +158,13 @@ public class SimpleByteBuf {
 	}
 
 	/**
-	 * Reads a specific chromosome from the byte array without creating the whole chromosome array.
+	 * Read a allele from the byte array using the internal id of the allele written to the array as a varint.
 	 */
-	public ChromosomeInfo readChromosome(IGeneType geneType) {
-		IKaryotype karyotype = geneType.getDefinition();
-		IGeneType[] keys = karyotype.getGeneTypes();
-		ChromosomeInfo info = new ChromosomeInfo(geneType);
-
-		for (IGeneType key : keys) {
-			if (key == geneType) {
-				return info.setChromosome(readChromosome(key, info));
-			} else if (key == karyotype.getTemplateType()) {
-				Chromosome chromosome = readChromosome(key, info);
-
-				info.setSpeciesInfo(chromosome.getActiveAllele().getRegistryName(), chromosome.getInactiveAllele().getRegistryName());
-			} else {
-				readVarInt();
-				readVarInt();
-			}
-		}
-		return info;
-	}
-
-	/**
-	 * Checks if the byte array has a specific length. If the array is to short, it creates a new array with the length
-	 * and copies the content from the old array into the new array.
-	 */
-	private void ensureCapacity(int capacity) {
-		if (capacity - data.length > 0) {
-			data = Arrays.copyOf(data, data.length + 1);
-		}
-	}
-
-	/**
-	 * Write a byte to the array
-	 */
-	private void writeByte(int input) {
-		if (input > 255) {
-			throw new IllegalArgumentException();
-		}
-		ensureCapacity(index + 1);
-		data[index++] = (byte) input;
-	}
-
-	/**
-	 * Read a byte from the array.
-	 */
-	private byte readByte() {
-		if (index < 0 || index >= data.length) {
-			return -1;
-		}
-		return data[index++];
+	@Nullable
+	public IAllele readAllele() {
+		AlleleRegistry registry = Crispr.alleleRegistry;
+		int id = readVarInt();
+		return registry.getAllele(id);
 	}
 
 	/**
@@ -214,14 +189,39 @@ public class SimpleByteBuf {
 	}
 
 	/**
-	 * Write a varint to the array.
+	 * Read a byte from the array.
 	 */
-	public void writeVarInt(int input) {
-		while ((input & -128) != 0) {
-			writeByte((byte) (input & 127 | 128));
-			input >>>= 7;
+	private byte readByte() {
+		if (index < 0 || index >= data.length) {
+			return -1;
 		}
+		return data[index++];
+	}
 
-		writeByte((byte) input);
+	private Chromosome readChromosome(IGeneType type, ChromosomeInfo info) {
+		return readChromosome(type, info.activeSpeciesUid, info.inactiveSpeciesUid);
+	}
+
+	/**
+	 * Reads a specific chromosome from the byte array without creating the whole chromosome array.
+	 */
+	public ChromosomeInfo readChromosome(IGeneType geneType) {
+		IKaryotype karyotype = geneType.getDefinition();
+		IGeneType[] keys = karyotype.getGeneTypes();
+		ChromosomeInfo info = new ChromosomeInfo(geneType);
+
+		for (IGeneType key : keys) {
+			if (key == geneType) {
+				return info.setChromosome(readChromosome(key, info));
+			} else if (key == karyotype.getTemplateType()) {
+				Chromosome chromosome = readChromosome(key, info);
+
+				info.setSpeciesInfo(chromosome.getActiveAllele().getRegistryName(), chromosome.getInactiveAllele().getRegistryName());
+			} else {
+				readVarInt();
+				readVarInt();
+			}
+		}
+		return info;
 	}
 }

@@ -15,25 +15,7 @@ import nedelosk.crispr.api.gene.IKaryotype;
 
 @GeneticPlugin
 public class Plugin implements IGeneticPlugin {
-	public enum AlleleKey implements IAlleleKey {
-		FERTILITY_0
-	}
-
 	private static IGeneticDefinition definition;
-
-	public enum GeneType implements IGeneType {
-		FERTILITY;
-
-		@Override
-		public int getIndex() {
-			return ordinal();
-		}
-
-		@Override
-		public IGeneticDefinition getDefinition() {
-			return CrisprAPI.geneticSystem.getDefinition("plants").orElse(null);
-		}
-	}
 
 	@Override
 	public void registerAlleles(IAlleleRegistry registry) {
@@ -53,5 +35,23 @@ public class Plugin implements IGeneticPlugin {
 	@Override
 	public void registerDefinitions(IGeneticSystem system) {
 
+	}
+
+	public enum AlleleKey implements IAlleleKey {
+		FERTILITY_0
+	}
+
+	public enum GeneType implements IGeneType {
+		FERTILITY;
+
+		@Override
+		public int getIndex() {
+			return ordinal();
+		}
+
+		@Override
+		public IGeneticDefinition getDefinition() {
+			return CrisprAPI.geneticSystem.getDefinition("plants").orElse(null);
+		}
 	}
 }

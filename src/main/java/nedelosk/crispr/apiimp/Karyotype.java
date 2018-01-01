@@ -30,13 +30,13 @@ public class Karyotype implements IKaryotype {
 	}
 
 	@Override
-	public IGeneType getTemplateType() {
-		return templateType;
+	public boolean contains(IGeneType type) {
+		return Arrays.asList(geneTypes).contains(type);
 	}
 
 	@Override
-	public boolean contains(IGeneType type) {
-		return Arrays.asList(geneTypes).contains(type);
+	public IGeneType getTemplateType() {
+		return templateType;
 	}
 
 	@Override

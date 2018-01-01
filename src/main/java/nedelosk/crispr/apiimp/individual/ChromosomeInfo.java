@@ -8,14 +8,13 @@ import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.individual.IChromosome;
 
 public class ChromosomeInfo {
+	public final IGeneType geneKey;
 	@Nullable
 	public IChromosome<?> chromosome;
 	@Nullable
 	public ResourceLocation activeSpeciesUid;
 	@Nullable
 	public ResourceLocation inactiveSpeciesUid;
-
-	public final IGeneType geneKey;
 
 	public ChromosomeInfo(IGeneType geneKey) {
 		this.geneKey = geneKey;

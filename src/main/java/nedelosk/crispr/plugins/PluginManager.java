@@ -17,7 +17,6 @@ import nedelosk.crispr.apiimp.GeneticSystem;
 import nedelosk.crispr.apiimp.gene.GeneRegistry;
 
 public class PluginManager {
-	private static List<IGeneticPlugin> plugins = Collections.emptyList();
 	private static final Comparator<IGeneticPlugin> PLUGIN_COMPARATOR = (firstPlugin, secondPlugin) -> {
 		EventPriority first = firstPlugin.getClass().getAnnotation(GeneticPlugin.class).priority();
 		EventPriority second = secondPlugin.getClass().getAnnotation(GeneticPlugin.class).priority();
@@ -26,6 +25,7 @@ public class PluginManager {
 		}
 		return first.ordinal() > second.ordinal() ? 1 : -1;
 	};
+	private static List<IGeneticPlugin> plugins = Collections.emptyList();
 
 	private PluginManager() {
 	}

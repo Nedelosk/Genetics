@@ -26,15 +26,6 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 		GeneticSaveHandler.writeFormat = writeFormat;
 	}
 
-	public SaveFormat getFormat(NBTTagCompound tagCompound) {
-		for (SaveFormat format : SaveFormat.values()) {
-			if (format.canLoad(tagCompound)) {
-				return format;
-			}
-		}
-		return SaveFormat.UID;
-	}
-
 	public NBTTagCompound writeTag(IChromosome[] chromosomes, IKaryotype karyotype, NBTTagCompound tagCompound) {
 		return writeFormat.writeTag(chromosomes, karyotype, tagCompound);
 	}
@@ -42,6 +33,15 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	public IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
 		SaveFormat format = getFormat(tagCompound);
 		return format.readTag(karyotype, tagCompound);
+	}
+
+	public SaveFormat getFormat(NBTTagCompound tagCompound) {
+		for (SaveFormat format : SaveFormat.values()) {
+			if (format.canLoad(tagCompound)) {
+				return format;
+			}
+		}
+		return SaveFormat.UID;
 	}
 
 	@Nullable

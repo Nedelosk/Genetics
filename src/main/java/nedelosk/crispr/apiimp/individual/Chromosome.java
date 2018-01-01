@@ -21,6 +21,20 @@ public class Chromosome<V> implements IChromosome<V> {
 
 	private static final String ACTIVE_ALLELE_TAG = "UID0";
 	private static final String INACTIVE_ALLELE_TAG = "UID1";
+	private final IAllele<V> active;
+	private final IAllele<V> inactive;
+	private final IGeneType type;
+
+	private Chromosome(IAllele<V> allele, IGeneType type) {
+		this.active = inactive = allele;
+		this.type = type;
+	}
+
+	private Chromosome(IAllele<V> active, IAllele<V> inactive, IGeneType type) {
+		this.active = active;
+		this.inactive = inactive;
+		this.type = type;
+	}
 
 	public static Chromosome create(@Nullable ResourceLocation primarySpeciesUid, @Nullable ResourceLocation secondarySpeciesUid, IGeneType geneType, NBTTagCompound nbt) {
 		IAllele primary = CrisprAPI.alleleRegistry.getAllele(nbt.getString(ACTIVE_ALLELE_TAG)).orElse(null);
@@ -28,23 +42,8 @@ public class Chromosome<V> implements IChromosome<V> {
 		return create(primarySpeciesUid, secondarySpeciesUid, geneType, primary, secondary);
 	}
 
-	public static Chromosome create(IAllele allele, IGeneType geneType) {
-		return new Chromosome(allele, geneType);
-	}
-
-	public static Chromosome create(IAllele firstAllele, IAllele secondAllele, IGeneType geneType) {
-		firstAllele = getActiveAllele(firstAllele, secondAllele);
-		secondAllele = getInactiveAllele(firstAllele, secondAllele);
-		return new Chromosome(firstAllele, secondAllele, geneType);
-	}
-
 	public static <V> Chromosome<V> create(@Nullable ResourceLocation primaryTemplateIdentifier, @Nullable ResourceLocation secondaryTemplateIdentifier, IGeneType type, @Nullable IAllele<V> firstAllele, @Nullable IAllele<V> secondAllele) {
 		return create(getStringOrNull(primaryTemplateIdentifier), getStringOrNull(secondaryTemplateIdentifier), type, firstAllele, secondAllele);
-	}
-
-	@Nullable
-	private static String getStringOrNull(@Nullable ResourceLocation location) {
-		return location != null ? location.toString() : null;
 	}
 
 	public static <V> Chromosome<V> create(@Nullable String primaryTemplateIdentifier, @Nullable String secondaryTemplateIdentifier, IGeneType type, @Nullable IAllele<V> firstAllele, @Nullable IAllele<V> secondAllele) {
@@ -52,6 +51,11 @@ public class Chromosome<V> implements IChromosome<V> {
 		secondAllele = validateAllele(secondaryTemplateIdentifier, type, secondAllele);
 
 		return new Chromosome<>(firstAllele, secondAllele, type);
+	}
+
+	@Nullable
+	private static String getStringOrNull(@Nullable ResourceLocation location) {
+		return location != null ? location.toString() : null;
 	}
 
 	private static <V> IAllele<V> validateAllele(@Nullable String templateIdentifier, IGeneType type, @Nullable IAllele<V> allele) {
@@ -84,19 +88,18 @@ public class Chromosome<V> implements IChromosome<V> {
 		return template[type.getIndex()];
 	}
 
-	private final IAllele<V> active;
-	private final IAllele<V> inactive;
-	private final IGeneType type;
-
-	private Chromosome(IAllele<V> allele, IGeneType type) {
-		this.active = inactive = allele;
-		this.type = type;
+	public static Chromosome create(IAllele allele, IGeneType geneType) {
+		return new Chromosome(allele, geneType);
 	}
 
-	private Chromosome(IAllele<V> active, IAllele<V> inactive, IGeneType type) {
-		this.active = active;
-		this.inactive = inactive;
-		this.type = type;
+	static Optional<IAllele<?>> getActiveAllele(NBTTagCompound chromosomeNBT) {
+		String alleleUid = chromosomeNBT.getString(Chromosome.ACTIVE_ALLELE_TAG);
+		return CrisprAPI.alleleRegistry.getAllele(alleleUid);
+	}
+
+	static Optional<IAllele<?>> getInactiveAllele(NBTTagCompound chromosomeNBT) {
+		String alleleUid = chromosomeNBT.getString(Chromosome.ACTIVE_ALLELE_TAG);
+		return CrisprAPI.alleleRegistry.getAllele(alleleUid);
 	}
 
 	@Override
@@ -144,19 +147,10 @@ public class Chromosome<V> implements IChromosome<V> {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return "{" + active + ", " + inactive + "}";
-	}
-
-	static Optional<IAllele<?>> getActiveAllele(NBTTagCompound chromosomeNBT) {
-		String alleleUid = chromosomeNBT.getString(Chromosome.ACTIVE_ALLELE_TAG);
-		return CrisprAPI.alleleRegistry.getAllele(alleleUid);
-	}
-
-	static Optional<IAllele<?>> getInactiveAllele(NBTTagCompound chromosomeNBT) {
-		String alleleUid = chromosomeNBT.getString(Chromosome.ACTIVE_ALLELE_TAG);
-		return CrisprAPI.alleleRegistry.getAllele(alleleUid);
+	public static Chromosome create(IAllele firstAllele, IAllele secondAllele, IGeneType geneType) {
+		firstAllele = getActiveAllele(firstAllele, secondAllele);
+		secondAllele = getInactiveAllele(firstAllele, secondAllele);
+		return new Chromosome(firstAllele, secondAllele, geneType);
 	}
 
 	private static IAllele getActiveAllele(IAllele firstAllele, IAllele secondAllele) {
@@ -179,5 +173,10 @@ public class Chromosome<V> implements IChromosome<V> {
 		}
 		// Leaves only the case of both being dominant
 		return secondAllele;
+	}
+
+	@Override
+	public String toString() {
+		return "{" + active + ", " + inactive + "}";
 	}
 }
