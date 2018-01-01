@@ -2,16 +2,16 @@ package nedelosk.crispr;
 
 import nedelosk.crispr.api.CrisprAPI;
 import nedelosk.crispr.api.GeneticPlugin;
-import nedelosk.crispr.api.IGeneticDefinition;
-import nedelosk.crispr.api.IGeneticDefinitionBuilder;
 import nedelosk.crispr.api.IGeneticFactory;
 import nedelosk.crispr.api.IGeneticPlugin;
-import nedelosk.crispr.api.IGeneticSystem;
 import nedelosk.crispr.api.alleles.IAlleleKey;
-import nedelosk.crispr.api.alleles.IAlleleRegistry;
-import nedelosk.crispr.api.gene.IGeneRegistry;
+import nedelosk.crispr.api.definition.IGeneticDefinition;
+import nedelosk.crispr.api.definition.IGeneticDefinitionBuilder;
 import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
+import nedelosk.crispr.api.registry.IAlleleRegistry;
+import nedelosk.crispr.api.registry.IGeneticRegistry;
+import nedelosk.crispr.api.registry.IGeneticSystem;
 
 @GeneticPlugin
 public class Plugin implements IGeneticPlugin {
@@ -25,7 +25,7 @@ public class Plugin implements IGeneticPlugin {
 	}
 
 	@Override
-	public void registerGenes(IGeneRegistry registry, IGeneticFactory factory) {
+	public void registerGenes(IGeneticRegistry registry, IGeneticFactory factory) {
 		//karyotype = registry.createKaryotype().
 		IKaryotype karyotype = registry.createKaryotype(GeneType.class);
 		IGeneticDefinitionBuilder definitionBuilder = registry.createDefinition("plants", karyotype, r -> null);

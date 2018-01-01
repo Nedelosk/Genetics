@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 
 import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.alleles.IAlleleTemplateBuilder;
+import nedelosk.crispr.api.definition.IGeneticDefinition;
+import nedelosk.crispr.api.definition.IGeneticRoot;
 import nedelosk.crispr.api.individual.IGeneticType;
 import nedelosk.crispr.api.individual.IIndividual;
 import nedelosk.crispr.api.individual.IIndividualHandler;

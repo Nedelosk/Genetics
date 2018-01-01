@@ -8,13 +8,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 
 import nedelosk.crispr.Crispr;
+import nedelosk.crispr.GeneticFactory;
 import nedelosk.crispr.api.CrisprAPI;
 import nedelosk.crispr.api.GeneticPlugin;
 import nedelosk.crispr.api.IGeneticPlugin;
-import nedelosk.crispr.apiimp.AlleleRegistry;
-import nedelosk.crispr.apiimp.GeneticFactory;
-import nedelosk.crispr.apiimp.GeneticSystem;
-import nedelosk.crispr.apiimp.gene.GeneRegistry;
+import nedelosk.crispr.registry.AlleleRegistry;
+import nedelosk.crispr.registry.GeneticRegistry;
+import nedelosk.crispr.registry.GeneticSystem;
 
 public class PluginManager {
 	private static final Comparator<IGeneticPlugin> PLUGIN_COMPARATOR = (firstPlugin, secondPlugin) -> {
@@ -41,12 +41,12 @@ public class PluginManager {
 		CrisprAPI.alleleRegistry = Crispr.alleleRegistry = alleleRegistry;
 		plugins.forEach(p -> p.registerAlleles(alleleRegistry));
 		//
-		GeneRegistry geneRegistry = new GeneRegistry();
-		CrisprAPI.geneRegistry = geneRegistry;
-		plugins.forEach(p -> p.registerGenes(geneRegistry, GeneticFactory.INSTANCE));
-		GeneticSystem geneticSystem = Crispr.system = geneRegistry.createGeneticSystem();
+		GeneticRegistry registry = new GeneticRegistry();
+		CrisprAPI.geneRegistry = registry;
+		plugins.forEach(p -> p.registerGenes(registry, GeneticFactory.INSTANCE));
+		GeneticSystem system = Crispr.system = registry.createSystem();
 		//
-		CrisprAPI.geneticSystem = geneticSystem;
-		plugins.forEach(p -> p.registerDefinitions(geneticSystem));
+		CrisprAPI.geneticSystem = system;
+		plugins.forEach(p -> p.registerDefinitions(system));
 	}
 }

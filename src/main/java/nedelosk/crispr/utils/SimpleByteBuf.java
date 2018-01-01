@@ -10,9 +10,9 @@ import nedelosk.crispr.api.alleles.IAllele;
 import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IKaryotype;
 import nedelosk.crispr.api.individual.IChromosome;
-import nedelosk.crispr.apiimp.AlleleRegistry;
-import nedelosk.crispr.apiimp.individual.Chromosome;
-import nedelosk.crispr.apiimp.individual.ChromosomeInfo;
+import nedelosk.crispr.individual.Chromosome;
+import nedelosk.crispr.individual.ChromosomeInfo;
+import nedelosk.crispr.registry.AlleleRegistry;
 
 /**
  * A byte buffer that can be used to encode and decode chromosomes and alleles into a byte array.

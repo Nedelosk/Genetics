@@ -2,7 +2,7 @@ package nedelosk.crispr.api.alleles;
 
 import javax.annotation.Nullable;
 
-import nedelosk.crispr.api.IGeneticRoot;
+import nedelosk.crispr.api.definition.IGeneticRoot;
 import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.gene.IGeneticStat;
 import nedelosk.crispr.api.gene.IKaryotype;

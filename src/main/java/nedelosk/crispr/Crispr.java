@@ -18,19 +18,19 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import nedelosk.crispr.api.CrisprAPI;
-import nedelosk.crispr.api.IGeneticDefinition;
-import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.alleles.IAllele;
+import nedelosk.crispr.api.definition.IGeneticDefinition;
+import nedelosk.crispr.api.definition.IGeneticRoot;
 import nedelosk.crispr.api.gene.IGeneTemplate;
 import nedelosk.crispr.api.gene.IGeneType;
 import nedelosk.crispr.api.individual.IGeneticType;
 import nedelosk.crispr.api.individual.IIndividual;
 import nedelosk.crispr.api.individual.IIndividualHandler;
-import nedelosk.crispr.apiimp.AlleleRegistry;
-import nedelosk.crispr.apiimp.GeneticSystem;
-import nedelosk.crispr.apiimp.individual.GeneticSaveHandler;
-import nedelosk.crispr.apiimp.individual.SaveFormat;
+import nedelosk.crispr.individual.GeneticSaveHandler;
+import nedelosk.crispr.individual.SaveFormat;
 import nedelosk.crispr.plugins.PluginManager;
+import nedelosk.crispr.registry.AlleleRegistry;
+import nedelosk.crispr.registry.GeneticSystem;
 
 @Mod(modid = Crispr.MOD_ID, name = Crispr.NAME, version = Crispr.VERSION)
 public class Crispr {

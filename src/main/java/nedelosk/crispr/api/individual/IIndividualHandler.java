@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
-import nedelosk.crispr.api.IGeneticDefinition;
 import nedelosk.crispr.api.IGeneticFactory;
-import nedelosk.crispr.api.IGeneticRoot;
 import nedelosk.crispr.api.alleles.IAllele;
+import nedelosk.crispr.api.definition.IGeneticDefinition;
+import nedelosk.crispr.api.definition.IGeneticRoot;
 import nedelosk.crispr.api.gene.IGeneType;
 
 /**

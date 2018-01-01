@@ -1,6 +1,6 @@
 package nedelosk.crispr.api.individual;
 
-import nedelosk.crispr.api.IGeneticDefinition;
+import nedelosk.crispr.api.definition.IGeneticDefinition;
 
 public interface IIndividual {
 	IGeneticDefinition getDefinition();
