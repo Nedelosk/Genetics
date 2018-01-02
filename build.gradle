@@ -12,11 +12,9 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'idea'
 
 version = version_major + '.' + version_minor + '.' + version_patch
-if (project.hasProperty('buildQualifier')) {
-	version = project.version + '-' + project.buildQualifier
-}
-group= "nedelosk.crispr" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "crispr_" + mcversion
+
+group= "genetics" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "genetics_" + mcversion
 
 // java version
 sourceCompatibility = JavaVersion.VERSION_1_8
