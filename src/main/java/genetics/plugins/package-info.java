@@ -1,0 +1,9 @@
+@ParametersAreNonnullByDefault
+@FieldsAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+package genetics.plugins;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import genetics.FieldsAreNonnullByDefault;
+import mcp.MethodsReturnNonnullByDefault;
