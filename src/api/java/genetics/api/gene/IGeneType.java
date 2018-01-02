@@ -6,4 +6,6 @@ public interface IGeneType {
 	int getIndex();
 
 	IGeneticDefinition getDefinition();
+
+	String getName();
 }

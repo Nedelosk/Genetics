@@ -154,6 +154,11 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	}
 
 	@Override
+	public String getIdentifier() {
+		return karyotype.getIdentifier();
+	}
+
+	@Override
 	public IGeneType[] getGeneTypes() {
 		return karyotype.getGeneTypes();
 	}

@@ -35,7 +35,6 @@ public interface IGeneticRegistry {
 	 * Gets an gene builder.
 	 *
 	 * @param name The name of the gene builder to retrieve.
-	 *
 	 * @return A optional that contains the IGeneBuilder if found, a empty optional otherwise.
 	 */
 	Optional<IGeneBuilder> getGene(String name);
@@ -44,17 +43,16 @@ public interface IGeneticRegistry {
 	 * Creates a IKaryotypeBuilder.
 	 *
 	 * @param templateType The template type of the karyotype
-	 *
 	 * @return A IKaryotypeBuilder that can be used to build {@link IKaryotype}.
 	 */
-	IKaryotypeBuilder createKaryotype(IGeneType templateType);
+	IKaryotypeBuilder createKaryotype(IGeneType templateType, String identifier);
 
 	/**
 	 * Creates a IKaryotype
 	 *
 	 * @param enumClass A enum that implements {@link IGeneType}.
 	 */
-	<T extends Enum<T> & IGeneType> IKaryotype createKaryotype(Class<? extends T> enumClass);
+	<T extends Enum<T> & IGeneType> IKaryotype createKaryotype(Class<? extends T> enumClass, String identifier);
 
 	/**
 	 * Creates a {@link IGeneticDefinitionBuilder} with the given parameters.

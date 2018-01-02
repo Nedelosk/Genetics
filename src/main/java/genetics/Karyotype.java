@@ -18,13 +18,20 @@ import genetics.individual.Genome;
 public class Karyotype implements IKaryotype {
 	private final IGeneType[] geneTypes;
 	private final IGeneType templateType;
+	private final String identifier;
 
-	private Karyotype(Set<IGeneType> geneTypes, IGeneType templateType) {
+	private Karyotype(String identifier, Set<IGeneType> geneTypes, IGeneType templateType) {
+		this.identifier = identifier;
 		this.templateType = templateType;
 		this.geneTypes = new IGeneType[geneTypes.size()];
 		for (IGeneType key : geneTypes) {
 			this.geneTypes[key.getIndex()] = key;
 		}
+	}
+
+	@Override
+	public String getIdentifier() {
+		return identifier;
 	}
 
 	@Override
@@ -58,15 +65,17 @@ public class Karyotype implements IKaryotype {
 
 	@Override
 	public IGenome templateAsGenome(IAllele[] templateActive, @Nullable IAllele[] templateInactive) {
-		return new Genome(templateAsChromosomes(templateActive, templateInactive));
+		return new Genome(this, templateAsChromosomes(templateActive, templateInactive));
 	}
 
 	public static class Builder implements IKaryotypeBuilder {
 		private final Set<IGeneType> geneTypes = new HashSet<>();
 		private final IGeneType templateType;
+		private final String identifier;
 
-		public Builder(IGeneType templateType) {
+		public Builder(IGeneType templateType, String identifier) {
 			this.templateType = templateType;
+			this.identifier = identifier;
 			add(templateType);
 		}
 
@@ -78,7 +87,7 @@ public class Karyotype implements IKaryotype {
 
 		@Override
 		public IKaryotype build() {
-			return new Karyotype(geneTypes, templateType);
+			return new Karyotype(identifier, geneTypes, templateType);
 		}
 	}
 }

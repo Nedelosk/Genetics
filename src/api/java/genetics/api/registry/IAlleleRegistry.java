@@ -20,6 +20,10 @@ import genetics.api.alleles.IAlleleKey;
  */
 public interface IAlleleRegistry {
 
+	default IAlleleRegistry registerAllele(IAlleleData value, IAlleleKey... keys) {
+		return registerAllele(value.getValue(), value.isDominant(), keys);
+	}
+
 	/**
 	 * Creates and registers an allele that contains the given value and has the given dominant state if no allele with
 	 * the value and the given dominant state exists, otherwise it adds the keys to the existing {@link IAllele}.
@@ -32,10 +36,6 @@ public interface IAlleleRegistry {
 	 * @param keys     allele keys for this allele.
 	 */
 	<V> IAlleleRegistry registerAllele(V value, boolean dominant, IAlleleKey... keys);
-
-	default IAlleleRegistry registerAllele(IAlleleData value, IAlleleKey... keys) {
-		return registerAllele(value.getValue(), value.isDominant(), keys);
-	}
 
 	/**
 	 * Registers an allele.

@@ -8,6 +8,8 @@ import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 
 public interface IKaryotype {
+	String getIdentifier();
+
 	IGeneType[] getGeneTypes();
 
 	default <V> boolean contains(IGene gene) {

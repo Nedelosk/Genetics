@@ -35,8 +35,22 @@ public class GeneticRegistry implements IGeneticRegistry {
 	}
 
 	@Override
-	public IKaryotypeBuilder createKaryotype(IGeneType templateType) {
-		return new Karyotype.Builder(templateType);
+	public IKaryotypeBuilder createKaryotype(IGeneType templateType, String identifier) {
+		return new Karyotype.Builder(templateType, identifier);
+	}
+
+	@Override
+	public <T extends Enum<T> & IGeneType> IKaryotype createKaryotype(Class<? extends T> enumClass, String identifier) {
+		T[] types = enumClass.getEnumConstants();
+		if (types.length <= 0) {
+			throw new IllegalArgumentException("The given enum class must contain at least one enum constant.");
+		}
+		IKaryotypeBuilder builder = new Karyotype.Builder(types[0], identifier);
+		for (int i = 1; i < types.length; i++) {
+			IGeneType type = types[i];
+			builder.add(type);
+		}
+		return builder.build();
 	}
 
 	@Override
@@ -50,20 +64,6 @@ public class GeneticRegistry implements IGeneticRegistry {
 	@Override
 	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinitionBuilder<I, R>> getDefinition(String uid) {
 		return Optional.ofNullable((IGeneticDefinitionBuilder<I, R>) definitionBuilders.get(uid));
-	}
-
-	@Override
-	public <T extends Enum<T> & IGeneType> IKaryotype createKaryotype(Class<? extends T> enumClass) {
-		T[] types = enumClass.getEnumConstants();
-		if (types.length <= 0) {
-			throw new IllegalArgumentException("The given enum class must contain at least one enum constant.");
-		}
-		IKaryotypeBuilder builder = new Karyotype.Builder(types[0]);
-		for (int i = 1; i < types.length; i++) {
-			IGeneType type = types[i];
-			builder.add(type);
-		}
-		return builder.build();
 	}
 
 	public GeneticSystem createSystem() {
