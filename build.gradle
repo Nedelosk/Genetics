@@ -62,3 +62,35 @@ processResources {
 		exclude '**/*.md'
 	}
 }
+
+jar {
+	from sourceSets.main.output
+	from sourceSets.api.output
+}
+ 
+ task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allJava
+	from sourceSets.api.allJava
+}
+
+task apiJar(type: Jar) {
+	classifier = 'api'
+	from sourceSets.api.output
+
+	// TODO: when FG bug is fixed, remove allJava from the api jar.
+	// https://github.com/MinecraftForge/ForgeGradle/issues/369
+	// Gradle should be able to pull them from the -sources jar.
+	from sourceSets.api.allJava
+}
+
+artifacts {
+	archives javadocJar
+	archives sourcesJar
+	archives apiJar
+}
