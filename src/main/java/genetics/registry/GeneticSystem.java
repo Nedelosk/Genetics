@@ -33,13 +33,11 @@ public class GeneticSystem implements IGeneticSystem {
 		return Optional.ofNullable((IGeneticDefinition<I, R>) definitions.get(uid));
 	}
 
-	@Override
-	public void registerDefinition(IGeneticDefinition definition) {
+	void registerDefinition(IGeneticDefinition definition) {
 		definitions.put(definition.getUID(), definition);
 	}
 
-	@Override
-	public void registerGene(IGene gene, IGeneType... types) {
+	void registerGene(IGene gene, IGeneType... types) {
 		Arrays.stream(types).forEach(k -> {
 			geneByType.put(k, gene);
 			typesByGene.put(gene, k);

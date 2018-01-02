@@ -14,7 +14,7 @@ import genetics.api.individual.IIndividual;
 
 /**
  * <p>
- * The IGeneticSystem instance is passed to your genetic plugin in {@link IGeneticPlugin#registerDefinitions(IGeneticSystem)}}.
+ * The IGeneticSystem instance is passed to your genetic plugin in {@link IGeneticPlugin#onFinishRegistration(IGeneticSystem)}}.
  * Later you can get the instance from {@link GeneticsAPI#geneticSystem}.
  */
 public interface IGeneticSystem {
@@ -28,17 +28,6 @@ public interface IGeneticSystem {
 	 */
 	<I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinition<I, R>> getDefinition(String uid);
 
-	/**
-	 * Register a {@link IGeneticDefinition}.
-	 *
-	 * @param definition {@link IGeneticDefinition} to register.
-	 */
-	void registerDefinition(IGeneticDefinition definition);
-
-	/**
-	 * Register a gene.
-	 */
-	void registerGene(IGene gene, IGeneType... types);
 
 	/**
 	 * @return The gene that is registered for the given gene type.

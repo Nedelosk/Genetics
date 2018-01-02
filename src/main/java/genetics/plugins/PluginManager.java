@@ -48,6 +48,6 @@ public class PluginManager {
 		GeneticSystem system = Genetics.system = registry.createSystem();
 		//
 		GeneticsAPI.geneticSystem = system;
-		plugins.forEach(p -> p.registerDefinitions(system));
+		plugins.forEach(p -> p.onFinishRegistration(system));
 	}
 }

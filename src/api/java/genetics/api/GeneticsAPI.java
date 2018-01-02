@@ -8,5 +8,6 @@ public class GeneticsAPI {
 	public static IAlleleRegistry alleleRegistry;
 	public static IGeneticRegistry geneticRegistry;
 	public static IGeneticSystem geneticSystem;
+	public static IGeneticFactory geneticFactory;
 	public static IGeneticSaveHandler saveHandler;
 }

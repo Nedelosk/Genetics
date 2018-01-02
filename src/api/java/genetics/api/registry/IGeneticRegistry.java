@@ -24,7 +24,7 @@ import genetics.api.individual.IIndividual;
 public interface IGeneticRegistry {
 	/**
 	 * Creates a {@link IGeneBuilder} with the given name.
-	 * Later before {@link IGeneticPlugin#registerDefinitions(IGeneticSystem)} is passed to your genetic plugin the gene
+	 * Later before {@link IGeneticPlugin#onFinishRegistration(IGeneticSystem)} is passed to your genetic plugin the gene
 	 * will be build and registered.
 	 *
 	 * @param name the name of the gene
@@ -56,7 +56,7 @@ public interface IGeneticRegistry {
 
 	/**
 	 * Creates a {@link IGeneticDefinitionBuilder} with the given parameters.
-	 * Later before {@link IGeneticPlugin#registerDefinitions(IGeneticSystem)} is passed to your genetic plugin the
+	 * Later before {@link IGeneticPlugin#onFinishRegistration(IGeneticSystem)} is passed to your genetic plugin the
 	 * definition will be build and registered.
 	 * You can get a instance of the definition with {@link IGeneticSystem#getDefinition(String)}.
 	 *

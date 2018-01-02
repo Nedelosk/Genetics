@@ -62,7 +62,7 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	 * Quickly gets the species without loading the whole genome. And without creating absent chromosomes.
 	 */
 	@Nullable
-	public IAllele getAlleleDirectly(IGeneType geneType, boolean active, ItemStack itemStack) {
+	public IAllele getAlleleDirectly(ItemStack itemStack, IGeneType geneType, boolean active) {
 		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
 		if (nbtTagCompound == null) {
 			return null;
