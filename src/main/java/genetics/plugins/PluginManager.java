@@ -43,7 +43,7 @@ public class PluginManager {
 		plugins.forEach(p -> p.registerAlleles(alleleRegistry));
 		//
 		GeneticRegistry registry = new GeneticRegistry();
-		GeneticsAPI.geneRegistry = registry;
+		GeneticsAPI.geneticRegistry = registry;
 		plugins.forEach(p -> p.registerGenes(registry, GeneticFactory.INSTANCE));
 		GeneticSystem system = Genetics.system = registry.createSystem();
 		//

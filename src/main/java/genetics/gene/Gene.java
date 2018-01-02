@@ -36,7 +36,7 @@ public class Gene implements IGene {
 		this.alleles = builder.build();
 		Optional<IAllele> optional = getAllele(defaultKey);
 		if (!optional.isPresent()) {
-			throw new RuntimeException();
+			throw new IllegalStateException();
 		}
 		this.defaultAllele = optional.get();
 	}

@@ -5,7 +5,9 @@ import com.google.common.collect.Multimap;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import genetics.api.definition.IGeneticDefinition;
@@ -21,19 +23,19 @@ public class GeneticSystem implements IGeneticSystem {
 	private final HashMap<String, IGeneticDefinition> definitions = new HashMap<>();
 
 	@Override
-	public Collection<IGeneticDefinition> getDefinitions() {
-		return definitions.values();
+	public Map<String, IGeneticDefinition> getDefinitions() {
+		return Collections.unmodifiableMap(definitions);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinition<I, R>> getDefinition(String name) {
-		return Optional.ofNullable((IGeneticDefinition<I, R>) definitions.get(name));
+	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinition<I, R>> getDefinition(String uid) {
+		return Optional.ofNullable((IGeneticDefinition<I, R>) definitions.get(uid));
 	}
 
 	@Override
 	public void registerDefinition(IGeneticDefinition definition) {
-		definitions.put(definition.getName(), definition);
+		definitions.put(definition.getUID(), definition);
 	}
 
 	@Override

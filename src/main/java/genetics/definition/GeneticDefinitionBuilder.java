@@ -31,7 +31,7 @@ import genetics.alleles.AlleleTemplateBuilder;
 public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticRoot<I, ?>> implements IGeneticDefinitionBuilder<I, R> {
 	private final Map<IGeneticType, IGeneticHandler<I>> types = new HashMap<>();
 	private final Function<IGeneticDefinition<I, R>, R> rootFactory;
-	private final String name;
+	private final String uid;
 	private final IKaryotype karyotype;
 	private final HashMap<String, IAllele[]> templates = new HashMap<>();
 	private final Map<Item, IItemTranslator<I>> itemTranslators = new HashMap<>();
@@ -41,8 +41,8 @@ public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticR
 	private BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory = AlleleTemplateBuilder::new;
 	private BiFunction<IKaryotype, IAllele[], String> templateNameFactory;
 
-	public GeneticDefinitionBuilder(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
-		this.name = name;
+	public GeneticDefinitionBuilder(String uid, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+		this.uid = uid;
 		this.karyotype = karyotype;
 		this.rootFactory = rootFactory;
 		this.templateNameFactory = (k, a) -> a[this.karyotype.getTemplateType().getIndex()].getRegistryName().toString();
@@ -121,6 +121,6 @@ public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticR
 	public IGeneticDefinition<I, R> create() {
 		IGeneticTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
 		IGeneticTypes<I> types = typesFactory.apply(this.types);
-		return new GeneticDefinition<>(types, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates), templateFactory), name, rootFactory);
+		return new GeneticDefinition<>(types, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates), templateFactory), uid, rootFactory);
 	}
 }

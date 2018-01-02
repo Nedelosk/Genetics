@@ -35,21 +35,21 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	private final IGeneticTranslator<I> translator;
 	private final ITemplateContainer templateContainer;
 	private final IKaryotype karyotype;
-	private final String name;
+	private final String uid;
 	private final R root;
 
-	GeneticDefinition(IGeneticTypes<I> types, IGeneticTranslator<I> translator, ITemplateContainer templateContainer, String name, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+	GeneticDefinition(IGeneticTypes<I> types, IGeneticTranslator<I> translator, ITemplateContainer templateContainer, String uid, Function<IGeneticDefinition<I, R>, R> rootFactory) {
 		this.types = types;
 		this.translator = translator;
-		this.name = name;
+		this.uid = uid;
 		this.karyotype = templateContainer.getKaryotype();
 		this.templateContainer = templateContainer;
 		this.root = rootFactory.apply(this);
 	}
 
 	@Override
-	public String getName() {
-		return name;
+	public String getUID() {
+		return uid;
 	}
 
 	@Override

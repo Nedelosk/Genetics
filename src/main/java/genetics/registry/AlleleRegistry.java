@@ -17,7 +17,6 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 import genetics.api.alleles.Allele;
 import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleData;
 import genetics.api.alleles.IAlleleHandler;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.registry.IAlleleRegistry;
@@ -40,7 +39,7 @@ public class AlleleRegistry implements IAlleleRegistry {
 	@SuppressWarnings("unchecked")
 	public AlleleRegistry() {
 		RegistryBuilder<IAllele<?>> builder = new RegistryBuilder()
-			.setMaxID(2048)
+			.setMaxID(ALLELE_ARRAY_SIZE)
 			.setName(new ResourceLocation(Genetics.MOD_ID, "alleles"))
 			.setType(IAllele.class);
 		//Cast the registry to the class type so we can get the ids of the alleles
@@ -48,23 +47,8 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	@Override
-	public IAlleleRegistry registerAllele(IAlleleData value, String registryName, IAlleleKey... keys) {
-		return registerAllele(value, new ResourceLocation(registryName), keys);
-	}
-
-	@Override
-	public IAlleleRegistry registerAllele(IAlleleData value, ResourceLocation registryName, IAlleleKey... keys) {
-		return registerAllele(value.getValue(), value.isDominant(), registryName, keys);
-	}
-
-	@Override
-	public <V> IAlleleRegistry registerAllele(V value, boolean dominant, String registryName, IAlleleKey... keys) {
-		return registerAllele(value, dominant, new ResourceLocation(registryName), keys);
-	}
-
-	@Override
-	public <V> IAlleleRegistry registerAllele(V value, boolean dominant, ResourceLocation registryName, IAlleleKey... keys) {
-		return registerAllele(new Allele<>(value, dominant).setRegistryName(registryName), keys);
+	public <V> IAlleleRegistry registerAllele(V value, boolean dominant, IAlleleKey... keys) {
+		return registerAllele(new Allele<>(value, dominant).setRegistryName(Genetics.MOD_ID, value.toString() + "_" + dominant), keys);
 	}
 
 	@Override
@@ -79,11 +63,6 @@ public class AlleleRegistry implements IAlleleRegistry {
 		}
 		handlers.forEach(h -> h.onAddKeys(allele, keys));
 		return this;
-	}
-
-	@Override
-	public <V> IAlleleRegistry registerAllele(IAllele<V> allele, Collection<IAlleleKey> keys) {
-		return registerAllele(allele, keys.toArray(new IAlleleKey[keys.size()]));
 	}
 
 	@Override

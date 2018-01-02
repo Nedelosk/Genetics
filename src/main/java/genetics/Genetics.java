@@ -12,9 +12,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import genetics.api.GeneticsAPI;
@@ -97,23 +95,11 @@ public class Genetics {
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
-
-	}
-
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-
-	}
-
-	@EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event) {
 		GeneticSaveHandler.setWriteFormat(SaveFormat.BINARY);
 	}
 
 	public class NullStorage<T> implements Capability.IStorage<T> {
-		public NullStorage() { /* compiled code */ }
-
 		@Nullable
 		public NBTBase writeNBT(Capability<T> capability, T instance, EnumFacing side) {
 			/* compiled code */

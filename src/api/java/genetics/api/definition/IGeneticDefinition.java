@@ -6,7 +6,10 @@ import genetics.api.translators.IGeneticTranslator;
 
 public interface IGeneticDefinition<I extends IIndividual, R extends IGeneticRoot> extends IGeneticTranslator<I>, IGeneticTypes<I>, IKaryotype, ITemplateContainer {
 
-	String getName();
+	/**
+	 * @return The string based unique identifier of this definition.
+	 */
+	String getUID();
 
 	R root();
 }
