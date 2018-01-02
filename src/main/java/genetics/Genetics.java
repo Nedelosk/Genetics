@@ -26,6 +26,7 @@ import genetics.api.gene.IGeneType;
 import genetics.api.individual.IGeneticType;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IIndividualHandler;
+
 import genetics.individual.GeneticSaveHandler;
 import genetics.individual.SaveFormat;
 import genetics.plugins.PluginManager;

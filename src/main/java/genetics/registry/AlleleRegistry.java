@@ -15,13 +15,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-import genetics.Genetics;
 import genetics.api.alleles.Allele;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleData;
 import genetics.api.alleles.IAlleleHandler;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.registry.IAlleleRegistry;
+
+import genetics.Genetics;
 
 public class AlleleRegistry implements IAlleleRegistry {
 

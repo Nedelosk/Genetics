@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import genetics.Karyotype;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticDefinitionBuilder;
 import genetics.api.definition.IGeneticRoot;
@@ -15,6 +14,8 @@ import genetics.api.gene.IKaryotype;
 import genetics.api.gene.IKaryotypeBuilder;
 import genetics.api.individual.IIndividual;
 import genetics.api.registry.IGeneticRegistry;
+
+import genetics.Karyotype;
 import genetics.definition.GeneticDefinitionBuilder;
 import genetics.gene.Gene;
 

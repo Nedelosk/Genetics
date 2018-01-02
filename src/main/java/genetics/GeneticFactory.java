@@ -2,7 +2,6 @@ package genetics;
 
 import net.minecraft.item.ItemStack;
 
-import genetics.alleles.AlleleTemplateBuilder;
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplateBuilder;
@@ -11,6 +10,8 @@ import genetics.api.definition.IGeneticRoot;
 import genetics.api.individual.IGeneticType;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IIndividualHandler;
+
+import genetics.alleles.AlleleTemplateBuilder;
 import genetics.individual.IndividualHandler;
 
 public enum GeneticFactory implements IGeneticFactory {

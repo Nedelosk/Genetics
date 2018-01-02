@@ -6,10 +6,10 @@ import java.util.Set;
 
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
-import forestry.core.utils.Log;
-
 import genetics.api.GeneticPlugin;
 import genetics.api.IGeneticPlugin;
+
+import forestry.core.utils.Log;
 
 public class PluginUtil {
 	private PluginUtil() {

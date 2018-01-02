@@ -11,7 +11,6 @@ import java.util.function.Function;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-import genetics.alleles.AlleleTemplateBuilder;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
@@ -26,6 +25,8 @@ import genetics.api.individual.IIndividual;
 import genetics.api.translators.IBlockTranslator;
 import genetics.api.translators.IGeneticTranslator;
 import genetics.api.translators.IItemTranslator;
+
+import genetics.alleles.AlleleTemplateBuilder;
 
 public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticRoot<I, ?>> implements IGeneticDefinitionBuilder<I, R> {
 	private final Map<IGeneticType, IGeneticHandler<I>> types = new HashMap<>();

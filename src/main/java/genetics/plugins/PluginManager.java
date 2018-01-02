@@ -7,11 +7,12 @@ import java.util.List;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 
-import genetics.GeneticFactory;
-import genetics.Genetics;
 import genetics.api.GeneticPlugin;
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticPlugin;
+
+import genetics.GeneticFactory;
+import genetics.Genetics;
 import genetics.registry.AlleleRegistry;
 import genetics.registry.GeneticRegistry;
 import genetics.registry.GeneticSystem;

@@ -11,6 +11,7 @@ import genetics.api.gene.IKaryotype;
 import genetics.api.gene.IKaryotypeBuilder;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
+
 import genetics.individual.Chromosome;
 import genetics.individual.Genome;
 

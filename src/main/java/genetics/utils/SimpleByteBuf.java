@@ -5,11 +5,12 @@ import java.util.Arrays;
 
 import net.minecraft.util.ResourceLocation;
 
-import genetics.Genetics;
 import genetics.api.alleles.IAllele;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
+
+import genetics.Genetics;
 import genetics.individual.Chromosome;
 import genetics.individual.ChromosomeInfo;
 import genetics.registry.AlleleRegistry;

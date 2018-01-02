@@ -10,6 +10,7 @@ import genetics.api.alleles.IAllele;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
+
 import genetics.utils.SimpleByteBuf;
 
 public enum SaveFormat {

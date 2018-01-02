@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import genetics.Log;
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticSaveHandler;
 import genetics.api.alleles.IAllele;
@@ -16,6 +15,8 @@ import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
+
+import genetics.Log;
 
 public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	INSTANCE;

@@ -11,7 +11,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import genetics.Genetics;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticRoot;
@@ -19,6 +18,8 @@ import genetics.api.gene.IGeneType;
 import genetics.api.individual.IGeneticType;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IIndividualHandler;
+
+import genetics.Genetics;
 
 public class IndividualHandler<I extends IIndividual> implements IIndividualHandler<I>, ICapabilityProvider {
 	private final ItemStack container;
