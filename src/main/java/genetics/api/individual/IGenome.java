@@ -13,7 +13,7 @@ public interface IGenome {
 
 	IChromosome[] getChromosomes();
 
-	IGeneticDefinition getDefininition();
+	IGeneticDefinition getDefinition();
 
 	NBTTagCompound writeToNBT(NBTTagCompound compound);
 }

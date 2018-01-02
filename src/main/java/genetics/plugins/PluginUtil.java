@@ -22,9 +22,9 @@ public class PluginUtil {
 
 	private static <T> List<T> getInstances(ASMDataTable asmDataTable, Class annotationClass, Class<T> instanceClass) {
 		String annotationClassName = annotationClass.getCanonicalName();
-		Set<ASMDataTable.ASMData> asmDatas = asmDataTable.getAll(annotationClassName);
+		Set<ASMDataTable.ASMData> abmData = asmDataTable.getAll(annotationClassName);
 		List<T> instances = new ArrayList<>();
-		for (ASMDataTable.ASMData asmData : asmDatas) {
+		for (ASMDataTable.ASMData asmData : abmData) {
 			try {
 				Class<?> asmClass = Class.forName(asmData.getClassName());
 				Class<? extends T> asmInstanceClass = asmClass.asSubclass(instanceClass);

@@ -27,7 +27,7 @@ public class Genome implements IGenome {
 	}
 
 	@Override
-	public IGeneticDefinition getDefininition() {
+	public IGeneticDefinition getDefinition() {
 		return null;
 	}
 

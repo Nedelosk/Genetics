@@ -14,7 +14,7 @@ import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
 
 public final class AlleleTemplate implements IAlleleTemplate {
-	public final IAllele[] alleles;
+	private final IAllele[] alleles;
 	private final IKaryotype karyotype;
 
 	AlleleTemplate(IAllele[] alleles, IKaryotype karyotype) {

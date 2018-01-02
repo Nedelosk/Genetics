@@ -32,7 +32,7 @@ public enum SaveFormat {
 		}
 
 		@Override
-		public IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
+		IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
 			IGeneType[] geneTypes = karyotype.getGeneTypes();
 			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, 10);
 			IChromosome[] chromosomes = new IChromosome[geneTypes.length];
@@ -91,7 +91,7 @@ public enum SaveFormat {
 
 		@SuppressWarnings("deprecation")
 		@Override
-		public IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
+		IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
 			IGeneType[] geneTypes = karyotype.getGeneTypes();
 			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, 10);
 			IChromosome[] chromosomes = new IChromosome[geneTypes.length];
@@ -147,7 +147,7 @@ public enum SaveFormat {
 		private static final String DATA_TAG = "data";
 
 		@Override
-		public NBTTagCompound writeTag(IChromosome[] chromosomes, IKaryotype karyotype, NBTTagCompound tagCompound) {
+		NBTTagCompound writeTag(IChromosome[] chromosomes, IKaryotype karyotype, NBTTagCompound tagCompound) {
 			SimpleByteBuf byteBuf = new SimpleByteBuf();
 			byteBuf.writeChromosomes(chromosomes, karyotype);
 			tagCompound.setByteArray(DATA_TAG, byteBuf.toByteArray());
@@ -157,7 +157,7 @@ public enum SaveFormat {
 		}
 
 		@Override
-		public IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
+		IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
 			byte[] data = tagCompound.getByteArray(DATA_TAG);
 			SimpleByteBuf simpleByteBuf = new SimpleByteBuf(data);
 			return simpleByteBuf.readChromosomes(karyotype);

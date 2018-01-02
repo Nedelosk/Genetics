@@ -20,7 +20,7 @@ import genetics.Log;
 
 public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	INSTANCE;
-	public static final String GENOME_TAG = "Genome";
+	private static final String GENOME_TAG = "Genome";
 	private static SaveFormat writeFormat = SaveFormat.UID;
 
 	public static void setWriteFormat(SaveFormat writeFormat) {
@@ -36,7 +36,7 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 		return format.readTag(karyotype, tagCompound);
 	}
 
-	public SaveFormat getFormat(NBTTagCompound tagCompound) {
+	private SaveFormat getFormat(NBTTagCompound tagCompound) {
 		for (SaveFormat format : SaveFormat.values()) {
 			if (format.canLoad(tagCompound)) {
 				return format;

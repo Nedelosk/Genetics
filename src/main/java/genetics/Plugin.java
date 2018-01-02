@@ -20,8 +20,6 @@ public class Plugin implements IGeneticPlugin {
 	@Override
 	public void registerAlleles(IAlleleRegistry registry) {
 		registry.registerAllele(0, false, "cultivation:fertility", AlleleKey.FERTILITY_0);
-		//registry.createCategory("integer", (v, d)-> new Allele(v, d, "culti.f"));
-		//registry.getCategory("integer").ifPresent((c)->c.registerAllele(0, false));
 	}
 
 	@Override

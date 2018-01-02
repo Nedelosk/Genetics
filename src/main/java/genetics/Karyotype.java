@@ -19,7 +19,7 @@ public class Karyotype implements IKaryotype {
 	private final IGeneType[] geneTypes;
 	private final IGeneType templateType;
 
-	Karyotype(Set<IGeneType> geneTypes, IGeneType templateType) {
+	private Karyotype(Set<IGeneType> geneTypes, IGeneType templateType) {
 		this.templateType = templateType;
 		this.geneTypes = new IGeneType[geneTypes.size()];
 		for (IGeneType key : geneTypes) {

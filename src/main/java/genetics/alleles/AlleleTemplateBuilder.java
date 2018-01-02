@@ -12,8 +12,8 @@ import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 
 public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
-	public final IAllele[] alleles;
-	public final IKaryotype karyotype;
+	private final IAllele[] alleles;
+	private final IKaryotype karyotype;
 
 	public AlleleTemplateBuilder(IKaryotype karyotype, IAllele[] alleles) {
 		this.alleles = alleles;

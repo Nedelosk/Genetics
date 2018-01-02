@@ -27,7 +27,7 @@ public class Gene implements IGene {
 	private final IAllele defaultAllele;
 	private final String name;
 
-	public Gene(ImmutableMap<IAlleleKey, String> alleleInstances, IAlleleKey defaultKey, String name) {
+	private Gene(ImmutableMap<IAlleleKey, String> alleleInstances, IAlleleKey defaultKey, String name) {
 		this.name = name;
 		this.alleleInstances = alleleInstances;
 		IAlleleRegistry alleleRegistry = GeneticsAPI.alleleRegistry;

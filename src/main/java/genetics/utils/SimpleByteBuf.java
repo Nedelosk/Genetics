@@ -152,6 +152,7 @@ public class SimpleByteBuf {
 		return chromosomes;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Chromosome readChromosome(IGeneType type, @Nullable ResourceLocation activeSpeciesUid, @Nullable ResourceLocation inactiveSpeciesUid) {
 		IAllele firstAllele = readAllele();
 		IAllele secondAllele = readAllele();
