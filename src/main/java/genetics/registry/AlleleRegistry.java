@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.Set;
 
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.registries.ForgeRegistry;
@@ -48,7 +49,8 @@ public class AlleleRegistry implements IAlleleRegistry {
 
 	@Override
 	public <V> IAlleleRegistry registerAllele(V value, boolean dominant, IAlleleKey... keys) {
-		return registerAllele(new Allele<>(value, dominant).setRegistryName(Genetics.MOD_ID, value.toString() + "_" + dominant), keys);
+		String alleleName = value instanceof IStringSerializable ? ((IStringSerializable) value).getName() : value.toString();
+		return registerAllele(new Allele<>(value, dominant).setRegistryName(Genetics.MOD_ID, alleleName + "_" + dominant), keys);
 	}
 
 	@Override

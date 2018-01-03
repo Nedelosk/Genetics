@@ -3,6 +3,7 @@ package genetics.api.registry;
 import java.util.Collection;
 import java.util.Optional;
 
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 
 import genetics.api.GeneticsAPI;
@@ -33,6 +34,8 @@ public interface IAlleleRegistry {
 	 *
 	 * The registry name of the allele will be created out of the given value and the given dominant state:
 	 * "value" + "_" + "dominant"
+	 * You can control the string that is used for the value by implementing {@link Object#toString()} or
+	 * {@link IStringSerializable#getName()}.
 	 *
 	 * @param value    the value of the allele
 	 * @param dominant if true the allele is dominant, otherwise the allele is recessive.

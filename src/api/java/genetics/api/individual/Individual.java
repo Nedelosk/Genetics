@@ -8,10 +8,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import genetics.api.GeneticsAPI;
 
 public abstract class Individual implements IIndividual {
-
-	private final IGenome genome;
+	protected final IGenome genome;
 	@Nullable
-	private IGenome mate;
+	protected IGenome mate;
 
 	public Individual(IGenome genome) {
 		this.genome = genome;
