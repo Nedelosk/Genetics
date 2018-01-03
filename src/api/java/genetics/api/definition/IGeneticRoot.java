@@ -5,27 +5,63 @@ import javax.annotation.Nullable;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IGeneticStat;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 
-public interface IGeneticRoot<I extends IIndividual, S extends IGeneticStat> {
+/**
+ * The IGeneticRoot offers several functions to create {@link IIndividual}s and to wrap the genome of this
+ * {@link IIndividual}s.
+ *
+ * @param <I> The individual that this root provides.
+ * @param <W> The type of the wrapper that is used by this root.
+ */
+public interface IGeneticRoot<I extends IIndividual, W extends IGenomeWrapper> {
 
-	IGeneticDefinition<I, IGeneticRoot<I, S>> getDefinition();
+	/**
+	 * Gets the definition that provides this root.
+	 */
+	IGeneticDefinition<I, IGeneticRoot<I, W>> getDefinition();
 
+	/**
+	 * Uses the information that the NBT-Data contains to create a {@link IIndividual}.
+	 */
 	I create(NBTTagCompound compound);
 
+	/**
+	 * Creates a {@link IIndividual} that contains this genome.
+	 */
 	I create(IGenome genome);
 
+	/**
+	 * Creates a {@link IIndividual} that contains the two genome.
+	 */
 	I create(IGenome genome, IGenome mate);
 
+	/**
+	 * Creates a {@link IIndividual} that contains the alleles of the template in a genome.
+	 *
+	 * @param template The alleles of the genome.
+	 */
 	default I templateAsIndividual(IAllele[] template) {
 		return templateAsIndividual(template, null);
 	}
 
+	/**
+	 * Creates a {@link IIndividual} that contains the alleles of the two templates in a genome.
+	 *
+	 * @param templateActive   The active alleles of the genome.
+	 * @param templateInactive The inactive alleles of the genome.
+	 */
 	I templateAsIndividual(IAllele[] templateActive, @Nullable IAllele[] templateInactive);
 
+	/**
+	 * A instance of an {@link IIndividual} that is used if a item has lost its generic data.
+	 */
 	I getDefaultMember();
 
-	S createStat(IGenome genome);
+	/**
+	 * Creates a wrapper that can be used to give access to the values of the alleles that the genome contains.
+	 */
+	W createWrapper(IGenome genome);
 }

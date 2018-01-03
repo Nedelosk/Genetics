@@ -51,13 +51,6 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 		return format.getAlleleDirectly(genomeNBT, geneType, active);
 	}
 
-	public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneType) {
-		SaveFormat format = getFormat(genomeNBT);
-		return format.getSpecificChromosome(genomeNBT, geneType);
-	}
-
-	// NBT RETRIEVAL
-
 	/**
 	 * Quickly gets the species without loading the whole genome. And without creating absent chromosomes.
 	 */
@@ -80,9 +73,16 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 		return allele;
 	}
 
+	// NBT RETRIEVAL
+
 	public IAllele getAllele(ItemStack itemStack, IGeneType geneType, boolean active) {
 		IChromosome chromosome = getSpecificChromosome(itemStack, geneType);
 		return active ? chromosome.getActiveAllele() : chromosome.getInactiveAllele();
+	}
+
+	public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneType) {
+		SaveFormat format = getFormat(genomeNBT);
+		return format.getSpecificChromosome(genomeNBT, geneType);
 	}
 
 	/**

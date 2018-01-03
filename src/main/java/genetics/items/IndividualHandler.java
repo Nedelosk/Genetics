@@ -35,7 +35,7 @@ public class IndividualHandler<I extends IIndividual> implements IIndividualHand
 
 	@Override
 	public Optional<I> getIndividual() {
-		return getDefinition().getMember(container);
+		return getDefinition().createIndividual(container);
 	}
 
 	@Override

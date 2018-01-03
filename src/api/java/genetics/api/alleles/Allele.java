@@ -26,10 +26,7 @@ public class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implements I
 
 	@Override
 	public int hashCode() {
-		int hash = 1;
-		hash = hash * 31 + value.hashCode();
-		hash = hash * 31 + Boolean.hashCode(dominant);
-		return hash;
+		return (value.hashCode() * 31) + Boolean.hashCode(dominant);
 	}
 
 	@Override

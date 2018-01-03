@@ -19,33 +19,32 @@ public class GeneticTypes<I extends IIndividual> implements IGeneticTypes<I> {
 	}
 
 	@Override
-	public ItemStack getMember(I individual, IGeneticType type) {
+	public ItemStack createStack(I individual, IGeneticType type) {
 		IGeneticHandler<I> handler = types.get(type);
 		if (handler == null) {
 			return ItemStack.EMPTY;
 		}
-		return handler.getMember(individual);
+		return handler.createStack(individual);
 	}
 
 	@Override
-	public Optional<I> getMember(ItemStack itemStack) {
+	public Optional<I> createIndividual(ItemStack itemStack) {
 		Optional<IGeneticType> optional = getType(itemStack);
 		if (!optional.isPresent()) {
 			return Optional.empty();
 		}
-		IGeneticType type = optional.get();
-		IGeneticHandler<I> handler = types.get(type);
+		IGeneticHandler<I> handler = types.get(optional.get());
 		if (handler == null) {
 			return Optional.empty();
 		}
-		return Optional.of(handler.getMember(itemStack));
+		return Optional.of(handler.createIndividual(itemStack));
 	}
 
 	@Override
 	public Optional<IGeneticType> getType(ItemStack itemStack) {
 		for (Map.Entry<IGeneticType, IGeneticHandler<I>> entry : types.entrySet()) {
 			IGeneticHandler handler = entry.getValue();
-			if (handler.isMember(itemStack)) {
+			if (itemStack.getItem() == handler.getItem()) {
 				return Optional.of(entry.getKey());
 			}
 		}

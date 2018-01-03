@@ -7,8 +7,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import genetics.api.definition.IGeneticDefinitionBuilder;
 import genetics.api.individual.IIndividual;
 
+/**
+ * Translates a item or a block that does not contain any genetic information into a {@link ItemStack} or a
+ * {@link IIndividual} if a {@link IItemTranslator} or {@link IBlockTranslator} was registered for it at the
+ * {@link IGeneticDefinitionBuilder}.
+ */
 public interface IGeneticTranslator<I extends IIndividual> {
 	/**
 	 * @param translatorKey The key of the translator, by default it is the item of the {@link ItemStack} that you want

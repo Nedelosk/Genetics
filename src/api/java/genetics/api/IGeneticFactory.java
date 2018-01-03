@@ -44,16 +44,16 @@ public interface IGeneticFactory {
 	 * Creates a instance of the default implementation of a {@link IGenome} out of the NBT-Data.
 	 *
 	 * @param karyotype The karyotype of the individual that contains the genome.
-	 * @param compound The NBT-Data that contains the information about the genome. You can use
-	 * {@link IGenome#writeToNBT(NBTTagCompound)} or
-	 * {@link IGeneticSaveHandler#writeTag(IChromosome[], IKaryotype, NBTTagCompound)} to get the data.
+	 * @param compound  The NBT-Data that contains the information about the genome. You can use
+	 *                  {@link IGenome#writeToNBT(NBTTagCompound)} or
+	 *                  {@link IGeneticSaveHandler#writeTag(IChromosome[], IKaryotype, NBTTagCompound)} to get the data.
 	 */
 	IGenome createGenome(IKaryotype karyotype, NBTTagCompound compound);
 
 	/**
 	 * Creates a instance of the default implementation of a {@link IGenome}.
 	 *
-	 * @param karyotype The karyotype of the individual that contains the genome.
+	 * @param karyotype   The karyotype of the individual that contains the genome.
 	 * @param chromosomes The chromosomes that the genome should contain
 	 */
 	IGenome createGenome(IKaryotype karyotype, IChromosome[] chromosomes);
@@ -79,10 +79,9 @@ public interface IGeneticFactory {
 	/**
 	 * Creates a default implementation of a {@link IIndividualHandler}
 	 *
-	 * @param itemStack   The item that contains the genetic information.
-	 * @param type        The species type of the individual.
-	 * @param definition  The definition that describes the individual.
-	 *
+	 * @param itemStack  The item that contains the genetic information.
+	 * @param type       The species type of the individual.
+	 * @param definition The definition that describes the individual.
 	 * @return A instance of {@link IIndividualHandler}.
 	 */
 	<I extends IIndividual> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IGeneticType type, IGeneticDefinition<I, IGeneticRoot> definition);

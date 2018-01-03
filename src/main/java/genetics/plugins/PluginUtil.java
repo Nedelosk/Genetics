@@ -16,7 +16,7 @@ public class PluginUtil {
 
 	}
 
-	public static List<IGeneticPlugin> getPlugins(ASMDataTable asmDataTable) {
+	static List<IGeneticPlugin> getPlugins(ASMDataTable asmDataTable) {
 		return getInstances(asmDataTable, GeneticPlugin.class, IGeneticPlugin.class);
 	}
 

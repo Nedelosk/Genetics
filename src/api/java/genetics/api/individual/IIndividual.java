@@ -7,5 +7,7 @@ public interface IIndividual {
 
 	IGenome getGenome();
 
+	IGenome getMate();
+
 	IIndividual copy();
 }

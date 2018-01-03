@@ -28,7 +28,7 @@ import genetics.api.translators.IItemTranslator;
 
 import genetics.alleles.AlleleTemplateBuilder;
 
-public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticRoot<I, ?>> implements IGeneticDefinitionBuilder<I, R> {
+public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticRoot<I, ?>> implements IGeneticDefinitionBuilder<I> {
 	private final Map<IGeneticType, IGeneticHandler<I>> types = new HashMap<>();
 	private final Function<IGeneticDefinition<I, R>, R> rootFactory;
 	private final String uid;
@@ -49,25 +49,25 @@ public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticR
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> registerType(IGeneticType type, IGeneticHandler<I> handler) {
+	public IGeneticDefinitionBuilder<I> registerType(IGeneticType type, IGeneticHandler<I> handler) {
 		types.put(type, handler);
 		return this;
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> registerTranslator(Block translatorKey, IBlockTranslator<I> translator) {
+	public IGeneticDefinitionBuilder<I> registerTranslator(Block translatorKey, IBlockTranslator<I> translator) {
 		blockTranslators.put(translatorKey, translator);
 		return this;
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> registerTranslator(Item translatorKey, IItemTranslator<I> translator) {
+	public IGeneticDefinitionBuilder<I> registerTranslator(Item translatorKey, IItemTranslator<I> translator) {
 		itemTranslators.put(translatorKey, translator);
 		return this;
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> registerTemplate(IAllele[] template) {
+	public IGeneticDefinitionBuilder<I> registerTemplate(IAllele[] template) {
 		Preconditions.checkNotNull(template, "Tried to register null template");
 		Preconditions.checkArgument(template.length > 0, "Tried to register empty template");
 
@@ -76,7 +76,7 @@ public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticR
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> registerTemplate(String identifier, IAllele[] template) {
+	public IGeneticDefinitionBuilder<I> registerTemplate(String identifier, IAllele[] template) {
 		Preconditions.checkNotNull(template, "Tried to register null template");
 		Preconditions.checkArgument(template.length > 0, "Tried to register empty template");
 
@@ -85,35 +85,35 @@ public class GeneticDefinitionBuilder<I extends IIndividual, R extends IGeneticR
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> registerTemplate(IAlleleTemplate template) {
+	public IGeneticDefinitionBuilder<I> registerTemplate(IAlleleTemplate template) {
 		return registerTemplate(template.alleles());
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> registerTemplate(String identifier, IAlleleTemplate template) {
+	public IGeneticDefinitionBuilder<I> registerTemplate(String identifier, IAlleleTemplate template) {
 		return registerTemplate(identifier, template.alleles());
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> setTranslator(BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IGeneticTranslator<I>> translatorFactory) {
+	public IGeneticDefinitionBuilder<I> setTranslator(BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IGeneticTranslator<I>> translatorFactory) {
 		this.translatorFactory = translatorFactory;
 		return this;
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> setTypes(Function<Map<IGeneticType, IGeneticHandler<I>>, IGeneticTypes<I>> typesFactory) {
+	public IGeneticDefinitionBuilder<I> setTypes(Function<Map<IGeneticType, IGeneticHandler<I>>, IGeneticTypes<I>> typesFactory) {
 		this.typesFactory = typesFactory;
 		return this;
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
+	public IGeneticDefinitionBuilder<I> setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
 		this.templateFactory = templateFactory;
 		return this;
 	}
 
 	@Override
-	public IGeneticDefinitionBuilder<I, R> setTemplateNameFactory(BiFunction<IKaryotype, IAllele[], String> templateNameFactory) {
+	public IGeneticDefinitionBuilder<I> setTemplateNameFactory(BiFunction<IKaryotype, IAllele[], String> templateNameFactory) {
 		this.templateNameFactory = templateNameFactory;
 		return this;
 	}

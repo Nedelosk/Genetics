@@ -54,7 +54,7 @@ public class GeneticRegistry implements IGeneticRegistry {
 	}
 
 	@Override
-	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I, R> createDefinition(String uid, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I> createDefinition(String uid, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
 		GeneticDefinitionBuilder<I, R> definitionBuilder = new GeneticDefinitionBuilder<>(uid, karyotype, rootFactory);
 		definitionBuilders.put(uid, definitionBuilder);
 		return definitionBuilder;
@@ -62,8 +62,8 @@ public class GeneticRegistry implements IGeneticRegistry {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinitionBuilder<I, R>> getDefinition(String uid) {
-		return Optional.ofNullable((IGeneticDefinitionBuilder<I, R>) definitionBuilders.get(uid));
+	public <I extends IIndividual> Optional<IGeneticDefinitionBuilder<I>> getDefinition(String uid) {
+		return Optional.ofNullable((IGeneticDefinitionBuilder<I>) definitionBuilders.get(uid));
 	}
 
 	public GeneticSystem createSystem() {

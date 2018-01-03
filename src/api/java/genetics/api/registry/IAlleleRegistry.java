@@ -20,8 +20,11 @@ import genetics.api.alleles.IAlleleKey;
  */
 public interface IAlleleRegistry {
 
-	default IAlleleRegistry registerAllele(IAlleleData value, IAlleleKey... keys) {
-		return registerAllele(value.getValue(), value.isDominant(), keys);
+	/**
+	 * Creates a allele with the data that the {@link IAlleleData} contains.
+	 */
+	default IAlleleRegistry registerAllele(IAlleleData value) {
+		return registerAllele(value.getValue(), value.isDominant(), value.getKey());
 	}
 
 	/**

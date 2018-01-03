@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import genetics.api.GeneticsAPI;
-import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticPlugin;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticDefinitionBuilder;
@@ -18,7 +17,7 @@ import genetics.api.individual.IIndividual;
 /**
  * The {@link IGeneticRegistry} offers several functions for creating and retrieving several gene related things.
  * <p>
- * The IGeneticRegistry instance is passed to your genetic plugin in {@link IGeneticPlugin#register(IGeneticRegistry, IGeneticFactory)}}.
+ * The IGeneticRegistry instance is passed to your genetic plugin in {@link IGeneticPlugin#register(IGeneticRegistry)}}.
  * Later you can get the instance from {@link GeneticsAPI#geneticRegistry}.
  */
 public interface IGeneticRegistry {
@@ -66,12 +65,12 @@ public interface IGeneticRegistry {
 	 * @param <I>         The type of the individual that the root that the definition contains defines.
 	 * @param <R>         The type of the root that the definition contains.
 	 */
-	<I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I, R> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory);
+	<I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory);
 
 	/**
 	 * Gets an IGeneticDefinitionBuilder
 	 *
 	 * @param name The string based unique identifier of this definition to retrieve.
 	 */
-	<I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinitionBuilder<I, R>> getDefinition(String name);
+	<I extends IIndividual> Optional<IGeneticDefinitionBuilder<I>> getDefinition(String name);
 }

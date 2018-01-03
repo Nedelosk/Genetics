@@ -7,10 +7,10 @@ import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IGeneticRoot;
 import genetics.api.gene.IGeneType;
-import genetics.api.gene.IGeneticStat;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 
 public final class AlleleTemplate implements IAlleleTemplate {
@@ -54,7 +54,7 @@ public final class AlleleTemplate implements IAlleleTemplate {
 	}
 
 	@Override
-	public <I extends IIndividual> I toIndividual(IGeneticRoot<I, IGeneticStat> root, @Nullable IAlleleTemplate inactiveTemplate) {
+	public <I extends IIndividual> I toIndividual(IGeneticRoot<I, IGenomeWrapper> root, @Nullable IAlleleTemplate inactiveTemplate) {
 		return root.templateAsIndividual(alleles, inactiveTemplate == null ? null : inactiveTemplate.alleles());
 	}
 

@@ -12,23 +12,23 @@ import genetics.api.registry.IGeneticRegistry;
 
 public enum RegistryHelper implements IRegistryHelper {
 	INSTANCE;
-	private Set<SimpleGene> genes = new HashSet<>();
+	private Set<GeneData> genes = new HashSet<>();
 
 	@Override
-	public void addSimpleGene(String name, IGeneType geneType, IAlleleConstant[] constants) {
-		genes.add(new SimpleGene(name, geneType, constants));
+	public void addGene(String name, IGeneType geneType, IAlleleConstant[] constants) {
+		genes.add(new GeneData(name, geneType, constants));
 	}
 
 	void onRegisterAlleles(IAlleleRegistry registry) {
-		for (SimpleGene gene : genes) {
+		for (GeneData gene : genes) {
 			for (IAlleleConstant data : gene.constants) {
-				registry.registerAllele(data, data.getKey());
+				registry.registerAllele(data);
 			}
 		}
 	}
 
 	void onRegister(IGeneticRegistry registry) {
-		for (SimpleGene gene : genes) {
+		for (GeneData gene : genes) {
 			IGeneBuilder geneBuilder = registry.addGene(gene.name).addType(gene.geneType);
 			for (IAlleleConstant constant : gene.constants) {
 				if (constant.isDefault()) {
@@ -39,12 +39,12 @@ public enum RegistryHelper implements IRegistryHelper {
 		}
 	}
 
-	private static class SimpleGene {
+	private static class GeneData {
 		private final String name;
 		private final IGeneType geneType;
 		private final IAlleleConstant[] constants;
 
-		private SimpleGene(String name, IGeneType geneType, IAlleleConstant[] constants) {
+		private GeneData(String name, IGeneType geneType, IAlleleConstant[] constants) {
 			this.name = name;
 			this.geneType = geneType;
 			this.constants = constants;

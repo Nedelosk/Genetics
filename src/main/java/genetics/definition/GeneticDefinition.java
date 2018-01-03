@@ -53,7 +53,7 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	}
 
 	@Override
-	public R root() {
+	public R getRoot() {
 		return root;
 	}
 
@@ -88,13 +88,13 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	}
 
 	@Override
-	public ItemStack getMember(I individual, IGeneticType type) {
-		return types.getMember(individual, type);
+	public ItemStack createStack(I individual, IGeneticType type) {
+		return types.createStack(individual, type);
 	}
 
 	@Override
-	public Optional<I> getMember(ItemStack itemStack) {
-		return types.getMember(itemStack);
+	public Optional<I> createIndividual(ItemStack itemStack) {
+		return types.createIndividual(itemStack);
 	}
 
 	@Override
