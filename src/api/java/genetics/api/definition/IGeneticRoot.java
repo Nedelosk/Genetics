@@ -21,7 +21,7 @@ public interface IGeneticRoot<I extends IIndividual, W extends IGenomeWrapper> {
 	/**
 	 * Gets the definition that provides this root.
 	 */
-	IGeneticDefinition<I, IGeneticRoot> getDefinition();
+	IGeneticDefinition<I, ? extends IGeneticRoot> getDefinition();
 
 	/**
 	 * Uses the information that the NBT-Data contains to create a {@link IIndividual}.

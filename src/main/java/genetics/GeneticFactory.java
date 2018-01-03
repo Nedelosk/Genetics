@@ -1,11 +1,14 @@
 package genetics;
 
+import java.util.Arrays;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
+import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticRoot;
@@ -18,6 +21,7 @@ import genetics.api.individual.IIndividual;
 import genetics.api.items.IGeneTemplate;
 import genetics.api.items.IIndividualHandler;
 
+import genetics.alleles.AlleleTemplate;
 import genetics.alleles.AlleleTemplateBuilder;
 import genetics.individual.Chromosome;
 import genetics.individual.Genome;
@@ -28,13 +32,18 @@ public enum GeneticFactory implements IGeneticFactory {
 	INSTANCE;
 
 	@Override
-	public IAlleleTemplateBuilder createTemplate(IGeneticDefinition definition) {
+	public IAlleleTemplateBuilder createTemplateBuilder(IGeneticDefinition definition) {
 		return new AlleleTemplateBuilder(definition, definition.getDefaultTemplate().alleles());
 	}
 
 	@Override
-	public IAlleleTemplateBuilder createTemplate(IGeneticDefinition definition, IAllele[] alleles) {
+	public IAlleleTemplateBuilder createTemplateBuilder(IGeneticDefinition definition, IAllele[] alleles) {
 		return new AlleleTemplateBuilder(definition, alleles);
+	}
+
+	@Override
+	public IAlleleTemplate createTemplate(IGeneticDefinition definition, IAllele[] alleles) {
+		return new AlleleTemplate(Arrays.copyOf(alleles, alleles.length), definition);
 	}
 
 	@Override

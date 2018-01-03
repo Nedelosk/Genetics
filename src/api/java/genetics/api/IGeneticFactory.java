@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
+import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticRoot;
@@ -29,7 +30,7 @@ public interface IGeneticFactory {
 	 *
 	 * @param definition The definition that describes the individual which this template belongs to.
 	 */
-	IAlleleTemplateBuilder createTemplate(IGeneticDefinition definition);
+	IAlleleTemplateBuilder createTemplateBuilder(IGeneticDefinition definition);
 
 	/**
 	 * Creates a {@link IAlleleTemplateBuilder} that contains the given allele array.
@@ -38,7 +39,16 @@ public interface IGeneticFactory {
 	 * @param alleles    A array that contains all alleles for this template. It must have the same length like the
 	 *                   karyotype of the individual.
 	 */
-	IAlleleTemplateBuilder createTemplate(IGeneticDefinition definition, IAllele[] alleles);
+	IAlleleTemplateBuilder createTemplateBuilder(IGeneticDefinition definition, IAllele[] alleles);
+
+	/**
+	 * Creates a {@link IAlleleTemplate} that contains the given allele array.
+	 *
+	 * @param definition The definition that describes the individual which this template belongs to.
+	 * @param alleles    A array that contains all alleles for this template. It must have the same length like the
+	 *                   karyotype of the individual.
+	 */
+	IAlleleTemplate createTemplate(IGeneticDefinition definition, IAllele[] alleles);
 
 	/**
 	 * Creates a instance of the default implementation of a {@link IGenome} out of the NBT-Data.

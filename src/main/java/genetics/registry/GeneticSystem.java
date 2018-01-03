@@ -11,10 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticRoot;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneType;
-import genetics.api.individual.IIndividual;
 import genetics.api.registry.IGeneticSystem;
 
 public class GeneticSystem implements IGeneticSystem {
@@ -29,8 +27,8 @@ public class GeneticSystem implements IGeneticSystem {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinition<I, R>> getDefinition(String uid) {
-		return Optional.ofNullable((IGeneticDefinition<I, R>) definitions.get(uid));
+	public <D extends IGeneticDefinition> Optional<D> getDefinition(String uid) {
+		return Optional.ofNullable((D) definitions.get(uid));
 	}
 
 	@Override

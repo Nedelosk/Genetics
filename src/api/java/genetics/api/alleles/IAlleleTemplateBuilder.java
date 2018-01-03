@@ -9,7 +9,7 @@ import genetics.api.gene.IKaryotype;
  * Can be used to create allele templates.
  * <p>
  * You can get an instance of this from the species root with
- * {@link IGeneticFactory#createTemplate(IGeneticDefinition)} or {@link IGeneticFactory#createTemplate(IGeneticDefinition, IAllele[])}.
+ * {@link IGeneticFactory#createTemplateBuilder(IGeneticDefinition)} or {@link IGeneticFactory#createTemplateBuilder(IGeneticDefinition, IAllele[])}.
  */
 public interface IAlleleTemplateBuilder {
 

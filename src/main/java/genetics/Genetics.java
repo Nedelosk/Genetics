@@ -88,6 +88,7 @@ public class Genetics {
 			}
 		});
 		GeneticsAPI.saveHandler = GeneticSaveHandler.INSTANCE;
+		GeneticsAPI.geneticFactory = GeneticFactory.INSTANCE;
 
 		PluginManager.create(event);
 

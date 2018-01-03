@@ -17,7 +17,7 @@ public final class AlleleTemplate implements IAlleleTemplate {
 	private final IAllele[] alleles;
 	private final IKaryotype karyotype;
 
-	AlleleTemplate(IAllele[] alleles, IKaryotype karyotype) {
+	public AlleleTemplate(IAllele[] alleles, IKaryotype karyotype) {
 		this.alleles = alleles;
 		this.karyotype = karyotype;
 	}
