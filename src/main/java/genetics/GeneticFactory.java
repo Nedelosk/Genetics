@@ -7,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IGeneticDefinition;
@@ -72,7 +71,7 @@ public enum GeneticFactory implements IGeneticFactory {
 	}
 
 	@Override
-	public IGeneTemplate createGeneTemplate(IAlleleKey key, IGeneType geneType, IGeneticDefinition definition) {
-		return new GeneTemplate(key, geneType, definition);
+	public IGeneTemplate createGeneTemplate() {
+		return new GeneTemplate();
 	}
 }
