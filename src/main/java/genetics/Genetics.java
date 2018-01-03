@@ -74,17 +74,21 @@ public class Genetics {
 		CapabilityManager.INSTANCE.register(IGeneTemplate.class, new NullStorage<>(), () -> new IGeneTemplate() {
 			@Override
 			public Optional<IAllele<?>> getAllele() {
-				throw new UnsupportedOperationException("Cannot use default implementation");
+				return Optional.empty();
 			}
 
 			@Override
 			public Optional<IGeneType> getType() {
-				throw new UnsupportedOperationException("Cannot use default implementation");
+				return Optional.empty();
 			}
 
 			@Override
 			public Optional<IGeneticDefinition> getDescription() {
-				throw new UnsupportedOperationException("Cannot use default implementation");
+				return Optional.empty();
+			}
+
+			@Override
+			public void setAllele(@Nullable IAllele<?> allele, @Nullable IGeneType type) {
 			}
 		});
 		GeneticsAPI.saveHandler = GeneticSaveHandler.INSTANCE;
