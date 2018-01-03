@@ -123,6 +123,11 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	}
 
 	@Override
+	public IGenome getDefaultGenome() {
+		return templateContainer.getDefaultGenome();
+	}
+
+	@Override
 	public IAlleleTemplateBuilder createTemplate() {
 		return templateContainer.createTemplate();
 	}
