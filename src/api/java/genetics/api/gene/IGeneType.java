@@ -13,9 +13,8 @@ public interface IGeneType {
 	int getIndex();
 
 	/**
-	 * @implNote You can use {@link IGeneticSystem#getDefinition(String)} to get a instance of your definition.
-	 *
 	 * @return The definition that contains this type in a {@link IKaryotype}.
+	 * @implNote You can use {@link IGeneticSystem#getDefinition(String)} to get a instance of your definition.
 	 */
 	IGeneticDefinition getDefinition();
 

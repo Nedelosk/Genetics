@@ -16,7 +16,7 @@ public interface IAlleleHandler {
 	 * Called after keys were added to a allele.
 	 *
 	 * @param allele The allele to that the keys were added.
-	 * @param keys The added keys.
+	 * @param keys   The added keys.
 	 */
 	void onAddKeys(IAllele<?> allele, IAlleleKey... keys);
 }

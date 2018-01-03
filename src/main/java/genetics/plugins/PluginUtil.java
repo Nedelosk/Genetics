@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import genetics.api.GeneticPlugin;
 import genetics.api.IGeneticPlugin;
 
-import forestry.core.utils.Log;
+import genetics.Log;
 
 public class PluginUtil {
 	private PluginUtil() {

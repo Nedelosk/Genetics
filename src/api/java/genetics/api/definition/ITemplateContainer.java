@@ -39,7 +39,7 @@ public interface ITemplateContainer {
 	 * Retrieves a registered template using the passed species unique identifier.
 	 *
 	 * @param identifier the {@link IAllele#getRegistryName()} of the active allele at the
-	 * {@link IKaryotype#getTemplateType()} of the {@link #getKaryotype()}.
+	 *                   {@link IKaryotype#getTemplateType()} of the {@link #getKaryotype()}.
 	 * @return Array of {@link IAllele} representing a genome.
 	 */
 	@Nullable

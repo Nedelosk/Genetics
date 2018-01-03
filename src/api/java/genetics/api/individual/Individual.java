@@ -12,8 +12,8 @@ import genetics.api.gene.IGeneType;
  * A simple abstract implementation of {@link IIndividual}.
  */
 public abstract class Individual implements IIndividual {
-	protected boolean isAnalyzed = false;
 	protected final IGenome genome;
+	protected boolean isAnalyzed = false;
 	@Nullable
 	protected IGenome mate;
 
@@ -41,6 +41,11 @@ public abstract class Individual implements IIndividual {
 	}
 
 	@Override
+	public String getIdentifier() {
+		return genome.getActiveAllele(getDefinition().getTemplateType()).getRegistryName().toString();
+	}
+
+	@Override
 	public IGenome getGenome() {
 		return genome;
 	}
@@ -56,6 +61,11 @@ public abstract class Individual implements IIndividual {
 	}
 
 	@Override
+	public boolean isPureBred(IGeneType geneType) {
+		return genome.getActiveAllele(geneType).equals(genome.getInactiveAllele(geneType));
+	}
+
+	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setTag("Genome", genome.writeToNBT(new NBTTagCompound()));
 		if (mate != null) {
@@ -66,21 +76,6 @@ public abstract class Individual implements IIndividual {
 	}
 
 	@Override
-	public boolean isPureBred(IGeneType geneType) {
-		return genome.getActiveAllele(geneType).equals(genome.getInactiveAllele(geneType));
-	}
-
-	@Override
-	public String getIdentifier() {
-		return genome.getActiveAllele(getDefinition().getTemplateType()).getRegistryName().toString();
-	}
-
-	@Override
-	public boolean isAnalyzed() {
-		return isAnalyzed;
-	}
-
-	@Override
 	public boolean analyze() {
 		if (isAnalyzed) {
 			return false;
@@ -88,5 +83,10 @@ public abstract class Individual implements IIndividual {
 
 		isAnalyzed = true;
 		return true;
+	}
+
+	@Override
+	public boolean isAnalyzed() {
+		return isAnalyzed;
 	}
 }
