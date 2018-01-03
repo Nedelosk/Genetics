@@ -11,6 +11,8 @@ public interface IIndividual {
 
 	IGenome getGenome();
 
+	void setMate(IGenome mate);
+
 	Optional<IGenome> getMate();
 
 	IIndividual copy();

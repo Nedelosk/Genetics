@@ -8,9 +8,12 @@ import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.gene.IKaryotype;
+import genetics.api.individual.IGenome;
 
 public interface ITemplateContainer {
 	IAlleleTemplate getDefaultTemplate();
+
+	IGenome getDefaultGenome();
 
 	IAlleleTemplateBuilder createTemplate();
 

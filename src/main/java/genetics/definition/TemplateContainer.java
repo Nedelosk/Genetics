@@ -19,6 +19,7 @@ import genetics.api.definition.ITemplateContainer;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
+import genetics.api.individual.IGenome;
 
 public class TemplateContainer implements ITemplateContainer {
 	private final IKaryotype karyotype;
@@ -26,6 +27,8 @@ public class TemplateContainer implements ITemplateContainer {
 	private final BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory;
 	@Nullable
 	private IAlleleTemplate defaultTemplate = null;
+	@Nullable
+	private IGenome defaultGenome = null;
 
 	public TemplateContainer(IKaryotype karyotype, ImmutableMap<String, IAllele[]> templates, BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
 		this.karyotype = karyotype;
@@ -46,6 +49,14 @@ public class TemplateContainer implements ITemplateContainer {
 			defaultTemplate = templateFactory.apply(karyotype, alleles).build();
 		}
 		return defaultTemplate;
+	}
+
+	@Override
+	public IGenome getDefaultGenome() {
+		if (defaultGenome == null) {
+			defaultGenome = getDefaultTemplate().toGenome();
+		}
+		return defaultGenome;
 	}
 
 	@Override

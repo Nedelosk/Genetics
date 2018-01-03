@@ -1,5 +1,6 @@
 package genetics.alleles;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import genetics.api.GeneticsAPI;
@@ -16,7 +17,7 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 	private final IKaryotype karyotype;
 
 	public AlleleTemplateBuilder(IKaryotype karyotype, IAllele[] alleles) {
-		this.alleles = alleles;
+		this.alleles = Arrays.copyOf(alleles, alleles.length);
 		this.karyotype = karyotype;
 	}
 
