@@ -4,16 +4,42 @@ import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import genetics.api.IGeneticFactory;
+import genetics.api.IGeneticSaveHandler;
 import genetics.api.alleles.IAllele;
 import genetics.api.gene.IGeneType;
 
+
+/**
+ * Contains two alleles. One is active and the other is inactive.
+ *
+ * The active allele is the active allele either because the allele is dominant or
+ * because both alleles are recessive.
+ * <p>
+ * Implementations other than Genetic's default one are not supported!
+ *
+ * You can uses {@link IGeneticFactory#createChromosome(IAllele, IAllele, IGeneType)} to create an instance of this.
+ *
+ * @author SirSengir
+ */
 public interface IChromosome<V> {
 	IGeneType getGeneKey();
 
+	/**
+	 * @return The active allele of this chromosome that is used in the most situations.
+	 */
 	IAllele<V> getActiveAllele();
 
+	/**
+	 * @return The inactive allele of this chromosome.
+	 */
 	IAllele<V> getInactiveAllele();
 
+	/**
+	 * Writes the data of this chromosome to the NBT-Data.
+	 *
+	 * @implNote If possible please use the {@link IGeneticSaveHandler} to write the whole genome instead.
+	 */
 	NBTTagCompound writeToNBT(NBTTagCompound compound);
 
 	/**

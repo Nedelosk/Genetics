@@ -12,11 +12,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import genetics.api.IBlockTranslator;
+import genetics.api.IItemTranslator;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IGeneticTranslator;
 import genetics.api.definition.IGeneticTypes;
 import genetics.api.definition.ITemplateContainer;
 import genetics.api.gene.IGeneType;
@@ -26,9 +29,6 @@ import genetics.api.individual.IGeneticHandler;
 import genetics.api.individual.IGeneticType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
-import genetics.api.translators.IBlockTranslator;
-import genetics.api.translators.IGeneticTranslator;
-import genetics.api.translators.IItemTranslator;
 
 public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, ?>> implements IGeneticDefinition<I, R> {
 	private final IGeneticTypes<I> types;

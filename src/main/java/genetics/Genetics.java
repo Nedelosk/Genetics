@@ -33,7 +33,7 @@ import genetics.registry.GeneticSystem;
 
 @Mod(modid = Genetics.MOD_ID, name = Genetics.NAME, version = Genetics.VERSION)
 public class Genetics {
-	public static final String MOD_ID = "genetics";
+	public static final String MOD_ID = "geneticsapi";
 	public static final String NAME = "Genetics";
 	public static final String VERSION = "@VERSION@";
 
@@ -78,12 +78,12 @@ public class Genetics {
 			}
 
 			@Override
-			public IGeneType getType() {
+			public Optional<IGeneType> getType() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
 			@Override
-			public IGeneticDefinition getDescription() {
+			public Optional<IGeneticDefinition> getDescription() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 		});

@@ -2,7 +2,6 @@ package genetics.api.definition;
 
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IIndividual;
-import genetics.api.translators.IGeneticTranslator;
 
 /**
  * The IGeneticDefinition is wraps every interface like the {@link IGeneticTranslator}, the {@link IKaryotype}, etc.

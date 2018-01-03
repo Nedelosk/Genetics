@@ -1,6 +1,5 @@
 package genetics.api.items;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
@@ -24,7 +23,6 @@ public interface IIndividualHandler<I extends IIndividual> {
 	/**
 	 * @return Creates the individual out of the nbt of the item.
 	 */
-	@Nullable
 	Optional<I> getIndividual();
 
 	/**

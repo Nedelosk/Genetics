@@ -23,6 +23,9 @@ public interface IAlleleTemplateBuilder {
 
 	IAlleleTemplateBuilder set(IGeneType geneKey, IAlleleKey alleleKey);
 
+	/**
+	 * @return The karyotype that defines the {@link #size()} and which alleles this template can contain.
+	 */
 	IKaryotype getKaryotype();
 
 	/**

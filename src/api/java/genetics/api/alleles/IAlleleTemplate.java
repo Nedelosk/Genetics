@@ -40,6 +40,9 @@ public interface IAlleleTemplate {
 	 */
 	IAlleleTemplateBuilder createBuilder();
 
+	/**
+	 * @return The karyotype that defines the {@link #size()} and which alleles this template can contain.
+	 */
 	IKaryotype getKaryotype();
 
 	default <I extends IIndividual> I toIndividual(IGeneticRoot<I, IGenomeWrapper> root) {

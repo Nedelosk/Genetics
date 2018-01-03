@@ -57,11 +57,17 @@ public interface IAlleleRegistry {
 	/**
 	 * Gets an allele
 	 *
-	 * @param registryName The registry name of the allele to retrieve.
+	 * @param registryName The registry name of the allele to retrieve as a {@link String}.
 	 * @return A optional that contains the IAllele if found, a empty optional otherwise.
 	 */
 	Optional<IAllele<?>> getAllele(String registryName);
 
+	/**
+	 * Gets an allele
+	 *
+	 * @param registryName The registry name of the allele to retrieve as a {@link ResourceLocation}.
+	 * @return A optional that contains the IAllele if found, a empty optional otherwise.
+	 */
 	Optional<IAllele<?>> getAllele(ResourceLocation registryName);
 
 	/**

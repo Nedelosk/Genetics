@@ -1,5 +1,9 @@
 package genetics.api.alleles;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.util.ResourceLocation;
+
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import genetics.api.individual.IChromosome;
@@ -27,4 +31,7 @@ public interface IAllele<V> extends IForgeRegistryEntry<IAllele<?>> {
 	 * @return true if the allele is dominant, false otherwise.
 	 */
 	boolean isDominant();
+
+	@Nonnull
+	ResourceLocation getRegistryName();
 }

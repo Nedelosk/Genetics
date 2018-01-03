@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IGeneticDefinition;
@@ -99,5 +98,5 @@ public interface IGeneticFactory {
 	/**
 	 * Creates a default implementation of a {@link IGeneTemplate}
 	 */
-	IGeneTemplate createGeneTemplate(IAlleleKey key, IGeneType geneType, IGeneticDefinition definition);
+	IGeneTemplate createGeneTemplate();
 }

@@ -1,24 +1,44 @@
 package genetics.api.items;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleKey;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.gene.IGeneType;
+import genetics.api.individual.IGenome;
 
 /**
- * Implement this interface as a capability which should provide the genetic information of an item.
- * <p/>
- * You can use {@link IGeneticFactory#createGeneTemplate(IAlleleKey, IGeneType, IGeneticDefinition)}  to create an
+ * The IGeneTemplate is a interface that can be implemented as a capability if a item should represent a allele at a
+ * specific {@link IGeneType} at the {@link IGenome} of a individual that is described by a specific
+ * {@link IGeneticDefinition}.
+ * For example the templates of Gendustry and the Gentics Mod of Binnie Mods.
+ * <p>
+ * All returned values of this interface are only empty if the template is empty.
+ * <p>
+ * You can use {@link IGeneticFactory#createGeneTemplate()}  to create an
  * instance of this or you can use your own implementation.
  */
 public interface IGeneTemplate {
 
+	/**
+	 * @retur The allele that this template contains.
+	 */
 	Optional<IAllele<?>> getAllele();
 
-	IGeneType getType();
+	/**
+	 * @return The gene type at that the chromosome of the allele is positioned at the chromosome array.
+	 */
+	Optional<IGeneType> getType();
 
-	IGeneticDefinition getDescription();
+	/**
+	 * @return The genetic definition that describes the definition to that the {@link IGeneType} belongs to.
+	 */
+	Optional<IGeneticDefinition> getDescription();
+
+	/**
+	 * Sets the information of this template.
+	 */
+	void setAllele(@Nullable IAllele<?> allele, @Nullable IGeneType type);
 }

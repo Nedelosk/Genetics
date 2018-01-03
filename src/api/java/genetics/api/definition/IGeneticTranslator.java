@@ -1,4 +1,4 @@
-package genetics.api.translators;
+package genetics.api.definition;
 
 import java.util.Optional;
 
@@ -7,7 +7,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import genetics.api.definition.IGeneticDefinitionBuilder;
+import genetics.api.IBlockTranslator;
+import genetics.api.IItemTranslator;
 import genetics.api.individual.IIndividual;
 
 /**

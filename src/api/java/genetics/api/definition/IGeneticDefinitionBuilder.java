@@ -9,7 +9,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import genetics.api.IBlockTranslator;
 import genetics.api.IGeneticPlugin;
+import genetics.api.IItemTranslator;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
@@ -19,16 +21,13 @@ import genetics.api.individual.IGeneticType;
 import genetics.api.individual.IIndividual;
 import genetics.api.registry.IGeneticRegistry;
 import genetics.api.registry.IGeneticSystem;
-import genetics.api.translators.IBlockTranslator;
-import genetics.api.translators.IGeneticTranslator;
-import genetics.api.translators.IItemTranslator;
 
 /**
  * The IGeneticDefinitionBuilder offers several functions to register templates, types or something similar that can be
  * later retrieved from the IGeneticDefinition.
  *
  * After every {@link IGeneticPlugin} received {@link IGeneticPlugin#register(IGeneticRegistry)} all
- * {@link IGeneticDefinitionBuilder}s will be build automatically to {@link IGeneticDefinition}s. You can the an instance
+ * {@link IGeneticDefinitionBuilder}s will be build automatically to {@link IGeneticDefinition}s. You can the instance
  * of you definition from {@link IGeneticSystem#getDefinition(String)} after it was created.
  * <p>
  * You can create a instance of this with {@link IGeneticRegistry#createDefinition(String, IKaryotype, Function)}.

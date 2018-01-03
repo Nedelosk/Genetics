@@ -57,12 +57,6 @@ public class Gene implements IGene {
 	}
 
 	@Override
-	public Optional getValue(IAlleleKey key) {
-		Optional<IAllele> allele = getAllele(key);
-		return allele.map(IAllele::getValue);
-	}
-
-	@Override
 	public Optional<IAlleleKey> getKey(IAllele<?> allele) {
 		return Optional.ofNullable(alleles.get(allele));
 	}

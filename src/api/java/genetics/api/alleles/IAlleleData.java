@@ -10,9 +10,18 @@ import genetics.api.registry.IAlleleRegistry;
  */
 public interface IAlleleData<V> {
 
+	/**
+	 * The value of the allele.
+	 */
 	V getValue();
 
+	/**
+	 * The dominance of the allele.
+	 */
 	boolean isDominant();
 
+	/**
+	 * The key of the allele.
+	 */
 	IAlleleKey getKey();
 }

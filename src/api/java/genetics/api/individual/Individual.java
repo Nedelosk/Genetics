@@ -6,8 +6,13 @@ import java.util.Optional;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.GeneticsAPI;
+import genetics.api.gene.IGeneType;
 
+/**
+ * A simple abstract implementation of {@link IIndividual}.
+ */
 public abstract class Individual implements IIndividual {
+	protected boolean isAnalyzed = false;
 	protected final IGenome genome;
 	@Nullable
 	protected IGenome mate;
@@ -31,6 +36,8 @@ public abstract class Individual implements IIndividual {
 		if (compound.hasKey("Mate")) {
 			mate = GeneticsAPI.geneticFactory.createGenome(getDefinition().getKaryotype(), compound.getCompoundTag("Mate"));
 		}
+
+		isAnalyzed = compound.getBoolean("IsAnalyzed");
 	}
 
 	@Override
@@ -39,7 +46,7 @@ public abstract class Individual implements IIndividual {
 	}
 
 	@Override
-	public void setMate(@Nullable IGenome mate) {
+	public void mate(@Nullable IGenome mate) {
 		this.mate = mate;
 	}
 
@@ -54,6 +61,32 @@ public abstract class Individual implements IIndividual {
 		if (mate != null) {
 			compound.setTag("Mate", mate.writeToNBT(new NBTTagCompound()));
 		}
+		compound.setBoolean("IsAnalyzed", isAnalyzed);
 		return compound;
+	}
+
+	@Override
+	public boolean isPureBred(IGeneType geneType) {
+		return genome.getActiveAllele(geneType).equals(genome.getInactiveAllele(geneType));
+	}
+
+	@Override
+	public String getIdentifier() {
+		return genome.getActiveAllele(getDefinition().getTemplateType()).getRegistryName().toString();
+	}
+
+	@Override
+	public boolean isAnalyzed() {
+		return isAnalyzed;
+	}
+
+	@Override
+	public boolean analyze() {
+		if (isAnalyzed) {
+			return false;
+		}
+
+		isAnalyzed = true;
+		return true;
 	}
 }
