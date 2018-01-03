@@ -7,10 +7,8 @@ import java.util.Optional;
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticPlugin;
 import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticRoot;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneType;
-import genetics.api.individual.IIndividual;
 
 /**
  * <p>
@@ -26,8 +24,7 @@ public interface IGeneticSystem {
 	 * @param uid Unique id for the species class, i.e. "rootBees", "rootTrees", "rootButterflies".
 	 * @return a {@link Optional} that contains the {@link IGeneticDefinition} if it exists, a empty optional otherwise.
 	 */
-	<I extends IIndividual, R extends IGeneticRoot<I, ?>> Optional<IGeneticDefinition<I, R>> getDefinition(String uid);
-
+	<D extends IGeneticDefinition> Optional<D> getDefinition(String uid);
 
 	/**
 	 * @return The gene that is registered for the given gene type.

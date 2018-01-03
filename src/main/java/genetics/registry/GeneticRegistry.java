@@ -12,6 +12,7 @@ import genetics.api.gene.IGeneBuilder;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.gene.IKaryotypeBuilder;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.registry.IGeneticRegistry;
 
@@ -54,7 +55,7 @@ public class GeneticRegistry implements IGeneticRegistry {
 	}
 
 	@Override
-	public <I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I> createDefinition(String uid, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+	public <I extends IIndividual, R extends IGeneticRoot<I, IGenomeWrapper>> IGeneticDefinitionBuilder<I> createDefinition(String uid, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
 		GeneticDefinitionBuilder<I, R> definitionBuilder = new GeneticDefinitionBuilder<>(uid, karyotype, rootFactory);
 		definitionBuilders.put(uid, definitionBuilder);
 		return definitionBuilder;

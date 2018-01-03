@@ -1,5 +1,9 @@
 package genetics.api.individual;
 
+import java.util.Optional;
+
+import net.minecraft.nbt.NBTTagCompound;
+
 import genetics.api.definition.IGeneticDefinition;
 
 public interface IIndividual {
@@ -7,7 +11,9 @@ public interface IIndividual {
 
 	IGenome getGenome();
 
-	IGenome getMate();
+	Optional<IGenome> getMate();
 
 	IIndividual copy();
+
+	NBTTagCompound writeToNBT(NBTTagCompound compound);
 }

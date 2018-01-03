@@ -12,6 +12,7 @@ import genetics.api.gene.IGeneBuilder;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.gene.IKaryotypeBuilder;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 
 /**
@@ -65,7 +66,7 @@ public interface IGeneticRegistry {
 	 * @param <I>         The type of the individual that the root that the definition contains defines.
 	 * @param <R>         The type of the root that the definition contains.
 	 */
-	<I extends IIndividual, R extends IGeneticRoot<I, ?>> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory);
+	<I extends IIndividual, R extends IGeneticRoot<I, IGenomeWrapper>> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory);
 
 	/**
 	 * Gets an IGeneticDefinitionBuilder
