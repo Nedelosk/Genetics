@@ -11,7 +11,6 @@ import genetics.api.GeneticPlugin;
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticPlugin;
 
-import genetics.GeneticFactory;
 import genetics.Genetics;
 import genetics.registry.AlleleRegistry;
 import genetics.registry.GeneticRegistry;
@@ -37,14 +36,18 @@ public class PluginManager {
 	}
 
 	public static void initPlugins() {
+		//
+		plugins.forEach(p -> p.registerSimple(RegistryHelper.INSTANCE));
 		//register all alleles
 		AlleleRegistry alleleRegistry = new AlleleRegistry();
 		GeneticsAPI.alleleRegistry = Genetics.alleleRegistry = alleleRegistry;
+		RegistryHelper.INSTANCE.onRegisterAlleles(alleleRegistry);
 		plugins.forEach(p -> p.registerAlleles(alleleRegistry));
 		//
 		GeneticRegistry registry = new GeneticRegistry();
 		GeneticsAPI.geneticRegistry = registry;
-		plugins.forEach(p -> p.registerGenes(registry, GeneticFactory.INSTANCE));
+		RegistryHelper.INSTANCE.onRegister(registry);
+		plugins.forEach(p -> p.register(registry));
 		GeneticSystem system = Genetics.system = registry.createSystem();
 		//
 		GeneticsAPI.geneticSystem = system;

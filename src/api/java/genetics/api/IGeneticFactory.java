@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticRoot;
@@ -13,7 +14,8 @@ import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGeneticType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
-import genetics.api.individual.IIndividualHandler;
+import genetics.api.items.IGeneTemplate;
+import genetics.api.items.IIndividualHandler;
 
 /**
  * A factory that can be used to create some default implementations.
@@ -75,13 +77,18 @@ public interface IGeneticFactory {
 	IChromosome createChromosome(IAllele firstAllele, IAllele secondAllele, IGeneType type);
 
 	/**
-	 * Creates a default instance of a {@link IIndividualHandler}
+	 * Creates a default implementation of a {@link IIndividualHandler}
 	 *
 	 * @param itemStack   The item that contains the genetic information.
-	 * @param type The species type of the individual.
-	 * @param definition The definition that describes the individual.
+	 * @param type        The species type of the individual.
+	 * @param definition  The definition that describes the individual.
 	 *
 	 * @return A instance of {@link IIndividualHandler}.
 	 */
 	<I extends IIndividual> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IGeneticType type, IGeneticDefinition<I, IGeneticRoot> definition);
+
+	/**
+	 * Creates a default implementation of a {@link IGeneTemplate}
+	 */
+	IGeneTemplate createGeneTemplate(IAlleleKey key, IGeneType geneType, IGeneticDefinition definition);
 }

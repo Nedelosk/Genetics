@@ -1,4 +1,4 @@
-package genetics.individual;
+package genetics.items;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,9 +17,10 @@ import genetics.api.definition.IGeneticRoot;
 import genetics.api.gene.IGeneType;
 import genetics.api.individual.IGeneticType;
 import genetics.api.individual.IIndividual;
-import genetics.api.individual.IIndividualHandler;
+import genetics.api.items.IIndividualHandler;
 
 import genetics.Genetics;
+import genetics.individual.GeneticSaveHandler;
 
 public class IndividualHandler<I extends IIndividual> implements IIndividualHandler<I>, ICapabilityProvider {
 	private final ItemStack container;

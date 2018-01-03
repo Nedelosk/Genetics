@@ -1,4 +1,4 @@
-package genetics.api.individual;
+package genetics.api.items;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -10,6 +10,8 @@ import genetics.api.alleles.IAllele;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticRoot;
 import genetics.api.gene.IGeneType;
+import genetics.api.individual.IGeneticType;
+import genetics.api.individual.IIndividual;
 
 /**
  * Implement this interface as a capability which should provide the genetic information of an item.

@@ -19,11 +19,11 @@ import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticRoot;
-import genetics.api.gene.IGeneTemplate;
 import genetics.api.gene.IGeneType;
 import genetics.api.individual.IGeneticType;
 import genetics.api.individual.IIndividual;
-import genetics.api.individual.IIndividualHandler;
+import genetics.api.items.IGeneTemplate;
+import genetics.api.items.IIndividualHandler;
 
 import genetics.individual.GeneticSaveHandler;
 import genetics.individual.SaveFormat;
@@ -73,7 +73,7 @@ public class Genetics {
 		});
 		CapabilityManager.INSTANCE.register(IGeneTemplate.class, new NullStorage<>(), () -> new IGeneTemplate() {
 			@Override
-			public IAllele getAllele() {
+			public Optional<IAllele<?>> getAllele() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 

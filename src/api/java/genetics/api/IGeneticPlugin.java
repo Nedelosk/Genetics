@@ -14,6 +14,13 @@ import genetics.api.registry.IGeneticSystem;
 public interface IGeneticPlugin {
 
 	/**
+	 * Register simple genes
+	 */
+	default void registerSimple(IRegistryHelper helper) {
+		//Default Implementation
+	}
+
+	/**
 	 * Register alleles
 	 */
 	default void registerAlleles(IAlleleRegistry registry) {
@@ -23,7 +30,7 @@ public interface IGeneticPlugin {
 	/**
 	 * Create {@link IGeneBuilder}s, {@link IKaryotypeBuilder}s and {@link IGeneticDefinitionBuilder}s
 	 */
-	default void registerGenes(IGeneticRegistry registry, IGeneticFactory factory) {
+	default void register(IGeneticRegistry registry) {
 		//Default Implementation
 	}
 

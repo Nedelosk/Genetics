@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IGeneticDefinition;
 import genetics.api.definition.IGeneticRoot;
@@ -14,12 +15,14 @@ import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGeneticType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
-import genetics.api.individual.IIndividualHandler;
+import genetics.api.items.IGeneTemplate;
+import genetics.api.items.IIndividualHandler;
 
 import genetics.alleles.AlleleTemplateBuilder;
 import genetics.individual.Chromosome;
 import genetics.individual.Genome;
-import genetics.individual.IndividualHandler;
+import genetics.items.GeneTemplate;
+import genetics.items.IndividualHandler;
 
 public enum GeneticFactory implements IGeneticFactory {
 	INSTANCE;
@@ -57,5 +60,10 @@ public enum GeneticFactory implements IGeneticFactory {
 	@Override
 	public <I extends IIndividual> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IGeneticType type, IGeneticDefinition<I, IGeneticRoot> definition) {
 		return new IndividualHandler<>(itemStack, () -> definition, () -> type);
+	}
+
+	@Override
+	public IGeneTemplate createGeneTemplate(IAlleleKey key, IGeneType geneType, IGeneticDefinition definition) {
+		return new GeneTemplate(key, geneType, definition);
 	}
 }

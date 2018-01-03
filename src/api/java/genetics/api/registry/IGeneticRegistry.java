@@ -18,7 +18,7 @@ import genetics.api.individual.IIndividual;
 /**
  * The {@link IGeneticRegistry} offers several functions for creating and retrieving several gene related things.
  * <p>
- * The IGeneticRegistry instance is passed to your genetic plugin in {@link IGeneticPlugin#registerGenes(IGeneticRegistry, IGeneticFactory)}}.
+ * The IGeneticRegistry instance is passed to your genetic plugin in {@link IGeneticPlugin#register(IGeneticRegistry, IGeneticFactory)}}.
  * Later you can get the instance from {@link GeneticsAPI#geneticRegistry}.
  */
 public interface IGeneticRegistry {
