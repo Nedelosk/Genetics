@@ -9,14 +9,14 @@ import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IOrganismRoot;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
-import genetics.api.individual.IGeneticType;
+import genetics.api.individual.IOrganism;
+import genetics.api.individual.IOrganismType;
 import genetics.api.individual.IGenome;
-import genetics.api.individual.IIndividual;
 import genetics.api.items.IGeneTemplate;
 import genetics.api.items.IIndividualHandler;
 
@@ -31,18 +31,18 @@ public enum GeneticFactory implements IGeneticFactory {
 	INSTANCE;
 
 	@Override
-	public IAlleleTemplateBuilder createTemplateBuilder(IGeneticDefinition definition) {
-		return new AlleleTemplateBuilder(definition, definition.getDefaultTemplate().alleles());
+	public IAlleleTemplateBuilder createTemplateBuilder(IKaryotype karyotype) {
+		return new AlleleTemplateBuilder(karyotype, karyotype.getDefaultTemplate().alleles());
 	}
 
 	@Override
-	public IAlleleTemplateBuilder createTemplateBuilder(IGeneticDefinition definition, IAllele[] alleles) {
-		return new AlleleTemplateBuilder(definition, alleles);
+	public IAlleleTemplateBuilder createTemplateBuilder(IKaryotype karyotype, IAllele[] alleles) {
+		return new AlleleTemplateBuilder(karyotype, alleles);
 	}
 
 	@Override
-	public IAlleleTemplate createTemplate(IGeneticDefinition definition, IAllele[] alleles) {
-		return new AlleleTemplate(Arrays.copyOf(alleles, alleles.length), definition);
+	public IAlleleTemplate createTemplate(IKaryotype karyotype, IAllele[] alleles) {
+		return new AlleleTemplate(Arrays.copyOf(alleles, alleles.length), karyotype);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public enum GeneticFactory implements IGeneticFactory {
 	}
 
 	@Override
-	public <I extends IIndividual> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IGeneticType type, IGeneticDefinition<I, IGeneticRoot> definition) {
+	public <I extends IOrganism> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IOrganismType type, IOrganismDefinition<I, IOrganismRoot> definition) {
 		return new IndividualHandler<>(itemStack, () -> definition, () -> type);
 	}
 

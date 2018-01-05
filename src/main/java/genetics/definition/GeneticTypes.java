@@ -6,21 +6,21 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
-import genetics.api.definition.IGeneticTypes;
-import genetics.api.individual.IGeneticHandler;
-import genetics.api.individual.IGeneticType;
-import genetics.api.individual.IIndividual;
+import genetics.api.definition.IOrganismTypes;
+import genetics.api.individual.IOrganismHandler;
+import genetics.api.individual.IOrganismType;
+import genetics.api.individual.IOrganism;
 
-public class GeneticTypes<I extends IIndividual> implements IGeneticTypes<I> {
-	private final Map<IGeneticType, IGeneticHandler<I>> types;
+public class GeneticTypes<I extends IOrganism> implements IOrganismTypes<I> {
+	private final Map<IOrganismType, IOrganismHandler<I>> types;
 
-	GeneticTypes(Map<IGeneticType, IGeneticHandler<I>> types) {
+	GeneticTypes(Map<IOrganismType, IOrganismHandler<I>> types) {
 		this.types = types;
 	}
 
 	@Override
-	public ItemStack createStack(I individual, IGeneticType type) {
-		IGeneticHandler<I> handler = types.get(type);
+	public ItemStack createStack(I individual, IOrganismType type) {
+		IOrganismHandler<I> handler = types.get(type);
 		if (handler == null) {
 			return ItemStack.EMPTY;
 		}
@@ -29,11 +29,11 @@ public class GeneticTypes<I extends IIndividual> implements IGeneticTypes<I> {
 
 	@Override
 	public Optional<I> createIndividual(ItemStack itemStack) {
-		Optional<IGeneticType> optional = getType(itemStack);
+		Optional<IOrganismType> optional = getType(itemStack);
 		if (!optional.isPresent()) {
 			return Optional.empty();
 		}
-		IGeneticHandler<I> handler = types.get(optional.get());
+		IOrganismHandler<I> handler = types.get(optional.get());
 		if (handler == null) {
 			return Optional.empty();
 		}
@@ -41,9 +41,9 @@ public class GeneticTypes<I extends IIndividual> implements IGeneticTypes<I> {
 	}
 
 	@Override
-	public Optional<IGeneticType> getType(ItemStack itemStack) {
-		for (Map.Entry<IGeneticType, IGeneticHandler<I>> entry : types.entrySet()) {
-			IGeneticHandler handler = entry.getValue();
+	public Optional<IOrganismType> getType(ItemStack itemStack) {
+		for (Map.Entry<IOrganismType, IOrganismHandler<I>> entry : types.entrySet()) {
+			IOrganismHandler handler = entry.getValue();
 			if (itemStack.getItem() == handler.getItem()) {
 				return Optional.of(entry.getKey());
 			}
@@ -52,17 +52,17 @@ public class GeneticTypes<I extends IIndividual> implements IGeneticTypes<I> {
 	}
 
 	@Override
-	public Optional<IGeneticHandler<I>> getHandler(IGeneticType type) {
+	public Optional<IOrganismHandler<I>> getHandler(IOrganismType type) {
 		return Optional.ofNullable(types.get(type));
 	}
 
 	@Override
-	public Collection<IGeneticType> getTypes() {
+	public Collection<IOrganismType> getTypes() {
 		return types.keySet();
 	}
 
 	@Override
-	public Collection<IGeneticHandler<I>> getHandlers() {
+	public Collection<IOrganismHandler<I>> getHandlers() {
 		return types.values();
 	}
 }

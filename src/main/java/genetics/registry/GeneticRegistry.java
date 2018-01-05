@@ -5,24 +5,24 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticDefinitionBuilder;
-import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IOrganismDefinitionBuilder;
+import genetics.api.definition.IOrganismRoot;
 import genetics.api.gene.IGeneBuilder;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.gene.IKaryotypeBuilder;
 import genetics.api.individual.IGenomeWrapper;
-import genetics.api.individual.IIndividual;
+import genetics.api.individual.IOrganism;
 import genetics.api.registry.IGeneticRegistry;
 
 import genetics.Karyotype;
-import genetics.definition.GeneticDefinitionBuilder;
+import genetics.definition.OrganismDefinitionBuilder;
 import genetics.gene.Gene;
 
 public class GeneticRegistry implements IGeneticRegistry {
 	private final HashMap<String, Gene.Builder> geneBuilders = new HashMap<>();
-	private final HashMap<String, GeneticDefinitionBuilder> definitionBuilders = new HashMap<>();
+	private final HashMap<String, OrganismDefinitionBuilder> definitionBuilders = new HashMap<>();
 
 	@Override
 	public IGeneBuilder addGene(String name) {
@@ -55,16 +55,16 @@ public class GeneticRegistry implements IGeneticRegistry {
 	}
 
 	@Override
-	public <I extends IIndividual, R extends IGeneticRoot<I, IGenomeWrapper>> IGeneticDefinitionBuilder<I> createDefinition(String uid, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory) {
-		GeneticDefinitionBuilder<I, R> definitionBuilder = new GeneticDefinitionBuilder<>(uid, karyotype, rootFactory);
+	public <I extends IOrganism, R extends IOrganismRoot<I, IGenomeWrapper>> IOrganismDefinitionBuilder<I> createDefinition(String uid, IKaryotype karyotype, Function<IOrganismDefinition<I, R>, R> rootFactory) {
+		OrganismDefinitionBuilder<I, R> definitionBuilder = new OrganismDefinitionBuilder<>(uid, karyotype, rootFactory);
 		definitionBuilders.put(uid, definitionBuilder);
 		return definitionBuilder;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <I extends IIndividual> Optional<IGeneticDefinitionBuilder<I>> getDefinition(String uid) {
-		return Optional.ofNullable((IGeneticDefinitionBuilder<I>) definitionBuilders.get(uid));
+	public <I extends IOrganism> Optional<IOrganismDefinitionBuilder<I>> getDefinition(String uid) {
+		return Optional.ofNullable((IOrganismDefinitionBuilder<I>) definitionBuilders.get(uid));
 	}
 
 	public GeneticSystem createSystem() {

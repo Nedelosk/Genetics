@@ -2,16 +2,16 @@ package genetics.api.alleles;
 
 import javax.annotation.Nullable;
 
-import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IOrganismRoot;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IGenomeWrapper;
-import genetics.api.individual.IIndividual;
+import genetics.api.individual.IOrganism;
 
 /**
- * Can be used to create {@link IGenome}s, {@link IIndividual}s or {@link IChromosome}s or get a allele.
+ * Can be used to create {@link IGenome}s, {@link IOrganism}s or {@link IChromosome}s or get a allele.
  */
 public interface IAlleleTemplate {
 
@@ -45,15 +45,15 @@ public interface IAlleleTemplate {
 	 */
 	IKaryotype getKaryotype();
 
-	default <I extends IIndividual> I toIndividual(IGeneticRoot<I, IGenomeWrapper> root) {
+	default <I extends IOrganism> I toIndividual(IOrganismRoot<I, IGenomeWrapper> root) {
 		return toIndividual(root, null);
 	}
 
 	/**
 	 * Creates an individual with the help of the genetic root using
-	 * {@link IGeneticRoot#templateAsIndividual(IAllele[], IAllele[])}.
+	 * {@link IOrganismRoot#templateAsIndividual(IAllele[], IAllele[])}.
 	 */
-	<I extends IIndividual> I toIndividual(IGeneticRoot<I, IGenomeWrapper> root, @Nullable IAlleleTemplate inactiveTemplate);
+	<I extends IOrganism> I toIndividual(IOrganismRoot<I, IGenomeWrapper> root, @Nullable IAlleleTemplate inactiveTemplate);
 
 	default IGenome toGenome() {
 		return toGenome(null);

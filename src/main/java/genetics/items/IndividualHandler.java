@@ -12,22 +12,22 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IOrganismRoot;
 import genetics.api.gene.IGeneType;
-import genetics.api.individual.IGeneticType;
-import genetics.api.individual.IIndividual;
+import genetics.api.individual.IOrganism;
+import genetics.api.individual.IOrganismType;
 import genetics.api.items.IIndividualHandler;
 
 import genetics.Genetics;
 import genetics.individual.GeneticSaveHandler;
 
-public class IndividualHandler<I extends IIndividual> implements IIndividualHandler<I>, ICapabilityProvider {
+public class IndividualHandler<I extends IOrganism> implements IIndividualHandler<I>, ICapabilityProvider {
 	private final ItemStack container;
-	private final Supplier<IGeneticDefinition<I, IGeneticRoot>> definitionSupplier;
-	private final Supplier<IGeneticType> typeSupplier;
+	private final Supplier<IOrganismDefinition<I, IOrganismRoot>> definitionSupplier;
+	private final Supplier<IOrganismType> typeSupplier;
 
-	public IndividualHandler(ItemStack container, Supplier<IGeneticDefinition<I, IGeneticRoot>> geneticDefinitionSupplier, Supplier<IGeneticType> typeSupplier) {
+	public IndividualHandler(ItemStack container, Supplier<IOrganismDefinition<I, IOrganismRoot>> geneticDefinitionSupplier, Supplier<IOrganismType> typeSupplier) {
 		this.container = container;
 		this.definitionSupplier = geneticDefinitionSupplier;
 		this.typeSupplier = typeSupplier;
@@ -39,12 +39,12 @@ public class IndividualHandler<I extends IIndividual> implements IIndividualHand
 	}
 
 	@Override
-	public IGeneticDefinition<I, IGeneticRoot> getDefinition() {
+	public IOrganismDefinition<I, IOrganismRoot> getDefinition() {
 		return definitionSupplier.get();
 	}
 
 	@Override
-	public IGeneticType getType() {
+	public IOrganismType getType() {
 		return typeSupplier.get();
 	}
 

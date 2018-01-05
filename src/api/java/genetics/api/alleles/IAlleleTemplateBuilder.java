@@ -1,7 +1,7 @@
 package genetics.api.alleles;
 
 import genetics.api.IGeneticFactory;
-import genetics.api.definition.IGeneticDefinition;
+import genetics.api.definition.IOrganismDefinition;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 
@@ -9,7 +9,7 @@ import genetics.api.gene.IKaryotype;
  * Can be used to create allele templates.
  * <p>
  * You can get an instance of this from the species root with
- * {@link IGeneticFactory#createTemplateBuilder(IGeneticDefinition)} or {@link IGeneticFactory#createTemplateBuilder(IGeneticDefinition, IAllele[])}.
+ * {@link IGeneticFactory#createTemplateBuilder(IOrganismDefinition)} or {@link IGeneticFactory#createTemplateBuilder(IOrganismDefinition, IAllele[])}.
  */
 public interface IAlleleTemplateBuilder {
 

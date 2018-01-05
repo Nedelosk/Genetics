@@ -22,18 +22,18 @@ import genetics.api.gene.IGeneType;
  *
  * @author SirSengir
  */
-public interface IChromosome<V> {
+public interface IChromosome {
 	IGeneType getGeneKey();
 
 	/**
 	 * @return The active allele of this chromosome that is used in the most situations.
 	 */
-	IAllele<V> getActiveAllele();
+	IAllele getActiveAllele();
 
 	/**
 	 * @return The inactive allele of this chromosome.
 	 */
-	IAllele<V> getInactiveAllele();
+	IAllele getInactiveAllele();
 
 	/**
 	 * Writes the data of this chromosome to the NBT-Data.
@@ -52,5 +52,5 @@ public interface IChromosome<V> {
 	 *                        use.
 	 * @param otherChromosome The other chromosome that this chromosome uses to create the new one.
 	 */
-	IChromosome inheritChromosome(Random rand, IChromosome<V> otherChromosome);
+	IChromosome inheritChromosome(Random rand, IChromosome otherChromosome);
 }

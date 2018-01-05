@@ -5,14 +5,14 @@ import java.util.Optional;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IGeneticDefinition;
+import genetics.api.definition.IOrganismDefinition;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 
 /**
- * An actual individual with genetic information.
+ * An actual individual organism with genetic information.
  */
-public interface IIndividual {
+public interface IOrganism {
 	/**
 	 * @return The {@link IAllele#getRegistryName()} of the allele that is at the {@link IKaryotype#getTemplateType()}
 	 * of the {@link IGenome} of this individual.
@@ -20,34 +20,34 @@ public interface IIndividual {
 	String getIdentifier();
 
 	/**
-	 * @return The definition that describes this individual.
+	 * @return The definition that describes this organism.
 	 */
-	IGeneticDefinition getDefinition();
+	IOrganismDefinition getDefinition();
 
 	/**
-	 * @return The genetic data of this individual.
+	 * @return The genetic data of this organism.
 	 */
 	IGenome getGenome();
 
 	/**
-	 * Mate with the given individual.
+	 * Mate with the given organism.
 	 *
-	 * @param individual the {@link IIndividual} to mate this one with.
+	 * @param individual the {@link IOrganism} to mate this one with.
 	 */
 	void mate(IGenome individual);
 
 	/**
-	 * @return Genetic information of the mate, null if unmated.
+	 * @return Genetic information of the mate, empty if unmated.
 	 */
 	Optional<IGenome> getMate();
 
 	/**
-	 * @return A deep copy of this individual.
+	 * @return A deep copy of this organism.
 	 */
-	IIndividual copy();
+	IOrganism copy();
 
 	/**
-	 * @return true if this individual has the same active and inactive allele at the position.
+	 * @return true if this organism has the same active and inactive allele at the position.
 	 */
 	boolean isPureBred(IGeneType geneType);
 
@@ -57,14 +57,14 @@ public interface IIndividual {
 	NBTTagCompound writeToNBT(NBTTagCompound compound);
 
 	/**
-	 * Call to mark the IIndividual as analyzed.
+	 * Call to mark the IOrganism as analyzed.
 	 *
-	 * @return true if the IIndividual has not been analyzed previously.
+	 * @return true if the IOrganism has not been analyzed previously.
 	 */
 	boolean analyze();
 
 	/**
-	 * @return true if the IIndividual has been analyzed previously.
+	 * @return true if the IOrganism has been analyzed previously.
 	 */
 	boolean isAnalyzed();
 }

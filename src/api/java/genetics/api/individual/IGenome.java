@@ -23,17 +23,27 @@ public interface IGenome {
 	/**
 	 * @return The active allele of the chromosome with the given gene type.
 	 */
-	<V> IAllele<V> getActiveAllele(IGeneType geneType);
+	IAllele getActiveAllele(IGeneType geneType);
+
+	/**
+	 * @return The value of the active allele of the chromosome with the given gene type.
+	 */
+	<V> V getActiveValue(IGeneType geneType, Class<? extends V> valueClass);
 
 	/**
 	 * @return The inactive allele of the chromosome with the given gene type.
 	 */
-	<V> IAllele<V> getInactiveAllele(IGeneType geneType);
+	IAllele getInactiveAllele(IGeneType geneType);
+
+	/**
+	 * @return The value of the inactive allele of the chromosome with the given gene type.
+	 */
+	<V> V getInactiveValue(IGeneType geneType, Class<? extends V> valueClass);
 
 	/**
 	 * @return The chromosome with the given gene type.
 	 */
-	<V> IChromosome<V> getChromosome(IGeneType geneType);
+	IChromosome getChromosome(IGeneType geneType);
 
 	/**
 	 * @return The karyotype of this genome. It defines the positions of the chromosomes in the array and the length

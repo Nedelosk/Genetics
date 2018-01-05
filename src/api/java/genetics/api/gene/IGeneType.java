@@ -1,6 +1,6 @@
 package genetics.api.gene;
 
-import genetics.api.definition.IGeneticDefinition;
+import genetics.api.definition.IOrganismDefinition;
 import genetics.api.registry.IGeneticSystem;
 
 /**
@@ -16,7 +16,7 @@ public interface IGeneType {
 	 * @return The definition that contains this type in a {@link IKaryotype}.
 	 * @implNote You can use {@link IGeneticSystem#getDefinition(String)} to get a instance of your definition.
 	 */
-	IGeneticDefinition getDefinition();
+	IOrganismDefinition getDefinition();
 
 	/**
 	 * @return Short identifier.

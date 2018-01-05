@@ -7,39 +7,39 @@ import net.minecraft.nbt.NBTTagCompound;
 import genetics.api.alleles.IAllele;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IGenomeWrapper;
-import genetics.api.individual.IIndividual;
+import genetics.api.individual.IOrganism;
 
 /**
- * The IGeneticRoot offers several functions to create {@link IIndividual}s and to wrap the genome of this
- * {@link IIndividual}s.
+ * The IGeneticRoot offers several functions to create {@link IOrganism}s and to wrap the genome of this
+ * {@link IOrganism}s.
  *
  * @param <I> The individual that this root provides.
  * @param <W> The type of the wrapper that is used by this root.
  */
-public interface IGeneticRoot<I extends IIndividual, W extends IGenomeWrapper> {
+public interface IOrganismRoot<I extends IOrganism, W extends IGenomeWrapper> {
 
 	/**
 	 * Gets the definition that provides this root.
 	 */
-	IGeneticDefinition<I, ? extends IGeneticRoot> getDefinition();
+	IOrganismDefinition<I, ? extends IOrganismRoot> getDefinition();
 
 	/**
-	 * Uses the information that the NBT-Data contains to create a {@link IIndividual}.
+	 * Uses the information that the NBT-Data contains to create a {@link IOrganism}.
 	 */
 	I create(NBTTagCompound compound);
 
 	/**
-	 * Creates a {@link IIndividual} that contains this genome.
+	 * Creates a {@link IOrganism} that contains this genome.
 	 */
 	I create(IGenome genome);
 
 	/**
-	 * Creates a {@link IIndividual} that contains the two genome.
+	 * Creates a {@link IOrganism} that contains the two genome.
 	 */
 	I create(IGenome genome, IGenome mate);
 
 	/**
-	 * Creates a {@link IIndividual} that contains the alleles of the template in a genome.
+	 * Creates a {@link IOrganism} that contains the alleles of the template in a genome.
 	 *
 	 * @param template The alleles of the genome.
 	 */
@@ -48,7 +48,7 @@ public interface IGeneticRoot<I extends IIndividual, W extends IGenomeWrapper> {
 	}
 
 	/**
-	 * Creates a {@link IIndividual} that contains the alleles of the two templates in a genome.
+	 * Creates a {@link IOrganism} that contains the alleles of the two templates in a genome.
 	 *
 	 * @param templateActive   The active alleles of the genome.
 	 * @param templateInactive The inactive alleles of the genome.
@@ -56,7 +56,7 @@ public interface IGeneticRoot<I extends IIndividual, W extends IGenomeWrapper> {
 	I templateAsIndividual(IAllele[] templateActive, @Nullable IAllele[] templateInactive);
 
 	/**
-	 * A instance of an {@link IIndividual} that is used if a item has lost its generic data.
+	 * A instance of an {@link IOrganism} that is used if a item has lost its generic data.
 	 */
 	I getDefaultMember();
 

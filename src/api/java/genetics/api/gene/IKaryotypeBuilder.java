@@ -1,5 +1,9 @@
 package genetics.api.gene;
 
+import java.util.function.BiFunction;
+
+import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.registry.IGeneticRegistry;
 
 /**
@@ -15,6 +19,11 @@ public interface IKaryotypeBuilder {
 	 * Adds a type
 	 */
 	IKaryotypeBuilder add(IGeneType type);
+
+	/**
+	 * Sets the function that is used to create a template builder.
+	 */
+	IKaryotypeBuilder setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory);
 
 	/**
 	 * Creates the {@link IKaryotype}.

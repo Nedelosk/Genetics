@@ -17,28 +17,28 @@ import genetics.api.IItemTranslator;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IOrganismRoot;
 import genetics.api.definition.IGeneticTranslator;
-import genetics.api.definition.IGeneticTypes;
+import genetics.api.definition.IOrganismTypes;
 import genetics.api.definition.ITemplateContainer;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
-import genetics.api.individual.IGeneticHandler;
-import genetics.api.individual.IGeneticType;
+import genetics.api.individual.IOrganism;
+import genetics.api.individual.IOrganismHandler;
+import genetics.api.individual.IOrganismType;
 import genetics.api.individual.IGenome;
-import genetics.api.individual.IIndividual;
 
-public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, ?>> implements IGeneticDefinition<I, R> {
-	private final IGeneticTypes<I> types;
+public class OrganismDefinition<I extends IOrganism, R extends IOrganismRoot<I, ?>> implements IOrganismDefinition<I, R> {
+	private final IOrganismTypes<I> types;
 	private final IGeneticTranslator<I> translator;
 	private final ITemplateContainer templateContainer;
 	private final IKaryotype karyotype;
 	private final String uid;
 	private final R root;
 
-	GeneticDefinition(IGeneticTypes<I> types, IGeneticTranslator<I> translator, ITemplateContainer templateContainer, String uid, Function<IGeneticDefinition<I, R>, R> rootFactory) {
+	OrganismDefinition(IOrganismTypes<I> types, IGeneticTranslator<I> translator, ITemplateContainer templateContainer, String uid, Function<IOrganismDefinition<I, R>, R> rootFactory) {
 		this.types = types;
 		this.translator = translator;
 		this.uid = uid;
@@ -88,7 +88,7 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	}
 
 	@Override
-	public ItemStack createStack(I individual, IGeneticType type) {
+	public ItemStack createStack(I individual, IOrganismType type) {
 		return types.createStack(individual, type);
 	}
 
@@ -98,43 +98,43 @@ public class GeneticDefinition<I extends IIndividual, R extends IGeneticRoot<I, 
 	}
 
 	@Override
-	public Optional<IGeneticType> getType(ItemStack itemStack) {
+	public Optional<IOrganismType> getType(ItemStack itemStack) {
 		return types.getType(itemStack);
 	}
 
 	@Override
-	public Optional<IGeneticHandler<I>> getHandler(IGeneticType type) {
+	public Optional<IOrganismHandler<I>> getHandler(IOrganismType type) {
 		return types.getHandler(type);
 	}
 
 	@Override
-	public Collection<IGeneticType> getTypes() {
+	public Collection<IOrganismType> getTypes() {
 		return types.getTypes();
 	}
 
 	@Override
-	public Collection<IGeneticHandler<I>> getHandlers() {
+	public Collection<IOrganismHandler<I>> getHandlers() {
 		return types.getHandlers();
 	}
 
 	@Override
 	public IAlleleTemplate getDefaultTemplate() {
-		return templateContainer.getDefaultTemplate();
+		return karyotype.getDefaultTemplate();
 	}
 
 	@Override
 	public IGenome getDefaultGenome() {
-		return templateContainer.getDefaultGenome();
+		return karyotype.getDefaultGenome();
 	}
 
 	@Override
 	public IAlleleTemplateBuilder createTemplate() {
-		return templateContainer.createTemplate();
+		return karyotype.createTemplate();
 	}
 
 	@Override
 	public IAlleleTemplateBuilder createTemplate(IAllele[] alleles) {
-		return templateContainer.createTemplate(alleles);
+		return karyotype.createTemplate(alleles);
 	}
 
 	@Nullable

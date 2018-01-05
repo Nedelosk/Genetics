@@ -17,11 +17,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IOrganismRoot;
 import genetics.api.gene.IGeneType;
-import genetics.api.individual.IGeneticType;
-import genetics.api.individual.IIndividual;
+import genetics.api.individual.IOrganism;
+import genetics.api.individual.IOrganismType;
 import genetics.api.items.IGeneTemplate;
 import genetics.api.items.IIndividualHandler;
 
@@ -50,19 +50,19 @@ public class Genetics {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		CapabilityManager.INSTANCE.register(IIndividualHandler.class, new NullStorage<>(), () -> new IIndividualHandler<IIndividual>() {
+		CapabilityManager.INSTANCE.register(IIndividualHandler.class, new NullStorage<>(), () -> new IIndividualHandler<IOrganism>() {
 			@Override
-			public Optional<IIndividual> getIndividual() {
+			public Optional<IOrganism> getIndividual() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
 			@Override
-			public IGeneticDefinition<IIndividual, IGeneticRoot> getDefinition() {
+			public IOrganismDefinition<IOrganism, IOrganismRoot> getDefinition() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
 			@Override
-			public IGeneticType getType() {
+			public IOrganismType getType() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
@@ -83,7 +83,7 @@ public class Genetics {
 			}
 
 			@Override
-			public Optional<IGeneticDefinition> getDescription() {
+			public Optional<IOrganismDefinition> getDescription() {
 				return Optional.empty();
 			}
 

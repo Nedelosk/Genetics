@@ -2,71 +2,22 @@ package genetics.definition;
 
 import com.google.common.collect.ImmutableMap;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
-import java.util.function.BiFunction;
 
-import genetics.api.GeneticsAPI;
-import genetics.api.alleles.Allele;
 import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleTemplate;
-import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.ITemplateContainer;
-import genetics.api.gene.IGene;
-import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
-import genetics.api.individual.IGenome;
 
 public class TemplateContainer implements ITemplateContainer {
 	private final IKaryotype karyotype;
 	private final ImmutableMap<String, IAllele[]> templates;
-	private final BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory;
-	@Nullable
-	private IAlleleTemplate defaultTemplate = null;
-	@Nullable
-	private IGenome defaultGenome = null;
 
-	public TemplateContainer(IKaryotype karyotype, ImmutableMap<String, IAllele[]> templates, BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
+	public TemplateContainer(IKaryotype karyotype, ImmutableMap<String, IAllele[]> templates) {
 		this.karyotype = karyotype;
 		this.templates = templates;
-		this.templateFactory = templateFactory;
-	}
-
-
-	@Override
-	public IAlleleTemplate getDefaultTemplate() {
-		if (defaultTemplate == null) {
-			IGeneType[] geneTypes = karyotype.getGeneTypes();
-			IAllele[] alleles = new Allele[geneTypes.length];
-			for (IGeneType key : geneTypes) {
-				Optional<IGene> optional = GeneticsAPI.geneticSystem.getGene(key);
-				optional.ifPresent(g -> alleles[key.getIndex()] = g.getDefaultAllele());
-			}
-			defaultTemplate = templateFactory.apply(karyotype, alleles).build();
-		}
-		return defaultTemplate;
-	}
-
-	@Override
-	public IGenome getDefaultGenome() {
-		if (defaultGenome == null) {
-			defaultGenome = getDefaultTemplate().toGenome();
-		}
-		return defaultGenome;
-	}
-
-	@Override
-	public IAlleleTemplateBuilder createTemplate() {
-		return getDefaultTemplate().createBuilder();
-	}
-
-	@Override
-	public IAlleleTemplateBuilder createTemplate(IAllele[] alleles) {
-		return templateFactory.apply(karyotype, alleles);
 	}
 
 	@Override

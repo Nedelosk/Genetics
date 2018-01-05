@@ -6,19 +6,19 @@ import net.minecraft.item.ItemStack;
 
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IOrganismRoot;
 import genetics.api.gene.IGeneType;
-import genetics.api.individual.IGeneticType;
-import genetics.api.individual.IIndividual;
+import genetics.api.individual.IOrganismType;
+import genetics.api.individual.IOrganism;
 
 /**
  * Implement this interface as a capability which should provide the genetic information of an item.
  * <p/>
- * You can use {@link IGeneticFactory#createIndividualHandler(ItemStack, IGeneticType, IGeneticDefinition)} to create an
+ * You can use {@link IGeneticFactory#createIndividualHandler(ItemStack, IOrganismType, IOrganismDefinition)} to create an
  * instance of this or you can use your own implementation.
  */
-public interface IIndividualHandler<I extends IIndividual> {
+public interface IIndividualHandler<I extends IOrganism> {
 
 	/**
 	 * @return Creates the individual out of the nbt of the item.
@@ -28,12 +28,12 @@ public interface IIndividualHandler<I extends IIndividual> {
 	/**
 	 * @return The root of the individual.
 	 */
-	IGeneticDefinition<I, IGeneticRoot> getDefinition();
+	IOrganismDefinition<I, IOrganismRoot> getDefinition();
 
 	/**
 	 * @return The species type of the individual.
 	 */
-	IGeneticType getType();
+	IOrganismType getType();
 
 	/**
 	 * Quickly gets the allele without loading the whole genome.

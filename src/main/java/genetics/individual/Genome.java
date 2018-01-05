@@ -102,21 +102,38 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
-	public <V> IAllele<V> getActiveAllele(IGeneType geneType) {
-		IChromosome<V> chromosome = getChromosome(geneType);
+	public IAllele getActiveAllele(IGeneType geneType) {
+		IChromosome chromosome = getChromosome(geneType);
 		return chromosome.getActiveAllele();
 	}
 
 	@Override
-	public <V> IAllele<V> getInactiveAllele(IGeneType geneType) {
-		IChromosome<V> chromosome = getChromosome(geneType);
+	public IAllele getInactiveAllele(IGeneType geneType) {
+		IChromosome chromosome = getChromosome(geneType);
 		return chromosome.getInactiveAllele();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <V> IChromosome<V> getChromosome(IGeneType geneType) {
-		return (IChromosome<V>) chromosomes[geneType.getIndex()];
+	public <V> V getActiveValue(IGeneType geneType, Class<? extends V> valueClass) {
+		Object value = getActiveAllele(geneType).getValue();
+		if(valueClass.isInstance(valueClass)){
+			return valueClass.cast(value);
+		}
+		throw new IllegalArgumentException();
+	}
+
+	@Override
+	public <V> V getInactiveValue(IGeneType geneType, Class<? extends V> valueClass) {
+		Object value = getInactiveAllele(geneType).getValue();
+		if(valueClass.isInstance(valueClass)){
+			return valueClass.cast(value);
+		}
+		throw new IllegalArgumentException();
+	}
+
+	@Override
+	public IChromosome getChromosome(IGeneType geneType) {
+		return chromosomes[geneType.getIndex()];
 	}
 
 	@Override

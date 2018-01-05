@@ -4,9 +4,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
- * The IGeneticHandler handles the genetic information of an stack whose item represents a specific {@link IGeneticType}.
+ * The IGeneticHandler handles the genetic information of an stack whose item represents a specific {@link IOrganismType}.
  */
-public interface IGeneticHandler<I extends IIndividual> {
+public interface IOrganismHandler<I extends IOrganism> {
 
 	/**
 	 * Gets the item that every stack that contains the genetic information of a individual with this time must have.

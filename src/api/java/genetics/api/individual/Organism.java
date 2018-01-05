@@ -9,24 +9,24 @@ import genetics.api.GeneticsAPI;
 import genetics.api.gene.IGeneType;
 
 /**
- * A simple abstract implementation of {@link IIndividual}.
+ * A simple abstract implementation of {@link IOrganism}.
  */
-public abstract class Individual implements IIndividual {
+public abstract class Organism implements IOrganism {
 	protected final IGenome genome;
 	protected boolean isAnalyzed = false;
 	@Nullable
 	protected IGenome mate;
 
-	public Individual(IGenome genome) {
+	public Organism(IGenome genome) {
 		this.genome = genome;
 	}
 
-	public Individual(IGenome genome, @Nullable IGenome mate) {
+	public Organism(IGenome genome, @Nullable IGenome mate) {
 		this.genome = genome;
 		this.mate = mate;
 	}
 
-	public Individual(NBTTagCompound compound) {
+	public Organism(NBTTagCompound compound) {
 		if (compound.hasKey("Genome")) {
 			genome = GeneticsAPI.geneticFactory.createGenome(getDefinition().getKaryotype(), compound.getCompoundTag("Genome"));
 		} else {

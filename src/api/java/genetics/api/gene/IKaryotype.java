@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleTemplate;
+import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.ITemplateContainer;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
@@ -44,6 +46,26 @@ public interface IKaryotype {
 	 * chromosome with this type.
 	 */
 	IGeneType getTemplateType();
+
+	/**
+	 * Creates a template builder that contains a copy of the default template allele array.
+	 */
+	IAlleleTemplateBuilder createTemplate();
+
+	/**
+	 * Creates a template builder that contains a copy of the allele array.
+	 */
+	IAlleleTemplateBuilder createTemplate(IAllele[] alleles);
+
+	/**
+	 * @return Default individual template for use when stuff breaks.
+	 */
+	IAlleleTemplate getDefaultTemplate();
+
+	/*
+	 * @return The default template as a IGenome.
+	 */
+	IGenome getDefaultGenome();
 
 	default IChromosome[] templateAsChromosomes(IAllele[] template) {
 		return templateAsChromosomes(template, null);

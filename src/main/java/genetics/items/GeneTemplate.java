@@ -12,7 +12,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IGeneticDefinition;
+import genetics.api.definition.IOrganismDefinition;
 import genetics.api.gene.IGeneType;
 import genetics.api.items.IGeneTemplate;
 
@@ -24,7 +24,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	@Nullable
 	private IGeneType type;
 	@Nullable
-	private IGeneticDefinition definition;
+	private IOrganismDefinition definition;
 
 	@Override
 	public Optional<IAllele<?>> getAllele() {
@@ -37,7 +37,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	}
 
 	@Override
-	public Optional<IGeneticDefinition> getDescription() {
+	public Optional<IOrganismDefinition> getDescription() {
 		return Optional.ofNullable(definition);
 	}
 

@@ -6,14 +6,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IOrganismRoot;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
-import genetics.api.individual.IGeneticType;
+import genetics.api.individual.IOrganism;
+import genetics.api.individual.IOrganismType;
 import genetics.api.individual.IGenome;
-import genetics.api.individual.IIndividual;
 import genetics.api.items.IGeneTemplate;
 import genetics.api.items.IIndividualHandler;
 
@@ -27,27 +27,27 @@ public interface IGeneticFactory {
 	/**
 	 * Creates a {@link IAlleleTemplateBuilder} that contains the default template alleles.
 	 *
-	 * @param definition The definition that describes the individual which this template belongs to.
+	 * @param karyotype The karyotype that defines the size of the allele array and contains the default template.
 	 */
-	IAlleleTemplateBuilder createTemplateBuilder(IGeneticDefinition definition);
+	IAlleleTemplateBuilder createTemplateBuilder(IKaryotype karyotype);
 
 	/**
 	 * Creates a {@link IAlleleTemplateBuilder} that contains the given allele array.
 	 *
-	 * @param definition The definition that describes the individual which this template belongs to.
+	 * @param karyotype The karyotype that defines the size of the allele array.
 	 * @param alleles    A array that contains all alleles for this template. It must have the same length like the
 	 *                   karyotype of the individual.
 	 */
-	IAlleleTemplateBuilder createTemplateBuilder(IGeneticDefinition definition, IAllele[] alleles);
+	IAlleleTemplateBuilder createTemplateBuilder(IKaryotype karyotype, IAllele[] alleles);
 
 	/**
 	 * Creates a {@link IAlleleTemplate} that contains the given allele array.
 	 *
-	 * @param definition The definition that describes the individual which this template belongs to.
+	 * @param karyotype The karyotype that defines the size of the allele array.
 	 * @param alleles    A array that contains all alleles for this template. It must have the same length like the
 	 *                   karyotype of the individual.
 	 */
-	IAlleleTemplate createTemplate(IGeneticDefinition definition, IAllele[] alleles);
+	IAlleleTemplate createTemplate(IKaryotype karyotype, IAllele[] alleles);
 
 	/**
 	 * Creates a instance of the default implementation of a {@link IGenome} out of the NBT-Data.
@@ -93,7 +93,7 @@ public interface IGeneticFactory {
 	 * @param definition The definition that describes the individual.
 	 * @return A instance of {@link IIndividualHandler}.
 	 */
-	<I extends IIndividual> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IGeneticType type, IGeneticDefinition<I, IGeneticRoot> definition);
+	<I extends IOrganism> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IOrganismType type, IOrganismDefinition<I, IOrganismRoot> definition);
 
 	/**
 	 * Creates a default implementation of a {@link IGeneTemplate}

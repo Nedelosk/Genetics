@@ -15,22 +15,21 @@ import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneType;
 import genetics.api.individual.IChromosome;
 
-@SuppressWarnings("unchecked")
 @Immutable
-public class Chromosome<V> implements IChromosome<V> {
+public class Chromosome implements IChromosome {
 
 	private static final String ACTIVE_ALLELE_TAG = "UID0";
 	private static final String INACTIVE_ALLELE_TAG = "UID1";
-	private final IAllele<V> active;
-	private final IAllele<V> inactive;
+	private final IAllele active;
+	private final IAllele inactive;
 	private final IGeneType type;
 
-	private Chromosome(IAllele<V> allele, IGeneType type) {
+	private Chromosome(IAllele allele, IGeneType type) {
 		this.active = inactive = allele;
 		this.type = type;
 	}
 
-	private Chromosome(IAllele<V> active, IAllele<V> inactive, IGeneType type) {
+	private Chromosome(IAllele active, IAllele inactive, IGeneType type) {
 		this.active = active;
 		this.inactive = inactive;
 		this.type = type;
@@ -42,15 +41,15 @@ public class Chromosome<V> implements IChromosome<V> {
 		return create(primarySpeciesUid, secondarySpeciesUid, geneType, primary, secondary);
 	}
 
-	public static <V> Chromosome<V> create(@Nullable ResourceLocation primaryTemplateIdentifier, @Nullable ResourceLocation secondaryTemplateIdentifier, IGeneType type, @Nullable IAllele<V> firstAllele, @Nullable IAllele<V> secondAllele) {
+	public static Chromosome create(@Nullable ResourceLocation primaryTemplateIdentifier, @Nullable ResourceLocation secondaryTemplateIdentifier, IGeneType type, @Nullable IAllele firstAllele, @Nullable IAllele secondAllele) {
 		return create(getStringOrNull(primaryTemplateIdentifier), getStringOrNull(secondaryTemplateIdentifier), type, firstAllele, secondAllele);
 	}
 
-	public static <V> Chromosome<V> create(@Nullable String primaryTemplateIdentifier, @Nullable String secondaryTemplateIdentifier, IGeneType type, @Nullable IAllele<V> firstAllele, @Nullable IAllele<V> secondAllele) {
+	public static Chromosome create(@Nullable String primaryTemplateIdentifier, @Nullable String secondaryTemplateIdentifier, IGeneType type, @Nullable IAllele firstAllele, @Nullable IAllele secondAllele) {
 		firstAllele = validateAllele(primaryTemplateIdentifier, type, firstAllele);
 		secondAllele = validateAllele(secondaryTemplateIdentifier, type, secondAllele);
 
-		return new Chromosome<>(firstAllele, secondAllele, type);
+		return new Chromosome(firstAllele, secondAllele, type);
 	}
 
 	@Nullable
@@ -58,7 +57,7 @@ public class Chromosome<V> implements IChromosome<V> {
 		return location != null ? location.toString() : null;
 	}
 
-	private static <V> IAllele<V> validateAllele(@Nullable String templateIdentifier, IGeneType type, @Nullable IAllele<V> allele) {
+	private static IAllele validateAllele(@Nullable String templateIdentifier, IGeneType type, @Nullable IAllele allele) {
 		Optional<IGene> optional = GeneticsAPI.geneticSystem.getGene(type);
 		if (!optional.isPresent()) {
 			return getDefaultAllele(null, templateIdentifier, type);
@@ -70,7 +69,7 @@ public class Chromosome<V> implements IChromosome<V> {
 		return allele;
 	}
 
-	private static <V> IAllele<V> getDefaultAllele(@Nullable IGene gene, @Nullable String templateIdentifier, IGeneType type) {
+	private static IAllele getDefaultAllele(@Nullable IGene gene, @Nullable String templateIdentifier, IGeneType type) {
 		ITemplateContainer container = type.getDefinition();
 		if (gene == null) {
 			return container.getDefaultTemplate().get(type);
@@ -82,7 +81,7 @@ public class Chromosome<V> implements IChromosome<V> {
 		}
 
 		if (template == null) {
-			return (IAllele<V>) gene.getDefaultAllele();
+			return gene.getDefaultAllele();
 		}
 
 		return template[type.getIndex()];
@@ -108,12 +107,12 @@ public class Chromosome<V> implements IChromosome<V> {
 	}
 
 	@Override
-	public IAllele<V> getActiveAllele() {
+	public IAllele getActiveAllele() {
 		return active;
 	}
 
 	@Override
-	public IAllele<V> getInactiveAllele() {
+	public IAllele getInactiveAllele() {
 		return inactive;
 	}
 

@@ -5,15 +5,15 @@ import java.util.function.Function;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticPlugin;
-import genetics.api.definition.IGeneticDefinition;
-import genetics.api.definition.IGeneticDefinitionBuilder;
-import genetics.api.definition.IGeneticRoot;
+import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IOrganismDefinitionBuilder;
+import genetics.api.definition.IOrganismRoot;
 import genetics.api.gene.IGeneBuilder;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.gene.IKaryotypeBuilder;
 import genetics.api.individual.IGenomeWrapper;
-import genetics.api.individual.IIndividual;
+import genetics.api.individual.IOrganism;
 
 /**
  * The {@link IGeneticRegistry} offers several functions for creating and retrieving several gene related things.
@@ -55,7 +55,7 @@ public interface IGeneticRegistry {
 	<T extends Enum<T> & IGeneType> IKaryotype createKaryotype(Class<? extends T> enumClass, String identifier);
 
 	/**
-	 * Creates a {@link IGeneticDefinitionBuilder} with the given parameters.
+	 * Creates a {@link IOrganismDefinitionBuilder} with the given parameters.
 	 * Later before {@link IGeneticPlugin#onFinishRegistration(IGeneticSystem)} is passed to your genetic plugin the
 	 * definition will be build and registered.
 	 * You can get a instance of the definition with {@link IGeneticSystem#getDefinition(String)}.
@@ -66,12 +66,12 @@ public interface IGeneticRegistry {
 	 * @param <I>         The type of the individual that the root that the definition contains defines.
 	 * @param <R>         The type of the root that the definition contains.
 	 */
-	<I extends IIndividual, R extends IGeneticRoot<I, IGenomeWrapper>> IGeneticDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IGeneticDefinition<I, R>, R> rootFactory);
+	<I extends IOrganism, R extends IOrganismRoot<I, IGenomeWrapper>> IOrganismDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IOrganismDefinition<I, R>, R> rootFactory);
 
 	/**
 	 * Gets an IGeneticDefinitionBuilder
 	 *
 	 * @param name The string based unique identifier of this definition to retrieve.
 	 */
-	<I extends IIndividual> Optional<IGeneticDefinitionBuilder<I>> getDefinition(String name);
+	<I extends IOrganism> Optional<IOrganismDefinitionBuilder<I>> getDefinition(String name);
 }
