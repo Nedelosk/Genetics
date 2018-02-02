@@ -5,15 +5,15 @@ import java.util.Optional;
 
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IGeneType;
 import genetics.api.individual.IGenome;
 
 /**
  * The IGeneTemplate is a interface that can be implemented as a capability if a item should represent a allele at a
  * specific {@link IGeneType} at the {@link IGenome} of a individual that is described by a specific
- * {@link IOrganismDefinition}.
- * For example the templates of Gendustry and the Gentics Mod of Binnie Mods.
+ * {@link IIndividualDefinition}.
+ * For example the templates of Gendustry and the Genetics Mod of Binnie Mods.
  * <p>
  * All returned values of this interface are only empty if the template is empty.
  * <p>
@@ -23,7 +23,7 @@ import genetics.api.individual.IGenome;
 public interface IGeneTemplate {
 
 	/**
-	 * @retur The allele that this template contains.
+	 * @return The allele that this template contains.
 	 */
 	Optional<IAllele<?>> getAllele();
 
@@ -35,7 +35,7 @@ public interface IGeneTemplate {
 	/**
 	 * @return The genetic definition that describes the definition to that the {@link IGeneType} belongs to.
 	 */
-	Optional<IOrganismDefinition> getDescription();
+	Optional<IIndividualDefinition> getDefinition();
 
 	/**
 	 * Sets the information of this template.

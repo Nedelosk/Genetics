@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticPlugin;
-import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneType;
 
@@ -16,15 +16,15 @@ import genetics.api.gene.IGeneType;
  * Later you can get the instance from {@link GeneticsAPI#geneticSystem}.
  */
 public interface IGeneticSystem {
-	Map<String, IOrganismDefinition> getDefinitions();
+	Map<String, IIndividualDefinition> getDefinitions();
 
 	/**
-	 * Retrieve the {@link IOrganismDefinition} with the given uid.
+	 * Retrieve the {@link IIndividualDefinition} with the given uid.
 	 *
 	 * @param uid Unique id for the species class, i.e. "rootBees", "rootTrees", "rootButterflies".
-	 * @return a {@link Optional} that contains the {@link IOrganismDefinition} if it exists, a empty optional otherwise.
+	 * @return a {@link Optional} that contains the {@link IIndividualDefinition} if it exists, a empty optional otherwise.
 	 */
-	<D extends IOrganismDefinition> Optional<D> getDefinition(String uid);
+	<D extends IIndividualDefinition> Optional<D> getDefinition(String uid);
 
 	/**
 	 * @return The gene that is registered for the given gene type.

@@ -10,7 +10,7 @@ import genetics.api.individual.IChromosome;
 public class ChromosomeInfo {
 	public final IGeneType geneKey;
 	@Nullable
-	public IChromosome<?> chromosome;
+	public IChromosome chromosome;
 	@Nullable
 	public ResourceLocation activeSpeciesUid;
 	@Nullable
@@ -20,7 +20,7 @@ public class ChromosomeInfo {
 		this.geneKey = geneKey;
 	}
 
-	public ChromosomeInfo setChromosome(@Nullable IChromosome<?> chromosome) {
+	public ChromosomeInfo setChromosome(@Nullable IChromosome chromosome) {
 		this.chromosome = chromosome;
 		return this;
 	}

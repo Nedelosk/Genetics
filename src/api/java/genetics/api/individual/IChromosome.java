@@ -19,8 +19,6 @@ import genetics.api.gene.IGeneType;
  * Implementations other than Genetic's default one are not supported!
  *
  * You can uses {@link IGeneticFactory#createChromosome(IAllele, IAllele, IGeneType)} to create an instance of this.
- *
- * @author SirSengir
  */
 public interface IChromosome {
 	IGeneType getGeneKey();

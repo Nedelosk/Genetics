@@ -10,14 +10,14 @@ import net.minecraft.item.ItemStack;
 
 import genetics.api.IBlockTranslator;
 import genetics.api.IItemTranslator;
-import genetics.api.definition.IGeneticTranslator;
-import genetics.api.individual.IOrganism;
+import genetics.api.definition.IIndividualTranslator;
+import genetics.api.individual.IIndividual;
 
-public class OrganismTranslator<I extends IOrganism> implements IGeneticTranslator<I> {
+public class IndividualTranslator<I extends IIndividual> implements IIndividualTranslator<I> {
 	private final Map<Item, IItemTranslator<I>> itemTranslators;
 	private final Map<Block, IBlockTranslator<I>> blockTranslators;
 
-	public OrganismTranslator(Map<Item, IItemTranslator<I>> itemTranslators, Map<Block, IBlockTranslator<I>> blockTranslators) {
+	public IndividualTranslator(Map<Item, IItemTranslator<I>> itemTranslators, Map<Block, IBlockTranslator<I>> blockTranslators) {
 		this.itemTranslators = itemTranslators;
 		this.blockTranslators = blockTranslators;
 	}

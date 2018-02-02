@@ -55,7 +55,7 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	 * Quickly gets the species without loading the whole genome. And without creating absent chromosomes.
 	 */
 	@Nullable
-	public IAllele getAlleleDirectly(ItemStack itemStack, IGeneType geneType, boolean active) {
+	public IAllele<?> getAlleleDirectly(ItemStack itemStack, IGeneType geneType, boolean active) {
 		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
 		if (nbtTagCompound == null) {
 			return null;
@@ -100,8 +100,8 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 			Log.error("Got a genetic item with no genome, setting it to a default value.");
 			genomeNBT = new NBTTagCompound();
 
-			ITemplateContainer container = geneType.getDefinition();
-			IAlleleTemplate defaultTemplate = container.getDefaultTemplate();
+			ITemplateContainer container = geneType.getDefinition().getTemplates();
+			IAlleleTemplate defaultTemplate = container.getKaryotype().getDefaultTemplate();
 			IGenome genome = defaultTemplate.toGenome(null);
 			genome.writeToNBT(genomeNBT);
 			nbtTagCompound.setTag(GENOME_TAG, genomeNBT);

@@ -1,4 +1,4 @@
-package genetics.items;
+package genetics.organism;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -12,22 +12,22 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IOrganismDefinition;
-import genetics.api.definition.IOrganismRoot;
+import genetics.api.definition.IIndividualDefinition;
+import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IGeneType;
-import genetics.api.individual.IOrganism;
-import genetics.api.individual.IOrganismType;
-import genetics.api.items.IIndividualHandler;
+import genetics.api.individual.IIndividual;
+import genetics.api.organism.IOrganism;
+import genetics.api.organism.IOrganismType;
 
 import genetics.Genetics;
 import genetics.individual.GeneticSaveHandler;
 
-public class IndividualHandler<I extends IOrganism> implements IIndividualHandler<I>, ICapabilityProvider {
+public class Organism<I extends IIndividual> implements IOrganism<I>, ICapabilityProvider {
 	private final ItemStack container;
-	private final Supplier<IOrganismDefinition<I, IOrganismRoot>> definitionSupplier;
+	private final Supplier<IIndividualDefinition<I, IIndividualRoot<I, ?>>> definitionSupplier;
 	private final Supplier<IOrganismType> typeSupplier;
 
-	public IndividualHandler(ItemStack container, Supplier<IOrganismDefinition<I, IOrganismRoot>> geneticDefinitionSupplier, Supplier<IOrganismType> typeSupplier) {
+	public Organism(ItemStack container, Supplier<IIndividualDefinition<I, IIndividualRoot<I, ?>>> geneticDefinitionSupplier, Supplier<IOrganismType> typeSupplier) {
 		this.container = container;
 		this.definitionSupplier = geneticDefinitionSupplier;
 		this.typeSupplier = typeSupplier;
@@ -35,11 +35,16 @@ public class IndividualHandler<I extends IOrganism> implements IIndividualHandle
 
 	@Override
 	public Optional<I> getIndividual() {
-		return getDefinition().createIndividual(container);
+		return getDefinition().getTypes().createIndividual(container);
 	}
 
 	@Override
-	public IOrganismDefinition<I, IOrganismRoot> getDefinition() {
+	public boolean setIndividual(I individual) {
+		return getDefinition().getTypes().setIndividual(container, individual);
+	}
+
+	@Override
+	public IIndividualDefinition<I, IIndividualRoot<I, ?>> getDefinition() {
 		return definitionSupplier.get();
 	}
 
@@ -49,7 +54,7 @@ public class IndividualHandler<I extends IOrganism> implements IIndividualHandle
 	}
 
 	@Override
-	public IAllele<?> getAlleleDirectly(IGeneType type, boolean active) {
+	public IAllele<?> getAllele(IGeneType type, boolean active) {
 		IAllele allele = GeneticSaveHandler.INSTANCE.getAlleleDirectly(container, type, active);
 		if (allele == null) {
 			allele = GeneticSaveHandler.INSTANCE.getAllele(container, type, active);
@@ -58,13 +63,18 @@ public class IndividualHandler<I extends IOrganism> implements IIndividualHandle
 	}
 
 	@Override
+	public Optional<IAllele<?>> getAlleleDirectly(IGeneType type, boolean active) {
+		return Optional.ofNullable(GeneticSaveHandler.INSTANCE.getAlleleDirectly(container, type, active));
+	}
+
+	@Override
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == Genetics.INDIVIDUAL_HANDLER;
+		return capability == Genetics.ORGANISM;
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == Genetics.INDIVIDUAL_HANDLER ? Genetics.INDIVIDUAL_HANDLER.cast(this) : null;
+		return capability == Genetics.ORGANISM ? Genetics.ORGANISM.cast(this) : null;
 	}
 }

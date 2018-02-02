@@ -1,17 +1,15 @@
-package genetics.api.individual;
+package genetics.api.organism;
 
-import net.minecraft.item.Item;
+import java.util.Optional;
+
 import net.minecraft.item.ItemStack;
+
+import genetics.api.individual.IIndividual;
 
 /**
  * The IGeneticHandler handles the genetic information of an stack whose item represents a specific {@link IOrganismType}.
  */
-public interface IOrganismHandler<I extends IOrganism> {
-
-	/**
-	 * Gets the item that every stack that contains the genetic information of a individual with this time must have.
-	 */
-	Item getItem();
+public interface IOrganismHandler<I extends IIndividual> {
 
 	/**
 	 * Creates a stack that contains the genetic information of the given individual in the NBT-Data.
@@ -23,5 +21,10 @@ public interface IOrganismHandler<I extends IOrganism> {
 	/**
 	 * Creates a individual with the genetic information that the NBT-Data of the stack contains.
 	 */
-	I createIndividual(ItemStack itemStack);
+	Optional<I> createIndividual(ItemStack itemStack);
+
+	/**
+	 * Writes the genetic information of the given individual to the NBT-Data of the given stack
+	 */
+	boolean setIndividual(ItemStack itemStack, I individual);
 }

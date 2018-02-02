@@ -6,16 +6,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.definition.IOrganismDefinition;
-import genetics.api.definition.IOrganismRoot;
+import genetics.api.definition.IIndividualDefinition;
+import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
-import genetics.api.individual.IOrganism;
-import genetics.api.individual.IOrganismType;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IIndividual;
 import genetics.api.items.IGeneTemplate;
-import genetics.api.items.IIndividualHandler;
+import genetics.api.organism.IOrganism;
+import genetics.api.organism.IOrganismType;
 
 /**
  * A factory that can be used to create some default implementations.
@@ -86,14 +86,14 @@ public interface IGeneticFactory {
 	IChromosome createChromosome(IAllele firstAllele, IAllele secondAllele, IGeneType type);
 
 	/**
-	 * Creates a default implementation of a {@link IIndividualHandler}
+	 * Creates a default implementation of a {@link IOrganism}
 	 *
 	 * @param itemStack  The item that contains the genetic information.
 	 * @param type       The species type of the individual.
 	 * @param definition The definition that describes the individual.
-	 * @return A instance of {@link IIndividualHandler}.
+	 * @return A instance of {@link IOrganism}.
 	 */
-	<I extends IOrganism> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IOrganismType type, IOrganismDefinition<I, IOrganismRoot> definition);
+	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I, ?>> definition);
 
 	/**
 	 * Creates a default implementation of a {@link IGeneTemplate}

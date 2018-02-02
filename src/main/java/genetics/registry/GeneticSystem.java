@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneType;
 import genetics.api.registry.IGeneticSystem;
@@ -18,16 +18,16 @@ import genetics.api.registry.IGeneticSystem;
 public class GeneticSystem implements IGeneticSystem {
 	private final HashMap<IGeneType, IGene> geneByType = new HashMap<>();
 	private final Multimap<IGene, IGeneType> typesByGene = HashMultimap.create();
-	private final HashMap<String, IOrganismDefinition> definitions = new HashMap<>();
+	private final HashMap<String, IIndividualDefinition> definitions = new HashMap<>();
 
 	@Override
-	public Map<String, IOrganismDefinition> getDefinitions() {
+	public Map<String, IIndividualDefinition> getDefinitions() {
 		return Collections.unmodifiableMap(definitions);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <D extends IOrganismDefinition> Optional<D> getDefinition(String uid) {
+	public <D extends IIndividualDefinition> Optional<D> getDefinition(String uid) {
 		return Optional.ofNullable((D) definitions.get(uid));
 	}
 
@@ -46,7 +46,7 @@ public class GeneticSystem implements IGeneticSystem {
 		return typesByGene.get(gene);
 	}
 
-	void registerDefinition(IOrganismDefinition definition) {
+	void registerDefinition(IIndividualDefinition definition) {
 		definitions.put(definition.getUID(), definition);
 	}
 

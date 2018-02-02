@@ -137,6 +137,24 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
+	public IAllele[] getActiveAlleles() {
+		IAllele[] alleles = new IAllele[chromosomes.length];
+		for (IChromosome chromosome : chromosomes) {
+			alleles[chromosome.getGeneKey().getIndex()] = chromosome.getActiveAllele();
+		}
+		return alleles;
+	}
+
+	@Override
+	public IAllele[] getInactiveAlleles() {
+		IAllele[] alleles = new IAllele[chromosomes.length];
+		for (IChromosome chromosome : chromosomes) {
+			alleles[chromosome.getGeneKey().getIndex()] = chromosome.getInactiveAllele();
+		}
+		return alleles;
+	}
+
+	@Override
 	public IKaryotype getKaryotype() {
 		return karyotype;
 	}

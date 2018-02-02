@@ -1,19 +1,22 @@
 package genetics.api.individual;
 
-import genetics.api.definition.IOrganismRoot;
+import genetics.api.definition.IIndividualRoot;
 
 /**
  * A wrapper around a genome with methods that allow to get quick access to the value of an allele or to the allele
  * itself.
  *
- * The goal of this interface is to make it easier for other mods to create there own {@link IOrganism} and
- * that they not have to use the internal {@link IGenome} class.
+ * The goal of this interface is to make it easier for other mods to create there own {@link IIndividual} and
+ * that they not have to use the internal implementation of the {@link IGenome} interface.
  *
  * <p>
- * You can get an instance of a genome wrapper from the {@link IOrganismRoot} of a species with
- * {@link IOrganismRoot#createWrapper(IGenome)}.
+ * You can get an instance of a genome wrapper from the {@link IIndividualRoot} of a species with
+ * {@link IIndividualRoot#createWrapper(IGenome)}.
  */
 public interface IGenomeWrapper {
+	/**
+	 * @return The wrapped genome.
+	 */
 	IGenome getGenome();
 
 }

@@ -17,7 +17,6 @@ import genetics.api.individual.IChromosome;
 
 @Immutable
 public class Chromosome implements IChromosome {
-
 	private static final String ACTIVE_ALLELE_TAG = "UID0";
 	private static final String INACTIVE_ALLELE_TAG = "UID1";
 	private final IAllele active;
@@ -70,9 +69,9 @@ public class Chromosome implements IChromosome {
 	}
 
 	private static IAllele getDefaultAllele(@Nullable IGene gene, @Nullable String templateIdentifier, IGeneType type) {
-		ITemplateContainer container = type.getDefinition();
+		ITemplateContainer container = type.getDefinition().getTemplates();
 		if (gene == null) {
-			return container.getDefaultTemplate().get(type);
+			return container.getKaryotype().getDefaultTemplate().get(type);
 		}
 		IAllele[] template = null;
 

@@ -7,7 +7,7 @@ import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.individual.IChromosome;
-import genetics.api.individual.IOrganism;
+import genetics.api.individual.IIndividual;
 import genetics.api.registry.IGeneticRegistry;
 import genetics.api.registry.IGeneticSystem;
 
@@ -47,7 +47,7 @@ public interface IGene {
 	Optional<IAllele> getAllele(IAlleleKey key);
 
 	/**
-	 * The allele that is used for the default template of the {@link IOrganism}.
+	 * The allele that is used for the default template of the {@link IIndividual}.
 	 */
 	IAllele<?> getDefaultAllele();
 

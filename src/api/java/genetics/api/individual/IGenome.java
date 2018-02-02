@@ -46,6 +46,16 @@ public interface IGenome {
 	IChromosome getChromosome(IGeneType geneType);
 
 	/**
+	 * @return A array that contains all active alleles of this genome.
+	 */
+	IAllele[] getActiveAlleles();
+
+	/**
+	 * @return A array that contains all inactive alleles of this genome.
+	 */
+	IAllele[] getInactiveAlleles();
+
+	/**
 	 * @return The karyotype of this genome. It defines the positions of the chromosomes in the array and the length
 	 * of it.
 	 */

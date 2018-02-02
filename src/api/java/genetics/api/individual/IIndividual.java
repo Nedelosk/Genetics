@@ -1,18 +1,19 @@
 package genetics.api.individual;
 
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 
 /**
  * An actual individual organism with genetic information.
  */
-public interface IOrganism {
+public interface IIndividual {
 	/**
 	 * @return The {@link IAllele#getRegistryName()} of the allele that is at the {@link IKaryotype#getTemplateType()}
 	 * of the {@link IGenome} of this individual.
@@ -20,9 +21,14 @@ public interface IOrganism {
 	String getIdentifier();
 
 	/**
+	 * Adds some information about the individual to the list.
+	 */
+	void addTooltip(List<String> tooltip);
+
+	/**
 	 * @return The definition that describes this organism.
 	 */
-	IOrganismDefinition getDefinition();
+	IIndividualDefinition getDefinition();
 
 	/**
 	 * @return The genetic data of this organism.
@@ -32,9 +38,9 @@ public interface IOrganism {
 	/**
 	 * Mate with the given organism.
 	 *
-	 * @param individual the {@link IOrganism} to mate this one with.
+	 * @param mate the {@link IIndividual} to mate this one with.
 	 */
-	void mate(IGenome individual);
+	void mate(IGenome mate);
 
 	/**
 	 * @return Genetic information of the mate, empty if unmated.
@@ -44,7 +50,20 @@ public interface IOrganism {
 	/**
 	 * @return A deep copy of this organism.
 	 */
-	IOrganism copy();
+	IIndividual copy();
+
+	/**
+	 * Called on {@link IIndividualBuilder#build()} to copy states like {@link #isAnalyzed()} that have no relation to
+	 * the {@link IGenome} itself.
+	 *
+	 * @param otherIndividual The individual that was used to create the builder.
+	 */
+	void onBuild(IIndividual otherIndividual);
+
+	/**
+	 * @return Creates a {@link IIndividualBuilder} of the genetic information of this individual.
+	 */
+	IIndividualBuilder toBuilder();
 
 	/**
 	 * @return true if this organism has the same active and inactive allele at the position.
@@ -57,14 +76,14 @@ public interface IOrganism {
 	NBTTagCompound writeToNBT(NBTTagCompound compound);
 
 	/**
-	 * Call to mark the IOrganism as analyzed.
+	 * Call to mark the IIndividual as analyzed.
 	 *
-	 * @return true if the IOrganism has not been analyzed previously.
+	 * @return true if the IIndividual has not been analyzed previously.
 	 */
 	boolean analyze();
 
 	/**
-	 * @return true if the IOrganism has been analyzed previously.
+	 * @return true if the IIndividual has been analyzed previously.
 	 */
 	boolean isAnalyzed();
 }

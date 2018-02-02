@@ -5,13 +5,13 @@ import javax.annotation.Nullable;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.definition.IOrganismRoot;
+import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IGenomeWrapper;
-import genetics.api.individual.IOrganism;
+import genetics.api.individual.IIndividual;
 
 public final class AlleleTemplate implements IAlleleTemplate {
 	private final IAllele[] alleles;
@@ -54,7 +54,7 @@ public final class AlleleTemplate implements IAlleleTemplate {
 	}
 
 	@Override
-	public <I extends IOrganism> I toIndividual(IOrganismRoot<I, IGenomeWrapper> root, @Nullable IAlleleTemplate inactiveTemplate) {
+	public <I extends IIndividual> I toIndividual(IIndividualRoot<I, IGenomeWrapper> root, @Nullable IAlleleTemplate inactiveTemplate) {
 		return root.templateAsIndividual(alleles, inactiveTemplate == null ? null : inactiveTemplate.alleles());
 	}
 

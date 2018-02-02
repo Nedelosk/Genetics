@@ -1,6 +1,6 @@
 package genetics.api;
 
-import genetics.api.definition.IOrganismDefinitionBuilder;
+import genetics.api.definition.IIndividualDefinitionBuilder;
 import genetics.api.gene.IGeneBuilder;
 import genetics.api.gene.IKaryotypeBuilder;
 import genetics.api.registry.IAlleleRegistry;
@@ -28,7 +28,7 @@ public interface IGeneticPlugin {
 	}
 
 	/**
-	 * Create {@link IGeneBuilder}s, {@link IKaryotypeBuilder}s and {@link IOrganismDefinitionBuilder}s
+	 * Create {@link IGeneBuilder}s, {@link IKaryotypeBuilder}s and {@link IIndividualDefinitionBuilder}s
 	 */
 	default void register(IGeneticRegistry registry) {
 		//Default Implementation

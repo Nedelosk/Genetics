@@ -12,7 +12,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IOrganismDefinition;
+import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IGeneType;
 import genetics.api.items.IGeneTemplate;
 
@@ -24,7 +24,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	@Nullable
 	private IGeneType type;
 	@Nullable
-	private IOrganismDefinition definition;
+	private IIndividualDefinition definition;
 
 	@Override
 	public Optional<IAllele<?>> getAllele() {
@@ -37,7 +37,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	}
 
 	@Override
-	public Optional<IOrganismDefinition> getDescription() {
+	public Optional<IIndividualDefinition> getDefinition() {
 		return Optional.ofNullable(definition);
 	}
 
@@ -68,9 +68,9 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	@Override
 	public void deserializeNBT(NBTTagCompound compound) {
 		if (compound.hasKey("Type") && compound.hasKey("Definition")) {
-			GeneticsAPI.geneticSystem.getDefinition(compound.getString("Definition")).ifPresent(d -> {
-				definition = d;
-				type = d.getGeneTypes()[compound.getByte("Type")];
+			GeneticsAPI.geneticSystem.getDefinition(compound.getString("Definition")).ifPresent(definition -> {
+				this.definition = definition;
+				type = definition.getKaryotype().getGeneTypes()[compound.getByte("Type")];
 			});
 		}
 		if (compound.hasKey("Allele")) {

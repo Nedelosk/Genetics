@@ -1,4 +1,4 @@
-package genetics.definition;
+package genetics.organism;
 
 import java.util.Collection;
 import java.util.Map;
@@ -6,15 +6,18 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
-import genetics.api.definition.IOrganismTypes;
-import genetics.api.individual.IOrganismHandler;
-import genetics.api.individual.IOrganismType;
-import genetics.api.individual.IOrganism;
+import genetics.api.individual.IIndividual;
+import genetics.api.organism.IOrganism;
+import genetics.api.organism.IOrganismHandler;
+import genetics.api.organism.IOrganismType;
+import genetics.api.organism.IOrganismTypes;
 
-public class GeneticTypes<I extends IOrganism> implements IOrganismTypes<I> {
+import genetics.Genetics;
+
+public class OrganismTypes<I extends IIndividual> implements IOrganismTypes<I> {
 	private final Map<IOrganismType, IOrganismHandler<I>> types;
 
-	GeneticTypes(Map<IOrganismType, IOrganismHandler<I>> types) {
+	public OrganismTypes(Map<IOrganismType, IOrganismHandler<I>> types) {
 		this.types = types;
 	}
 
@@ -37,18 +40,32 @@ public class GeneticTypes<I extends IOrganism> implements IOrganismTypes<I> {
 		if (handler == null) {
 			return Optional.empty();
 		}
-		return Optional.of(handler.createIndividual(itemStack));
+		return handler.createIndividual(itemStack);
+	}
+
+	@Override
+	public boolean setIndividual(ItemStack itemStack, I individual) {
+		Optional<IOrganismType> optional = getType(itemStack);
+		if (!optional.isPresent()) {
+			return false;
+		}
+		IOrganismHandler<I> handler = types.get(optional.get());
+		if (handler == null) {
+			return false;
+		}
+		return handler.setIndividual(itemStack, individual);
 	}
 
 	@Override
 	public Optional<IOrganismType> getType(ItemStack itemStack) {
-		for (Map.Entry<IOrganismType, IOrganismHandler<I>> entry : types.entrySet()) {
-			IOrganismHandler handler = entry.getValue();
-			if (itemStack.getItem() == handler.getItem()) {
-				return Optional.of(entry.getKey());
-			}
+		if (!itemStack.hasCapability(Genetics.ORGANISM, null)) {
+			return Optional.empty();
 		}
-		return Optional.empty();
+		IOrganism organism = itemStack.getCapability(Genetics.ORGANISM, null);
+		if (organism == null) {
+			return Optional.empty();
+		}
+		return Optional.of(organism.getType());
 	}
 
 	@Override

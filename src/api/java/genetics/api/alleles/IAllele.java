@@ -8,12 +8,12 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
-import genetics.api.individual.IOrganism;
+import genetics.api.individual.IIndividual;
 
 /**
- * An {@link IOrganism}'s {@link IGenome} is composed of {@link IChromosome}s consisting each of a primary and secondary {@link IAllele}.
+ * An {@link IIndividual}'s {@link IGenome} is composed of {@link IChromosome}s consisting each of a primary and secondary {@link IAllele}.
  * <p>
- * {@link IAllele}s hold all information regarding an {@link IOrganism}'s traits, from species to size, temperature tolerances, etc.
+ * {@link IAllele}s hold all information regarding an {@link IIndividual}'s traits, from species to size, temperature tolerances, etc.
  * <p>
  * Should be extended for different types of alleles. IAlleleSpecies, IAlleleBiome, etc.
  * <p>

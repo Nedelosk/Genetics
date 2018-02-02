@@ -9,23 +9,23 @@ import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.definition.IOrganismDefinition;
-import genetics.api.definition.IOrganismRoot;
+import genetics.api.definition.IIndividualDefinition;
+import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
-import genetics.api.individual.IOrganism;
-import genetics.api.individual.IOrganismType;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IIndividual;
 import genetics.api.items.IGeneTemplate;
-import genetics.api.items.IIndividualHandler;
+import genetics.api.organism.IOrganism;
+import genetics.api.organism.IOrganismType;
 
 import genetics.alleles.AlleleTemplate;
 import genetics.alleles.AlleleTemplateBuilder;
 import genetics.individual.Chromosome;
 import genetics.individual.Genome;
 import genetics.items.GeneTemplate;
-import genetics.items.IndividualHandler;
+import genetics.organism.Organism;
 
 public enum GeneticFactory implements IGeneticFactory {
 	INSTANCE;
@@ -66,8 +66,8 @@ public enum GeneticFactory implements IGeneticFactory {
 	}
 
 	@Override
-	public <I extends IOrganism> IIndividualHandler<I> createIndividualHandler(ItemStack itemStack, IOrganismType type, IOrganismDefinition<I, IOrganismRoot> definition) {
-		return new IndividualHandler<>(itemStack, () -> definition, () -> type);
+	public <I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I, ?>> definition) {
+		return new Organism<>(itemStack, () -> definition, () -> type);
 	}
 
 	@Override
