@@ -45,6 +45,11 @@ public final class IndividualBuilder<I extends IIndividual> implements IIndividu
 	}
 
 	@Override
+	public I getCreationIndividual() {
+		return creationIndividual;
+	}
+
+	@Override
 	public I build() {
 		IAlleleTemplate activeTemplate = activeBuilder.build();
 		IAlleleTemplate inactiveTemplate = inactiveBuilder.build();
