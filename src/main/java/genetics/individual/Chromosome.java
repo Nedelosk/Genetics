@@ -35,9 +35,9 @@ public class Chromosome implements IChromosome {
 	}
 
 	public static Chromosome create(@Nullable ResourceLocation primarySpeciesUid, @Nullable ResourceLocation secondarySpeciesUid, IGeneType geneType, NBTTagCompound nbt) {
-		IAllele primary = GeneticsAPI.alleleRegistry.getAllele(nbt.getString(ACTIVE_ALLELE_TAG)).orElse(null);
-		IAllele secondary = GeneticsAPI.alleleRegistry.getAllele(nbt.getString(INACTIVE_ALLELE_TAG)).orElse(null);
-		return create(primarySpeciesUid, secondarySpeciesUid, geneType, primary, secondary);
+		IAllele firstAllele = GeneticsAPI.alleleRegistry.getAllele(nbt.getString(ACTIVE_ALLELE_TAG)).orElse(null);
+		IAllele secondAllele = GeneticsAPI.alleleRegistry.getAllele(nbt.getString(INACTIVE_ALLELE_TAG)).orElse(null);
+		return create(primarySpeciesUid, secondarySpeciesUid, geneType, firstAllele, secondAllele);
 	}
 
 	public static Chromosome create(@Nullable ResourceLocation primaryTemplateIdentifier, @Nullable ResourceLocation secondaryTemplateIdentifier, IGeneType type, @Nullable IAllele firstAllele, @Nullable IAllele secondAllele) {

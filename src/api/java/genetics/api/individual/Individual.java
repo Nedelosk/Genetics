@@ -1,7 +1,6 @@
 package genetics.api.individual;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,10 +51,6 @@ public abstract class Individual implements IIndividual {
 	@Override
 	public String getIdentifier() {
 		return genome.getActiveAllele(getDefinition().getKaryotype().getTemplateType()).getRegistryName().toString();
-	}
-
-	@Override
-	public void addTooltip(List<String> tooltip) {
 	}
 
 	@Override

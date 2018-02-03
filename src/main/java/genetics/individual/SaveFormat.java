@@ -48,7 +48,7 @@ public enum SaveFormat {
 					Chromosome chromosome = Chromosome.create(primaryTemplateIdentifier, secondaryTemplateIdentifier, geneType, chromosomeNBT);
 					chromosomes[chromosomeOrdinal] = chromosome;
 
-					if (geneType == karyotype.getTemplateType()) {
+					if (geneType.equals(karyotype.getTemplateType())) {
 						primaryTemplateIdentifier = chromosome.getActiveAllele().getRegistryName();
 						secondaryTemplateIdentifier = chromosome.getInactiveAllele().getRegistryName();
 					}

@@ -20,10 +20,7 @@ public class PluginManager {
 	private static final Comparator<IGeneticPlugin> PLUGIN_COMPARATOR = (firstPlugin, secondPlugin) -> {
 		EventPriority first = firstPlugin.getClass().getAnnotation(GeneticPlugin.class).priority();
 		EventPriority second = secondPlugin.getClass().getAnnotation(GeneticPlugin.class).priority();
-		if (first == second) {
-			return 0;
-		}
-		return first.ordinal() > second.ordinal() ? 1 : -1;
+		return first.equals(second) ? 0 : first.ordinal() > second.ordinal() ? 1 : -1;
 	};
 	private static List<IGeneticPlugin> plugins = Collections.emptyList();
 

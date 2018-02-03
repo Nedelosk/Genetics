@@ -47,7 +47,6 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 		if (!optionalGene.isPresent()) {
 			throw new IllegalArgumentException("Gene key is not registered.");
 		}
-		IGene gene = optionalGene.get();
 		Optional<IAllele<?>> allele = GeneticsAPI.alleleRegistry.getAllele(alleleKey);
 		allele.ifPresent(a -> alleles[geneKey.getIndex()] = a);
 		return this;
