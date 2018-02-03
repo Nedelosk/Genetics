@@ -5,6 +5,7 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import genetics.api.IGeneTemplate;
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
@@ -16,7 +17,6 @@ import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
-import genetics.api.items.IGeneTemplate;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
 

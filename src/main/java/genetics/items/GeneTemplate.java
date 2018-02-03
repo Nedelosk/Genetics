@@ -11,10 +11,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import genetics.api.GeneticsAPI;
+import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IGeneType;
-import genetics.api.items.IGeneTemplate;
 
 import genetics.Genetics;
 

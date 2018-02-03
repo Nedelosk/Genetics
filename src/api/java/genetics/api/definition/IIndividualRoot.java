@@ -10,10 +10,10 @@ import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 
 /**
- * The IGeneticRoot offers several functions to create {@link IIndividual}s and to wrap the genome of this
- * {@link IIndividual}s.
+ * The IGeneticRoot offers several functions to create {@link IIndividual}s and to wrap the genome of a
+ * {@link IIndividual}.
  *
- * @param <I> The individual that this root provides.
+ * @param <I> The type of the individual that this root provides.
  * @param <W> The type of the wrapper that is used by this root.
  */
 public interface IIndividualRoot<I extends IIndividual, W extends IGenomeWrapper> {

@@ -16,12 +16,12 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import genetics.api.GeneticsAPI;
+import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IGeneType;
 import genetics.api.individual.IIndividual;
-import genetics.api.items.IGeneTemplate;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
 

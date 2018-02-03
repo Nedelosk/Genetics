@@ -1,5 +1,6 @@
 package genetics.api;
 
+import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualDefinitionBuilder;
 import genetics.api.gene.IGeneBuilder;
 import genetics.api.gene.IKaryotypeBuilder;
@@ -36,6 +37,7 @@ public interface IGeneticPlugin {
 
 	/**
 	 * Called after the previous methods were called and every thing is registered.
+	 * Can be used to get created {@link IIndividualDefinition}s.
 	 */
 	default void onFinishRegistration(IGeneticSystem system) {
 		//Default Implementation

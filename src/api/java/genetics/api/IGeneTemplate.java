@@ -1,9 +1,8 @@
-package genetics.api.items;
+package genetics.api;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IGeneType;

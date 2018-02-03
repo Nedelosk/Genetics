@@ -19,8 +19,8 @@ public interface IIndividualBuilder<I extends IIndividual> {
 	/**
 	 * Sets a allele at a position of the chromosome.
 	 *
-	 * @param allele  The allele that should be set at the position.
-	 * @param type The position at the chromosome array.
+	 * @param allele The allele that should be set at the position.
+	 * @param type   The position at the chromosome array.
 	 * @param active True if you want to set the active allele, false otherwise.
 	 */
 	void setAllele(IGeneType type, IAllele<?> allele, boolean active);
@@ -28,8 +28,8 @@ public interface IIndividualBuilder<I extends IIndividual> {
 	/**
 	 * Sets a allele at a position of the chromosome.
 	 *
-	 * @param key  The key of the allele that should be set at the position.
-	 * @param type The position at the chromosome array.
+	 * @param key    The key of the allele that should be set at the position.
+	 * @param type   The position at the chromosome array.
 	 * @param active True if you want to set the active allele, false otherwise.
 	 */
 	void setAllele(IGeneType type, IAlleleKey key, boolean active);

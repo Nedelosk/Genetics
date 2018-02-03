@@ -26,6 +26,9 @@ public class GeneticRegistry implements IGeneticRegistry {
 
 	@Override
 	public IGeneBuilder addGene(String name) {
+		if (geneBuilders.containsKey(name)) {
+			return geneBuilders.get(name);
+		}
 		Gene.Builder registry = new Gene.Builder(name);
 		geneBuilders.put(name, registry);
 		return registry;

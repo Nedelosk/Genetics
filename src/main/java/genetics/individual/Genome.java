@@ -116,7 +116,7 @@ public final class Genome implements IGenome {
 	@Override
 	public <V> V getActiveValue(IGeneType geneType, Class<? extends V> valueClass) {
 		Object value = getActiveAllele(geneType).getValue();
-		if(valueClass.isInstance(valueClass)){
+		if (valueClass.isInstance(valueClass)) {
 			return valueClass.cast(value);
 		}
 		throw new IllegalArgumentException();
@@ -125,7 +125,7 @@ public final class Genome implements IGenome {
 	@Override
 	public <V> V getInactiveValue(IGeneType geneType, Class<? extends V> valueClass) {
 		Object value = getInactiveAllele(geneType).getValue();
-		if(valueClass.isInstance(valueClass)){
+		if (valueClass.isInstance(valueClass)) {
 			return valueClass.cast(value);
 		}
 		throw new IllegalArgumentException();

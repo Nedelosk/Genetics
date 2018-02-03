@@ -7,8 +7,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import genetics.api.IBlockTranslator;
-import genetics.api.IItemTranslator;
 import genetics.api.individual.IIndividual;
 
 /**

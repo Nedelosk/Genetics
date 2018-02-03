@@ -9,9 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import genetics.api.IBlockTranslator;
 import genetics.api.IGeneticPlugin;
-import genetics.api.IItemTranslator;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.gene.IKaryotype;

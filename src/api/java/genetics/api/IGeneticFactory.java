@@ -13,7 +13,6 @@ import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
-import genetics.api.items.IGeneTemplate;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
 
@@ -35,8 +34,8 @@ public interface IGeneticFactory {
 	 * Creates a {@link IAlleleTemplateBuilder} that contains the given allele array.
 	 *
 	 * @param karyotype The karyotype that defines the size of the allele array.
-	 * @param alleles    A array that contains all alleles for this template. It must have the same length like the
-	 *                   karyotype of the individual.
+	 * @param alleles   A array that contains all alleles for this template. It must have the same length like the
+	 *                  karyotype of the individual.
 	 */
 	IAlleleTemplateBuilder createTemplateBuilder(IKaryotype karyotype, IAllele[] alleles);
 
@@ -44,8 +43,8 @@ public interface IGeneticFactory {
 	 * Creates a {@link IAlleleTemplate} that contains the given allele array.
 	 *
 	 * @param karyotype The karyotype that defines the size of the allele array.
-	 * @param alleles    A array that contains all alleles for this template. It must have the same length like the
-	 *                   karyotype of the individual.
+	 * @param alleles   A array that contains all alleles for this template. It must have the same length like the
+	 *                  karyotype of the individual.
 	 */
 	IAlleleTemplate createTemplate(IKaryotype karyotype, IAllele[] alleles);
 

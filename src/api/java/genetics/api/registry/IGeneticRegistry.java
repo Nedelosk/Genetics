@@ -23,7 +23,7 @@ import genetics.api.individual.IIndividual;
  */
 public interface IGeneticRegistry {
 	/**
-	 * Creates a {@link IGeneBuilder} with the given name.
+	 * Creates or gets a {@link IGeneBuilder} with the given name.
 	 * Later before {@link IGeneticPlugin#onFinishRegistration(IGeneticSystem)} is passed to your genetic plugin the gene
 	 * will be build and registered.
 	 *

@@ -11,14 +11,14 @@ import java.util.function.Function;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-import genetics.api.IBlockTranslator;
-import genetics.api.IItemTranslator;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
+import genetics.api.definition.IBlockTranslator;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualDefinitionBuilder;
 import genetics.api.definition.IIndividualRoot;
 import genetics.api.definition.IIndividualTranslator;
+import genetics.api.definition.IItemTranslator;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismHandler;

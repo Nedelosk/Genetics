@@ -1,4 +1,4 @@
-package genetics.api;
+package genetics.api.definition;
 
 import javax.annotation.Nullable;
 
