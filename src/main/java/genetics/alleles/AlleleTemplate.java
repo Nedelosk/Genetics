@@ -6,7 +6,7 @@ import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IIndividualRoot;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
@@ -24,7 +24,7 @@ public final class AlleleTemplate implements IAlleleTemplate {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <V> IAllele<V> get(IGeneType type) {
+	public <V> IAllele<V> get(IChromosomeType type) {
 		return (IAllele<V>) alleles[type.getIndex()];
 	}
 

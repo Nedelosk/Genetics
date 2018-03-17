@@ -18,7 +18,7 @@ import genetics.api.registry.IGeneticSystem;
  * You have to create a IGeneBuilder at {@link IGeneticPlugin#register(IGeneticRegistry)} with
  * {@link IGeneticRegistry#addGene(String)}. Later after {@link IGeneticPlugin#register(IGeneticRegistry)} the builder
  * will be automatically build to a IGene and you can get the instance of the IGene with
- * {@link IGeneticSystem#getGene(IGeneType)}
+ * {@link IGeneticSystem#getGene(IChromosomeType)}
  */
 public interface IGene {
 	/**
@@ -49,7 +49,7 @@ public interface IGene {
 	/**
 	 * The allele that is used for the default template of the {@link IIndividual}.
 	 */
-	IAllele<?> getDefaultAllele();
+	IAllele getDefaultAllele();
 
 	/**
 	 * @return A short localized name for this gene.

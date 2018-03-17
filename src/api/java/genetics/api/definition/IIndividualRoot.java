@@ -21,7 +21,7 @@ public interface IIndividualRoot<I extends IIndividual, W extends IGenomeWrapper
 	/**
 	 * Gets the definition that provides this root.
 	 */
-	IIndividualDefinition<I, ? extends IIndividualRoot> getDefinition();
+	IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>> getDefinition();
 
 	/**
 	 * Uses the information that the NBT-Data contains to create a {@link IIndividual}.

@@ -7,10 +7,10 @@ import genetics.api.registry.IGeneticSystem;
 
 /**
  * A builder to create a IGene.
- *
+ * <p>
  * After every {@link IGeneticPlugin} received {@link IGeneticPlugin#register(IGeneticRegistry)} all
  * {@link IGeneBuilder}s will be build automatically to {@link IGene}s. You can the instance of you gene from
- * {@link IGeneticSystem#getGene(IGeneType)} after it was created.
+ * {@link IGeneticSystem#getGene(IChromosomeType)} after it was created.
  * <p>
  * You can create an instance of this with {@link IGeneticRegistry#addGene(String)}.
  */
@@ -30,5 +30,5 @@ public interface IGeneBuilder {
 	/**
 	 * Adds a type to the builder.
 	 */
-	IGeneBuilder addType(IGeneType type);
+	IGeneBuilder addType(IChromosomeType type);
 }

@@ -7,8 +7,8 @@ import java.util.Optional;
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticPlugin;
 import genetics.api.definition.IIndividualDefinition;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
-import genetics.api.gene.IGeneType;
 
 /**
  * <p>
@@ -29,15 +29,15 @@ public interface IGeneticSystem {
 	/**
 	 * @return The gene that is registered for the given gene type.
 	 */
-	Optional<IGene> getGene(IGeneType type);
+	Optional<IGene> getGene(IChromosomeType type);
 
 	/**
 	 * @return A collection with all registered gene types.
 	 */
-	Collection<IGeneType> getTypes();
+	Collection<IChromosomeType> getTypes();
 
 	/**
 	 * @return A collection with all gene types that the given gene represents.
 	 */
-	Collection<IGeneType> getTypes(IGene gene);
+	Collection<IChromosomeType> getTypes(IGene gene);
 }

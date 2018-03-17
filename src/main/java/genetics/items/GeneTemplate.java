@@ -14,25 +14,29 @@ import genetics.api.GeneticsAPI;
 import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 
 import genetics.Genetics;
 
 public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTTagCompound> {
+	private static final String ALLELE_NBT_KEY = "Allele";
+	private static final String TYPE_NBT_KEY = "Type";
+	private static final String DEFINITION_NBT_KEY = "Definition";
+
 	@Nullable
 	private IAllele<?> allele;
 	@Nullable
-	private IGeneType type;
+	private IChromosomeType type;
 	@Nullable
 	private IIndividualDefinition definition;
 
 	@Override
-	public Optional<IAllele<?>> getAllele() {
+	public Optional<IAllele> getAllele() {
 		return Optional.ofNullable(allele);
 	}
 
 	@Override
-	public Optional<IGeneType> getType() {
+	public Optional<IChromosomeType> getType() {
 		return Optional.ofNullable(type);
 	}
 
@@ -42,7 +46,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	}
 
 	@Override
-	public void setAllele(@Nullable IAllele<?> allele, @Nullable IGeneType type) {
+	public void setAllele(@Nullable IAllele<?> allele, @Nullable IChromosomeType type) {
 		this.allele = allele;
 		this.type = type;
 		if (type != null) {
@@ -56,25 +60,25 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound compound = new NBTTagCompound();
 		if (allele != null) {
-			compound.setString("Allele", allele.getRegistryName().toString());
+			compound.setString(ALLELE_NBT_KEY, allele.getRegistryName().toString());
 		}
 		if (type != null && definition != null) {
-			compound.setByte("Type", (byte) type.getIndex());
-			compound.setString("Definition", definition.getUID());
+			compound.setByte(TYPE_NBT_KEY, (byte) type.getIndex());
+			compound.setString(DEFINITION_NBT_KEY, definition.getUID());
 		}
 		return compound;
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound compound) {
-		if (compound.hasKey("Type") && compound.hasKey("Definition")) {
-			GeneticsAPI.geneticSystem.getDefinition(compound.getString("Definition")).ifPresent(definition -> {
-				this.definition = definition;
-				type = definition.getKaryotype().getGeneTypes()[compound.getByte("Type")];
+		if (compound.hasKey(TYPE_NBT_KEY) && compound.hasKey(DEFINITION_NBT_KEY)) {
+			GeneticsAPI.geneticSystem.getDefinition(compound.getString(DEFINITION_NBT_KEY)).ifPresent(d -> {
+				this.definition = d;
+				type = d.getKaryotype().getChromosomeTypes()[compound.getByte(TYPE_NBT_KEY)];
 			});
 		}
-		if (compound.hasKey("Allele")) {
-			allele = GeneticsAPI.alleleRegistry.getAllele(compound.getString("Allele")).orElse(null);
+		if (compound.hasKey(ALLELE_NBT_KEY)) {
+			allele = GeneticsAPI.alleleRegistry.getAllele(compound.getString(ALLELE_NBT_KEY)).orElse(null);
 		}
 	}
 

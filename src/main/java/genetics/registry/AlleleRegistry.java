@@ -31,7 +31,7 @@ public class AlleleRegistry implements IAlleleRegistry {
 	/* ALLELES */
 	private final HashMultimap<IAllele<?>, IAlleleKey> keysByAllele = HashMultimap.create();
 	private final HashMap<IAlleleKey, IAllele<?>> alleleByKey = new LinkedHashMap<>(ALLELE_ARRAY_SIZE);
-	private final ForgeRegistry<IAllele<?>> alleleRegistry;
+	private final ForgeRegistry<IAllele<?>> registry;
 	/*
 	 * Internal Set of all alleleHandlers, which trigger when an allele or branch is registered
 	 */
@@ -44,7 +44,7 @@ public class AlleleRegistry implements IAlleleRegistry {
 			.setName(new ResourceLocation(Genetics.MOD_ID, "alleles"))
 			.setType(IAllele.class);
 		//Cast the registry to the class type so we can get the ids of the alleles
-		this.alleleRegistry = (ForgeRegistry<IAllele<?>>) builder.create();
+		this.registry = (ForgeRegistry<IAllele<?>>) builder.create();
 	}
 
 	@Override
@@ -55,8 +55,8 @@ public class AlleleRegistry implements IAlleleRegistry {
 
 	@Override
 	public <V> IAlleleRegistry registerAllele(IAllele<V> allele, IAlleleKey... keys) {
-		if (!alleleRegistry.containsKey(allele.getRegistryName())) {
-			alleleRegistry.register(allele);
+		if (!registry.containsKey(allele.getRegistryName())) {
+			registry.register(allele);
 			handlers.forEach(h -> h.onRegisterAllele(allele));
 		}
 		for (IAlleleKey key : keys) {
@@ -68,18 +68,18 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	@Override
-	public Optional<IAllele<?>> getAllele(IAlleleKey key) {
+	public Optional<IAllele> getAllele(IAlleleKey key) {
 		return Optional.ofNullable(alleleByKey.get(key));
 	}
 
 	@Override
-	public Optional<IAllele<?>> getAllele(String registryName) {
+	public Optional<IAllele> getAllele(String registryName) {
 		return getAllele(new ResourceLocation(registryName));
 	}
 
 	@Override
-	public Optional<IAllele<?>> getAllele(ResourceLocation location) {
-		return Optional.ofNullable(alleleRegistry.getValue(location));
+	public Optional<IAllele> getAllele(ResourceLocation location) {
+		return Optional.ofNullable(registry.getValue(location));
 	}
 
 	@Override
@@ -98,16 +98,16 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	public int getId(IAllele<?> allele) {
-		return alleleRegistry.getID(allele);
+		return registry.getID(allele);
 	}
 
 	public int getId(ResourceLocation alleleName) {
-		return alleleRegistry.getID(alleleName);
+		return registry.getID(alleleName);
 	}
 
 	@Nullable
-	public IAllele<?> getAllele(int id) {
-		return alleleRegistry.getValue(id);
+	public IAllele getAllele(int id) {
+		return registry.getValue(id);
 	}
 
 }

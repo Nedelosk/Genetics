@@ -15,7 +15,7 @@ import genetics.api.registry.IGeneticRegistry;
  * The IKaryotype defines how many chromosomes a {@link IGenome} contains and which type the {@link IChromosome}s have.
  * <p>
  * You can use a {@link IKaryotypeBuilder} to create an instance or you create the instance directly with
- * {@link IGeneticRegistry#createKaryotype(Class, String)} if you have a enum that contains your {@link IGeneType}s.
+ * {@link IGeneticRegistry#createKaryotype(Class, String)} if you have a enum that contains your {@link IChromosomeType}s.
  */
 public interface IKaryotype {
 	/**
@@ -26,26 +26,26 @@ public interface IKaryotype {
 	/**
 	 * @return All gene types of this IKaryotype.
 	 */
-	IGeneType[] getGeneTypes();
+	IChromosomeType[] getChromosomeTypes();
 
 	/**
 	 * Checks if this karyotype contains any of the types of this gene.
 	 */
-	default <V> boolean contains(IGene gene) {
+	default boolean contains(IGene gene) {
 		return GeneticsAPI.geneticSystem.getTypes(gene).stream().anyMatch(this::contains);
 	}
 
 	/**
 	 * Checks if this karyotype contains the given type.
 	 */
-	boolean contains(IGeneType type);
+	boolean contains(IChromosomeType type);
 
 	/**
-	 * @return The {@link IGeneType} that is used by the {@link ITemplateContainer} to identify the different templates.
+	 * @return The {@link IChromosomeType} that is used by the {@link ITemplateContainer} to identify the different templates.
 	 * It uses the {@link IAllele#getRegistryName()} of the allele that is at the active position of the template in the
 	 * chromosome with this type.
 	 */
-	IGeneType getTemplateType();
+	IChromosomeType getTemplateType();
 
 	/**
 	 * Creates a template builder that contains a copy of the default template allele array.

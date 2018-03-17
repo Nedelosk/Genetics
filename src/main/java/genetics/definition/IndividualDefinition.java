@@ -11,11 +11,12 @@ import genetics.api.definition.IIndividualRoot;
 import genetics.api.definition.IIndividualTranslator;
 import genetics.api.definition.ITemplateContainer;
 import genetics.api.gene.IKaryotype;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
 
-public class IndividualDefinition<I extends IIndividual, R extends IIndividualRoot<I, ?>> implements IIndividualDefinition<I, R> {
+public class IndividualDefinition<I extends IIndividual, R extends IIndividualRoot<I, IGenomeWrapper>> implements IIndividualDefinition<I, R> {
 	private final IOrganismTypes<I> types;
 	private final IIndividualTranslator<I> translator;
 	private final ITemplateContainer templateContainer;
@@ -65,7 +66,7 @@ public class IndividualDefinition<I extends IIndividual, R extends IIndividualRo
 	@Override
 	public Optional<I> createIndividual(String templateIdentifier) {
 		IAllele[] template = templateContainer.getTemplate(templateIdentifier);
-		if (template == null) {
+		if (template.length == 0) {
 			return Optional.empty();
 		}
 		return Optional.of(root.create(karyotype.templateAsGenome(template)));

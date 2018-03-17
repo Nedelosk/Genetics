@@ -8,8 +8,8 @@ import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
-import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 
 public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
@@ -22,7 +22,7 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 	}
 
 	@Override
-	public IAlleleTemplateBuilder set(IGeneType geneKey, IAllele<?> allele) {
+	public IAlleleTemplateBuilder set(IChromosomeType geneKey, IAllele<?> allele) {
 		if (!karyotype.contains(geneKey)) {
 			throw new IllegalArgumentException("Gene key is not valid for the karyotype of this template.");
 		}
@@ -39,7 +39,7 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 	}
 
 	@Override
-	public IAlleleTemplateBuilder set(IGeneType geneKey, IAlleleKey alleleKey) {
+	public IAlleleTemplateBuilder set(IChromosomeType geneKey, IAlleleKey alleleKey) {
 		if (!karyotype.contains(geneKey)) {
 			throw new IllegalArgumentException("Gene key is not valid for the karyotype of this template.");
 		}
@@ -47,7 +47,7 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 		if (!optionalGene.isPresent()) {
 			throw new IllegalArgumentException("Gene key is not registered.");
 		}
-		Optional<IAllele<?>> allele = GeneticsAPI.alleleRegistry.getAllele(alleleKey);
+		Optional<IAllele> allele = GeneticsAPI.alleleRegistry.getAllele(alleleKey);
 		allele.ifPresent(a -> alleles[geneKey.getIndex()] = a);
 		return this;
 	}

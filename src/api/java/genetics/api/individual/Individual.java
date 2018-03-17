@@ -6,7 +6,7 @@ import java.util.Optional;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.GeneticsAPI;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 
 import genetics.individual.IndividualBuilder;
@@ -69,8 +69,13 @@ public abstract class Individual implements IIndividual {
 	}
 
 	@Override
-	public boolean isPureBred(IGeneType geneType) {
-		return genome.getActiveAllele(geneType).equals(genome.getInactiveAllele(geneType));
+	public boolean isPureBred(IChromosomeType geneType) {
+		return genome.isPureBred(geneType);
+	}
+
+	@Override
+	public boolean isGeneticEqual(IIndividual other) {
+		return genome.isGeneticEqual(other.getGenome());
 	}
 
 	@Override
@@ -78,8 +83,8 @@ public abstract class Individual implements IIndividual {
 		if (otherIndividual.isAnalyzed()) {
 			analyze();
 		}
-		Optional<IGenome> mate = otherIndividual.getMate();
-		mate.ifPresent(this::mate);
+		Optional<IGenome> otherMate = otherIndividual.getMate();
+		otherMate.ifPresent(this::mate);
 	}
 
 	@Override

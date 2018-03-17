@@ -1,7 +1,7 @@
 package genetics.api.alleles;
 
 import genetics.api.IGeneticFactory;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 
 /**
@@ -18,7 +18,7 @@ public interface IAlleleTemplateBuilder {
 	 * @param allele  The allele that should be set at the position.
 	 * @param geneKey The position at the chromosome array.
 	 */
-	IAlleleTemplateBuilder set(IGeneType geneKey, IAllele<?> allele);
+	IAlleleTemplateBuilder set(IChromosomeType geneKey, IAllele<?> allele);
 
 	/**
 	 * Sets a allele at a position of the chromosome.
@@ -26,7 +26,7 @@ public interface IAlleleTemplateBuilder {
 	 * @param alleleKey The key of the allele that should be set at the position.
 	 * @param geneKey   The position at the chromosome array.
 	 */
-	IAlleleTemplateBuilder set(IGeneType geneKey, IAlleleKey alleleKey);
+	IAlleleTemplateBuilder set(IChromosomeType geneKey, IAlleleKey alleleKey);
 
 	/**
 	 * @return The karyotype that defines the {@link #size()} and which alleles this template can contain.

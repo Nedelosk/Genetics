@@ -8,7 +8,8 @@ import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualRoot;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 
 /**
@@ -32,7 +33,7 @@ public interface IOrganism<I extends IIndividual> {
 	/**
 	 * @return The root of the individual.
 	 */
-	IIndividualDefinition<I, IIndividualRoot<I, ?>> getDefinition();
+	IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>> getDefinition();
 
 	/**
 	 * @return The species type of the individual.
@@ -46,7 +47,7 @@ public interface IOrganism<I extends IIndividual> {
 	 * @param active True if the allele should be the active allele of the chromosome, false if not.
 	 * @return The allele that is at that position of the genome.
 	 */
-	IAllele<?> getAllele(IGeneType type, boolean active);
+	IAllele getAllele(IChromosomeType type, boolean active);
 
 	/**
 	 * Quickly gets the allele without loading the whole genome. And without creating absent chromosomes and alleles.
@@ -55,5 +56,5 @@ public interface IOrganism<I extends IIndividual> {
 	 * @param active True if the allele should be the active allele of the chromosome, false if not.
 	 * @return The allele that is at that position of the genome.
 	 */
-	Optional<IAllele<?>> getAlleleDirectly(IGeneType type, boolean active);
+	Optional<IAllele> getAlleleDirectly(IChromosomeType type, boolean active);
 }

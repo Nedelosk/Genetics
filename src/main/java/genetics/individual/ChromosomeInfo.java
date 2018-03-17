@@ -4,11 +4,11 @@ import javax.annotation.Nullable;
 
 import net.minecraft.util.ResourceLocation;
 
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.individual.IChromosome;
 
 public class ChromosomeInfo {
-	public final IGeneType geneKey;
+	public final IChromosomeType chromosomeType;
 	@Nullable
 	public IChromosome chromosome;
 	@Nullable
@@ -16,8 +16,8 @@ public class ChromosomeInfo {
 	@Nullable
 	public ResourceLocation inactiveSpeciesUid;
 
-	public ChromosomeInfo(IGeneType geneKey) {
-		this.geneKey = geneKey;
+	public ChromosomeInfo(IChromosomeType chromosomeType) {
+		this.chromosomeType = chromosomeType;
 	}
 
 	public ChromosomeInfo setChromosome(@Nullable IChromosome chromosome) {

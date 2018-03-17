@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 
 /**
@@ -53,7 +53,7 @@ public interface IIndividual {
 	IIndividual copy();
 
 	/**
-	 * Called on {@link IIndividualBuilder#build()} to copy states like {@link #isAnalyzed()} that have no relation to
+	 * Called on {@link IIndividualBuilder#build()} to copy states like {@link #isAnalyzed()} or the mate that have no relation to
 	 * the {@link IGenome} itself.
 	 *
 	 * @param otherIndividual The individual that was used to create the builder.
@@ -68,7 +68,14 @@ public interface IIndividual {
 	/**
 	 * @return true if this organism has the same active and inactive allele at the position.
 	 */
-	boolean isPureBred(IGeneType geneType);
+	boolean isPureBred(IChromosomeType geneType);
+
+	/**
+	 * Check whether the genetic makeup of two IIndividuals is identical. Ignores additional data like generations, irregular mating, etc..
+	 *
+	 * @return true if the given other IIndividual has the amount of chromosomes and their alleles are identical.
+	 */
+	boolean isGeneticEqual(IIndividual other);
 
 	/**
 	 * Writes the data of this into NBT-Data.

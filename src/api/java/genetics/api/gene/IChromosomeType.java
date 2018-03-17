@@ -6,7 +6,7 @@ import genetics.api.registry.IGeneticSystem;
 /**
  * Interface to be implemented by the enums representing the various chromosomes
  */
-public interface IGeneType {
+public interface IChromosomeType {
 	/**
 	 * @return The position of a chromosome that has this type at a chromosome array.
 	 */

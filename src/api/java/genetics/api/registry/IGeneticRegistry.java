@@ -8,8 +8,9 @@ import genetics.api.IGeneticPlugin;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualDefinitionBuilder;
 import genetics.api.definition.IIndividualRoot;
+import genetics.api.definition.IOptionalDefinition;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGeneBuilder;
-import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.gene.IKaryotypeBuilder;
 import genetics.api.individual.IGenomeWrapper;
@@ -45,14 +46,14 @@ public interface IGeneticRegistry {
 	 * @param templateType The template type of the karyotype
 	 * @return A IKaryotypeBuilder that can be used to build {@link IKaryotype}.
 	 */
-	IKaryotypeBuilder createKaryotype(IGeneType templateType, String identifier);
+	IKaryotypeBuilder createKaryotype(IChromosomeType templateType, String identifier);
 
 	/**
 	 * Creates a IKaryotype
 	 *
-	 * @param enumClass A enum that implements {@link IGeneType}.
+	 * @param enumClass A enum that implements {@link IChromosomeType}.
 	 */
-	<T extends Enum<T> & IGeneType> IKaryotype createKaryotype(Class<? extends T> enumClass, String identifier);
+	<T extends Enum<T> & IChromosomeType> IKaryotype createKaryotype(Class<? extends T> enumClass, String identifier);
 
 	/**
 	 * Creates a {@link IIndividualDefinitionBuilder} with the given parameters.
@@ -66,12 +67,12 @@ public interface IGeneticRegistry {
 	 * @param <I>         The type of the individual that the root that the definition contains defines.
 	 * @param <R>         The type of the root that the definition contains.
 	 */
-	<I extends IIndividual, R extends IIndividualRoot<I, IGenomeWrapper>> IIndividualDefinitionBuilder<I> createDefinition(String name, IKaryotype karyotype, Function<IIndividualDefinition<I, R>, R> rootFactory);
+	<I extends IIndividual, R extends IIndividualRoot<I, IGenomeWrapper>> IOptionalDefinition<I, R> createDefinition(String name, IKaryotype karyotype, Function<IIndividualDefinition<I, R>, R> rootFactory);
 
 	/**
 	 * Gets an IGeneticDefinitionBuilder
 	 *
 	 * @param name The string based unique identifier of this definition to retrieve.
 	 */
-	<I extends IIndividual> Optional<IIndividualDefinitionBuilder<I>> getDefinition(String name);
+	<I extends IIndividual, R extends IIndividualRoot<I, IGenomeWrapper>> IOptionalDefinition<I, R> getDefinition(String name);
 }

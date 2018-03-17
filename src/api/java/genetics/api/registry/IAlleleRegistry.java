@@ -31,7 +31,7 @@ public interface IAlleleRegistry {
 	/**
 	 * Creates and registers an allele that contains the given value and has the given dominant state if no allele with
 	 * the value and the given dominant state exists, otherwise it adds the keys to the existing {@link IAllele}.
-	 *
+	 * <p>
 	 * The registry name of the allele will be created out of the given value and the given dominant state:
 	 * "value" + "_" + "dominant"
 	 * You can control the string that is used for the value by implementing {@link Object#toString()} or
@@ -52,7 +52,7 @@ public interface IAlleleRegistry {
 	 */
 	<V> IAlleleRegistry registerAllele(IAllele<V> allele, IAlleleKey... keys);
 
-	Optional<IAllele<?>> getAllele(IAlleleKey key);
+	Optional<IAllele> getAllele(IAlleleKey key);
 
 	/**
 	 * Gets an allele
@@ -60,7 +60,7 @@ public interface IAlleleRegistry {
 	 * @param registryName The registry name of the allele to retrieve as a {@link String}.
 	 * @return A optional that contains the IAllele if found, a empty optional otherwise.
 	 */
-	Optional<IAllele<?>> getAllele(String registryName);
+	Optional<IAllele> getAllele(String registryName);
 
 	/**
 	 * Gets an allele
@@ -68,7 +68,7 @@ public interface IAlleleRegistry {
 	 * @param registryName The registry name of the allele to retrieve as a {@link ResourceLocation}.
 	 * @return A optional that contains the IAllele if found, a empty optional otherwise.
 	 */
-	Optional<IAllele<?>> getAllele(ResourceLocation registryName);
+	Optional<IAllele> getAllele(ResourceLocation registryName);
 
 	/**
 	 * Gets all keys for the given allele.

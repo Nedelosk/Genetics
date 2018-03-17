@@ -14,7 +14,8 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualRoot;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
@@ -24,10 +25,10 @@ import genetics.individual.GeneticSaveHandler;
 
 public class Organism<I extends IIndividual> implements IOrganism<I>, ICapabilityProvider {
 	private final ItemStack container;
-	private final Supplier<IIndividualDefinition<I, IIndividualRoot<I, ?>>> definitionSupplier;
+	private final Supplier<IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>>> definitionSupplier;
 	private final Supplier<IOrganismType> typeSupplier;
 
-	public Organism(ItemStack container, Supplier<IIndividualDefinition<I, IIndividualRoot<I, ?>>> geneticDefinitionSupplier, Supplier<IOrganismType> typeSupplier) {
+	public Organism(ItemStack container, Supplier<IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>>> geneticDefinitionSupplier, Supplier<IOrganismType> typeSupplier) {
 		this.container = container;
 		this.definitionSupplier = geneticDefinitionSupplier;
 		this.typeSupplier = typeSupplier;
@@ -44,7 +45,7 @@ public class Organism<I extends IIndividual> implements IOrganism<I>, ICapabilit
 	}
 
 	@Override
-	public IIndividualDefinition<I, IIndividualRoot<I, ?>> getDefinition() {
+	public IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>> getDefinition() {
 		return definitionSupplier.get();
 	}
 
@@ -54,7 +55,7 @@ public class Organism<I extends IIndividual> implements IOrganism<I>, ICapabilit
 	}
 
 	@Override
-	public IAllele<?> getAllele(IGeneType type, boolean active) {
+	public IAllele getAllele(IChromosomeType type, boolean active) {
 		IAllele allele = GeneticSaveHandler.INSTANCE.getAlleleDirectly(container, type, active);
 		if (allele == null) {
 			allele = GeneticSaveHandler.INSTANCE.getAllele(container, type, active);
@@ -63,7 +64,7 @@ public class Organism<I extends IIndividual> implements IOrganism<I>, ICapabilit
 	}
 
 	@Override
-	public Optional<IAllele<?>> getAlleleDirectly(IGeneType type, boolean active) {
+	public Optional<IAllele> getAlleleDirectly(IChromosomeType type, boolean active) {
 		return Optional.ofNullable(GeneticSaveHandler.INSTANCE.getAlleleDirectly(container, type, active));
 	}
 

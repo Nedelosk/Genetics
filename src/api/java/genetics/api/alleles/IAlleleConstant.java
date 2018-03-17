@@ -1,14 +1,14 @@
 package genetics.api.alleles;
 
 import genetics.api.IRegistryHelper;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGeneBuilder;
-import genetics.api.gene.IGeneType;
 import genetics.api.registry.IAlleleRegistry;
 
 /**
  * The IAlleleConstant is a help interface that provides all information that is required to register a allele at the {@link IAlleleRegistry}
  * as well as to create a gene at the {@link IRegistryHelper} using
- * {@link IRegistryHelper#addGene(String, IGeneType, IAlleleConstant[])}.
+ * {@link IRegistryHelper#addGene(String, IChromosomeType, IAlleleConstant[])}.
  *
  * @param <V> The type of the value that this constant provides.
  */

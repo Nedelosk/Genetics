@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 
 /**
@@ -23,27 +23,27 @@ public interface IGenome {
 	/**
 	 * @return The active allele of the chromosome with the given gene type.
 	 */
-	IAllele getActiveAllele(IGeneType geneType);
+	IAllele getActiveAllele(IChromosomeType geneType);
 
 	/**
 	 * @return The value of the active allele of the chromosome with the given gene type.
 	 */
-	<V> V getActiveValue(IGeneType geneType, Class<? extends V> valueClass);
+	<V> V getActiveValue(IChromosomeType geneType, Class<? extends V> valueClass);
 
 	/**
 	 * @return The inactive allele of the chromosome with the given gene type.
 	 */
-	IAllele getInactiveAllele(IGeneType geneType);
+	IAllele getInactiveAllele(IChromosomeType geneType);
 
 	/**
 	 * @return The value of the inactive allele of the chromosome with the given gene type.
 	 */
-	<V> V getInactiveValue(IGeneType geneType, Class<? extends V> valueClass);
+	<V> V getInactiveValue(IChromosomeType geneType, Class<? extends V> valueClass);
 
 	/**
 	 * @return The chromosome with the given gene type.
 	 */
-	IChromosome getChromosome(IGeneType geneType);
+	IChromosome getChromosome(IChromosomeType geneType);
 
 	/**
 	 * @return A array that contains all active alleles of this genome.
@@ -54,6 +54,16 @@ public interface IGenome {
 	 * @return A array that contains all inactive alleles of this genome.
 	 */
 	IAllele[] getInactiveAlleles();
+
+	/**
+	 * @return true if the given other IGenome has the amount of chromosomes and their alleles are identical.
+	 */
+	boolean isGeneticEqual(IGenome other);
+
+	/**
+	 * @return true if this chromosome has the same active and inactive allele.
+	 */
+	boolean isPureBred(IChromosomeType geneType);
 
 	/**
 	 * @return The karyotype of this genome. It defines the positions of the chromosomes in the array and the length

@@ -39,7 +39,7 @@ public interface IGeneticPlugin {
 	 * Called after the previous methods were called and every thing is registered.
 	 * Can be used to get created {@link IIndividualDefinition}s.
 	 */
-	default void onFinishRegistration(IGeneticSystem system) {
+	default void onFinishRegistration(IGeneticSystem system, IGeneticApiInstance instance) {
 		//Default Implementation
 	}
 }

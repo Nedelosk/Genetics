@@ -3,7 +3,7 @@ package genetics.api.alleles;
 import javax.annotation.Nullable;
 
 import genetics.api.definition.IIndividualRoot;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
@@ -18,7 +18,7 @@ public interface IAlleleTemplate {
 	/**
 	 * @return The allele at the position of the chromosomeType at the allele array.
 	 */
-	<V> IAllele<V> get(IGeneType type);
+	<V> IAllele<V> get(IChromosomeType type);
 
 	/**
 	 * @return A copy of the allele array.

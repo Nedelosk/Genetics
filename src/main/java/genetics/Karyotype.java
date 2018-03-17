@@ -13,8 +13,8 @@ import genetics.api.alleles.Allele;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
-import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.gene.IKaryotypeBuilder;
 import genetics.api.individual.IChromosome;
@@ -26,23 +26,23 @@ import genetics.individual.Genome;
 
 @Immutable
 public class Karyotype implements IKaryotype {
-	private final IGeneType[] geneTypes;
-	private final IGeneType templateType;
+	private final IChromosomeType[] chromosomeTypes;
+	private final IChromosomeType templateType;
 	private final String identifier;
 	private final IAlleleTemplate defaultTemplate;
 	private final IGenome defaultGenome;
 	private final BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory;
 
-	private Karyotype(String identifier, Set<IGeneType> geneTypes, IGeneType templateType, BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
+	private Karyotype(String identifier, Set<IChromosomeType> chromosomeTypes, IChromosomeType templateType, BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
 		this.identifier = identifier;
 		this.templateType = templateType;
-		this.geneTypes = new IGeneType[geneTypes.size()];
+		this.chromosomeTypes = new IChromosomeType[chromosomeTypes.size()];
 		this.templateFactory = templateFactory;
-		for (IGeneType key : geneTypes) {
-			this.geneTypes[key.getIndex()] = key;
+		for (IChromosomeType key : chromosomeTypes) {
+			this.chromosomeTypes[key.getIndex()] = key;
 		}
-		IAllele[] alleles = new Allele[geneTypes.size()];
-		for (IGeneType key : geneTypes) {
+		IAllele[] alleles = new Allele[chromosomeTypes.size()];
+		for (IChromosomeType key : chromosomeTypes) {
 			Optional<IGene> optional = GeneticsAPI.geneticSystem.getGene(key);
 			optional.ifPresent(g -> alleles[key.getIndex()] = g.getDefaultAllele());
 		}
@@ -56,17 +56,17 @@ public class Karyotype implements IKaryotype {
 	}
 
 	@Override
-	public IGeneType[] getGeneTypes() {
-		return geneTypes;
+	public IChromosomeType[] getChromosomeTypes() {
+		return chromosomeTypes;
 	}
 
 	@Override
-	public boolean contains(IGeneType type) {
-		return Arrays.asList(geneTypes).contains(type);
+	public boolean contains(IChromosomeType type) {
+		return Arrays.asList(chromosomeTypes).contains(type);
 	}
 
 	@Override
-	public IGeneType getTemplateType() {
+	public IChromosomeType getTemplateType() {
 		return templateType;
 	}
 
@@ -92,12 +92,12 @@ public class Karyotype implements IKaryotype {
 
 	@Override
 	public IChromosome[] templateAsChromosomes(IAllele[] templateActive, @Nullable IAllele[] templateInactive) {
-		Chromosome[] chromosomes = new Chromosome[geneTypes.length];
-		for (int i = 0; i < geneTypes.length; i++) {
+		Chromosome[] chromosomes = new Chromosome[chromosomeTypes.length];
+		for (int i = 0; i < chromosomeTypes.length; i++) {
 			if (templateInactive == null) {
-				chromosomes[i] = Chromosome.create(templateActive[i], geneTypes[i]);
+				chromosomes[i] = Chromosome.create(templateActive[i], chromosomeTypes[i]);
 			} else {
-				chromosomes[i] = Chromosome.create(templateActive[i], templateInactive[i], geneTypes[i]);
+				chromosomes[i] = Chromosome.create(templateActive[i], templateInactive[i], chromosomeTypes[i]);
 			}
 		}
 
@@ -110,12 +110,12 @@ public class Karyotype implements IKaryotype {
 	}
 
 	public static class Builder implements IKaryotypeBuilder {
-		private final Set<IGeneType> geneTypes = new HashSet<>();
-		private final IGeneType templateType;
+		private final Set<IChromosomeType> chromosomeTypes = new HashSet<>();
+		private final IChromosomeType templateType;
 		private final String identifier;
 		private BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory = AlleleTemplateBuilder::new;
 
-		public Builder(IGeneType templateType, String identifier) {
+		public Builder(IChromosomeType templateType, String identifier) {
 			this.templateType = templateType;
 			this.identifier = identifier;
 			add(templateType);
@@ -128,14 +128,14 @@ public class Karyotype implements IKaryotype {
 		}
 
 		@Override
-		public IKaryotypeBuilder add(IGeneType type) {
-			this.geneTypes.add(type);
+		public IKaryotypeBuilder add(IChromosomeType type) {
+			this.chromosomeTypes.add(type);
 			return this;
 		}
 
 		@Override
 		public IKaryotype build() {
-			return new Karyotype(identifier, geneTypes, templateType, templateFactory);
+			return new Karyotype(identifier, chromosomeTypes, templateType, templateFactory);
 		}
 	}
 }

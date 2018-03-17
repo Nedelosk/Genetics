@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 
@@ -33,7 +33,7 @@ public enum SaveFormat {
 
 		@Override
 		IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
-			IGeneType[] geneTypes = karyotype.getGeneTypes();
+			IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
 			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, 10);
 			IChromosome[] chromosomes = new IChromosome[geneTypes.length];
 			ResourceLocation primaryTemplateIdentifier = null;
@@ -44,7 +44,7 @@ public enum SaveFormat {
 				byte chromosomeOrdinal = chromosomeNBT.getByte(SLOT_TAG);
 
 				if (chromosomeOrdinal >= 0 && chromosomeOrdinal < chromosomes.length) {
-					IGeneType geneType = geneTypes[chromosomeOrdinal];
+					IChromosomeType geneType = geneTypes[chromosomeOrdinal];
 					Chromosome chromosome = Chromosome.create(primaryTemplateIdentifier, secondaryTemplateIdentifier, geneType, chromosomeNBT);
 					chromosomes[chromosomeOrdinal] = chromosome;
 
@@ -59,7 +59,7 @@ public enum SaveFormat {
 
 		@Nullable
 		@Override
-		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IGeneType geneType, boolean active) {
+		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active) {
 			NBTTagList tagList = genomeNBT.getTagList(CHROMOSOMES_TAG, 10);
 			if (tagList.hasNoTags()) {
 				return null;
@@ -72,7 +72,7 @@ public enum SaveFormat {
 		}
 
 		@Override
-		public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType chromosomeType) {
+		public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IChromosomeType chromosomeType) {
 			IChromosome[] chromosomes = readTag(chromosomeType.getDefinition().getKaryotype(), genomeNBT);
 			return chromosomes[chromosomeType.getIndex()];
 		}
@@ -92,7 +92,7 @@ public enum SaveFormat {
 		@SuppressWarnings("deprecation")
 		@Override
 		IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
-			IGeneType[] geneTypes = karyotype.getGeneTypes();
+			IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
 			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, 10);
 			IChromosome[] chromosomes = new IChromosome[geneTypes.length];
 			ResourceLocation primaryTemplateIdentifier = null;
@@ -103,7 +103,7 @@ public enum SaveFormat {
 				byte chromosomeOrdinal = chromosomeNBT.getByte(SLOT_TAG);
 
 				if (chromosomeOrdinal >= 0 && chromosomeOrdinal < chromosomes.length) {
-					IGeneType geneType = geneTypes[chromosomeOrdinal];
+					IChromosomeType geneType = geneTypes[chromosomeOrdinal];
 					Chromosome chromosome = Chromosome.create(primaryTemplateIdentifier, secondaryTemplateIdentifier, geneType, chromosomeNBT);
 					chromosomes[chromosomeOrdinal] = chromosome;
 
@@ -118,7 +118,7 @@ public enum SaveFormat {
 
 		@Nullable
 		@Override
-		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IGeneType geneType, boolean active) {
+		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active) {
 			NBTTagList tagList = genomeNBT.getTagList(CHROMOSOMES_TAG, 10);
 			if (tagList.hasNoTags()) {
 				return null;
@@ -132,7 +132,7 @@ public enum SaveFormat {
 		}
 
 		@Override
-		public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneType) {
+		public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IChromosomeType geneType) {
 			IChromosome[] chromosomes = readTag(geneType.getDefinition().getKaryotype(), genomeNBT);
 			return chromosomes[geneType.getIndex()];
 		}
@@ -165,7 +165,7 @@ public enum SaveFormat {
 
 		@Nullable
 		@Override
-		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IGeneType geneType, boolean active) {
+		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active) {
 			byte[] data = genomeNBT.getByteArray(DATA_TAG);
 			SimpleByteBuf simpleByteBuf = new SimpleByteBuf(data);
 			ChromosomeInfo chromosomeInfo = simpleByteBuf.readChromosome(geneType);
@@ -177,7 +177,7 @@ public enum SaveFormat {
 		}
 
 		@Override
-		public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneType) {
+		public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IChromosomeType geneType) {
 			byte[] data = genomeNBT.getByteArray(DATA_TAG);
 			SimpleByteBuf simpleByteBuf = new SimpleByteBuf(data);
 			ChromosomeInfo chromosomeInfo = simpleByteBuf.readChromosome(geneType);
@@ -189,7 +189,7 @@ public enum SaveFormat {
 		}
 
 		private IChromosome fixData(NBTTagCompound genomeNBT, ChromosomeInfo missingChromosome) {
-			IGeneType geneType = missingChromosome.geneKey;
+			IChromosomeType geneType = missingChromosome.chromosomeType;
 			IKaryotype karyotype = geneType.getDefinition().getKaryotype();
 			IChromosome[] chromosomes = readTag(karyotype, genomeNBT);
 			IChromosome chromosome = Chromosome.create(missingChromosome.activeSpeciesUid, missingChromosome.inactiveSpeciesUid, geneType, null, null);
@@ -214,9 +214,9 @@ public enum SaveFormat {
 	abstract IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound);
 
 	@Nullable
-	abstract IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IGeneType geneKey, boolean active);
+	abstract IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneKey, boolean active);
 
-	abstract IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneKey);
+	abstract IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IChromosomeType geneKey);
 
 	abstract boolean canLoad(NBTTagCompound tagCompound);
 }

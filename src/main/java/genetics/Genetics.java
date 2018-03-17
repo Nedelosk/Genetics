@@ -20,7 +20,8 @@ import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualRoot;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
@@ -48,6 +49,10 @@ public class Genetics {
 	@CapabilityInject(IGeneTemplate.class)
 	public static Capability<IGeneTemplate> GENE_TEMPLATE;
 
+	public Genetics() {
+		GeneticsAPI.apiInstance = ApiInstance.INSTANCE;
+	}
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		CapabilityManager.INSTANCE.register(IOrganism.class, new NullStorage<>(), () -> new IOrganism<IIndividual>() {
@@ -62,7 +67,7 @@ public class Genetics {
 			}
 
 			@Override
-			public IIndividualDefinition<IIndividual, IIndividualRoot<IIndividual, ?>> getDefinition() {
+			public IIndividualDefinition<IIndividual, IIndividualRoot<IIndividual, IGenomeWrapper>> getDefinition() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
@@ -72,23 +77,23 @@ public class Genetics {
 			}
 
 			@Override
-			public IAllele<?> getAllele(IGeneType type, boolean active) {
+			public IAllele<?> getAllele(IChromosomeType type, boolean active) {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
 			@Override
-			public Optional<IAllele<?>> getAlleleDirectly(IGeneType type, boolean active) {
+			public Optional<IAllele> getAlleleDirectly(IChromosomeType type, boolean active) {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 		});
 		CapabilityManager.INSTANCE.register(IGeneTemplate.class, new NullStorage<>(), () -> new IGeneTemplate() {
 			@Override
-			public Optional<IAllele<?>> getAllele() {
+			public Optional<IAllele> getAllele() {
 				return Optional.empty();
 			}
 
 			@Override
-			public Optional<IGeneType> getType() {
+			public Optional<IChromosomeType> getType() {
 				return Optional.empty();
 			}
 
@@ -98,11 +103,11 @@ public class Genetics {
 			}
 
 			@Override
-			public void setAllele(@Nullable IAllele<?> allele, @Nullable IGeneType type) {
+			public void setAllele(@Nullable IAllele allele, @Nullable IChromosomeType type) {
 			}
 		});
-		GeneticsAPI.saveHandler = GeneticSaveHandler.INSTANCE;
-		GeneticsAPI.geneticFactory = GeneticFactory.INSTANCE;
+		ApiInstance.INSTANCE.setSaveHandler(GeneticSaveHandler.INSTANCE);
+		ApiInstance.INSTANCE.setGeneticFactory(GeneticFactory.INSTANCE);
 
 		PluginManager.create(event);
 

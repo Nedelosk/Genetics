@@ -1,6 +1,5 @@
 package genetics.api.definition;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Random;
 
@@ -18,9 +17,9 @@ public interface ITemplateContainer {
 	 *
 	 * @param identifier the {@link IAllele#getRegistryName()} of the active allele at the
 	 *                   {@link IKaryotype#getTemplateType()} of the {@link #getKaryotype()}.
-	 * @return Array of {@link IAllele} representing a genome.
+	 * @return Array of {@link IAllele} representing a genome. The array is empty if no template was registered for the
+	 * given identifier.
 	 */
-	@Nullable
 	IAllele[] getTemplate(String identifier);
 
 	/**

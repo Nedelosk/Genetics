@@ -9,8 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
-import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
@@ -32,14 +32,14 @@ public final class Genome implements IGenome {
 
 	@SuppressWarnings("all")
 	private void checkChromosomes(IChromosome[] chromosomes) {
-		if (chromosomes.length != karyotype.getGeneTypes().length) {
+		if (chromosomes.length != karyotype.getChromosomeTypes().length) {
 			String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template.\n%s", karyotype.getIdentifier(), chromosomesToString(chromosomes));
 			throw new IllegalArgumentException(message);
 		}
 
-		IGeneType[] geneTypes = karyotype.getGeneTypes();
+		IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
 		for (int i = 0; i < geneTypes.length; i++) {
-			IGeneType geneType = geneTypes[i];
+			IChromosomeType geneType = geneTypes[i];
 			Optional<IGene> optionalGene = GeneticsAPI.geneticSystem.getGene(geneType);
 			if (!optionalGene.isPresent()) {
 				String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template. " +
@@ -85,9 +85,9 @@ public final class Genome implements IGenome {
 
 	private String chromosomesToString(IChromosome[] chromosomes) {
 		StringBuilder stringBuilder = new StringBuilder();
-		IGeneType[] geneTypes = karyotype.getGeneTypes();
+		IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
 		for (int i = 0; i < chromosomes.length; i++) {
-			IGeneType geneType = geneTypes[i];
+			IChromosomeType geneType = geneTypes[i];
 			IChromosome chromosome = chromosomes[i];
 			stringBuilder.append(geneType.getName()).append(": ").append(chromosome).append("\n");
 		}
@@ -102,19 +102,19 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
-	public IAllele getActiveAllele(IGeneType geneType) {
+	public IAllele getActiveAllele(IChromosomeType geneType) {
 		IChromosome chromosome = getChromosome(geneType);
 		return chromosome.getActiveAllele();
 	}
 
 	@Override
-	public IAllele getInactiveAllele(IGeneType geneType) {
+	public IAllele getInactiveAllele(IChromosomeType geneType) {
 		IChromosome chromosome = getChromosome(geneType);
 		return chromosome.getInactiveAllele();
 	}
 
 	@Override
-	public <V> V getActiveValue(IGeneType geneType, Class<? extends V> valueClass) {
+	public <V> V getActiveValue(IChromosomeType geneType, Class<? extends V> valueClass) {
 		Object value = getActiveAllele(geneType).getValue();
 		if (valueClass.isInstance(valueClass)) {
 			return valueClass.cast(value);
@@ -123,7 +123,7 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
-	public <V> V getInactiveValue(IGeneType geneType, Class<? extends V> valueClass) {
+	public <V> V getInactiveValue(IChromosomeType geneType, Class<? extends V> valueClass) {
 		Object value = getInactiveAllele(geneType).getValue();
 		if (valueClass.isInstance(valueClass)) {
 			return valueClass.cast(value);
@@ -132,7 +132,7 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
-	public IChromosome getChromosome(IGeneType geneType) {
+	public IChromosome getChromosome(IChromosomeType geneType) {
 		return chromosomes[geneType.getIndex()];
 	}
 
@@ -140,7 +140,7 @@ public final class Genome implements IGenome {
 	public IAllele[] getActiveAlleles() {
 		IAllele[] alleles = new IAllele[chromosomes.length];
 		for (IChromosome chromosome : chromosomes) {
-			alleles[chromosome.getGeneKey().getIndex()] = chromosome.getActiveAllele();
+			alleles[chromosome.getType().getIndex()] = chromosome.getActiveAllele();
 		}
 		return alleles;
 	}
@@ -149,7 +149,7 @@ public final class Genome implements IGenome {
 	public IAllele[] getInactiveAlleles() {
 		IAllele[] alleles = new IAllele[chromosomes.length];
 		for (IChromosome chromosome : chromosomes) {
-			alleles[chromosome.getGeneKey().getIndex()] = chromosome.getInactiveAllele();
+			alleles[chromosome.getType().getIndex()] = chromosome.getInactiveAllele();
 		}
 		return alleles;
 	}
@@ -165,20 +165,21 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof IGenome)) {
-			return false;
-		}
-		IGenome other = (IGenome) obj;
+	public boolean isPureBred(IChromosomeType geneType) {
+		IChromosome chromosome = getChromosome(geneType);
+		return chromosome.isPureBred();
+	}
 
-		IChromosome[] genetics = other.getChromosomes();
-		if (chromosomes.length != genetics.length) {
+	@Override
+	public boolean isGeneticEqual(IGenome other) {
+		IChromosome[] otherChromosomes = other.getChromosomes();
+		if (chromosomes.length != otherChromosomes.length) {
 			return false;
 		}
 
 		for (int i = 0; i < chromosomes.length; i++) {
 			IChromosome chromosome = chromosomes[i];
-			IChromosome otherChromosome = genetics[i];
+			IChromosome otherChromosome = otherChromosomes[i];
 			if (chromosome == null && otherChromosome == null) {
 				continue;
 			}
@@ -186,10 +187,7 @@ public final class Genome implements IGenome {
 				return false;
 			}
 
-			if (!chromosome.getActiveAllele().equals(otherChromosome.getActiveAllele())) {
-				return false;
-			}
-			if (!chromosome.getInactiveAllele().equals(otherChromosome.getInactiveAllele())) {
+			if (!chromosome.isGeneticEqual(otherChromosome)) {
 				return false;
 			}
 		}

@@ -5,8 +5,8 @@ import java.util.Set;
 
 import genetics.api.IRegistryHelper;
 import genetics.api.alleles.IAlleleConstant;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGeneBuilder;
-import genetics.api.gene.IGeneType;
 import genetics.api.registry.IAlleleRegistry;
 import genetics.api.registry.IGeneticRegistry;
 
@@ -15,8 +15,8 @@ public enum RegistryHelper implements IRegistryHelper {
 	private Set<GeneData> genes = new HashSet<>();
 
 	@Override
-	public void addGene(String name, IGeneType geneType, IAlleleConstant[] constants) {
-		genes.add(new GeneData(name, geneType, constants));
+	public void addGene(String name, IChromosomeType type, IAlleleConstant[] constants) {
+		genes.add(new GeneData(name, type, constants));
 	}
 
 	void onRegisterAlleles(IAlleleRegistry registry) {
@@ -29,7 +29,7 @@ public enum RegistryHelper implements IRegistryHelper {
 
 	void onRegister(IGeneticRegistry registry) {
 		for (GeneData gene : genes) {
-			IGeneBuilder geneBuilder = registry.addGene(gene.name).addType(gene.geneType);
+			IGeneBuilder geneBuilder = registry.addGene(gene.name).addType(gene.type);
 			for (IAlleleConstant constant : gene.constants) {
 				if (constant.isDefault()) {
 					geneBuilder.setDefaultAllele(constant.getKey());
@@ -41,12 +41,12 @@ public enum RegistryHelper implements IRegistryHelper {
 
 	private static class GeneData {
 		private final String name;
-		private final IGeneType geneType;
+		private final IChromosomeType type;
 		private final IAlleleConstant[] constants;
 
-		private GeneData(String name, IGeneType geneType, IAlleleConstant[] constants) {
+		private GeneData(String name, IChromosomeType type, IAlleleConstant[] constants) {
 			this.name = name;
-			this.geneType = geneType;
+			this.type = type;
 			this.constants = constants;
 		}
 	}

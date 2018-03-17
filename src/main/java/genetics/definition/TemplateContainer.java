@@ -15,7 +15,7 @@ public class TemplateContainer implements ITemplateContainer {
 	private final IKaryotype karyotype;
 	private final ImmutableMap<String, IAllele[]> templates;
 
-	public TemplateContainer(IKaryotype karyotype, ImmutableMap<String, IAllele[]> templates) {
+	TemplateContainer(IKaryotype karyotype, ImmutableMap<String, IAllele[]> templates) {
 		this.karyotype = karyotype;
 		this.templates = templates;
 	}
@@ -27,19 +27,19 @@ public class TemplateContainer implements ITemplateContainer {
 
 	@Override
 	public IAllele[] getRandomTemplate(Random rand) {
-		Collection<IAllele[]> templates = this.templates.values();
-		int size = templates.size();
-		IAllele[][] templatesArray = templates.toArray(new IAllele[size][]);
+		Collection<IAllele[]> alleles = this.templates.values();
+		int size = alleles.size();
+		IAllele[][] templatesArray = alleles.toArray(new IAllele[size][]);
 		return templatesArray[rand.nextInt(size)];
 	}
 
 	@Override
 	public IAllele[] getTemplate(String identifier) {
-		IAllele[] template = templates.get(identifier);
-		if (template == null) {
-			return null;
+		IAllele[] alleles = templates.get(identifier);
+		if (alleles == null) {
+			return new IAllele[0];
 		}
-		return Arrays.copyOf(template, template.length);
+		return Arrays.copyOf(alleles, alleles.length);
 	}
 
 	@Override

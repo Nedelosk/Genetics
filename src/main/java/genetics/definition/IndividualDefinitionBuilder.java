@@ -19,15 +19,18 @@ import genetics.api.definition.IIndividualDefinitionBuilder;
 import genetics.api.definition.IIndividualRoot;
 import genetics.api.definition.IIndividualTranslator;
 import genetics.api.definition.IItemTranslator;
+import genetics.api.definition.IOptionalDefinition;
 import genetics.api.gene.IKaryotype;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
 
+import genetics.individual.OptionalDefinition;
 import genetics.organism.OrganismTypes;
 
-public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndividualRoot<I, ?>> implements IIndividualDefinitionBuilder<I> {
+public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndividualRoot<I, IGenomeWrapper>> implements IIndividualDefinitionBuilder<I, R> {
 	private final Map<IOrganismType, IOrganismHandler<I>> types = new HashMap<>();
 	private final Function<IIndividualDefinition<I, R>, R> rootFactory;
 	private final String uid;
@@ -35,6 +38,7 @@ public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndiv
 	private final HashMap<String, IAllele[]> templates = new HashMap<>();
 	private final Map<Item, IItemTranslator<I>> itemTranslators = new HashMap<>();
 	private final Map<Block, IBlockTranslator<I>> blockTranslators = new HashMap<>();
+	private final IOptionalDefinition<I, R> optional;
 	private BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IIndividualTranslator<I>> translatorFactory = IndividualTranslator::new;
 	private Function<Map<IOrganismType, IOrganismHandler<I>>, IOrganismTypes<I>> typesFactory = OrganismTypes::new;
 
@@ -42,28 +46,29 @@ public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndiv
 		this.uid = uid;
 		this.karyotype = karyotype;
 		this.rootFactory = rootFactory;
+		this.optional = new OptionalDefinition<>(uid);
 	}
 
 	@Override
-	public IIndividualDefinitionBuilder<I> registerType(IOrganismType type, IOrganismHandler<I> handler) {
+	public IIndividualDefinitionBuilder<I, R> registerType(IOrganismType type, IOrganismHandler<I> handler) {
 		types.put(type, handler);
 		return this;
 	}
 
 	@Override
-	public IIndividualDefinitionBuilder<I> registerTranslator(Block translatorKey, IBlockTranslator<I> translator) {
+	public IIndividualDefinitionBuilder<I, R> registerTranslator(Block translatorKey, IBlockTranslator<I> translator) {
 		blockTranslators.put(translatorKey, translator);
 		return this;
 	}
 
 	@Override
-	public IIndividualDefinitionBuilder<I> registerTranslator(Item translatorKey, IItemTranslator<I> translator) {
+	public IIndividualDefinitionBuilder<I, R> registerTranslator(Item translatorKey, IItemTranslator<I> translator) {
 		itemTranslators.put(translatorKey, translator);
 		return this;
 	}
 
 	@Override
-	public IIndividualDefinitionBuilder<I> registerTemplate(IAllele[] template) {
+	public IIndividualDefinitionBuilder<I, R> registerTemplate(IAllele[] template) {
 		Preconditions.checkNotNull(template, "Tried to register null template");
 		Preconditions.checkArgument(template.length > 0, "Tried to register empty template");
 
@@ -72,7 +77,7 @@ public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndiv
 	}
 
 	@Override
-	public IIndividualDefinitionBuilder<I> registerTemplate(String identifier, IAllele[] template) {
+	public IIndividualDefinitionBuilder<I, R> registerTemplate(String identifier, IAllele[] template) {
 		Preconditions.checkNotNull(template, "Tried to register null template");
 		Preconditions.checkArgument(template.length > 0, "Tried to register empty template");
 
@@ -81,23 +86,23 @@ public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndiv
 	}
 
 	@Override
-	public IIndividualDefinitionBuilder<I> registerTemplate(IAlleleTemplate template) {
+	public IIndividualDefinitionBuilder<I, R> registerTemplate(IAlleleTemplate template) {
 		return registerTemplate(template.alleles());
 	}
 
 	@Override
-	public IIndividualDefinitionBuilder<I> registerTemplate(String identifier, IAlleleTemplate template) {
+	public IIndividualDefinitionBuilder<I, R> registerTemplate(String identifier, IAlleleTemplate template) {
 		return registerTemplate(identifier, template.alleles());
 	}
 
 	@Override
-	public IIndividualDefinitionBuilder<I> setTranslator(BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IIndividualTranslator<I>> translatorFactory) {
+	public IIndividualDefinitionBuilder<I, R> setTranslator(BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IIndividualTranslator<I>> translatorFactory) {
 		this.translatorFactory = translatorFactory;
 		return this;
 	}
 
 	@Override
-	public IIndividualDefinitionBuilder<I> setTypes(Function<Map<IOrganismType, IOrganismHandler<I>>, IOrganismTypes<I>> typesFactory) {
+	public IIndividualDefinitionBuilder<I, R> setTypes(Function<Map<IOrganismType, IOrganismHandler<I>>, IOrganismTypes<I>> typesFactory) {
 		this.typesFactory = typesFactory;
 		return this;
 	}
@@ -108,13 +113,13 @@ public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndiv
 	}
 
 	@Override
-	public IAlleleTemplate getDefaultTemplate() {
-		return null;
+	public IOptionalDefinition<I, R> optional() {
+		return optional;
 	}
 
 	public IIndividualDefinition<I, R> create() {
 		IIndividualTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
-		IOrganismTypes<I> types = typesFactory.apply(this.types);
-		return new IndividualDefinition<>(types, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates)), uid, rootFactory);
+		IOrganismTypes<I> typesInstance = typesFactory.apply(this.types);
+		return new IndividualDefinition<>(typesInstance, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates)), uid, rootFactory);
 	}
 }

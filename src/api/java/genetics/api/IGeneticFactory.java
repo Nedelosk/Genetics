@@ -8,10 +8,11 @@ import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualRoot;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
@@ -71,18 +72,18 @@ public interface IGeneticFactory {
 	 *
 	 * @return A instance of {@link IChromosome}.
 	 */
-	IChromosome createChromosome(IAllele allele, IGeneType type);
+	IChromosome createChromosome(IAllele allele, IChromosomeType type);
 
 	/**
 	 * Creates an instance of a {@link IChromosome}.
-	 *
+	 * <p>
 	 * The order of the alleles only matters if both alleles are recessive.
 	 *
 	 * @param firstAllele  The first allele.
 	 * @param secondAllele The second allele.
 	 * @return A instance of {@link IChromosome}.
 	 */
-	IChromosome createChromosome(IAllele firstAllele, IAllele secondAllele, IGeneType type);
+	IChromosome createChromosome(IAllele firstAllele, IAllele secondAllele, IChromosomeType type);
 
 	/**
 	 * Creates a default implementation of a {@link IOrganism}
@@ -92,7 +93,7 @@ public interface IGeneticFactory {
 	 * @param definition The definition that describes the individual.
 	 * @return A instance of {@link IOrganism}.
 	 */
-	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I, ?>> definition);
+	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>> definition);
 
 	/**
 	 * Creates a default implementation of a {@link IGeneTemplate}

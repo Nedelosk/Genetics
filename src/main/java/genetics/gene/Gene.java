@@ -16,9 +16,9 @@ import net.minecraft.client.resources.I18n;
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneBuilder;
-import genetics.api.gene.IGeneType;
 import genetics.api.registry.IAlleleRegistry;
 
 public class Gene implements IGene {
@@ -67,7 +67,7 @@ public class Gene implements IGene {
 	}
 
 	@Override
-	public IAllele<?> getDefaultAllele() {
+	public IAllele getDefaultAllele() {
 		return defaultAllele;
 	}
 
@@ -102,7 +102,7 @@ public class Gene implements IGene {
 
 	public static class Builder implements IGeneBuilder {
 		private final HashMap<IAlleleKey, String> alleleInstances = new HashMap<>();
-		private final Set<IGeneType> types = new HashSet<>();
+		private final Set<IChromosomeType> types = new HashSet<>();
 		private final String name;
 		@Nullable
 		private IAlleleKey defaultKey;
@@ -124,12 +124,12 @@ public class Gene implements IGene {
 		}
 
 		@Override
-		public IGeneBuilder addType(IGeneType type) {
+		public IGeneBuilder addType(IChromosomeType type) {
 			this.types.add(type);
 			return this;
 		}
 
-		public Set<IGeneType> getTypes() {
+		public Set<IChromosomeType> getTypes() {
 			return types;
 		}
 

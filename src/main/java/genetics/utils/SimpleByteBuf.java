@@ -6,7 +6,7 @@ import java.util.Arrays;
 import net.minecraft.util.ResourceLocation;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 
@@ -29,7 +29,7 @@ public class SimpleByteBuf {
 	/**
 	 * The current index at that the buffer writes or reads the next byte.
 	 */
-	private int index;
+	private int bufferIndex;
 
 	/**
 	 * Creates a byte buffer with the default initial capacity.
@@ -68,7 +68,7 @@ public class SimpleByteBuf {
 	 * @param karyotype   The species root of the genome that contains the chromosomes.
 	 */
 	public void writeChromosomes(IChromosome[] chromosomes, IKaryotype karyotype) {
-		for (IGeneType type : karyotype.getGeneTypes()) {
+		for (IChromosomeType type : karyotype.getChromosomeTypes()) {
 			int index = type.getIndex();
 			if (index >= chromosomes.length) {
 				continue;
@@ -82,7 +82,7 @@ public class SimpleByteBuf {
 	/**
 	 * Write the internal id of the allele to the byte array as a varint.
 	 */
-	public void writeAllele(IAllele allele) {
+	private void writeAllele(IAllele allele) {
 		AlleleRegistry registry = Genetics.alleleRegistry;
 		int id = registry.getId(allele);
 		if (id < 0) {
@@ -95,7 +95,7 @@ public class SimpleByteBuf {
 	/**
 	 * Write a varint to the array.
 	 */
-	public void writeVarInt(int input) {
+	private void writeVarInt(int input) {
 		while ((input & -128) != 0) {
 			writeByte((byte) (input & 127 | 128));
 			input >>>= 7;
@@ -111,8 +111,8 @@ public class SimpleByteBuf {
 		if (input > 255) {
 			throw new IllegalArgumentException();
 		}
-		ensureCapacity(index + 1);
-		data[index++] = (byte) input;
+		ensureCapacity(bufferIndex + 1);
+		data[bufferIndex++] = (byte) input;
 	}
 
 	/**
@@ -132,19 +132,19 @@ public class SimpleByteBuf {
 	 * @return The chromosome that were read.
 	 */
 	public IChromosome[] readChromosomes(IKaryotype karyotype) {
-		IGeneType[] types = karyotype.getGeneTypes();
+		IChromosomeType[] types = karyotype.getChromosomeTypes();
 		IChromosome[] chromosomes = new IChromosome[types.length];
 
 		ResourceLocation primaryTemplateIdentifier = null;
 		ResourceLocation secondaryTemplateIdentifier = null;
 
-		for (IGeneType type : types) {
+		for (IChromosomeType type : types) {
 			int index = type.getIndex();
 
 			Chromosome chromosome = readChromosome(type, primaryTemplateIdentifier, secondaryTemplateIdentifier);
 			chromosomes[index] = chromosome;
 
-			if (type == karyotype.getTemplateType()) {
+			if (type.equals(karyotype.getTemplateType())) {
 				primaryTemplateIdentifier = chromosome.getActiveAllele().getRegistryName();
 				secondaryTemplateIdentifier = chromosome.getInactiveAllele().getRegistryName();
 			}
@@ -153,7 +153,7 @@ public class SimpleByteBuf {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Chromosome readChromosome(IGeneType type, @Nullable ResourceLocation activeSpeciesUid, @Nullable ResourceLocation inactiveSpeciesUid) {
+	private Chromosome readChromosome(IChromosomeType type, @Nullable ResourceLocation activeSpeciesUid, @Nullable ResourceLocation inactiveSpeciesUid) {
 		IAllele firstAllele = readAllele();
 		IAllele secondAllele = readAllele();
 		return Chromosome.create(activeSpeciesUid, inactiveSpeciesUid, type, firstAllele, secondAllele);
@@ -163,7 +163,7 @@ public class SimpleByteBuf {
 	 * Read a allele from the byte array using the internal id of the allele written to the array as a varint.
 	 */
 	@Nullable
-	public IAllele readAllele() {
+	private IAllele readAllele() {
 		AlleleRegistry registry = Genetics.alleleRegistry;
 		int id = readVarInt();
 		return registry.getAllele(id);
@@ -172,7 +172,7 @@ public class SimpleByteBuf {
 	/**
 	 * Read a varint from the byte array.
 	 */
-	public int readVarInt() {
+	private int readVarInt() {
 		int output = 0;
 		int byteCount = 0;
 		while (true) {
@@ -194,25 +194,25 @@ public class SimpleByteBuf {
 	 * Read a byte from the array.
 	 */
 	private byte readByte() {
-		if (index < 0 || index >= data.length) {
+		if (bufferIndex < 0 || bufferIndex >= data.length) {
 			return -1;
 		}
-		return data[index++];
+		return data[bufferIndex++];
 	}
 
-	private Chromosome readChromosome(IGeneType type, ChromosomeInfo info) {
+	private Chromosome readChromosome(IChromosomeType type, ChromosomeInfo info) {
 		return readChromosome(type, info.activeSpeciesUid, info.inactiveSpeciesUid);
 	}
 
 	/**
 	 * Reads a specific chromosome from the byte array without creating the whole chromosome array.
 	 */
-	public ChromosomeInfo readChromosome(IGeneType geneType) {
+	public ChromosomeInfo readChromosome(IChromosomeType geneType) {
 		IKaryotype karyotype = geneType.getDefinition().getKaryotype();
-		IGeneType[] keys = karyotype.getGeneTypes();
+		IChromosomeType[] keys = karyotype.getChromosomeTypes();
 		ChromosomeInfo info = new ChromosomeInfo(geneType);
 
-		for (IGeneType key : keys) {
+		for (IChromosomeType key : keys) {
 			if (key == geneType) {
 				return info.setChromosome(readChromosome(key, info));
 			} else if (key == karyotype.getTemplateType()) {

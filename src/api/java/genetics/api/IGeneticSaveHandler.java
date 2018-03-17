@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
@@ -44,7 +44,7 @@ public interface IGeneticSaveHandler {
 	 * @return The active or inactive allele of the chromosome if the chromosome is present.
 	 */
 	@Nullable
-	IAllele<?> getAlleleDirectly(NBTTagCompound genomeNBT, IGeneType geneType, boolean active);
+	IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active);
 
 	/**
 	 * Quickly gets the allele without loading the whole genome. And without creating absent chromosomes.
@@ -55,7 +55,7 @@ public interface IGeneticSaveHandler {
 	 * @return The active or inactive allele of the chromosome if the chromosome is present.
 	 */
 	@Nullable
-	IAllele getAlleleDirectly(ItemStack itemStack, IGeneType geneType, boolean active);
+	IAllele getAlleleDirectly(ItemStack itemStack, IChromosomeType geneType, boolean active);
 
 	/**
 	 * Tries to load the chromosome of the given type and creates it if it is absent.
@@ -65,7 +65,7 @@ public interface IGeneticSaveHandler {
 	 * @param active    if the returned allele should be the active one.
 	 * @return The active or inactive allele of the chromosome.
 	 */
-	IAllele getAllele(ItemStack itemStack, IGeneType geneType, boolean active);
+	IAllele getAllele(ItemStack itemStack, IChromosomeType geneType, boolean active);
 
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
@@ -74,7 +74,7 @@ public interface IGeneticSaveHandler {
 	 * @param geneType  The gene type of the chromosome.
 	 * @return The chromosome.
 	 */
-	IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneType);
+	IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IChromosomeType geneType);
 
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
@@ -83,5 +83,5 @@ public interface IGeneticSaveHandler {
 	 * @param geneType  The gene type of the chromosome.
 	 * @return The chromosome.
 	 */
-	IChromosome getSpecificChromosome(ItemStack itemStack, IGeneType geneType);
+	IChromosome getSpecificChromosome(ItemStack itemStack, IChromosomeType geneType);
 }

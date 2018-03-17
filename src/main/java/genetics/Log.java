@@ -4,6 +4,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
 public class Log {
+	private Log() {
+	}
+
 	public static void trace(String message, Object... params) {
 		log(Level.TRACE, message, params);
 	}

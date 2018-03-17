@@ -12,10 +12,11 @@ import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualRoot;
-import genetics.api.gene.IGeneType;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
@@ -56,17 +57,17 @@ public enum GeneticFactory implements IGeneticFactory {
 	}
 
 	@Override
-	public IChromosome createChromosome(IAllele allele, IGeneType type) {
+	public IChromosome createChromosome(IAllele allele, IChromosomeType type) {
 		return Chromosome.create(allele, type);
 	}
 
 	@Override
-	public IChromosome createChromosome(IAllele firstAllele, IAllele secondAllele, IGeneType type) {
+	public IChromosome createChromosome(IAllele firstAllele, IAllele secondAllele, IChromosomeType type) {
 		return Chromosome.create(firstAllele, secondAllele, type);
 	}
 
 	@Override
-	public <I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I, ?>> definition) {
+	public <I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>> definition) {
 		return new Organism<>(itemStack, () -> definition, () -> type);
 	}
 

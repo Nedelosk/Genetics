@@ -10,8 +10,8 @@ import genetics.api.IGeneticSaveHandler;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.definition.ITemplateContainer;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
-import genetics.api.gene.IGeneType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
@@ -46,7 +46,7 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	}
 
 	@Nullable
-	public IAllele<?> getAlleleDirectly(NBTTagCompound genomeNBT, IGeneType geneType, boolean active) {
+	public IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active) {
 		SaveFormat format = getFormat(genomeNBT);
 		return format.getAlleleDirectly(genomeNBT, geneType, active);
 	}
@@ -55,7 +55,7 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	 * Quickly gets the species without loading the whole genome. And without creating absent chromosomes.
 	 */
 	@Nullable
-	public IAllele<?> getAlleleDirectly(ItemStack itemStack, IGeneType geneType, boolean active) {
+	public IAllele<?> getAlleleDirectly(ItemStack itemStack, IChromosomeType geneType, boolean active) {
 		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
 		if (nbtTagCompound == null) {
 			return null;
@@ -75,12 +75,12 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 
 	// NBT RETRIEVAL
 
-	public IAllele getAllele(ItemStack itemStack, IGeneType geneType, boolean active) {
+	public IAllele getAllele(ItemStack itemStack, IChromosomeType geneType, boolean active) {
 		IChromosome chromosome = getSpecificChromosome(itemStack, geneType);
 		return active ? chromosome.getActiveAllele() : chromosome.getInactiveAllele();
 	}
 
-	public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IGeneType geneType) {
+	public IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IChromosomeType geneType) {
 		SaveFormat format = getFormat(genomeNBT);
 		return format.getSpecificChromosome(genomeNBT, geneType);
 	}
@@ -88,7 +88,7 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
 	 */
-	public IChromosome getSpecificChromosome(ItemStack itemStack, IGeneType geneType) {
+	public IChromosome getSpecificChromosome(ItemStack itemStack, IChromosomeType geneType) {
 		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
 		if (nbtTagCompound == null) {
 			nbtTagCompound = new NBTTagCompound();

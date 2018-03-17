@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.gene.IKaryotype;
+import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
@@ -18,7 +19,7 @@ import genetics.api.organism.IOrganismTypes;
  * @param <I> @param <I> The type of the individual that the definition describes.
  * @param <R> @param <R> The type of the root of the individual.
  */
-public interface IIndividualDefinition<I extends IIndividual, R extends IIndividualRoot<I, ?>> {
+public interface IIndividualDefinition<I extends IIndividual, R extends IIndividualRoot<I, IGenomeWrapper>> {
 
 	/**
 	 * @return The string based unique identifier of this definition.

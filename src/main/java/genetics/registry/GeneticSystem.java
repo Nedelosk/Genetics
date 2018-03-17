@@ -11,13 +11,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import genetics.api.definition.IIndividualDefinition;
+import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
-import genetics.api.gene.IGeneType;
 import genetics.api.registry.IGeneticSystem;
 
 public class GeneticSystem implements IGeneticSystem {
-	private final HashMap<IGeneType, IGene> geneByType = new HashMap<>();
-	private final Multimap<IGene, IGeneType> typesByGene = HashMultimap.create();
+	private final HashMap<IChromosomeType, IGene> geneByType = new HashMap<>();
+	private final Multimap<IGene, IChromosomeType> typesByGene = HashMultimap.create();
 	private final HashMap<String, IIndividualDefinition> definitions = new HashMap<>();
 
 	@Override
@@ -32,17 +32,17 @@ public class GeneticSystem implements IGeneticSystem {
 	}
 
 	@Override
-	public Optional<IGene> getGene(IGeneType type) {
+	public Optional<IGene> getGene(IChromosomeType type) {
 		return Optional.ofNullable(geneByType.get(type));
 	}
 
 	@Override
-	public Collection<IGeneType> getTypes() {
+	public Collection<IChromosomeType> getTypes() {
 		return geneByType.keySet();
 	}
 
 	@Override
-	public Collection<IGeneType> getTypes(IGene gene) {
+	public Collection<IChromosomeType> getTypes(IGene gene) {
 		return typesByGene.get(gene);
 	}
 
@@ -50,7 +50,7 @@ public class GeneticSystem implements IGeneticSystem {
 		definitions.put(definition.getUID(), definition);
 	}
 
-	void registerGene(IGene gene, IGeneType... types) {
+	void registerGene(IGene gene, IChromosomeType... types) {
 		Arrays.stream(types).forEach(k -> {
 			geneByType.put(k, gene);
 			typesByGene.put(gene, k);
