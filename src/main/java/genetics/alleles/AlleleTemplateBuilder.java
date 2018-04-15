@@ -3,6 +3,8 @@ package genetics.alleles;
 import java.util.Arrays;
 import java.util.Optional;
 
+import net.minecraft.util.ResourceLocation;
+
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleRegistry;
@@ -52,6 +54,22 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 		}
 		IAlleleRegistry alleleRegistry = ApiInstance.INSTANCE.getAlleleRegistry();
 		Optional<IAllele> allele = alleleRegistry.getAllele(alleleKey);
+		allele.ifPresent(a -> alleles[chromosomeType.getIndex()] = a);
+		return this;
+	}
+
+	@Override
+	public IAlleleTemplateBuilder set(IChromosomeType chromosomeType, ResourceLocation registryName) {
+		if (!karyotype.contains(chromosomeType)) {
+			throw new IllegalArgumentException("The given chromosome type is not valid for the karyotype of this template.");
+		}
+		Optional<IGene> optionalGene = ApiInstance.INSTANCE.getGeneRegistry().getGene(chromosomeType);
+		if (!optionalGene.isPresent()) {
+			throw new IllegalArgumentException("Chromosome key is not registered.");
+
+		}
+		IAlleleRegistry alleleRegistry = ApiInstance.INSTANCE.getAlleleRegistry();
+		Optional<IAllele> allele = alleleRegistry.getAllele(registryName);
 		allele.ifPresent(a -> alleles[chromosomeType.getIndex()] = a);
 		return this;
 	}

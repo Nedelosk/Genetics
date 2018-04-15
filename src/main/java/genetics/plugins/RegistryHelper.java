@@ -16,14 +16,16 @@ public enum RegistryHelper implements IRegistryHelper {
 
 	@Override
 	public void addGene(String name, IChromosomeType type, IAlleleConstant[] constants) {
-		genes.add(new GeneData(name, type, constants));
+		genes.add(new GeneData(PluginManager.getCurrentModId(), name, type, constants));
 	}
 
 	void onRegisterAlleles(IAlleleRegistry registry) {
 		for (GeneData gene : genes) {
+			PluginManager.setActivePlugin(gene.modId);
 			for (IAlleleConstant data : gene.constants) {
 				registry.registerAllele(data);
 			}
+			PluginManager.setActivePlugin(null);
 		}
 	}
 
@@ -34,7 +36,7 @@ public enum RegistryHelper implements IRegistryHelper {
 				if (constant.isDefault()) {
 					geneBuilder.setDefaultAllele(constant.getKey());
 				}
-				geneBuilder.addAllele(constant.getKey(), "allele." + gene.name + "." + constant.getName() + ".name");
+				geneBuilder.addAlleles(constant.getKey());
 			}
 		}
 	}
@@ -43,8 +45,10 @@ public enum RegistryHelper implements IRegistryHelper {
 		private final String name;
 		private final IChromosomeType type;
 		private final IAlleleConstant[] constants;
+		private final String modId;
 
-		private GeneData(String name, IChromosomeType type, IAlleleConstant[] constants) {
+		private GeneData(String modId, String name, IChromosomeType type, IAlleleConstant[] constants) {
+			this.modId = modId;
 			this.name = name;
 			this.type = type;
 			this.constants = constants;

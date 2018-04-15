@@ -68,14 +68,4 @@ public interface IGene {
 	 * @return The unlocalized name for {@link #getLocalizedName()}.
 	 */
 	String getUnlocalizedName();
-
-	/**
-	 * The unlocalized name for given the allele if this gene contains a key of the allele that is associated with a name.
-	 */
-	String getUnlocalizedName(IAllele<?> allele);
-
-	/**
-	 * The localized name for given the allele if this gene contains a key of the allele that is associated with a name.
-	 */
-	String getLocalizedName(IAllele<?> allele);
 }

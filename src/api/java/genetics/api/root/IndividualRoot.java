@@ -14,10 +14,10 @@ import genetics.api.organism.IOrganismTypes;
 import genetics.api.root.translator.IIndividualTranslator;
 
 public abstract class IndividualRoot<I extends IIndividual> implements IIndividualRoot<I> {
-	private final IOrganismTypes<I> types;
-	private final IIndividualTranslator<I> translator;
-	private final ITemplateContainer templates;
-	private final IKaryotype karyotype;
+	protected final IOrganismTypes<I> types;
+	protected final IIndividualTranslator<I> translator;
+	protected final ITemplateContainer templates;
+	protected final IKaryotype karyotype;
 
 	public IndividualRoot(IOrganismTypes<I> types, IIndividualTranslator<I> translator, ITemplateContainer templates, IKaryotype karyotype) {
 		this.types = types;

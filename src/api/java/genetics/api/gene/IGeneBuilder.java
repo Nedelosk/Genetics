@@ -15,10 +15,9 @@ import genetics.api.alleles.IAlleleKey;
 public interface IGeneBuilder {
 
 	/**
-	 * Add a the key of an allele and the unlocalized name that should be used in every case the name of the allele is
-	 * required.
+	 * Add a the key of an allele.
 	 */
-	IGeneBuilder addAllele(IAlleleKey key, String unlocalizedName);
+	IGeneBuilder addAlleles(IAlleleKey... keys);
 
 	/**
 	 * Sets the key of the allele that is used in the default template at the position of the type.

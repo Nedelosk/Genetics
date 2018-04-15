@@ -1,5 +1,11 @@
 package genetics.api.alleles;
 
+import com.google.common.base.MoreObjects;
+
+import java.util.Objects;
+
+import net.minecraft.client.resources.I18n;
+
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
@@ -8,8 +14,10 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 public class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implements IAllele<V> {
 	private final V value;
 	private final boolean dominant;
+	private final String unlocalizedName;
 
-	public Allele(V value, boolean dominant) {
+	public Allele(String unlocalizedName, V value, boolean dominant) {
+		this.unlocalizedName = unlocalizedName;
 		this.value = value;
 		this.dominant = dominant;
 	}
@@ -26,7 +34,17 @@ public class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implements I
 
 	@Override
 	public int hashCode() {
-		return (value.hashCode() * 31) + Boolean.hashCode(dominant);
+		return getRegistryName() != null ? getRegistryName().hashCode() : Objects.hash(value, dominant);
+	}
+
+	@Override
+	public String getLocalizedName() {
+		return I18n.format(unlocalizedName);
+	}
+
+	@Override
+	public final String getUnlocalizedName() {
+		return unlocalizedName;
 	}
 
 	@Override
@@ -35,11 +53,20 @@ public class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implements I
 			return false;
 		}
 		IAllele otherAllele = (IAllele) obj;
-		return value.equals(otherAllele.getValue()) && dominant == otherAllele.isDominant();
+		return getRegistryName() != null ?
+			getRegistryName().equals(((IAllele) obj).getRegistryName()) :
+			Objects.equals(value, otherAllele.getValue()) && dominant == otherAllele.isDominant();
 	}
 
 	@Override
 	public String toString() {
-		return getRegistryName().toString();
+		return MoreObjects
+			.toStringHelper(this)
+			.add("name", getRegistryName())
+			.add("value", value)
+			.add("dominant", dominant)
+			.add("unloc", unlocalizedName)
+			.add("loc", getLocalizedName())
+			.toString();
 	}
 }

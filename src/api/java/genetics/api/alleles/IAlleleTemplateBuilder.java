@@ -1,5 +1,7 @@
 package genetics.api.alleles;
 
+import net.minecraft.util.ResourceLocation;
+
 import genetics.api.IGeneticFactory;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
@@ -27,6 +29,14 @@ public interface IAlleleTemplateBuilder {
 	 * @param chromosomeType The position at the chromosome array.
 	 */
 	IAlleleTemplateBuilder set(IChromosomeType chromosomeType, IAlleleKey alleleKey);
+
+	/**
+	 * Sets a allele at a position of the chromosome.
+	 *
+	 * @param chromosomeType The key of the allele that should be set at the position.
+	 * @param registryName   The registry name of the allele.
+	 */
+	IAlleleTemplateBuilder set(IChromosomeType chromosomeType, ResourceLocation registryName);
 
 	/**
 	 * @return The karyotype that defines the {@link #size()} and which alleles this template can contain.

@@ -18,4 +18,6 @@ public @interface GeneticPlugin {
 	 * The priority of the plugin. Plugins will be sorted with respect to this priority level.
 	 */
 	EventPriority priority() default EventPriority.NORMAL;
+
+	String modId() default "";
 }

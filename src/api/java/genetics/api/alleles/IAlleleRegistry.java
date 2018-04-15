@@ -3,7 +3,6 @@ package genetics.api.alleles;
 import java.util.Collection;
 import java.util.Optional;
 
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 
 import genetics.api.IGeneticApiInstance;
@@ -21,23 +20,20 @@ public interface IAlleleRegistry {
 	 * Creates a allele with the data that the {@link IAlleleData} contains.
 	 */
 	default IAlleleRegistry registerAllele(IAlleleData value) {
-		return registerAllele(value.getValue(), value.isDominant(), value.getKey());
+		return registerAllele(value.getCategory(), value.getName(), value.getValue(), value.isDominant(), value.getKey());
 	}
 
 	/**
 	 * Creates and registers an allele that contains the given value and has the given dominant state if no allele with
 	 * the value and the given dominant state exists, otherwise it adds the keys to the existing {@link IAllele}.
-	 * <p>
-	 * The registry name of the allele will be created out of the given value and the given dominant state:
-	 * "value" + "_" + "dominant"
-	 * You can control the string that is used for the value by implementing {@link Object#toString()} or
-	 * {@link IStringSerializable#getName()}.
 	 *
-	 * @param value    the value of the allele
+	 * @param category
+	 * @param valueName
+	 * @param value the value of the allele
 	 * @param dominant if true the allele is dominant, otherwise the allele is recessive.
-	 * @param keys     allele keys for this allele.
+	 * @param keys allele keys for this allele.
 	 */
-	<V> IAlleleRegistry registerAllele(V value, boolean dominant, IAlleleKey... keys);
+	<V> IAlleleRegistry registerAllele(String category, String valueName, V value, boolean dominant, IAlleleKey... keys);
 
 	/**
 	 * Registers an allele.
@@ -47,6 +43,12 @@ public interface IAlleleRegistry {
 	 * @param <V>    the type that the value of the allele has
 	 */
 	<V> IAlleleRegistry registerAllele(IAllele<V> allele, IAlleleKey... keys);
+
+	default IAlleleRegistry registerKeys(String registryName, IAlleleKey... keys) {
+		return registerKeys(new ResourceLocation(registryName), keys);
+	}
+
+	IAlleleRegistry registerKeys(ResourceLocation registryName, IAlleleKey... keys);
 
 	/**
 	 * Returns the allele that is associated with the given key.
@@ -62,7 +64,9 @@ public interface IAlleleRegistry {
 	 * @param registryName The registry name of the allele to retrieve as a {@link String}.
 	 * @return A optional that contains the IAllele if found, a empty optional otherwise.
 	 */
-	Optional<IAllele> getAllele(String registryName);
+	default Optional<IAllele> getAllele(String registryName) {
+		return getAllele(new ResourceLocation(registryName));
+	}
 
 	/**
 	 * Gets an allele

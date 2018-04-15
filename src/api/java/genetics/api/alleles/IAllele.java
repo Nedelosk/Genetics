@@ -6,6 +6,9 @@ import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
@@ -31,6 +34,17 @@ public interface IAllele<V> extends IForgeRegistryEntry<IAllele<?>> {
 	 * @return true if the allele is dominant, false otherwise.
 	 */
 	boolean isDominant();
+
+	/**
+	 * @return Localized short, human-readable identifier used in tooltips and beealyzer.
+	 */
+	@SideOnly(Side.CLIENT)
+	String getLocalizedName();
+
+	/**
+	 * @return The unlocalized identifier
+	 */
+	String getUnlocalizedName();
 
 	@Nonnull
 	ResourceLocation getRegistryName();

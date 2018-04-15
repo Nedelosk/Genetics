@@ -2,11 +2,11 @@ package genetics.gene;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableBiMap;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -23,21 +23,19 @@ import genetics.api.gene.IGeneBuilder;
 import genetics.ApiInstance;
 
 public class Gene implements IGene {
-	private final ImmutableMap<IAlleleKey, String> alleleInstances;
 	private final ImmutableBiMap<IAllele, IAlleleKey> alleles;
 	private final IAllele defaultAllele;
 	private final String name;
 
-	private Gene(ImmutableMap<IAlleleKey, String> alleleInstances, IAlleleKey defaultKey, String name) {
+	private Gene(ImmutableSet<IAlleleKey> alleleInstances, IAlleleKey defaultKey, String name) {
 		this.name = name;
-		this.alleleInstances = alleleInstances;
 		IAlleleRegistry alleleRegistry = ApiInstance.INSTANCE.getAlleleRegistry();
 		ImmutableBiMap.Builder<IAllele, IAlleleKey> builder = ImmutableBiMap.builder();
-		alleleInstances.forEach((k, v) -> alleleRegistry.getAllele(k).ifPresent(a -> builder.put(a, k)));
+		alleleInstances.forEach((k) -> alleleRegistry.getAllele(k).ifPresent(a -> builder.put(a, k)));
 		this.alleles = builder.build();
 		Optional<IAllele> optional = getAllele(defaultKey);
 		if (!optional.isPresent()) {
-			throw new IllegalStateException();
+			throw new IllegalStateException("Failed to create gene " + name + '.');
 		}
 		this.defaultAllele = optional.get();
 	}
@@ -49,7 +47,7 @@ public class Gene implements IGene {
 
 	@Override
 	public Collection<IAlleleKey> getKeys() {
-		return alleleInstances.keySet();
+		return alleles.values();
 	}
 
 	@Override
@@ -92,22 +90,13 @@ public class Gene implements IGene {
 		return "gene." + name + ".name";
 	}
 
-	public String getUnlocalizedName(IAllele<?> allele) {
-		return "allele." + alleleInstances.get(alleles.get(allele)) + ".name";
-	}
-
 	@Override
 	public String toString() {
 		return name;
 	}
 
-	@Override
-	public String getLocalizedName(IAllele<?> allele) {
-		return I18n.format(getUnlocalizedName(allele));
-	}
-
 	public static class Builder implements IGeneBuilder {
-		private final HashMap<IAlleleKey, String> alleleInstances = new HashMap<>();
+		private final Set<IAlleleKey> keys = new HashSet<>();
 		private final Set<IChromosomeType> types = new HashSet<>();
 		private final String name;
 		@Nullable
@@ -118,14 +107,15 @@ public class Gene implements IGene {
 		}
 
 		@Override
-		public IGeneBuilder addAllele(IAlleleKey key, String unlocalizedName) {
-			this.alleleInstances.put(key, unlocalizedName);
+		public IGeneBuilder addAlleles(IAlleleKey... keys) {
+			this.keys.addAll(Arrays.asList(keys));
 			return this;
 		}
 
 		@Override
 		public IGeneBuilder setDefaultAllele(IAlleleKey key) {
 			this.defaultKey = key;
+			this.keys.add(key);
 			return this;
 		}
 
@@ -141,7 +131,7 @@ public class Gene implements IGene {
 
 		public Gene createGene() {
 			Preconditions.checkNotNull(defaultKey);
-			return new Gene(ImmutableMap.copyOf(alleleInstances), defaultKey, name);
+			return new Gene(ImmutableSet.copyOf(keys), defaultKey, name);
 		}
 	}
 }
