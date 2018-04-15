@@ -1,4 +1,4 @@
-package genetics.api.root;
+package genetics.api.root.translator;
 
 import javax.annotation.Nullable;
 

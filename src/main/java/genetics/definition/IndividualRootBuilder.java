@@ -18,12 +18,12 @@ import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
-import genetics.api.root.IBlockTranslator;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootBuilder;
 import genetics.api.root.IIndividualRootFactory;
-import genetics.api.root.IIndividualTranslator;
-import genetics.api.root.IItemTranslator;
+import genetics.api.root.translator.IBlockTranslator;
+import genetics.api.root.translator.IIndividualTranslator;
+import genetics.api.root.translator.IItemTranslator;
 
 import genetics.individual.OptionalRoot;
 import genetics.organism.OrganismTypes;

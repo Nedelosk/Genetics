@@ -7,7 +7,7 @@ import genetics.api.alleles.IAllele;
 import genetics.api.gene.IKaryotype;
 
 /**
- * The ITemplateContainer contains all templates of the {@link IIndividualDefinition} that were added with the
+ * The ITemplateContainer contains all templates of the {@link IIndividualRoot} that were added with the
  * {@link IIndividualRootBuilder}.
  */
 public interface ITemplateContainer {

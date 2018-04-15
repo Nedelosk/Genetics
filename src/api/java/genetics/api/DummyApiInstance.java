@@ -2,8 +2,8 @@ package genetics.api;
 
 import net.minecraftforge.fml.common.Loader;
 
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.gene.IGeneRegistry;
-import genetics.api.registry.IAlleleRegistry;
 import genetics.api.root.IRootRegistry;
 
 public class DummyApiInstance implements IGeneticApiInstance {

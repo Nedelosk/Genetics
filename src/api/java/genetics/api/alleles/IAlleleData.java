@@ -1,7 +1,5 @@
 package genetics.api.alleles;
 
-import genetics.api.registry.IAlleleRegistry;
-
 /**
  * The IAlleleData is a help interface that provides all information that is required to register a allele at the
  * {@link IAlleleRegistry} using {@link IAlleleRegistry#registerAllele(Object, boolean, IAlleleKey...)}.

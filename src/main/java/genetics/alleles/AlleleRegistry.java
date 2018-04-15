@@ -20,7 +20,7 @@ import genetics.api.alleles.Allele;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleHandler;
 import genetics.api.alleles.IAlleleKey;
-import genetics.api.registry.IAlleleRegistry;
+import genetics.api.alleles.IAlleleRegistry;
 
 import genetics.Genetics;
 

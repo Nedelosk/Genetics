@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticSaveHandler;
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.gene.IGeneRegistry;
-import genetics.api.registry.IAlleleRegistry;
 import genetics.api.root.IRootRegistry;
 
 import genetics.alleles.AlleleRegistry;

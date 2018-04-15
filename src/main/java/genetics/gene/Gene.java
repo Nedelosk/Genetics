@@ -15,10 +15,10 @@ import net.minecraft.client.resources.I18n;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneBuilder;
-import genetics.api.registry.IAlleleRegistry;
 
 import genetics.ApiInstance;
 

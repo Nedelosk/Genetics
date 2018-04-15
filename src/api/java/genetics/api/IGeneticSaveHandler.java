@@ -14,7 +14,7 @@ import genetics.api.individual.IGenome;
 /**
  * This handler provides some functions to save and load {@link IAllele}s, {@link IChromosome}s and {@link IGenome}s.
  * <p>
- * Get the instance from {@link GeneticsAPI#saveHandler}.
+ * Get the instance from {@link IGeneticApiInstance#getSaveHandler()}.
  */
 public interface IGeneticSaveHandler {
 

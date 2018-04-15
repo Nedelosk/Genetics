@@ -2,10 +2,10 @@ package genetics.api;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneFactory;
 import genetics.api.gene.IGeneRegistry;
-import genetics.api.registry.IAlleleRegistry;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootBuilder;
 import genetics.api.root.IRootManager;

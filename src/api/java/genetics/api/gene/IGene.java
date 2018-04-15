@@ -8,16 +8,15 @@ import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IIndividual;
-import genetics.api.root.IRootRegistry;
 
 /**
  * The IGene contains every {@link IAllele} an the associated {@link IAlleleKey} of every {@link IAlleleKey} that was
- * added to the {@link IGeneBuilder} at {@link IGeneticPlugin#register(IGeneFactory)}.
+ * added to the {@link IGeneBuilder} at {@link IGeneticPlugin#registerGenes(IGeneFactory)}.
  * <p>
- * You have to create a IGeneBuilder at {@link IGeneticPlugin#register(IGeneFactory)} with
- * {@link IGeneFactory#addGene(String)}. Later after {@link IGeneticPlugin#register(IGeneFactory)} the builder
+ * You have to create a IGeneBuilder at {@link IGeneticPlugin#registerGenes(IGeneFactory)} with
+ * {@link IGeneFactory#addGene(String)}. Later after {@link IGeneticPlugin#registerGenes(IGeneFactory)} the builder
  * will be automatically build to a IGene and you can get the instance of the IGene with
- * {@link IRootRegistry#getGene(IChromosomeType)}
+ * {@link IGeneRegistry#getGene(IChromosomeType)}
  */
 public interface IGene {
 	/**

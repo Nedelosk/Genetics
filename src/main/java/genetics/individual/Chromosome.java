@@ -10,10 +10,10 @@ import net.minecraft.util.ResourceLocation;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.individual.IChromosome;
-import genetics.api.registry.IAlleleRegistry;
 import genetics.api.root.ITemplateContainer;
 
 @Immutable

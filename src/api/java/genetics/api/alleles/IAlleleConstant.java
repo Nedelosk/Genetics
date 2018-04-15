@@ -3,7 +3,6 @@ package genetics.api.alleles;
 import genetics.api.IRegistryHelper;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGeneBuilder;
-import genetics.api.registry.IAlleleRegistry;
 
 /**
  * The IAlleleConstant is a help interface that provides all information that is required to register a allele at the {@link IAlleleRegistry}

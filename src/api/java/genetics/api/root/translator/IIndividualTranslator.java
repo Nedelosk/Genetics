@@ -1,4 +1,4 @@
-package genetics.api.root;
+package genetics.api.root.translator;
 
 import java.util.Optional;
 
@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import genetics.api.individual.IIndividual;
+import genetics.api.root.IIndividualRootBuilder;
 
 /**
  * Translates a item or a block that does not contain any genetic information into a {@link ItemStack} or a

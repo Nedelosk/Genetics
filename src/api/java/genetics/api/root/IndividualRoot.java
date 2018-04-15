@@ -11,6 +11,7 @@ import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
+import genetics.api.root.translator.IIndividualTranslator;
 
 public abstract class IndividualRoot<I extends IIndividual> implements IIndividualRoot<I> {
 	private final IOrganismTypes<I> types;

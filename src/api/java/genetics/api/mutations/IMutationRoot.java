@@ -5,11 +5,10 @@ import java.util.List;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.gene.IChromosomeType;
-import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.root.IIndividualRoot;
 
-public interface IMutationRoot<I extends IIndividual, W extends IGenomeWrapper, M extends IMutation> extends IIndividualRoot<I> {
+public interface IMutationRoot<I extends IIndividual, M extends IMutation> extends IIndividualRoot<I> {
 	/**
 	 * Use to register mutations.
 	 */

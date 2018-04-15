@@ -13,6 +13,7 @@ import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
+import genetics.api.root.translator.IIndividualTranslator;
 
 /**
  * The IGeneticRoot offers several functions to create {@link IIndividual}s and to wrap the genome of a

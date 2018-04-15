@@ -5,10 +5,10 @@ import java.util.Set;
 
 import genetics.api.IRegistryHelper;
 import genetics.api.alleles.IAlleleConstant;
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGeneBuilder;
 import genetics.api.gene.IGeneFactory;
-import genetics.api.registry.IAlleleRegistry;
 
 public enum RegistryHelper implements IRegistryHelper {
 	INSTANCE;

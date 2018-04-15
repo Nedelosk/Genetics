@@ -1,4 +1,4 @@
-package genetics.api.registry;
+package genetics.api.alleles;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -8,10 +8,6 @@ import net.minecraft.util.ResourceLocation;
 
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticPlugin;
-import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleData;
-import genetics.api.alleles.IAlleleHandler;
-import genetics.api.alleles.IAlleleKey;
 
 /**
  * The {@link IAlleleRegistry} offers several functions for registering and retrieving alleles.

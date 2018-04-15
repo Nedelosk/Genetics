@@ -18,6 +18,9 @@ import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
+import genetics.api.root.translator.IBlockTranslator;
+import genetics.api.root.translator.IIndividualTranslator;
+import genetics.api.root.translator.IItemTranslator;
 
 /**
  * The IGeneticDefinitionBuilder offers several functions to register templates, types or something similar that can be

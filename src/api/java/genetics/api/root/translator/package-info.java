@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package genetics.api.registry;
+package genetics.api.root.translator;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

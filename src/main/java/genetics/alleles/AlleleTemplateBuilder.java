@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IKaryotype;
-import genetics.api.registry.IAlleleRegistry;
 
 import genetics.ApiInstance;
 

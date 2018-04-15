@@ -1,7 +1,5 @@
 package genetics.api.alleles;
 
-import genetics.api.registry.IAlleleRegistry;
-
 /**
  * The IAlleleKey is used to associate it with a specified {@link IAllele}. Every {@link IAlleleKey} can only be used for
  * one specified {@link IAllele}, but the specified {@link IAllele} can have more than one IAlleleKey.
