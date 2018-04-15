@@ -6,9 +6,9 @@ import java.util.Optional;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
+import genetics.api.root.IIndividualRoot;
 
 /**
  * An actual individual organism with genetic information.
@@ -28,7 +28,7 @@ public interface IIndividual {
 	/**
 	 * @return The definition that describes this organism.
 	 */
-	IIndividualDefinition getDefinition();
+	IIndividualRoot getRoot();
 
 	/**
 	 * @return The genetic data of this organism.

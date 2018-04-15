@@ -19,12 +19,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IIndividualDefinition;
-import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
+import genetics.api.root.IIndividualRoot;
 
 import genetics.individual.GeneticSaveHandler;
 import genetics.individual.SaveFormat;
@@ -63,7 +62,7 @@ public class Genetics {
 			}
 
 			@Override
-			public IIndividualDefinition<IIndividual, IIndividualRoot<IIndividual>> getDefinition() {
+			public IIndividualRoot<IIndividual> getRoot() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
@@ -94,7 +93,7 @@ public class Genetics {
 			}
 
 			@Override
-			public Optional<IIndividualDefinition> getDefinition() {
+			public Optional<IIndividualRoot> getRoot() {
 				return Optional.empty();
 			}
 

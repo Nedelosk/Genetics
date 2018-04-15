@@ -12,8 +12,8 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IChromosomeType;
+import genetics.api.root.IIndividualRoot;
 
 import genetics.ApiInstance;
 import genetics.Genetics;
@@ -28,7 +28,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	@Nullable
 	private IChromosomeType type;
 	@Nullable
-	private IIndividualDefinition definition;
+	private IIndividualRoot root;
 
 	@Override
 	public Optional<IAllele> getAllele() {
@@ -41,8 +41,8 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	}
 
 	@Override
-	public Optional<IIndividualDefinition> getDefinition() {
-		return Optional.ofNullable(definition);
+	public Optional<IIndividualRoot> getRoot() {
+		return Optional.ofNullable(root);
 	}
 
 	@Override
@@ -50,9 +50,9 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 		this.allele = allele;
 		this.type = type;
 		if (type != null) {
-			definition = type.getDefinition();
+			root = type.getRoot();
 		} else {
-			definition = null;
+			root = null;
 		}
 	}
 
@@ -62,9 +62,9 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 		if (allele != null) {
 			compound.setString(ALLELE_NBT_KEY, allele.getRegistryName().toString());
 		}
-		if (type != null && definition != null) {
+		if (type != null && root != null) {
 			compound.setByte(TYPE_NBT_KEY, (byte) type.getIndex());
-			compound.setString(DEFINITION_NBT_KEY, definition.getUID());
+			compound.setString(DEFINITION_NBT_KEY, root.getUID());
 		}
 		return compound;
 	}
@@ -72,8 +72,8 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	@Override
 	public void deserializeNBT(NBTTagCompound compound) {
 		if (compound.hasKey(TYPE_NBT_KEY) && compound.hasKey(DEFINITION_NBT_KEY)) {
-			ApiInstance.INSTANCE.getDefinitionRegistry().getDefinition(compound.getString(DEFINITION_NBT_KEY)).ifPresent(def -> {
-				this.definition = def;
+			ApiInstance.INSTANCE.getRootRegistry().getRoot(compound.getString(DEFINITION_NBT_KEY)).ifPresent(def -> {
+				this.root = def;
 				type = def.getKaryotype().getChromosomeTypes()[compound.getByte(TYPE_NBT_KEY)];
 			});
 		}

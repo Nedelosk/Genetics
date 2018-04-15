@@ -1,4 +1,4 @@
-package genetics.api.definition;
+package genetics.api.root;
 
 import java.util.Optional;
 
@@ -12,7 +12,7 @@ import genetics.api.individual.IIndividual;
 /**
  * Translates a item or a block that does not contain any genetic information into a {@link ItemStack} or a
  * {@link IIndividual} if a {@link IItemTranslator} or {@link IBlockTranslator} was registered for it at the
- * {@link IIndividualDefinitionBuilder}.
+ * {@link IIndividualRootBuilder}.
  */
 public interface IIndividualTranslator<I extends IIndividual> {
 	/**

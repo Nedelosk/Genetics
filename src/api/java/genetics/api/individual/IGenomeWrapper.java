@@ -1,6 +1,6 @@
 package genetics.api.individual;
 
-import genetics.api.definition.IIndividualRoot;
+import genetics.api.root.IIndividualRoot;
 
 /**
  * A wrapper around a genome with methods that allow to get quick access to the value of an allele or to the allele

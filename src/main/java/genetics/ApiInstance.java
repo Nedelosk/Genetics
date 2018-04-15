@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticSaveHandler;
-import genetics.api.definition.IDefinitionRegistry;
 import genetics.api.gene.IGeneRegistry;
 import genetics.api.registry.IAlleleRegistry;
+import genetics.api.root.IRootRegistry;
 
 import genetics.alleles.AlleleRegistry;
 import genetics.individual.GeneticSaveHandler;
@@ -24,7 +24,7 @@ public enum ApiInstance implements IGeneticApiInstance {
 	@Nullable
 	private IGeneRegistry geneRegistry;
 	@Nullable
-	private IDefinitionRegistry definitionRegistry;
+	private IRootRegistry rootRegistry;
 
 	@Override
 	public IAlleleRegistry getAlleleRegistry() {
@@ -47,13 +47,13 @@ public enum ApiInstance implements IGeneticApiInstance {
 	}
 
 	@Override
-	public IDefinitionRegistry getDefinitionRegistry() {
-		Preconditions.checkState(definitionRegistry != null, ERROR_MESSAGE);
-		return definitionRegistry;
+	public IRootRegistry getRootRegistry() {
+		Preconditions.checkState(rootRegistry != null, ERROR_MESSAGE);
+		return rootRegistry;
 	}
 
-	public void setDefinitionRegistry(@Nullable IDefinitionRegistry definitionRegistry) {
-		this.definitionRegistry = definitionRegistry;
+	public void setRootRegistry(@Nullable IRootRegistry rootRegistry) {
+		this.rootRegistry = rootRegistry;
 	}
 
 	@Override

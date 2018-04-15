@@ -1,4 +1,4 @@
-package genetics.api.definition;
+package genetics.api.root;
 
 import java.util.Map;
 import java.util.Random;
@@ -8,7 +8,7 @@ import genetics.api.gene.IKaryotype;
 
 /**
  * The ITemplateContainer contains all templates of the {@link IIndividualDefinition} that were added with the
- * {@link IIndividualDefinitionBuilder}.
+ * {@link IIndividualRootBuilder}.
  */
 public interface ITemplateContainer {
 

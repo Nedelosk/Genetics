@@ -4,25 +4,24 @@ import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.definition.IIndividualDefinition;
-import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IIndividualBuilder;
+import genetics.api.root.IIndividualRoot;
 
 public final class IndividualBuilder<I extends IIndividual> implements IIndividualBuilder<I> {
-	private final IIndividualDefinition<I, IIndividualRoot<I>> definition;
+	private final IIndividualRoot<I> root;
 	private final IAlleleTemplateBuilder activeBuilder;
 	private final IAlleleTemplateBuilder inactiveBuilder;
 	private final I creationIndividual;
 
 	@SuppressWarnings("unchecked")
 	public IndividualBuilder(I individual) {
-		this.definition = (IIndividualDefinition<I, IIndividualRoot<I>>) individual.getDefinition();
+		this.root = (IIndividualRoot<I>) individual.getRoot();
 		IGenome genome = individual.getGenome();
-		IKaryotype karyotype = definition.getKaryotype();
+		IKaryotype karyotype = root.getKaryotype();
 		this.activeBuilder = karyotype.createTemplate(genome.getActiveAlleles());
 		this.inactiveBuilder = karyotype.createTemplate(genome.getInactiveAlleles());
 		this.creationIndividual = individual;
@@ -41,8 +40,8 @@ public final class IndividualBuilder<I extends IIndividual> implements IIndividu
 	}
 
 	@Override
-	public IIndividualDefinition<I, IIndividualRoot<I>> getDefinition() {
-		return definition;
+	public IIndividualRoot<I> getRoot() {
+		return root;
 	}
 
 	@Override
@@ -54,7 +53,7 @@ public final class IndividualBuilder<I extends IIndividual> implements IIndividu
 	public I build() {
 		IAlleleTemplate activeTemplate = activeBuilder.build();
 		IAlleleTemplate inactiveTemplate = inactiveBuilder.build();
-		I individual = definition.getRoot().create(activeTemplate.toGenome(inactiveTemplate));
+		I individual = root.create(activeTemplate.toGenome(inactiveTemplate));
 		individual.onBuild(creationIndividual);
 		return individual;
 	}

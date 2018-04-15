@@ -34,7 +34,7 @@ public abstract class Individual implements IIndividual {
 	}
 
 	public Individual(NBTTagCompound compound) {
-		IKaryotype karyotype = getDefinition().getKaryotype();
+		IKaryotype karyotype = getRoot().getKaryotype();
 		if (compound.hasKey(GENOME_KEY)) {
 			genome = ApiInstance.INSTANCE.getGeneticFactory().createGenome(karyotype, compound.getCompoundTag(GENOME_KEY));
 		} else {
@@ -50,7 +50,7 @@ public abstract class Individual implements IIndividual {
 
 	@Override
 	public String getIdentifier() {
-		return genome.getActiveAllele(getDefinition().getKaryotype().getTemplateType()).getRegistryName().toString();
+		return genome.getActiveAllele(getRoot().getKaryotype().getTemplateType()).getRegistryName().toString();
 	}
 
 	@Override

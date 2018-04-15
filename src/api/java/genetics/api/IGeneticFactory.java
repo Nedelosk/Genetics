@@ -6,8 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.definition.IIndividualDefinition;
-import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
@@ -15,11 +13,12 @@ import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
+import genetics.api.root.IIndividualRoot;
 
 /**
  * A factory that can be used to create some default implementations.
  * <p>
- * Get the instance from {@link GeneticsAPI#geneticFactory}.
+ * Get the instance from {@link IGeneticApiInstance#getGeneticFactory()}.
  */
 public interface IGeneticFactory {
 
@@ -89,10 +88,10 @@ public interface IGeneticFactory {
 	 *
 	 * @param itemStack  The item that contains the genetic information.
 	 * @param type       The species type of the individual.
-	 * @param definition The definition that describes the individual.
+	 * @param root         The definition that describes the individual.
 	 * @return A instance of {@link IOrganism}.
 	 */
-	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I>> definition);
+	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualRoot<I> root);
 
 	/**
 	 * Creates a default implementation of a {@link IGeneTemplate}

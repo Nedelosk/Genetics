@@ -211,7 +211,7 @@ public class SimpleByteBuf {
 	 * Reads a specific chromosome from the byte array without creating the whole chromosome array.
 	 */
 	public ChromosomeInfo readChromosome(IChromosomeType geneType) {
-		IKaryotype karyotype = geneType.getDefinition().getKaryotype();
+		IKaryotype karyotype = geneType.getRoot().getKaryotype();
 		IChromosomeType[] keys = karyotype.getChromosomeTypes();
 		ChromosomeInfo info = new ChromosomeInfo(geneType);
 

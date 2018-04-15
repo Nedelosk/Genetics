@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.List;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
+import genetics.api.root.IIndividualRoot;
 
 public interface IMutationRoot<I extends IIndividual, W extends IGenomeWrapper, M extends IMutation> extends IIndividualRoot<I> {
 	/**

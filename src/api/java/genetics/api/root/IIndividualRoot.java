@@ -1,4 +1,4 @@
-package genetics.api.definition;
+package genetics.api.root;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -18,14 +18,13 @@ import genetics.api.organism.IOrganismTypes;
  * The IGeneticRoot offers several functions to create {@link IIndividual}s and to wrap the genome of a
  * {@link IIndividual}.
  *
+ * The IGeneticDefinition is wraps every interface like the {@link IIndividualTranslator}, the {@link IKaryotype}, etc.
+ * that are important for the handling of the individual. And it provides the custom implementation of the
+ * {@link IIndividualRoot} interface that specifies the individual and can be used to create a instance of it.
+ *
  * @param <I> The type of the individual that this root provides.
  */
 public interface IIndividualRoot<I extends IIndividual> {
-
-	/**
-	 * Gets the definition that provides this root.
-	 */
-	IIndividualDefinition<I, ? extends IIndividualRoot<I>> getDefinition();
 
 	/**
 	 * Uses the information that the NBT-Data contains to create a {@link IIndividual}.

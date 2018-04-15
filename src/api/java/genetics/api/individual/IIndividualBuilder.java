@@ -2,9 +2,8 @@ package genetics.api.individual;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
-import genetics.api.definition.IIndividualDefinition;
-import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
+import genetics.api.root.IIndividualRoot;
 
 /**
  * Can be used to create a modified version of an {@link IIndividual}. At the crate of this builder all genetic
@@ -15,7 +14,7 @@ public interface IIndividualBuilder<I extends IIndividual> {
 	/**
 	 * @return The definition of the individual.
 	 */
-	IIndividualDefinition<I, IIndividualRoot<I>> getDefinition();
+	IIndividualRoot<I> getRoot();
 
 	/**
 	 * Sets a allele at a position of the chromosome.

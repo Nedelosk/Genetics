@@ -8,10 +8,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import genetics.api.definition.IBlockTranslator;
-import genetics.api.definition.IIndividualTranslator;
-import genetics.api.definition.IItemTranslator;
 import genetics.api.individual.IIndividual;
+import genetics.api.root.IBlockTranslator;
+import genetics.api.root.IIndividualTranslator;
+import genetics.api.root.IItemTranslator;
 
 public class IndividualTranslator<I extends IIndividual> implements IIndividualTranslator<I> {
 	private final Map<Item, IItemTranslator<I>> itemTranslators;

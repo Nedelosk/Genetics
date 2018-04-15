@@ -12,22 +12,21 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IIndividualDefinition;
-import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
+import genetics.api.root.IIndividualRoot;
 
 import genetics.Genetics;
 import genetics.individual.GeneticSaveHandler;
 
 public class Organism<I extends IIndividual> implements IOrganism<I>, ICapabilityProvider {
 	private final ItemStack container;
-	private final Supplier<IIndividualDefinition<I, IIndividualRoot<I>>> definitionSupplier;
+	private final Supplier<IIndividualRoot<I>> definitionSupplier;
 	private final Supplier<IOrganismType> typeSupplier;
 
-	public Organism(ItemStack container, Supplier<IIndividualDefinition<I, IIndividualRoot<I>>> geneticDefinitionSupplier, Supplier<IOrganismType> typeSupplier) {
+	public Organism(ItemStack container, Supplier<IIndividualRoot<I>> geneticDefinitionSupplier, Supplier<IOrganismType> typeSupplier) {
 		this.container = container;
 		this.definitionSupplier = geneticDefinitionSupplier;
 		this.typeSupplier = typeSupplier;
@@ -35,16 +34,16 @@ public class Organism<I extends IIndividual> implements IOrganism<I>, ICapabilit
 
 	@Override
 	public Optional<I> getIndividual() {
-		return getDefinition().getTypes().createIndividual(container);
+		return getRoot().getTypes().createIndividual(container);
 	}
 
 	@Override
 	public boolean setIndividual(I individual) {
-		return getDefinition().getTypes().setIndividual(container, individual);
+		return getRoot().getTypes().setIndividual(container, individual);
 	}
 
 	@Override
-	public IIndividualDefinition<I, IIndividualRoot<I>> getDefinition() {
+	public IIndividualRoot<I> getRoot() {
 		return definitionSupplier.get();
 	}
 

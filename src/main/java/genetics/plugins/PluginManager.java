@@ -13,8 +13,8 @@ import genetics.api.IGeneticPlugin;
 
 import genetics.ApiInstance;
 import genetics.alleles.AlleleRegistry;
-import genetics.definition.DefinitionFactory;
 import genetics.definition.KaryotypeFactory;
+import genetics.definition.RootManager;
 import genetics.gene.GeneFactory;
 
 public class PluginManager {
@@ -53,8 +53,8 @@ public class PluginManager {
 		KaryotypeFactory karyotypeFactory = new KaryotypeFactory();
 		plugins.forEach(p -> p.createKaryotype(karyotypeFactory));
 		//
-		DefinitionFactory definitionFactory = new DefinitionFactory();
+		RootManager definitionFactory = new RootManager();
 		plugins.forEach(p -> p.onFinishRegistration(definitionFactory, GeneticsAPI.apiInstance));
-		ApiInstance.INSTANCE.setDefinitionRegistry(definitionFactory.createRegistry());
+		ApiInstance.INSTANCE.setRootRegistry(definitionFactory.createRegistry());
 	}
 }

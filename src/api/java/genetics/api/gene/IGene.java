@@ -6,9 +6,9 @@ import java.util.Optional;
 import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
-import genetics.api.definition.IDefinitionRegistry;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IIndividual;
+import genetics.api.root.IRootRegistry;
 
 /**
  * The IGene contains every {@link IAllele} an the associated {@link IAlleleKey} of every {@link IAlleleKey} that was
@@ -17,7 +17,7 @@ import genetics.api.individual.IIndividual;
  * You have to create a IGeneBuilder at {@link IGeneticPlugin#register(IGeneFactory)} with
  * {@link IGeneFactory#addGene(String)}. Later after {@link IGeneticPlugin#register(IGeneFactory)} the builder
  * will be automatically build to a IGene and you can get the instance of the IGene with
- * {@link IDefinitionRegistry#getGene(IChromosomeType)}
+ * {@link IRootRegistry#getGene(IChromosomeType)}
  */
 public interface IGene {
 	/**

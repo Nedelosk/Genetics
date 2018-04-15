@@ -2,14 +2,14 @@ package genetics.api;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
-import genetics.api.definition.IDefinitionFactory;
-import genetics.api.definition.IDefinitionRegistry;
-import genetics.api.definition.IIndividualDefinition;
-import genetics.api.definition.IIndividualDefinitionBuilder;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneFactory;
 import genetics.api.gene.IGeneRegistry;
 import genetics.api.registry.IAlleleRegistry;
+import genetics.api.root.IIndividualRoot;
+import genetics.api.root.IIndividualRootBuilder;
+import genetics.api.root.IRootManager;
+import genetics.api.root.IRootRegistry;
 
 public interface IGeneticApiInstance {
 	/**
@@ -21,7 +21,7 @@ public interface IGeneticApiInstance {
 	IAlleleRegistry getAlleleRegistry();
 
 	/**
-	 * This instance of the genetic registry can be used to get the {@link IIndividualDefinitionBuilder}s of other
+	 * This instance of the genetic registry can be used to get the {@link IIndividualRootBuilder}s of other
 	 * plugins.
 	 * It's available after all genes and builders where created and added at {@link IGeneticPlugin#registerGenes(IGeneFactory)}.
 	 *
@@ -30,12 +30,12 @@ public interface IGeneticApiInstance {
 	IGeneRegistry getGeneRegistry();
 
 	/**
-	 * This instance of the genetic system can be used to get {@link IIndividualDefinition}s and {@link IGene}s.
-	 * It's available after was called {@link IGeneticPlugin#onFinishRegistration(IDefinitionFactory, IGeneticApiInstance)}.
+	 * This instance of the genetic system can be used to get {@link IIndividualRoot}s and {@link IGene}s.
+	 * It's available after was called {@link IGeneticPlugin#onFinishRegistration(IRootManager, IGeneticApiInstance)}.
 	 *
-	 * @throws IllegalStateException if the method gets called before {@link IGeneticPlugin#onFinishRegistration(IDefinitionFactory, IGeneticApiInstance)} was called at all plugins.
+	 * @throws IllegalStateException if the method gets called before {@link IGeneticPlugin#onFinishRegistration(IRootManager, IGeneticApiInstance)} was called at all plugins.
 	 */
-	IDefinitionRegistry getDefinitionRegistry();
+	IRootRegistry getRootRegistry();
 
 	/**
 	 * This instance is available before any method of a {@link IGeneticPlugin} was called.

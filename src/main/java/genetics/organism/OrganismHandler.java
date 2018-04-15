@@ -5,17 +5,17 @@ import java.util.Optional;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import genetics.api.definition.IIndividualDefinition;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismHandler;
+import genetics.api.root.IIndividualRoot;
 
 public class OrganismHandler<I extends IIndividual> implements IOrganismHandler<I> {
 	private static final String INDIVIDUAL_KEY = "Individual";
-	protected final IIndividualDefinition<I, ?> definition;
+	protected final IIndividualRoot<I> root;
 	protected final ItemStack stack;
 
-	public OrganismHandler(IIndividualDefinition<I, ?> definition, ItemStack stack) {
-		this.definition = definition;
+	public OrganismHandler(IIndividualRoot<I> root, ItemStack stack) {
+		this.root = root;
 		this.stack = stack;
 	}
 
@@ -32,7 +32,7 @@ public class OrganismHandler<I extends IIndividual> implements IOrganismHandler<
 		if (tagCompound == null) {
 			return Optional.empty();
 		}
-		return Optional.of(definition.getRoot().create(tagCompound));
+		return Optional.of(root.create(tagCompound));
 	}
 
 	@Override

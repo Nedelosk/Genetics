@@ -2,12 +2,12 @@ package genetics.api.alleles;
 
 import javax.annotation.Nullable;
 
-import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
+import genetics.api.root.IIndividualRoot;
 
 /**
  * Can be used to create {@link IGenome}s, {@link IIndividual}s or {@link IChromosome}s or get a allele.

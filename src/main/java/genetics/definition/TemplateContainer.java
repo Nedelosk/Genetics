@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Random;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.ITemplateContainer;
 import genetics.api.gene.IKaryotype;
+import genetics.api.root.ITemplateContainer;
 
 public class TemplateContainer implements ITemplateContainer {
 	private final IKaryotype karyotype;
