@@ -10,10 +10,10 @@ import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 
-import genetics.Genetics;
+import genetics.ApiInstance;
+import genetics.alleles.AlleleRegistry;
 import genetics.individual.Chromosome;
 import genetics.individual.ChromosomeInfo;
-import genetics.registry.AlleleRegistry;
 
 /**
  * A byte buffer that can be used to encode and decode chromosomes and alleles into a byte array.
@@ -83,8 +83,8 @@ public class SimpleByteBuf {
 	 * Write the internal id of the allele to the byte array as a varint.
 	 */
 	private void writeAllele(IAllele allele) {
-		AlleleRegistry registry = Genetics.alleleRegistry;
-		int id = registry.getId(allele);
+		AlleleRegistry registry = ApiInstance.INSTANCE.alleleRegistry;
+		int id = registry == null ? -1 : registry.getId(allele);
 		if (id < 0) {
 			writeVarInt(0);
 			return;
@@ -164,8 +164,11 @@ public class SimpleByteBuf {
 	 */
 	@Nullable
 	private IAllele readAllele() {
-		AlleleRegistry registry = Genetics.alleleRegistry;
+		AlleleRegistry registry = ApiInstance.INSTANCE.alleleRegistry;
 		int id = readVarInt();
+		if (registry == null) {
+			return null;
+		}
 		return registry.getAllele(id);
 	}
 

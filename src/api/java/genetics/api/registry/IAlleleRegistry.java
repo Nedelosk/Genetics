@@ -6,7 +6,7 @@ import java.util.Optional;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 
-import genetics.api.GeneticsAPI;
+import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleData;
@@ -17,7 +17,7 @@ import genetics.api.alleles.IAlleleKey;
  * The {@link IAlleleRegistry} offers several functions for registering and retrieving alleles.
  * <p>
  * The IAlleleRegistry instance is passed to your genetic plugin in {@link IGeneticPlugin#registerAlleles(IAlleleRegistry)}}.
- * Later you can get the instance from {@link GeneticsAPI#alleleRegistry}.
+ * Later you can get the instance from {@link IGeneticApiInstance#getAlleleRegistry()}.
  */
 public interface IAlleleRegistry {
 
@@ -52,6 +52,12 @@ public interface IAlleleRegistry {
 	 */
 	<V> IAlleleRegistry registerAllele(IAllele<V> allele, IAlleleKey... keys);
 
+	/**
+	 * Returns the allele that is associated with the given key.
+	 *
+	 * @param key the key whose associated allele is to be returned
+	 * @return an {@code Optional} describing the allele which is associated with the given key.
+	 */
 	Optional<IAllele> getAllele(IAlleleKey key);
 
 	/**

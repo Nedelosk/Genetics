@@ -10,7 +10,6 @@ import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
-import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 
 public final class AlleleTemplate implements IAlleleTemplate {
@@ -54,7 +53,7 @@ public final class AlleleTemplate implements IAlleleTemplate {
 	}
 
 	@Override
-	public <I extends IIndividual> I toIndividual(IIndividualRoot<I, IGenomeWrapper> root, @Nullable IAlleleTemplate inactiveTemplate) {
+	public <I extends IIndividual> I toIndividual(IIndividualRoot<I> root, @Nullable IAlleleTemplate inactiveTemplate) {
 		return root.templateAsIndividual(alleles, inactiveTemplate == null ? null : inactiveTemplate.alleles());
 	}
 

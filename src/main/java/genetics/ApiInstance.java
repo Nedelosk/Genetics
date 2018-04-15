@@ -1,71 +1,73 @@
 package genetics;
 
+import com.google.common.base.Preconditions;
+
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticSaveHandler;
+import genetics.api.definition.IDefinitionRegistry;
+import genetics.api.gene.IGeneRegistry;
 import genetics.api.registry.IAlleleRegistry;
-import genetics.api.registry.IGeneticRegistry;
-import genetics.api.registry.IGeneticSystem;
+
+import genetics.alleles.AlleleRegistry;
+import genetics.individual.GeneticSaveHandler;
 
 public enum ApiInstance implements IGeneticApiInstance {
 	INSTANCE;
 
+	private static final String ERROR_MESSAGE = "A method of the genetic api was called before the api reached the state at that the value of the method is present.";
+
 	@Nullable
-	private IAlleleRegistry alleleRegistry;
+	public AlleleRegistry alleleRegistry;
 	@Nullable
-	private IGeneticRegistry geneticRegistry;
+	private IGeneRegistry geneRegistry;
 	@Nullable
-	private IGeneticSystem geneticSystem;
-	@Nullable
-	private IGeneticFactory geneticFactory;
-	@Nullable
-	private IGeneticSaveHandler saveHandler;
+	private IDefinitionRegistry definitionRegistry;
 
 	@Override
-	public Optional<IAlleleRegistry> getAlleleRegistry() {
-		return Optional.ofNullable(alleleRegistry);
+	public IAlleleRegistry getAlleleRegistry() {
+		Preconditions.checkState(alleleRegistry != null, ERROR_MESSAGE);
+		return alleleRegistry;
 	}
 
-	public void setAlleleRegistry(@Nullable IAlleleRegistry alleleRegistry) {
+	public void setAlleleRegistry(@Nullable AlleleRegistry alleleRegistry) {
 		this.alleleRegistry = alleleRegistry;
 	}
 
 	@Override
-	public Optional<IGeneticRegistry> getGeneticRegistry() {
-		return Optional.ofNullable(geneticRegistry);
+	public IGeneRegistry getGeneRegistry() {
+		Preconditions.checkState(geneRegistry != null, ERROR_MESSAGE);
+		return geneRegistry;
 	}
 
-	public void setGeneticRegistry(@Nullable IGeneticRegistry geneticRegistry) {
-		this.geneticRegistry = geneticRegistry;
-	}
-
-	@Override
-	public Optional<IGeneticSystem> getGeneticSystem() {
-		return Optional.ofNullable(geneticSystem);
-	}
-
-	public void setGeneticSystem(@Nullable IGeneticSystem geneticSystem) {
-		this.geneticSystem = geneticSystem;
+	public void setGeneRegistry(@Nullable IGeneRegistry geneRegistry) {
+		this.geneRegistry = geneRegistry;
 	}
 
 	@Override
-	public Optional<IGeneticFactory> getGeneticFactory() {
-		return Optional.ofNullable(geneticFactory);
+	public IDefinitionRegistry getDefinitionRegistry() {
+		Preconditions.checkState(definitionRegistry != null, ERROR_MESSAGE);
+		return definitionRegistry;
 	}
 
-	public void setGeneticFactory(@Nullable IGeneticFactory geneticFactory) {
-		this.geneticFactory = geneticFactory;
+	public void setDefinitionRegistry(@Nullable IDefinitionRegistry definitionRegistry) {
+		this.definitionRegistry = definitionRegistry;
 	}
 
 	@Override
-	public Optional<IGeneticSaveHandler> getSaveHandler() {
-		return Optional.ofNullable(saveHandler);
+	public IGeneticFactory getGeneticFactory() {
+		return GeneticFactory.INSTANCE;
 	}
 
-	public void setSaveHandler(@Nullable IGeneticSaveHandler saveHandler) {
-		this.saveHandler = saveHandler;
+	@Override
+	public IGeneticSaveHandler getSaveHandler() {
+		return GeneticSaveHandler.INSTANCE;
+	}
+
+	@Override
+	public boolean isModPresent() {
+		return true;
 	}
 }

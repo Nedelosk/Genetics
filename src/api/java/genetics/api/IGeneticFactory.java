@@ -12,7 +12,6 @@ import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
-import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
@@ -93,7 +92,7 @@ public interface IGeneticFactory {
 	 * @param definition The definition that describes the individual.
 	 * @return A instance of {@link IOrganism}.
 	 */
-	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>> definition);
+	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I>> definition);
 
 	/**
 	 * Creates a default implementation of a {@link IGeneTemplate}

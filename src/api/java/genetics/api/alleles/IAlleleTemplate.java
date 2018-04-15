@@ -7,7 +7,6 @@ import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
-import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 
 /**
@@ -45,7 +44,7 @@ public interface IAlleleTemplate {
 	 */
 	IKaryotype getKaryotype();
 
-	default <I extends IIndividual> I toIndividual(IIndividualRoot<I, IGenomeWrapper> root) {
+	default <I extends IIndividual> I toIndividual(IIndividualRoot<I> root) {
 		return toIndividual(root, null);
 	}
 
@@ -53,7 +52,7 @@ public interface IAlleleTemplate {
 	 * Creates an individual with the help of the genetic root using
 	 * {@link IIndividualRoot#templateAsIndividual(IAllele[], IAllele[])}.
 	 */
-	<I extends IIndividual> I toIndividual(IIndividualRoot<I, IGenomeWrapper> root, @Nullable IAlleleTemplate inactiveTemplate);
+	<I extends IIndividual> I toIndividual(IIndividualRoot<I> root, @Nullable IAlleleTemplate inactiveTemplate);
 
 	default IGenome toGenome() {
 		return toGenome(null);

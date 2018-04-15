@@ -6,6 +6,7 @@ import java.util.Optional;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -21,7 +22,6 @@ import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
-import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
@@ -29,17 +29,13 @@ import genetics.api.organism.IOrganismType;
 import genetics.individual.GeneticSaveHandler;
 import genetics.individual.SaveFormat;
 import genetics.plugins.PluginManager;
-import genetics.registry.AlleleRegistry;
-import genetics.registry.GeneticSystem;
+import genetics.utils.WorldEventHandler;
 
 @Mod(modid = Genetics.MOD_ID, name = Genetics.NAME, version = Genetics.VERSION)
 public class Genetics {
 	public static final String MOD_ID = "geneticsapi";
 	public static final String NAME = "Genetics";
 	public static final String VERSION = "@VERSION@";
-
-	public static GeneticSystem system;
-	public static AlleleRegistry alleleRegistry;
 
 	/**
 	 * Capability for {@link IOrganism}.
@@ -67,7 +63,7 @@ public class Genetics {
 			}
 
 			@Override
-			public IIndividualDefinition<IIndividual, IIndividualRoot<IIndividual, IGenomeWrapper>> getDefinition() {
+			public IIndividualDefinition<IIndividual, IIndividualRoot<IIndividual>> getDefinition() {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
@@ -106,12 +102,11 @@ public class Genetics {
 			public void setAllele(@Nullable IAllele allele, @Nullable IChromosomeType type) {
 			}
 		});
-		ApiInstance.INSTANCE.setSaveHandler(GeneticSaveHandler.INSTANCE);
-		ApiInstance.INSTANCE.setGeneticFactory(GeneticFactory.INSTANCE);
 
 		PluginManager.create(event);
 
 		PluginManager.initPlugins();
+		MinecraftForge.EVENT_BUS.register(new WorldEventHandler());
 	}
 
 	@EventHandler

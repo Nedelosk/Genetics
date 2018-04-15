@@ -1,34 +1,41 @@
 package genetics.api;
 
-import java.util.Optional;
+import net.minecraftforge.fml.common.Loader;
 
+import genetics.api.definition.IDefinitionRegistry;
+import genetics.api.gene.IGeneRegistry;
 import genetics.api.registry.IAlleleRegistry;
-import genetics.api.registry.IGeneticRegistry;
-import genetics.api.registry.IGeneticSystem;
 
 public class DummyApiInstance implements IGeneticApiInstance {
+	private static final String ERROR_MESSAGE = "The mod %s tried to access the genetics api without checking if the mod is present. Please report this to the mod author.";
+
 	@Override
-	public Optional<IAlleleRegistry> getAlleleRegistry() {
-		return Optional.empty();
+	public IAlleleRegistry getAlleleRegistry() {
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
 	}
 
 	@Override
-	public Optional<IGeneticRegistry> getGeneticRegistry() {
-		return Optional.empty();
+	public IGeneRegistry getGeneRegistry() {
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
 	}
 
 	@Override
-	public Optional<IGeneticSystem> getGeneticSystem() {
-		return Optional.empty();
+	public IDefinitionRegistry getDefinitionRegistry() {
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
 	}
 
 	@Override
-	public Optional<IGeneticFactory> getGeneticFactory() {
-		return Optional.empty();
+	public IGeneticFactory getGeneticFactory() {
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
 	}
 
 	@Override
-	public Optional<IGeneticSaveHandler> getSaveHandler() {
-		return Optional.empty();
+	public IGeneticSaveHandler getSaveHandler() {
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
+	}
+
+	@Override
+	public boolean isModPresent() {
+		return false;
 	}
 }

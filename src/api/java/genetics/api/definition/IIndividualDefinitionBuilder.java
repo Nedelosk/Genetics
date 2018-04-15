@@ -12,28 +12,26 @@ import net.minecraft.item.ItemStack;
 import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
+import genetics.api.gene.IGeneFactory;
 import genetics.api.gene.IKaryotype;
-import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
-import genetics.api.registry.IGeneticRegistry;
-import genetics.api.registry.IGeneticSystem;
 
 /**
  * The IGeneticDefinitionBuilder offers several functions to register templates, types or something similar that can be
  * later retrieved from the IGeneticDefinition.
  * <p>
- * After every {@link IGeneticPlugin} received {@link IGeneticPlugin#register(IGeneticRegistry)} all
+ * After every {@link IGeneticPlugin} received {@link IGeneticPlugin#register(IGeneFactory)} all
  * {@link IIndividualDefinitionBuilder}s will be build automatically to {@link IIndividualDefinition}s. You can the instance
- * of you definition from {@link IGeneticSystem#getDefinition(String)} after it was created.
+ * of you definition from {@link IDefinitionRegistry#getDefinition(String)} after it was created.
  * <p>
- * You can create a instance of this with {@link IGeneticRegistry#createDefinition(String, IKaryotype, Function)}.
+ * You can create a instance of this with {@link IGeneFactory#createDefinition(String, IKaryotype, Function)}.
  *
  * @param <I> The type of the individual that the definition describes.
  */
-public interface IIndividualDefinitionBuilder<I extends IIndividual, R extends IIndividualRoot<I, IGenomeWrapper>> {
+public interface IIndividualDefinitionBuilder<I extends IIndividual, R extends IIndividualRoot<I>> {
 
 	IIndividualDefinitionBuilder<I, R> registerType(IOrganismType type, IOrganismHandler<I> handler);
 
@@ -82,5 +80,5 @@ public interface IIndividualDefinitionBuilder<I extends IIndividual, R extends I
 	 */
 	IKaryotype getKaryotype();
 
-	IOptionalDefinition<I, R> optional();
+	IOptionalDefinition<I, R> getOptional();
 }

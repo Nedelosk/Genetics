@@ -3,7 +3,6 @@ package genetics.alleles;
 import java.util.Arrays;
 import java.util.Optional;
 
-import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleTemplate;
@@ -11,6 +10,9 @@ import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IKaryotype;
+import genetics.api.registry.IAlleleRegistry;
+
+import genetics.ApiInstance;
 
 public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 	private final IAllele[] alleles;
@@ -22,33 +24,35 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 	}
 
 	@Override
-	public IAlleleTemplateBuilder set(IChromosomeType geneKey, IAllele<?> allele) {
-		if (!karyotype.contains(geneKey)) {
-			throw new IllegalArgumentException("Gene key is not valid for the karyotype of this template.");
+	public IAlleleTemplateBuilder set(IChromosomeType chromosomeType, IAllele<?> allele) {
+		if (!karyotype.contains(chromosomeType)) {
+			throw new IllegalArgumentException("The given chromosome type is not valid for the karyotype of this template.");
 		}
-		Optional<IGene> optionalGene = GeneticsAPI.geneticSystem.getGene(geneKey);
+		Optional<IGene> optionalGene = ApiInstance.INSTANCE.getGeneRegistry().getGene(chromosomeType);
 		if (!optionalGene.isPresent()) {
-			throw new IllegalArgumentException("Gene key is not registered.");
+			throw new IllegalArgumentException("Chromosome key is not registered.");
+
 		}
 		IGene gene = optionalGene.get();
 		if (!gene.isValidAllele(allele)) {
-			throw new IllegalArgumentException("The given allele is not a valid allele for the gene of the given gene key.");
+			throw new IllegalArgumentException("The given allele is not a valid allele for the gene of the given chromosome key.");
 		}
-		alleles[geneKey.getIndex()] = allele;
+		alleles[chromosomeType.getIndex()] = allele;
 		return this;
 	}
 
 	@Override
-	public IAlleleTemplateBuilder set(IChromosomeType geneKey, IAlleleKey alleleKey) {
-		if (!karyotype.contains(geneKey)) {
-			throw new IllegalArgumentException("Gene key is not valid for the karyotype of this template.");
+	public IAlleleTemplateBuilder set(IChromosomeType chromosomeType, IAlleleKey alleleKey) {
+		if (!karyotype.contains(chromosomeType)) {
+			throw new IllegalArgumentException("The given chromosome type is not valid for the karyotype of this template.");
 		}
-		Optional<IGene> optionalGene = GeneticsAPI.geneticSystem.getGene(geneKey);
+		Optional<IGene> optionalGene = ApiInstance.INSTANCE.getGeneRegistry().getGene(chromosomeType);
 		if (!optionalGene.isPresent()) {
 			throw new IllegalArgumentException("Gene key is not registered.");
 		}
-		Optional<IAllele> allele = GeneticsAPI.alleleRegistry.getAllele(alleleKey);
-		allele.ifPresent(a -> alleles[geneKey.getIndex()] = a);
+		IAlleleRegistry alleleRegistry = ApiInstance.INSTANCE.getAlleleRegistry();
+		Optional<IAllele> allele = alleleRegistry.getAllele(alleleKey);
+		allele.ifPresent(a -> alleles[chromosomeType.getIndex()] = a);
 		return this;
 	}
 

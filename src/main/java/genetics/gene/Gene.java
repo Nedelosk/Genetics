@@ -13,13 +13,14 @@ import java.util.Set;
 
 import net.minecraft.client.resources.I18n;
 
-import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneBuilder;
 import genetics.api.registry.IAlleleRegistry;
+
+import genetics.ApiInstance;
 
 public class Gene implements IGene {
 	private final ImmutableMap<IAlleleKey, String> alleleInstances;
@@ -30,7 +31,7 @@ public class Gene implements IGene {
 	private Gene(ImmutableMap<IAlleleKey, String> alleleInstances, IAlleleKey defaultKey, String name) {
 		this.name = name;
 		this.alleleInstances = alleleInstances;
-		IAlleleRegistry alleleRegistry = GeneticsAPI.alleleRegistry;
+		IAlleleRegistry alleleRegistry = ApiInstance.INSTANCE.getAlleleRegistry();
 		ImmutableBiMap.Builder<IAllele, IAlleleKey> builder = ImmutableBiMap.builder();
 		alleleInstances.forEach((k, v) -> alleleRegistry.getAllele(k).ifPresent(a -> builder.put(a, k)));
 		this.alleles = builder.build();
@@ -93,6 +94,11 @@ public class Gene implements IGene {
 
 	public String getUnlocalizedName(IAllele<?> allele) {
 		return "allele." + alleleInstances.get(alleles.get(allele)) + ".name";
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 	@Override

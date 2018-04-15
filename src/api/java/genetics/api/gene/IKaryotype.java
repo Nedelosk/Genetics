@@ -2,20 +2,20 @@ package genetics.api.gene;
 
 import javax.annotation.Nullable;
 
-import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.definition.ITemplateContainer;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
-import genetics.api.registry.IGeneticRegistry;
+
+import genetics.ApiInstance;
 
 /**
  * The IKaryotype defines how many chromosomes a {@link IGenome} contains and which type the {@link IChromosome}s have.
  * <p>
  * You can use a {@link IKaryotypeBuilder} to create an instance or you create the instance directly with
- * {@link IGeneticRegistry#createKaryotype(Class, String)} if you have a enum that contains your {@link IChromosomeType}s.
+ * {@link IKaryotypeFactory#createKaryotype(Class, String)} if you have a enum that contains your {@link IChromosomeType}s.
  */
 public interface IKaryotype {
 	/**
@@ -32,7 +32,7 @@ public interface IKaryotype {
 	 * Checks if this karyotype contains any of the types of this gene.
 	 */
 	default boolean contains(IGene gene) {
-		return GeneticsAPI.geneticSystem.getTypes(gene).stream().anyMatch(this::contains);
+		return ApiInstance.INSTANCE.getGeneRegistry().getTypes(gene).stream().anyMatch(this::contains);
 	}
 
 	/**

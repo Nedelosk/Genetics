@@ -1,47 +1,21 @@
 package genetics.individual;
 
 import javax.annotation.Nullable;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import genetics.api.definition.IIndividualDefinition;
-import genetics.api.definition.IIndividualDefinitionBuilder;
 import genetics.api.definition.IIndividualRoot;
 import genetics.api.definition.IOptionalDefinition;
-import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 
-import genetics.definition.IndividualDefinitionBuilder;
-
-public class OptionalDefinition<I extends IIndividual, R extends IIndividualRoot<I, IGenomeWrapper>> implements IOptionalDefinition<I, R> {
-	private final String uid;
+public class OptionalDefinition<I extends IIndividual, R extends IIndividualRoot<I>> implements IOptionalDefinition<I, R> {
 	@Nullable
-	private IIndividualDefinition<I, R> definition;
-	@Nullable
-	private IndividualDefinitionBuilder<I, R> builder;
+	private IIndividualDefinition<I, R> definition = null;
 
-	public OptionalDefinition(String uid, IndividualDefinitionBuilder<I, R> builder) {
-		this(uid, null, builder);
-	}
-
-	public OptionalDefinition(String uid, IIndividualDefinition<I, R> definition) {
-		this(uid, definition, null);
-	}
-
-	public OptionalDefinition(String uid) {
-		this(uid, null, null);
-	}
-
-	public OptionalDefinition(String uid, @Nullable IIndividualDefinition<I, R> definition, @Nullable IndividualDefinitionBuilder<I, R> builder) {
-		this.uid = uid;
+	public void setDefinition(@Nullable IIndividualDefinition<I, R> definition) {
 		this.definition = definition;
-		this.builder = builder;
-	}
-
-	public void build() {
-		if (builder != null) {
-			definition = builder.create();
-			builder = null;
-		}
 	}
 
 	@Override
@@ -50,12 +24,22 @@ public class OptionalDefinition<I extends IIndividual, R extends IIndividualRoot
 	}
 
 	@Override
-	public Optional<IIndividualDefinitionBuilder<I, R>> maybeBuilder() {
-		return Optional.ofNullable(builder);
+	public IIndividualDefinition get() {
+		if (definition == null) {
+			throw new NoSuchElementException("No value present");
+		}
+		return definition;
 	}
 
 	@Override
-	public String getUID() {
-		return uid;
+	public boolean isPresent() {
+		return definition != null;
+	}
+
+	@Override
+	public void ifPresent(Consumer<IIndividualDefinition<I, R>> consumer) {
+		if (definition != null) {
+			consumer.accept(definition);
+		}
 	}
 }

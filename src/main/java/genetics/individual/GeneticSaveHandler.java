@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticSaveHandler;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
@@ -16,6 +15,7 @@ import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 
+import genetics.ApiInstance;
 import genetics.Log;
 
 public enum GeneticSaveHandler implements IGeneticSaveHandler {
@@ -66,7 +66,7 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 			return null;
 		}
 		IAllele allele = getAlleleDirectly(genomeNBT, geneType, active);
-		IGene gene = GeneticsAPI.geneticSystem.getGene(geneType).orElse(null);
+		IGene gene = ApiInstance.INSTANCE.getGeneRegistry().getGene(geneType).orElse(null);
 		if (gene == null || allele == null || !gene.isValidAllele(allele)) {
 			return null;
 		}

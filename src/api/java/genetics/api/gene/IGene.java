@@ -6,19 +6,18 @@ import java.util.Optional;
 import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
+import genetics.api.definition.IDefinitionRegistry;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IIndividual;
-import genetics.api.registry.IGeneticRegistry;
-import genetics.api.registry.IGeneticSystem;
 
 /**
  * The IGene contains every {@link IAllele} an the associated {@link IAlleleKey} of every {@link IAlleleKey} that was
- * added to the {@link IGeneBuilder} at {@link IGeneticPlugin#register(IGeneticRegistry)}.
+ * added to the {@link IGeneBuilder} at {@link IGeneticPlugin#register(IGeneFactory)}.
  * <p>
- * You have to create a IGeneBuilder at {@link IGeneticPlugin#register(IGeneticRegistry)} with
- * {@link IGeneticRegistry#addGene(String)}. Later after {@link IGeneticPlugin#register(IGeneticRegistry)} the builder
+ * You have to create a IGeneBuilder at {@link IGeneticPlugin#register(IGeneFactory)} with
+ * {@link IGeneFactory#addGene(String)}. Later after {@link IGeneticPlugin#register(IGeneFactory)} the builder
  * will be automatically build to a IGene and you can get the instance of the IGene with
- * {@link IGeneticSystem#getGene(IChromosomeType)}
+ * {@link IDefinitionRegistry#getGene(IChromosomeType)}
  */
 public interface IGene {
 	/**

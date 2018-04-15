@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import genetics.api.GeneticsAPI;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 
+import genetics.ApiInstance;
 import genetics.individual.IndividualBuilder;
 
 /**
@@ -36,13 +36,13 @@ public abstract class Individual implements IIndividual {
 	public Individual(NBTTagCompound compound) {
 		IKaryotype karyotype = getDefinition().getKaryotype();
 		if (compound.hasKey(GENOME_KEY)) {
-			genome = GeneticsAPI.geneticFactory.createGenome(karyotype, compound.getCompoundTag(GENOME_KEY));
+			genome = ApiInstance.INSTANCE.getGeneticFactory().createGenome(karyotype, compound.getCompoundTag(GENOME_KEY));
 		} else {
 			genome = karyotype.getDefaultGenome();
 		}
 
 		if (compound.hasKey(MATE_KEY)) {
-			mate = GeneticsAPI.geneticFactory.createGenome(karyotype, compound.getCompoundTag(MATE_KEY));
+			mate = ApiInstance.INSTANCE.getGeneticFactory().createGenome(karyotype, compound.getCompoundTag(MATE_KEY));
 		}
 
 		isAnalyzed = compound.getBoolean(ANALYZED_KEY);

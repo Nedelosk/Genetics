@@ -9,7 +9,7 @@ import genetics.api.gene.IChromosomeType;
 import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 
-public interface IMutationRoot<I extends IIndividual, W extends IGenomeWrapper, M extends IMutation> extends IIndividualRoot<I, W> {
+public interface IMutationRoot<I extends IIndividual, W extends IGenomeWrapper, M extends IMutation> extends IIndividualRoot<I> {
 	/**
 	 * Use to register mutations.
 	 */

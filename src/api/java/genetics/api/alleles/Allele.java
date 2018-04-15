@@ -37,4 +37,9 @@ public class Allele<V> extends IForgeRegistryEntry.Impl<IAllele<?>> implements I
 		IAllele otherAllele = (IAllele) obj;
 		return value.equals(otherAllele.getValue()) && dominant == otherAllele.isDominant();
 	}
+
+	@Override
+	public String toString() {
+		return getRegistryName().toString();
+	}
 }

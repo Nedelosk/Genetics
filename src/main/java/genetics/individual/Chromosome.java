@@ -14,6 +14,7 @@ import genetics.api.definition.ITemplateContainer;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.individual.IChromosome;
+import genetics.api.registry.IAlleleRegistry;
 
 @Immutable
 public class Chromosome implements IChromosome {
@@ -35,8 +36,9 @@ public class Chromosome implements IChromosome {
 	}
 
 	public static Chromosome create(@Nullable ResourceLocation primarySpeciesUid, @Nullable ResourceLocation secondarySpeciesUid, IChromosomeType geneType, NBTTagCompound nbt) {
-		IAllele firstAllele = GeneticsAPI.alleleRegistry.getAllele(nbt.getString(ACTIVE_ALLELE_TAG)).orElse(null);
-		IAllele secondAllele = GeneticsAPI.alleleRegistry.getAllele(nbt.getString(INACTIVE_ALLELE_TAG)).orElse(null);
+		IAlleleRegistry alleleRegistry = GeneticsAPI.apiInstance.getAlleleRegistry();
+		IAllele firstAllele = alleleRegistry.getAllele(nbt.getString(ACTIVE_ALLELE_TAG)).orElse(null);
+		IAllele secondAllele = alleleRegistry.getAllele(nbt.getString(INACTIVE_ALLELE_TAG)).orElse(null);
 		return create(primarySpeciesUid, secondarySpeciesUid, geneType, firstAllele, secondAllele);
 	}
 
@@ -57,7 +59,7 @@ public class Chromosome implements IChromosome {
 	}
 
 	private static IAllele validateAllele(@Nullable String templateIdentifier, IChromosomeType type, @Nullable IAllele allele) {
-		Optional<IGene> optional = GeneticsAPI.geneticSystem.getGene(type);
+		Optional<IGene> optional = GeneticsAPI.apiInstance.getGeneRegistry().getGene(type);
 		if (!optional.isPresent()) {
 			return getDefaultAllele(null, templateIdentifier, type);
 		}
@@ -92,12 +94,12 @@ public class Chromosome implements IChromosome {
 
 	static Optional<IAllele> getActiveAllele(NBTTagCompound chromosomeNBT) {
 		String alleleUid = chromosomeNBT.getString(Chromosome.ACTIVE_ALLELE_TAG);
-		return GeneticsAPI.alleleRegistry.getAllele(alleleUid);
+		return GeneticsAPI.apiInstance.getAlleleRegistry().getAllele(alleleUid);
 	}
 
 	static Optional<IAllele> getInactiveAllele(NBTTagCompound chromosomeNBT) {
 		String alleleUid = chromosomeNBT.getString(Chromosome.INACTIVE_ALLELE_TAG);
-		return GeneticsAPI.alleleRegistry.getAllele(alleleUid);
+		return GeneticsAPI.apiInstance.getAlleleRegistry().getAllele(alleleUid);
 	}
 
 	@Override

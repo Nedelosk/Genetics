@@ -16,17 +16,17 @@ public interface IAlleleTemplateBuilder {
 	 * Sets a allele at a position of the chromosome.
 	 *
 	 * @param allele  The allele that should be set at the position.
-	 * @param geneKey The position at the chromosome array.
+	 * @param chromosomeType The position at the chromosome array.
 	 */
-	IAlleleTemplateBuilder set(IChromosomeType geneKey, IAllele<?> allele);
+	IAlleleTemplateBuilder set(IChromosomeType chromosomeType, IAllele<?> allele);
 
 	/**
 	 * Sets a allele at a position of the chromosome.
 	 *
 	 * @param alleleKey The key of the allele that should be set at the position.
-	 * @param geneKey   The position at the chromosome array.
+	 * @param chromosomeType   The position at the chromosome array.
 	 */
-	IAlleleTemplateBuilder set(IChromosomeType geneKey, IAlleleKey alleleKey);
+	IAlleleTemplateBuilder set(IChromosomeType chromosomeType, IAlleleKey alleleKey);
 
 	/**
 	 * @return The karyotype that defines the {@link #size()} and which alleles this template can contain.

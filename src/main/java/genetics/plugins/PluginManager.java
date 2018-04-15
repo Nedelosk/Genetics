@@ -12,10 +12,10 @@ import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticPlugin;
 
 import genetics.ApiInstance;
-import genetics.Genetics;
-import genetics.registry.AlleleRegistry;
-import genetics.registry.GeneticRegistry;
-import genetics.registry.GeneticSystem;
+import genetics.alleles.AlleleRegistry;
+import genetics.definition.DefinitionFactory;
+import genetics.definition.KaryotypeFactory;
+import genetics.gene.GeneFactory;
 
 public class PluginManager {
 	private static final Comparator<IGeneticPlugin> PLUGIN_COMPARATOR = (firstPlugin, secondPlugin) -> {
@@ -45,13 +45,16 @@ public class PluginManager {
 		RegistryHelper.INSTANCE.onRegisterAlleles(alleleRegistry);
 		plugins.forEach(p -> p.registerAlleles(alleleRegistry));
 		//
-		GeneticRegistry registry = new GeneticRegistry();
-		ApiInstance.INSTANCE.setGeneticRegistry(registry);
-		RegistryHelper.INSTANCE.onRegister(registry);
-		plugins.forEach(p -> p.register(registry));
-		GeneticSystem system = Genetics.system = registry.createSystem();
+		GeneFactory geneFactory = new GeneFactory();
+		RegistryHelper.INSTANCE.onRegister(geneFactory);
+		plugins.forEach(p -> p.registerGenes(geneFactory));
+		ApiInstance.INSTANCE.setGeneRegistry(geneFactory.createRegistry());
 		//
-		ApiInstance.INSTANCE.setGeneticSystem(system);
-		plugins.forEach(p -> p.onFinishRegistration(system, GeneticsAPI.apiInstance));
+		KaryotypeFactory karyotypeFactory = new KaryotypeFactory();
+		plugins.forEach(p -> p.createKaryotype(karyotypeFactory));
+		//
+		DefinitionFactory definitionFactory = new DefinitionFactory();
+		plugins.forEach(p -> p.onFinishRegistration(definitionFactory, GeneticsAPI.apiInstance));
+		ApiInstance.INSTANCE.setDefinitionRegistry(definitionFactory.createRegistry());
 	}
 }

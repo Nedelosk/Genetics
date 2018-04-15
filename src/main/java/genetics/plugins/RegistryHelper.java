@@ -7,8 +7,8 @@ import genetics.api.IRegistryHelper;
 import genetics.api.alleles.IAlleleConstant;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGeneBuilder;
+import genetics.api.gene.IGeneFactory;
 import genetics.api.registry.IAlleleRegistry;
-import genetics.api.registry.IGeneticRegistry;
 
 public enum RegistryHelper implements IRegistryHelper {
 	INSTANCE;
@@ -27,7 +27,7 @@ public enum RegistryHelper implements IRegistryHelper {
 		}
 	}
 
-	void onRegister(IGeneticRegistry registry) {
+	void onRegister(IGeneFactory registry) {
 		for (GeneData gene : genes) {
 			IGeneBuilder geneBuilder = registry.addGene(gene.name).addType(gene.type);
 			for (IAlleleConstant constant : gene.constants) {

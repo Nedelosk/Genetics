@@ -1,4 +1,4 @@
-package genetics.registry;
+package genetics.alleles;
 
 import com.google.common.collect.HashMultimap;
 
@@ -49,7 +49,12 @@ public class AlleleRegistry implements IAlleleRegistry {
 
 	@Override
 	public <V> IAlleleRegistry registerAllele(V value, boolean dominant, IAlleleKey... keys) {
-		String alleleName = value instanceof IStringSerializable ? ((IStringSerializable) value).getName() : value.toString();
+		String alleleName;
+		if (value instanceof IStringSerializable) {
+			alleleName = ((IStringSerializable) value).getName();
+		} else {
+			alleleName = value.toString();
+		}
 		return registerAllele(new Allele<>(value, dominant).setRegistryName(Genetics.MOD_ID, alleleName + "_" + dominant), keys);
 	}
 

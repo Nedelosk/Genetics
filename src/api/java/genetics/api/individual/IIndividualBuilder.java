@@ -15,7 +15,7 @@ public interface IIndividualBuilder<I extends IIndividual> {
 	/**
 	 * @return The definition of the individual.
 	 */
-	IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>> getDefinition();
+	IIndividualDefinition<I, IIndividualRoot<I>> getDefinition();
 
 	/**
 	 * Sets a allele at a position of the chromosome.

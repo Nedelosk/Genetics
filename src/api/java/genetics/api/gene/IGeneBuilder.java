@@ -2,17 +2,16 @@ package genetics.api.gene;
 
 import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAlleleKey;
-import genetics.api.registry.IGeneticRegistry;
-import genetics.api.registry.IGeneticSystem;
+import genetics.api.definition.IDefinitionRegistry;
 
 /**
  * A builder to create a IGene.
  * <p>
- * After every {@link IGeneticPlugin} received {@link IGeneticPlugin#register(IGeneticRegistry)} all
+ * After every {@link IGeneticPlugin} received {@link IGeneticPlugin#register(IGeneFactory)} all
  * {@link IGeneBuilder}s will be build automatically to {@link IGene}s. You can the instance of you gene from
- * {@link IGeneticSystem#getGene(IChromosomeType)} after it was created.
+ * {@link IDefinitionRegistry#getGene(IChromosomeType)} after it was created.
  * <p>
- * You can create an instance of this with {@link IGeneticRegistry#addGene(String)}.
+ * You can create an instance of this with {@link IGeneFactory#addGene(String)}.
  */
 public interface IGeneBuilder {
 

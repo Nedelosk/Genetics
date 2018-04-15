@@ -10,12 +10,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-import genetics.api.GeneticsAPI;
 import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
 import genetics.api.definition.IIndividualDefinition;
 import genetics.api.gene.IChromosomeType;
 
+import genetics.ApiInstance;
 import genetics.Genetics;
 
 public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTTagCompound> {
@@ -72,13 +72,13 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	@Override
 	public void deserializeNBT(NBTTagCompound compound) {
 		if (compound.hasKey(TYPE_NBT_KEY) && compound.hasKey(DEFINITION_NBT_KEY)) {
-			GeneticsAPI.geneticSystem.getDefinition(compound.getString(DEFINITION_NBT_KEY)).ifPresent(d -> {
-				this.definition = d;
-				type = d.getKaryotype().getChromosomeTypes()[compound.getByte(TYPE_NBT_KEY)];
+			ApiInstance.INSTANCE.getDefinitionRegistry().getDefinition(compound.getString(DEFINITION_NBT_KEY)).ifPresent(def -> {
+				this.definition = def;
+				type = def.getKaryotype().getChromosomeTypes()[compound.getByte(TYPE_NBT_KEY)];
 			});
 		}
 		if (compound.hasKey(ALLELE_NBT_KEY)) {
-			allele = GeneticsAPI.alleleRegistry.getAllele(compound.getString(ALLELE_NBT_KEY)).orElse(null);
+			allele = ApiInstance.INSTANCE.getAlleleRegistry().getAllele(compound.getString(ALLELE_NBT_KEY)).orElse(null);
 		}
 	}
 

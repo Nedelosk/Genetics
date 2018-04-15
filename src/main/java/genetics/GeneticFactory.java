@@ -16,7 +16,6 @@ import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
-import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
@@ -67,7 +66,7 @@ public enum GeneticFactory implements IGeneticFactory {
 	}
 
 	@Override
-	public <I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>> definition) {
+	public <I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualDefinition<I, IIndividualRoot<I>> definition) {
 		return new Organism<>(itemStack, () -> definition, () -> type);
 	}
 

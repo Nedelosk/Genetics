@@ -19,9 +19,7 @@ import genetics.api.definition.IIndividualDefinitionBuilder;
 import genetics.api.definition.IIndividualRoot;
 import genetics.api.definition.IIndividualTranslator;
 import genetics.api.definition.IItemTranslator;
-import genetics.api.definition.IOptionalDefinition;
 import genetics.api.gene.IKaryotype;
-import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
@@ -30,7 +28,7 @@ import genetics.api.organism.IOrganismTypes;
 import genetics.individual.OptionalDefinition;
 import genetics.organism.OrganismTypes;
 
-public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndividualRoot<I, IGenomeWrapper>> implements IIndividualDefinitionBuilder<I, R> {
+public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndividualRoot<I>> implements IIndividualDefinitionBuilder<I, R> {
 	private final Map<IOrganismType, IOrganismHandler<I>> types = new HashMap<>();
 	private final Function<IIndividualDefinition<I, R>, R> rootFactory;
 	private final String uid;
@@ -38,7 +36,7 @@ public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndiv
 	private final HashMap<String, IAllele[]> templates = new HashMap<>();
 	private final Map<Item, IItemTranslator<I>> itemTranslators = new HashMap<>();
 	private final Map<Block, IBlockTranslator<I>> blockTranslators = new HashMap<>();
-	private final IOptionalDefinition<I, R> optional;
+	private final OptionalDefinition<I, R> optional;
 	private BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IIndividualTranslator<I>> translatorFactory = IndividualTranslator::new;
 	private Function<Map<IOrganismType, IOrganismHandler<I>>, IOrganismTypes<I>> typesFactory = OrganismTypes::new;
 
@@ -46,7 +44,7 @@ public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndiv
 		this.uid = uid;
 		this.karyotype = karyotype;
 		this.rootFactory = rootFactory;
-		this.optional = new OptionalDefinition<>(uid);
+		this.optional = new OptionalDefinition<>();
 	}
 
 	@Override
@@ -112,14 +110,14 @@ public class IndividualDefinitionBuilder<I extends IIndividual, R extends IIndiv
 		return karyotype;
 	}
 
-	@Override
-	public IOptionalDefinition<I, R> optional() {
+	public OptionalDefinition<I, R> create() {
+		IIndividualTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
+		IOrganismTypes<I> typesInstance = typesFactory.apply(this.types);
+		optional.setDefinition(new IndividualDefinition<>(typesInstance, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates)), uid, rootFactory));
 		return optional;
 	}
 
-	public IIndividualDefinition<I, R> create() {
-		IIndividualTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
-		IOrganismTypes<I> typesInstance = typesFactory.apply(this.types);
-		return new IndividualDefinition<>(typesInstance, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates)), uid, rootFactory);
+	public OptionalDefinition<I, R> getOptional() {
+		return optional;
 	}
 }

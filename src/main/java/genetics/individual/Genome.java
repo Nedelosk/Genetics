@@ -7,13 +7,14 @@ import java.util.Optional;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
+
+import genetics.ApiInstance;
 
 public final class Genome implements IGenome {
 	private final IChromosome[] chromosomes;
@@ -40,7 +41,7 @@ public final class Genome implements IGenome {
 		IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
 		for (int i = 0; i < geneTypes.length; i++) {
 			IChromosomeType geneType = geneTypes[i];
-			Optional<IGene> optionalGene = GeneticsAPI.geneticSystem.getGene(geneType);
+			Optional<IGene> optionalGene = ApiInstance.INSTANCE.getGeneRegistry().getGene(geneType);
 			if (!optionalGene.isPresent()) {
 				String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template. " +
 					"Unregistered gene type '%s'.\n%s", karyotype.getIdentifier(), geneType.getName(), chromosomesToString(chromosomes));

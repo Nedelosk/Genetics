@@ -1,27 +1,31 @@
 package genetics.api.definition;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
+import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
+import genetics.api.organism.IOrganismType;
+import genetics.api.organism.IOrganismTypes;
 
 /**
  * The IGeneticRoot offers several functions to create {@link IIndividual}s and to wrap the genome of a
  * {@link IIndividual}.
  *
  * @param <I> The type of the individual that this root provides.
- * @param <W> The type of the wrapper that is used by this root.
  */
-public interface IIndividualRoot<I extends IIndividual, W extends IGenomeWrapper> {
+public interface IIndividualRoot<I extends IIndividual> {
 
 	/**
 	 * Gets the definition that provides this root.
 	 */
-	IIndividualDefinition<I, IIndividualRoot<I, IGenomeWrapper>> getDefinition();
+	IIndividualDefinition<I, ? extends IIndividualRoot<I>> getDefinition();
 
 	/**
 	 * Uses the information that the NBT-Data contains to create a {@link IIndividual}.
@@ -37,6 +41,8 @@ public interface IIndividualRoot<I extends IIndividual, W extends IGenomeWrapper
 	 * Creates a {@link IIndividual} that contains the two genome.
 	 */
 	I create(IGenome genome, IGenome mate);
+
+	Optional<I> create(String templateIdentifier);
 
 	/**
 	 * Creates a {@link IIndividual} that contains the alleles of the template in a genome.
@@ -63,5 +69,20 @@ public interface IIndividualRoot<I extends IIndividual, W extends IGenomeWrapper
 	/**
 	 * Creates a wrapper that can be used to give access to the values of the alleles that the genome contains.
 	 */
-	W createWrapper(IGenome genome);
+	IGenomeWrapper createWrapper(IGenome genome);
+
+	/**
+	 * @return The string based unique identifier of this definition.
+	 */
+	String getUID();
+
+	ItemStack createStack(IAllele allele, IOrganismType type);
+
+	ITemplateContainer getTemplates();
+
+	IKaryotype getKaryotype();
+
+	IIndividualTranslator<I> getTranslator();
+
+	IOrganismTypes<I> getTypes();
 }
