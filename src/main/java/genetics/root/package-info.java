@@ -1,7 +1,7 @@
 @ParametersAreNonnullByDefault
 @FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package genetics.definition;
+package genetics.root;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

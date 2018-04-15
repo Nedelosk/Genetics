@@ -6,7 +6,6 @@ import java.util.Optional;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -28,7 +27,6 @@ import genetics.api.root.IIndividualRoot;
 import genetics.individual.GeneticSaveHandler;
 import genetics.individual.SaveFormat;
 import genetics.plugins.PluginManager;
-import genetics.utils.WorldEventHandler;
 
 @Mod(modid = Genetics.MOD_ID, name = Genetics.NAME, version = Genetics.VERSION)
 public class Genetics {
@@ -105,7 +103,6 @@ public class Genetics {
 		PluginManager.create(event);
 
 		PluginManager.initPlugins();
-		MinecraftForge.EVENT_BUS.register(new WorldEventHandler());
 	}
 
 	@EventHandler

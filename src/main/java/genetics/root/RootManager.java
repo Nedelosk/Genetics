@@ -1,4 +1,4 @@
-package genetics.definition;
+package genetics.root;
 
 import java.util.HashMap;
 import java.util.Optional;

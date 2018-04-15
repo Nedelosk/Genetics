@@ -10,7 +10,7 @@ import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootBuilder;
 import genetics.api.root.IRootManager;
 
-import genetics.definition.IndividualRootBuilder;
+import genetics.root.IndividualRootBuilder;
 
 /**
  * The main class to implement to create a Genetic plugin. Everything communicated between a mod and Genetics is through
@@ -49,7 +49,8 @@ public interface IGeneticPlugin {
 	/**
 	 * Create {@link IndividualRootBuilder}s.
 	 */
-	default void registerDefinition(IRootManager manager) {
+	default void createRoot(IRootManager manager) {
+		//Default Implementation
 	}
 
 	/**

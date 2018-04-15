@@ -13,9 +13,9 @@ import genetics.api.IGeneticPlugin;
 
 import genetics.ApiInstance;
 import genetics.alleles.AlleleRegistry;
-import genetics.definition.KaryotypeFactory;
-import genetics.definition.RootManager;
 import genetics.gene.GeneFactory;
+import genetics.root.KaryotypeFactory;
+import genetics.root.RootManager;
 
 public class PluginManager {
 	private static final Comparator<IGeneticPlugin> PLUGIN_COMPARATOR = (firstPlugin, secondPlugin) -> {

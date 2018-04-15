@@ -1,4 +1,4 @@
-package genetics.definition;
+package genetics.root;
 
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;

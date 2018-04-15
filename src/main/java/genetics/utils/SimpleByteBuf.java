@@ -216,9 +216,9 @@ public class SimpleByteBuf {
 		ChromosomeInfo info = new ChromosomeInfo(geneType);
 
 		for (IChromosomeType key : keys) {
-			if (key == geneType) {
+			if (geneType.equals(key)) {
 				return info.setChromosome(readChromosome(key, info));
-			} else if (key == karyotype.getTemplateType()) {
+			} else if (karyotype.getTemplateType().equals(key)) {
 				Chromosome chromosome = readChromosome(key, info);
 
 				info.setSpeciesInfo(chromosome.getActiveAllele().getRegistryName(), chromosome.getInactiveAllele().getRegistryName());
