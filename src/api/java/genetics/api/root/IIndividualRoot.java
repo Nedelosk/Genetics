@@ -17,7 +17,7 @@ import genetics.api.organism.IOrganismTypes;
 /**
  * The IGeneticRoot offers several functions to create {@link IIndividual}s and to wrap the genome of a
  * {@link IIndividual}.
- *
+ * <p>
  * The IGeneticDefinition is wraps every interface like the {@link IIndividualTranslator}, the {@link IKaryotype}, etc.
  * that are important for the handling of the individual. And it provides the custom implementation of the
  * {@link IIndividualRoot} interface that specifies the individual and can be used to create a instance of it.

@@ -86,9 +86,9 @@ public interface IGeneticFactory {
 	/**
 	 * Creates a default implementation of a {@link IOrganism}
 	 *
-	 * @param itemStack  The item that contains the genetic information.
-	 * @param type       The species type of the individual.
-	 * @param root         The definition that describes the individual.
+	 * @param itemStack The item that contains the genetic information.
+	 * @param type      The species type of the individual.
+	 * @param root      The definition that describes the individual.
 	 * @return A instance of {@link IOrganism}.
 	 */
 	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualRoot<I> root);
