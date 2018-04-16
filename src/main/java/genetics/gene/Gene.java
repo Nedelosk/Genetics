@@ -8,14 +8,17 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.resources.I18n;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleRegistry;
+import genetics.api.alleles.IAlleleValue;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneBuilder;
@@ -46,17 +49,33 @@ public class Gene implements IGene {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public <V> Collection<V> getValues(Class<? extends V> valueClass) {
+		return alleles.keySet().stream()
+			.filter(allele -> allele instanceof IAlleleValue)
+			.map(allele -> {
+				Object value = ((IAlleleValue) allele).getValue();
+				if (!valueClass.isInstance(value)) {
+					return null;
+				}
+				return (V) value;
+			})
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
+	}
+
+	@Override
 	public Collection<IAlleleKey> getKeys() {
 		return alleles.values();
 	}
 
 	@Override
-	public boolean isValidAllele(IAllele<?> allele) {
+	public boolean isValidAllele(IAllele allele) {
 		return alleles.containsKey(allele);
 	}
 
 	@Override
-	public Optional<IAlleleKey> getKey(IAllele<?> allele) {
+	public Optional<IAlleleKey> getKey(IAllele allele) {
 		return Optional.ofNullable(alleles.get(allele));
 	}
 

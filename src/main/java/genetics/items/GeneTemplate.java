@@ -24,7 +24,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	private static final String DEFINITION_NBT_KEY = "Definition";
 
 	@Nullable
-	private IAllele<?> allele;
+	private IAllele allele;
 	@Nullable
 	private IChromosomeType type;
 	@Nullable
@@ -46,7 +46,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	}
 
 	@Override
-	public void setAllele(@Nullable IAllele<?> allele, @Nullable IChromosomeType type) {
+	public void setAllele(@Nullable IChromosomeType type, @Nullable IAllele allele) {
 		this.allele = allele;
 		this.type = type;
 		if (type != null) {

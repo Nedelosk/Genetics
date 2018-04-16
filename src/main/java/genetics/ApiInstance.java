@@ -12,6 +12,7 @@ import genetics.api.gene.IGeneRegistry;
 import genetics.api.root.IRootRegistry;
 
 import genetics.alleles.AlleleRegistry;
+import genetics.classification.ClassificationRegistry;
 import genetics.individual.GeneticSaveHandler;
 
 public enum ApiInstance implements IGeneticApiInstance {
@@ -20,11 +21,23 @@ public enum ApiInstance implements IGeneticApiInstance {
 	private static final String ERROR_MESSAGE = "A method of the genetic api was called before the api reached the state at that the value of the method is present.";
 
 	@Nullable
+	public ClassificationRegistry classificationRegistry;
+	@Nullable
 	public AlleleRegistry alleleRegistry;
 	@Nullable
 	private IGeneRegistry geneRegistry;
 	@Nullable
 	private IRootRegistry rootRegistry;
+
+	@Override
+	public ClassificationRegistry getClassificationRegistry() {
+		Preconditions.checkState(classificationRegistry != null, ERROR_MESSAGE);
+		return classificationRegistry;
+	}
+
+	public void setClassificationRegistry(@Nullable ClassificationRegistry classificationRegistry) {
+		this.classificationRegistry = classificationRegistry;
+	}
 
 	@Override
 	public IAlleleRegistry getAlleleRegistry() {

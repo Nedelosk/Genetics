@@ -24,20 +24,22 @@ public interface IGene {
 	 */
 	Collection<IAllele> getVariants();
 
+	<V> Collection<V> getValues(Class<? extends V> valueClass);
+
 	/**
-	 * All keys that were registered at the {@link IGeneBuilder} with {@link IGeneBuilder#addAllele(IAlleleKey, String)}.
+	 * All keys that were registered at the {@link IGeneBuilder} with {@link IGeneBuilder#addAlleles(IAlleleKey...)}.
 	 */
 	Collection<IAlleleKey> getKeys();
 
 	/**
 	 * Checks if the allele is a valid variant of this gene.
 	 */
-	boolean isValidAllele(IAllele<?> allele);
+	boolean isValidAllele(IAllele allele);
 
 	/**
 	 * The key with that the allele is associated at this gene.
 	 */
-	Optional<IAlleleKey> getKey(IAllele<?> allele);
+	Optional<IAlleleKey> getKey(IAllele allele);
 
 	/**
 	 * The allele with that the key is associated at this gene.

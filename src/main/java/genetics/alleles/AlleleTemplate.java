@@ -23,8 +23,8 @@ public final class AlleleTemplate implements IAlleleTemplate {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <V> IAllele<V> get(IChromosomeType type) {
-		return (IAllele<V>) alleles[type.getIndex()];
+	public IAllele get(IChromosomeType type) {
+		return alleles[type.getIndex()];
 	}
 
 	@Override

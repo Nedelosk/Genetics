@@ -16,6 +16,7 @@ import genetics.api.IGeneticPlugin;
 import genetics.ApiInstance;
 import genetics.Genetics;
 import genetics.alleles.AlleleRegistry;
+import genetics.classification.ClassificationRegistry;
 import genetics.gene.GeneFactory;
 import genetics.root.KaryotypeFactory;
 import genetics.root.RootManager;
@@ -44,6 +45,10 @@ public class PluginManager {
 	}
 
 	public static void initPlugins() {
+		//
+		ClassificationRegistry classificationRegistry = new ClassificationRegistry();
+		ApiInstance.INSTANCE.setClassificationRegistry(classificationRegistry);
+		handlePlugins(p -> p.registerClassifications(classificationRegistry));
 		//
 		handlePlugins(p -> p.registerSimple(RegistryHelper.INSTANCE));
 		//register all alleles

@@ -19,17 +19,8 @@ import genetics.api.individual.IIndividual;
  * {@link IAllele}s hold all information regarding an {@link IIndividual}'s traits, from species to size, temperature tolerances, etc.
  * <p>
  * Should be extended for different types of alleles. IAlleleSpecies, IAlleleBiome, etc.
- * <p>
- *
- * @param <V> the type of value that this allele contains.
  */
-public interface IAllele<V> extends IForgeRegistryEntry<IAllele<?>> {
-
-	/**
-	 * @return the value that this allele contains.
-	 */
-	V getValue();
-
+public interface IAllele extends IForgeRegistryEntry<IAllele> {
 	/**
 	 * @return true if the allele is dominant, false otherwise.
 	 */

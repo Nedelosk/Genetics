@@ -1,6 +1,7 @@
 package genetics.api;
 
 import genetics.api.alleles.IAlleleRegistry;
+import genetics.api.classification.IClassificationRegistry;
 import genetics.api.gene.IGeneBuilder;
 import genetics.api.gene.IGeneFactory;
 import genetics.api.gene.IKaryotype;
@@ -17,6 +18,12 @@ import genetics.root.IndividualRootBuilder;
  * this class. IGeneticPlugins must have the {@link GeneticPlugin} annotation to get loaded by Genetics.
  */
 public interface IGeneticPlugin {
+	/**
+	 * Register classifications
+	 */
+	default void registerClassifications(IClassificationRegistry registry) {
+		//Default Implementation
+	}
 
 	/**
 	 * Register simple genes

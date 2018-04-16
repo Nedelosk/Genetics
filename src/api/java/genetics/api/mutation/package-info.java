@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package genetics.api.mutations;
+package genetics.api.mutation;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

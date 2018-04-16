@@ -26,7 +26,7 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 	}
 
 	@Override
-	public IAlleleTemplateBuilder set(IChromosomeType chromosomeType, IAllele<?> allele) {
+	public IAlleleTemplateBuilder set(IChromosomeType chromosomeType, IAllele allele) {
 		if (!karyotype.contains(chromosomeType)) {
 			throw new IllegalArgumentException("The given chromosome type is not valid for the karyotype of this template.");
 		}

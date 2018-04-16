@@ -30,6 +30,7 @@ public interface IAlleleRegistry {
 	 * @param category
 	 * @param valueName
 	 * @param value the value of the allele
+	 * @param valueClass
 	 * @param dominant if true the allele is dominant, otherwise the allele is recessive.
 	 * @param keys allele keys for this allele.
 	 */
@@ -40,15 +41,14 @@ public interface IAlleleRegistry {
 	 *
 	 * @param allele IAllele to register.
 	 * @param keys   allele keys for this allele.
-	 * @param <V>    the type that the value of the allele has
 	 */
-	<V> IAlleleRegistry registerAllele(IAllele<V> allele, IAlleleKey... keys);
+	IAlleleRegistry registerAllele(IAllele allele, IAlleleKey... keys);
 
-	default IAlleleRegistry registerKeys(String registryName, IAlleleKey... keys) {
-		return registerKeys(new ResourceLocation(registryName), keys);
+	default IAlleleRegistry addValidAlleleKeys(String registryName, IAlleleKey... keys) {
+		return addValidAlleleKeys(new ResourceLocation(registryName), keys);
 	}
 
-	IAlleleRegistry registerKeys(ResourceLocation registryName, IAlleleKey... keys);
+	IAlleleRegistry addValidAlleleKeys(ResourceLocation registryName, IAlleleKey... keys);
 
 	/**
 	 * Returns the allele that is associated with the given key.
@@ -81,7 +81,7 @@ public interface IAlleleRegistry {
 	 *
 	 * @return all keys that were registered for the given keys.
 	 */
-	Collection<IAlleleKey> getKeys(IAllele<?> allele);
+	Collection<IAlleleKey> getKeys(IAllele allele);
 
 	/**
 	 * Registers a new IAlleleHandler

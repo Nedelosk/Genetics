@@ -20,7 +20,7 @@ public interface IAlleleConstant<V> extends IAlleleData<V> {
 
 	/**
 	 * @return The name that is used for the unlocalized name of the allele at the {@link IGeneBuilder} to add the
-	 * allele key with {@link IGeneBuilder#addAllele(IAlleleKey, String)}.
+	 * allele key with {@link IGeneBuilder#addAlleles(IAlleleKey...)}.
 	 */
 	String getName();
 }

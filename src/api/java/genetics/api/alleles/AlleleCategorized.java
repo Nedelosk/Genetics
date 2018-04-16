@@ -13,9 +13,9 @@ import net.minecraft.client.resources.I18n;
  * and can fall back on generic names like
  * forestry.allele.fast
  */
-public class AlleleCategorized<V> extends Allele<V> {
+public class AlleleCategorized<V> extends AlleleValue<V> {
 	public AlleleCategorized(String modId, String category, String valueName, V value, boolean dominant) {
-		super(getUnlocalizedName(modId, category, valueName), value, dominant);
+		super(getUnlocalizedName(modId, category, valueName), dominant, value);
 		setRegistryName(createRegistryName(modId, category, valueName));
 	}
 

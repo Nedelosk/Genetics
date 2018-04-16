@@ -1,4 +1,4 @@
-package genetics.api.mutations;
+package genetics.api.mutation;
 
 import java.util.Collection;
 

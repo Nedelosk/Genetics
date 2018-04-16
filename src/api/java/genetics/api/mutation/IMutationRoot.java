@@ -1,4 +1,4 @@
-package genetics.api.mutations;
+package genetics.api.mutation;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,24 +17,24 @@ public interface IMutationRoot<I extends IIndividual, M extends IMutation> exten
 	/**
 	 * @return All registered mutations.
 	 */
-	List<M> getMutations(boolean shuffle);
+	List<? extends M> getMutations(boolean shuffle);
 
 	/**
 	 * @param other Allele to match mutations against.
 	 * @return All registered mutations the given allele is part of.
 	 */
-	List<M> getCombinations(IAllele other);
+	List<? extends M> getCombinations(IAllele other);
 
 	/**
 	 * @param other Allele to match mutations against.
 	 * @return All registered mutations the give allele is resolute of.
 	 */
-	List<M> getResultantMutations(IAllele other);
+	List<? extends M> getResultantMutations(IAllele other);
 
 	/**
 	 * @return all possible mutations that result from breeding two species
 	 */
-	List<M> getCombinations(IAllele parentFirst, IAllele parentSecond, boolean shuffle);
+	List<? extends M> getCombinations(IAllele parentFirst, IAllele parentSecond, boolean shuffle);
 
-	Collection<M> getPaths(IAllele result, IChromosomeType geneType);
+	Collection<? extends M> getPaths(IAllele result, IChromosomeType geneType);
 }

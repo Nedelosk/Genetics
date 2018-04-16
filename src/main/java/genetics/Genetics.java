@@ -70,7 +70,7 @@ public class Genetics {
 			}
 
 			@Override
-			public IAllele<?> getAllele(IChromosomeType type, boolean active) {
+			public IAllele getAllele(IChromosomeType type, boolean active) {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
@@ -96,7 +96,7 @@ public class Genetics {
 			}
 
 			@Override
-			public void setAllele(@Nullable IAllele allele, @Nullable IChromosomeType type) {
+			public void setAllele(@Nullable IChromosomeType type, @Nullable IAllele allele) {
 			}
 		});
 

@@ -39,5 +39,5 @@ public interface IGeneTemplate {
 	/**
 	 * Sets the information of this template.
 	 */
-	void setAllele(@Nullable IAllele<?> allele, @Nullable IChromosomeType type);
+	void setAllele(@Nullable IChromosomeType type, @Nullable IAllele allele);
 }

@@ -2,7 +2,7 @@ package genetics.api.alleles;
 
 /**
  * The IAlleleData is a help interface that provides all information that is required to register a allele at the
- * {@link IAlleleRegistry} using {@link IAlleleRegistry#registerAllele(String, Object, boolean, IAlleleKey...)}.
+ * {@link IAlleleRegistry} using {@link IAlleleRegistry#registerAllele(String, String, Object, boolean, IAlleleKey...)}.
  *
  * @param <V> The type of the value that this constant provides.
  */

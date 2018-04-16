@@ -17,7 +17,7 @@ public interface IAlleleTemplate {
 	/**
 	 * @return The allele at the position of the chromosomeType at the allele array.
 	 */
-	<V> IAllele<V> get(IChromosomeType type);
+	IAllele get(IChromosomeType type);
 
 	/**
 	 * @return A copy of the allele array.
