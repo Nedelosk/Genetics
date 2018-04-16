@@ -3,6 +3,7 @@ package genetics.api;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleRegistry;
+import genetics.api.classification.IClassification;
 import genetics.api.classification.IClassificationRegistry;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneFactory;
@@ -13,6 +14,11 @@ import genetics.api.root.IRootManager;
 import genetics.api.root.IRootRegistry;
 
 public interface IGeneticApiInstance {
+	/**
+	 * This instance of the classification registry can be used to get or register {@link IClassification}s.
+	 *
+	 * @throws IllegalStateException if the method gets called before the pre init phase of the genetics mod.
+	 */
 	IClassificationRegistry getClassificationRegistry();
 
 	/**
