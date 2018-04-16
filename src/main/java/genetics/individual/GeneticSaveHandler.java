@@ -8,12 +8,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import genetics.api.IGeneticSaveHandler;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
-import genetics.api.definition.ITemplateContainer;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
+import genetics.api.root.ITemplateContainer;
 
 import genetics.ApiInstance;
 import genetics.Log;
@@ -55,7 +55,7 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	 * Quickly gets the species without loading the whole genome. And without creating absent chromosomes.
 	 */
 	@Nullable
-	public IAllele<?> getAlleleDirectly(ItemStack itemStack, IChromosomeType geneType, boolean active) {
+	public IAllele getAlleleDirectly(ItemStack itemStack, IChromosomeType geneType, boolean active) {
 		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
 		if (nbtTagCompound == null) {
 			return null;
@@ -100,7 +100,7 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 			Log.error("Got a genetic item with no genome, setting it to a default value.");
 			genomeNBT = new NBTTagCompound();
 
-			ITemplateContainer container = geneType.getDefinition().getTemplates();
+			ITemplateContainer container = geneType.getRoot().getTemplates();
 			IAlleleTemplate defaultTemplate = container.getKaryotype().getDefaultTemplate();
 			IGenome genome = defaultTemplate.toGenome(null);
 			genome.writeToNBT(genomeNBT);

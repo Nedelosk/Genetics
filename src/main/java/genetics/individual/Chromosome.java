@@ -10,11 +10,11 @@ import net.minecraft.util.ResourceLocation;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.ITemplateContainer;
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.individual.IChromosome;
-import genetics.api.registry.IAlleleRegistry;
+import genetics.api.root.ITemplateContainer;
 
 @Immutable
 public class Chromosome implements IChromosome {
@@ -71,7 +71,7 @@ public class Chromosome implements IChromosome {
 	}
 
 	private static IAllele getDefaultAllele(@Nullable IGene gene, @Nullable String templateIdentifier, IChromosomeType type) {
-		ITemplateContainer container = type.getDefinition().getTemplates();
+		ITemplateContainer container = type.getRoot().getTemplates();
 		if (gene == null) {
 			return container.getKaryotype().getDefaultTemplate().get(type);
 		}

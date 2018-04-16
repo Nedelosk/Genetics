@@ -2,6 +2,7 @@ package genetics.api.individual;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.gene.IChromosomeType;
@@ -10,7 +11,7 @@ import genetics.api.gene.IKaryotype;
 /**
  * Holds the {@link IChromosome}s which comprise the traits of a given individual.
  * <p>
- * You can create one with {@link genetics.api.IGeneticFactory#createGenome(IKaryotype, IChromosome[])} or
+ * You can create one with {@link IGeneticFactory#createGenome(IKaryotype, IChromosome[])} or
  * {@link IAlleleTemplate#toGenome()}.
  */
 public interface IGenome {
@@ -74,7 +75,7 @@ public interface IGenome {
 	/**
 	 * Writes the data of this genome to the NBT-Data.
 	 * <p>
-	 * You can read the NBT-Data with {@link genetics.api.IGeneticFactory#createGenome(IKaryotype, IChromosome[])}.
+	 * You can read the NBT-Data with {@link IGeneticFactory#createGenome(IKaryotype, IChromosome[])}.
 	 */
 	NBTTagCompound writeToNBT(NBTTagCompound compound);
 }

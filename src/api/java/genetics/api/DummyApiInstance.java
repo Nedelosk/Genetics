@@ -2,12 +2,18 @@ package genetics.api;
 
 import net.minecraftforge.fml.common.Loader;
 
-import genetics.api.definition.IDefinitionRegistry;
+import genetics.api.alleles.IAlleleRegistry;
+import genetics.api.classification.IClassificationRegistry;
 import genetics.api.gene.IGeneRegistry;
-import genetics.api.registry.IAlleleRegistry;
+import genetics.api.root.IRootRegistry;
 
 public class DummyApiInstance implements IGeneticApiInstance {
 	private static final String ERROR_MESSAGE = "The mod %s tried to access the genetics api without checking if the mod is present. Please report this to the mod author.";
+
+	@Override
+	public IClassificationRegistry getClassificationRegistry() {
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
+	}
 
 	@Override
 	public IAlleleRegistry getAlleleRegistry() {
@@ -20,7 +26,7 @@ public class DummyApiInstance implements IGeneticApiInstance {
 	}
 
 	@Override
-	public IDefinitionRegistry getDefinitionRegistry() {
+	public IRootRegistry getRootRegistry() {
 		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
 	}
 

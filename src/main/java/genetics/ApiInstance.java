@@ -7,11 +7,12 @@ import javax.annotation.Nullable;
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticSaveHandler;
-import genetics.api.definition.IDefinitionRegistry;
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.gene.IGeneRegistry;
-import genetics.api.registry.IAlleleRegistry;
+import genetics.api.root.IRootRegistry;
 
 import genetics.alleles.AlleleRegistry;
+import genetics.classification.ClassificationRegistry;
 import genetics.individual.GeneticSaveHandler;
 
 public enum ApiInstance implements IGeneticApiInstance {
@@ -20,11 +21,23 @@ public enum ApiInstance implements IGeneticApiInstance {
 	private static final String ERROR_MESSAGE = "A method of the genetic api was called before the api reached the state at that the value of the method is present.";
 
 	@Nullable
+	public ClassificationRegistry classificationRegistry;
+	@Nullable
 	public AlleleRegistry alleleRegistry;
 	@Nullable
 	private IGeneRegistry geneRegistry;
 	@Nullable
-	private IDefinitionRegistry definitionRegistry;
+	private IRootRegistry rootRegistry;
+
+	@Override
+	public ClassificationRegistry getClassificationRegistry() {
+		Preconditions.checkState(classificationRegistry != null, ERROR_MESSAGE);
+		return classificationRegistry;
+	}
+
+	public void setClassificationRegistry(@Nullable ClassificationRegistry classificationRegistry) {
+		this.classificationRegistry = classificationRegistry;
+	}
 
 	@Override
 	public IAlleleRegistry getAlleleRegistry() {
@@ -47,13 +60,13 @@ public enum ApiInstance implements IGeneticApiInstance {
 	}
 
 	@Override
-	public IDefinitionRegistry getDefinitionRegistry() {
-		Preconditions.checkState(definitionRegistry != null, ERROR_MESSAGE);
-		return definitionRegistry;
+	public IRootRegistry getRootRegistry() {
+		Preconditions.checkState(rootRegistry != null, ERROR_MESSAGE);
+		return rootRegistry;
 	}
 
-	public void setDefinitionRegistry(@Nullable IDefinitionRegistry definitionRegistry) {
-		this.definitionRegistry = definitionRegistry;
+	public void setRootRegistry(@Nullable IRootRegistry rootRegistry) {
+		this.rootRegistry = rootRegistry;
 	}
 
 	@Override

@@ -8,14 +8,14 @@ import net.minecraft.util.EnumFacing;
 
 import net.minecraftforge.common.capabilities.Capability;
 
-import genetics.api.definition.IIndividualDefinitionBuilder;
 import genetics.api.individual.IIndividual;
+import genetics.api.root.IIndividualRootBuilder;
 
 /**
  * The IGeneticTypes offers several functions to retrieving genetic information from an {@link ItemStack}.
  * For every item that should contain genetic information you have to provide a {@link IOrganism} that can be
  * retrieved with {@link ItemStack#getCapability(Capability, EnumFacing)} and you have to register a {@link IOrganismType}
- * and a {@link IOrganismHandler} for this type at the {@link IIndividualDefinitionBuilder} that handles the individual.
+ * and a {@link IOrganismHandler} for this type at the {@link IIndividualRootBuilder} that handles the individual.
  *
  * @param <I> The type of {@link IIndividual} that all items are containing.
  */
@@ -59,17 +59,17 @@ public interface IOrganismTypes<I extends IIndividual> {
 	 * Gets the handler that handles the {@link ItemStack}s of the given genetic type.
 	 *
 	 * @return A empty optional if the given {@link IOrganismType} was not registered in the
-	 * {@link IIndividualDefinitionBuilder}.
+	 * {@link IIndividualRootBuilder}.
 	 */
 	Optional<IOrganismHandler<I>> getHandler(IOrganismType type);
 
 	/**
-	 * All types that were registered at the {@link IIndividualDefinitionBuilder}.
+	 * All types that were registered at the {@link IIndividualRootBuilder}.
 	 */
 	Collection<IOrganismType> getTypes();
 
 	/**
-	 * All handlers that were registered at the {@link IIndividualDefinitionBuilder}.
+	 * All handlers that were registered at the {@link IIndividualRootBuilder}.
 	 */
 	Collection<IOrganismHandler<I>> getHandlers();
 }

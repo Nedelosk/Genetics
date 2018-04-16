@@ -5,12 +5,12 @@ import javax.annotation.Nullable;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
+import genetics.api.root.IIndividualRoot;
 
 public final class AlleleTemplate implements IAlleleTemplate {
 	private final IAllele[] alleles;
@@ -23,8 +23,8 @@ public final class AlleleTemplate implements IAlleleTemplate {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <V> IAllele<V> get(IChromosomeType type) {
-		return (IAllele<V>) alleles[type.getIndex()];
+	public IAllele get(IChromosomeType type) {
+		return alleles[type.getIndex()];
 	}
 
 	@Override

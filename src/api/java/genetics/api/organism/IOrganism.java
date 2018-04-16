@@ -6,15 +6,14 @@ import net.minecraft.item.ItemStack;
 
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
-import genetics.api.definition.IIndividualDefinition;
-import genetics.api.definition.IIndividualRoot;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.individual.IIndividual;
+import genetics.api.root.IIndividualRoot;
 
 /**
  * Implement this interface as a capability which should provide the genetic information of an item.
  * <p/>
- * You can use {@link IGeneticFactory#createOrganism(ItemStack, IOrganismType, IIndividualDefinition)} to create an
+ * You can use {@link IGeneticFactory#createOrganism(ItemStack, IOrganismType, IIndividualRoot)} to create an
  * instance of this or you can use your own implementation.
  */
 public interface IOrganism<I extends IIndividual> {
@@ -32,7 +31,7 @@ public interface IOrganism<I extends IIndividual> {
 	/**
 	 * @return The root of the individual.
 	 */
-	IIndividualDefinition<I, IIndividualRoot<I>> getDefinition();
+	IIndividualRoot<I> getRoot();
 
 	/**
 	 * @return The species type of the individual.

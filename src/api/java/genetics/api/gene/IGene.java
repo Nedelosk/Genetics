@@ -6,18 +6,17 @@ import java.util.Optional;
 import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
-import genetics.api.definition.IDefinitionRegistry;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IIndividual;
 
 /**
  * The IGene contains every {@link IAllele} an the associated {@link IAlleleKey} of every {@link IAlleleKey} that was
- * added to the {@link IGeneBuilder} at {@link IGeneticPlugin#register(IGeneFactory)}.
+ * added to the {@link IGeneBuilder} at {@link IGeneticPlugin#registerGenes(IGeneFactory)}.
  * <p>
- * You have to create a IGeneBuilder at {@link IGeneticPlugin#register(IGeneFactory)} with
- * {@link IGeneFactory#addGene(String)}. Later after {@link IGeneticPlugin#register(IGeneFactory)} the builder
+ * You have to create a IGeneBuilder at {@link IGeneticPlugin#registerGenes(IGeneFactory)} with
+ * {@link IGeneFactory#addGene(String)}. Later after {@link IGeneticPlugin#registerGenes(IGeneFactory)} the builder
  * will be automatically build to a IGene and you can get the instance of the IGene with
- * {@link IDefinitionRegistry#getGene(IChromosomeType)}
+ * {@link IGeneRegistry#getGene(IChromosomeType)}
  */
 public interface IGene {
 	/**
@@ -25,20 +24,22 @@ public interface IGene {
 	 */
 	Collection<IAllele> getVariants();
 
+	<V> Collection<V> getValues(Class<? extends V> valueClass);
+
 	/**
-	 * All keys that were registered at the {@link IGeneBuilder} with {@link IGeneBuilder#addAllele(IAlleleKey, String)}.
+	 * All keys that were registered at the {@link IGeneBuilder} with {@link IGeneBuilder#addAlleles(IAlleleKey...)}.
 	 */
 	Collection<IAlleleKey> getKeys();
 
 	/**
 	 * Checks if the allele is a valid variant of this gene.
 	 */
-	boolean isValidAllele(IAllele<?> allele);
+	boolean isValidAllele(IAllele allele);
 
 	/**
 	 * The key with that the allele is associated at this gene.
 	 */
-	Optional<IAlleleKey> getKey(IAllele<?> allele);
+	Optional<IAlleleKey> getKey(IAllele allele);
 
 	/**
 	 * The allele with that the key is associated at this gene.
@@ -69,14 +70,4 @@ public interface IGene {
 	 * @return The unlocalized name for {@link #getLocalizedName()}.
 	 */
 	String getUnlocalizedName();
-
-	/**
-	 * The unlocalized name for given the allele if this gene contains a key of the allele that is associated with a name.
-	 */
-	String getUnlocalizedName(IAllele<?> allele);
-
-	/**
-	 * The localized name for given the allele if this gene contains a key of the allele that is associated with a name.
-	 */
-	String getLocalizedName(IAllele<?> allele);
 }
