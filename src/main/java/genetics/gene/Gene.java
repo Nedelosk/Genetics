@@ -18,12 +18,13 @@ import net.minecraft.client.resources.I18n;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleRegistry;
-import genetics.api.alleles.IAlleleValue;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneBuilder;
 
 import genetics.ApiInstance;
+import genetics.Log;
+import genetics.utils.AlleleUtils;
 
 public class Gene implements IGene {
 	private final ImmutableBiMap<IAllele, IAlleleKey> alleles;
@@ -34,11 +35,15 @@ public class Gene implements IGene {
 		this.name = name;
 		IAlleleRegistry alleleRegistry = ApiInstance.INSTANCE.getAlleleRegistry();
 		ImmutableBiMap.Builder<IAllele, IAlleleKey> builder = ImmutableBiMap.builder();
-		alleleInstances.forEach((k) -> alleleRegistry.getAllele(k).ifPresent(a -> builder.put(a, k)));
+		alleleInstances.forEach(k -> alleleRegistry.getAllele(k).ifPresent(a -> builder.put(a, k)));
 		this.alleles = builder.build();
 		Optional<IAllele> optional = getAllele(defaultKey);
 		if (!optional.isPresent()) {
-			throw new IllegalStateException("Failed to create gene " + name + '.');
+			Log.error("Missing default key for the gene s%, used a random key from one of the possible alleles of the gene,", name);
+			optional = getAllele(alleleInstances.iterator().next());
+			if (!optional.isPresent()) {
+				throw new IllegalStateException("Failed to create a gene because it contained no allele keys.");
+			}
 		}
 		this.defaultAllele = optional.get();
 	}
@@ -49,17 +54,9 @@ public class Gene implements IGene {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public <V> Collection<V> getValues(Class<? extends V> valueClass) {
 		return alleles.keySet().stream()
-			.filter(allele -> allele instanceof IAlleleValue)
-			.map(allele -> {
-				Object value = ((IAlleleValue) allele).getValue();
-				if (!valueClass.isInstance(value)) {
-					return null;
-				}
-				return (V) value;
-			})
+			.map(allele -> AlleleUtils.getAlleleValue(allele, valueClass, null))
 			.filter(Objects::nonNull)
 			.collect(Collectors.toList());
 	}
@@ -96,7 +93,7 @@ public class Gene implements IGene {
 
 	@Override
 	public String getUnlocalizedShortName() {
-		return "gene." + name + ".short.name";
+		return "gene." + name + ".short";
 	}
 
 	@Override
@@ -106,7 +103,7 @@ public class Gene implements IGene {
 
 	@Override
 	public String getUnlocalizedName() {
-		return "gene." + name + ".name";
+		return "gene." + name;
 	}
 
 	@Override
@@ -148,7 +145,7 @@ public class Gene implements IGene {
 			return types;
 		}
 
-		public Gene createGene() {
+		Gene createGene() {
 			Preconditions.checkNotNull(defaultKey);
 			return new Gene(ImmutableSet.copyOf(keys), defaultKey, name);
 		}

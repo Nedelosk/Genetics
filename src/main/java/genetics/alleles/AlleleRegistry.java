@@ -58,11 +58,7 @@ public class AlleleRegistry implements IAlleleRegistry {
 			registry.register(allele);
 			handlers.forEach(h -> h.onRegisterAllele(allele));
 		}
-		for (IAlleleKey key : keys) {
-			keysByAllele.put(allele, key);
-			alleleByKey.put(key, allele);
-		}
-		handlers.forEach(h -> h.onAddKeys(allele, keys));
+		addValidAlleleKeys(allele, keys);
 		return this;
 	}
 
@@ -70,13 +66,17 @@ public class AlleleRegistry implements IAlleleRegistry {
 	public IAlleleRegistry addValidAlleleKeys(ResourceLocation registryName, IAlleleKey... keys) {
 		Optional<IAllele> alleleOptional = getAllele(registryName);
 		alleleOptional.ifPresent(allele -> {
-			for (IAlleleKey key : keys) {
-				keysByAllele.put(allele, key);
-				alleleByKey.put(key, allele);
-			}
-			handlers.forEach(h -> h.onAddKeys(allele, keys));
+			addValidAlleleKeys(allele, keys);
 		});
 		return this;
+	}
+
+	private void addValidAlleleKeys(IAllele allele, IAlleleKey... keys) {
+		for (IAlleleKey key : keys) {
+			keysByAllele.put(allele, key);
+			alleleByKey.put(key, allele);
+		}
+		handlers.forEach(h -> h.onAddKeys(allele, keys));
 	}
 
 	@Override

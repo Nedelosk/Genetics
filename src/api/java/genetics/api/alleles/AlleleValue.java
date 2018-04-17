@@ -13,7 +13,7 @@ public class AlleleValue<V> extends Allele implements IAlleleValue<V> {
 	}
 
 	@Override
-	public V getValue() {
+	public final V getValue() {
 		return value;
 	}
 
