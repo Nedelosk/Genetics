@@ -9,13 +9,13 @@ import net.minecraft.client.resources.I18n;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
- * A default implementation for a simple allele.
+ * A default implementation of a simple allele.
  */
-public class Allele extends IForgeRegistryEntry.Impl<IAllele> implements IAllele {
+public abstract class Allele extends IForgeRegistryEntry.Impl<IAllele> implements IAllele {
 	protected final boolean dominant;
 	protected final String unlocalizedName;
 
-	public Allele(String unlocalizedName, boolean dominant) {
+	protected Allele(String unlocalizedName, boolean dominant) {
 		this.unlocalizedName = unlocalizedName;
 		this.dominant = dominant;
 	}

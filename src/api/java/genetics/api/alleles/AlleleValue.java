@@ -4,6 +4,11 @@ import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
 
+/**
+ * A default implementation of an allele that provides a value.
+ *
+ * @param <V> the type of value that this allele contains.
+ */
 public class AlleleValue<V> extends Allele implements IAlleleValue<V> {
 	protected final V value;
 

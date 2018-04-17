@@ -7,7 +7,7 @@ import genetics.api.alleles.IAlleleClassified;
 /**
  * Biological classifications from domain down to genus.
  * <p>
- * Used by the *alyzers to display hierarchies.
+ * Used by the forestry analyzers to display hierarchies.
  */
 public interface IClassification {
 

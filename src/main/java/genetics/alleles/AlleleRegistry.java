@@ -65,9 +65,7 @@ public class AlleleRegistry implements IAlleleRegistry {
 	@Override
 	public IAlleleRegistry addValidAlleleKeys(ResourceLocation registryName, IAlleleKey... keys) {
 		Optional<IAllele> alleleOptional = getAllele(registryName);
-		alleleOptional.ifPresent(allele -> {
-			addValidAlleleKeys(allele, keys);
-		});
+		alleleOptional.ifPresent(allele -> addValidAlleleKeys(allele, keys));
 		return this;
 	}
 

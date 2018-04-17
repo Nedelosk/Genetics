@@ -4,6 +4,9 @@ package genetics.api.alleles;
  * Contains the {@link IAlleleKey}s of every allele that the genetics mod itself adds.
  */
 public class DefaultAlleles {
+	/**
+	 * Allele keys for alleles that represent a integer from 1 to 10.
+	 */
 	public enum Integer implements IAlleleKey {
 		INT_1,
 		INT_2,
@@ -17,6 +20,9 @@ public class DefaultAlleles {
 		INT_10
 	}
 
+	/**
+	 * Allele keys for alleles that represent one of the two boolean values.
+	 */
 	public enum Boolean implements IAlleleKey {
 		TRUE,
 		FALSE
