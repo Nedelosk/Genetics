@@ -8,7 +8,6 @@ import java.util.Optional;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleValue;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IGene;
 import genetics.api.gene.IKaryotype;
@@ -16,6 +15,7 @@ import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 
 import genetics.ApiInstance;
+import genetics.utils.AlleleUtils;
 
 public final class Genome implements IGenome {
 	private final IChromosome[] chromosomes;
@@ -118,29 +118,21 @@ public final class Genome implements IGenome {
 	@Override
 	public <V> V getActiveValue(IChromosomeType geneType, Class<? extends V> valueClass) {
 		IAllele allele = getActiveAllele(geneType);
-		if (!(allele instanceof IAlleleValue)) {
-			throw new IllegalArgumentException(String.format("The allele '%s' at the active position of the chromosome type '%s' has no value.", allele, geneType));
+		V value = AlleleUtils.getAlleleValue(allele, valueClass, null);
+		if (value == null) {
+			throw new IllegalArgumentException(String.format("The allele '%s' at the inactive position of the chromosome type '%s' has no value.", allele, geneType));
 		}
-		IAlleleValue alleleValue = (IAlleleValue) allele;
-		Object value = alleleValue.getValue();
-		if (valueClass.isInstance(valueClass)) {
-			return valueClass.cast(value);
-		}
-		throw new IllegalArgumentException(String.format("The class of the value '%s' of the allele '%s' at the active position of the chromosome type is not an instance of the class '%s'.", value, allele, valueClass));
+		return value;
 	}
 
 	@Override
 	public <V> V getInactiveValue(IChromosomeType geneType, Class<? extends V> valueClass) {
 		IAllele allele = getInactiveAllele(geneType);
-		if (!(allele instanceof IAlleleValue)) {
+		V value = AlleleUtils.getAlleleValue(allele, valueClass, null);
+		if (value == null) {
 			throw new IllegalArgumentException(String.format("The allele '%s' at the inactive position of the chromosome type '%s' has no value.", allele, geneType));
 		}
-		IAlleleValue alleleValue = (IAlleleValue) allele;
-		Object value = alleleValue.getValue();
-		if (valueClass.isInstance(valueClass)) {
-			return valueClass.cast(value);
-		}
-		throw new IllegalArgumentException(String.format("The class of the value '%s' of the allele '%s' at the inactive position of the chromosome type is not an instance of the class '%s'.", value, allele, valueClass));
+		return value;
 	}
 
 	@Override
