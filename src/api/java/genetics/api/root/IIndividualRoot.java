@@ -11,6 +11,7 @@ import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
+import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
 import genetics.api.root.translator.IIndividualTranslator;
@@ -26,6 +27,7 @@ import genetics.api.root.translator.IIndividualTranslator;
  * @param <I> The type of the individual that this root provides.
  */
 public interface IIndividualRoot<I extends IIndividual> {
+	/* Individual Creation*/
 
 	/**
 	 * Uses the information that the NBT-Data contains to create a {@link IIndividual}.
@@ -42,6 +44,13 @@ public interface IIndividualRoot<I extends IIndividual> {
 	 */
 	I create(IGenome genome, IGenome mate);
 
+	/**
+	 * Creates a optional that describes an {@link IIndividual} that contains the {@link IAllele} template that is
+	 * associated with the given identifier.
+	 *
+	 * @param templateIdentifier A identifier that is associate with a {@link IAllele} template at the
+	 *                           {@link ITemplateContainer} of this root.
+	 */
 	Optional<I> create(String templateIdentifier);
 
 	/**
@@ -66,23 +75,66 @@ public interface IIndividualRoot<I extends IIndividual> {
 	 */
 	I getDefaultMember();
 
+	/* Item Stacks */
+
+	/**
+	 * Creates an {@link ItemStack} that uses the {@link IAllele} template of the given allele and has the
+	 * given organism type.
+	 *
+	 * @param allele The template identifier
+	 * @param type   The type whose {@link IOrganismHandler} will be used to create the stack with
+	 *               {@link IOrganismHandler#createStack(IIndividual)}.
+	 * @return A stack with the given {@link IOrganismType} and the allele template of the given allele.
+	 */
+	ItemStack createStack(IAllele allele, IOrganismType type);
+
+	/* Genome */
+
 	/**
 	 * Creates a wrapper that can be used to give access to the values of the alleles that the genome contains.
 	 */
 	IGenomeWrapper createWrapper(IGenome genome);
 
+	/* Components */
+
+	/**
+	 * Returns the template container that contains all registered templates for the individual of this root.
+	 * Templates have to be registered at the {@link IIndividualRootBuilder} of the root before the root itself was
+	 * built.
+	 *
+	 * @return The template container of this root.
+	 */
+	ITemplateContainer getTemplates();
+
+	/**
+	 * The Karyotype defines how many {@link genetics.api.gene.IChromosomeType}s the {@link IGenome} of an
+	 * {@link IIndividual} has.
+	 *
+	 * @return The karyotype of this root.
+	 */
+	IKaryotype getKaryotype();
+
+	/**
+	 * A translator that can be used to translate {@link net.minecraft.block.state.IBlockState} and
+	 * {@link ItemStack} without any genetic information  into {@link IIndividual}s or into a {@link ItemStack} that
+	 * contains a {@link genetics.api.organism.IOrganism}.
+	 *
+	 * @return A translator that can be used to translate {@link net.minecraft.block.state.IBlockState} and
+	 * {@link ItemStack} into {@link IIndividual}s.
+	 */
+	IIndividualTranslator<I> getTranslator();
+
+	/**
+	 * All registered {@link IOrganismType}s with there mapped {@link IOrganismHandler}s.
+	 *
+	 * @return A object that contains all registered types of this root.
+	 */
+	IOrganismTypes<I> getTypes();
+
+	/* Util */
+
 	/**
 	 * @return The string based unique identifier of this definition.
 	 */
 	String getUID();
-
-	ItemStack createStack(IAllele allele, IOrganismType type);
-
-	ITemplateContainer getTemplates();
-
-	IKaryotype getKaryotype();
-
-	IIndividualTranslator<I> getTranslator();
-
-	IOrganismTypes<I> getTypes();
 }

@@ -31,7 +31,7 @@ public interface IIndividual {
 	IIndividualRoot getRoot();
 
 	/**
-	 * @return The genetic data of this organism.
+	 * @return The genetic data of this individual.
 	 */
 	IGenome getGenome();
 

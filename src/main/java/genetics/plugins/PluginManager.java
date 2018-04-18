@@ -65,9 +65,11 @@ public class PluginManager {
 		KaryotypeFactory karyotypeFactory = new KaryotypeFactory();
 		handlePlugins(p -> p.createKaryotype(karyotypeFactory));
 		//
-		RootManager definitionFactory = new RootManager();
-		handlePlugins(p -> p.onFinishRegistration(definitionFactory, GeneticsAPI.apiInstance));
-		ApiInstance.INSTANCE.setRootRegistry(definitionFactory.createRegistry());
+		RootManager rootManager = new RootManager();
+		handlePlugins(p -> p.createRoot(rootManager));
+		handlePlugins(p -> p.postRootCreation(rootManager));
+		handlePlugins(p -> p.onFinishRegistration(rootManager, GeneticsAPI.apiInstance));
+		ApiInstance.INSTANCE.setRootRegistry(rootManager.createRegistry());
 	}
 
 	private static void handlePlugins(Consumer<IGeneticPlugin> pluginConsumer) {

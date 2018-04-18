@@ -61,6 +61,13 @@ public interface IGeneticPlugin {
 	}
 
 	/**
+	 * Called after {@link #createRoot(IRootManager)} was called at all {@link IGeneticPlugin}s.
+	 */
+	default void postRootCreation(IRootManager manager) {
+		//Default Implementation
+	}
+
+	/**
 	 * Called after the previous methods were called and every thing is registered.
 	 * Can be used to get created {@link IIndividualRoot}s.
 	 */
