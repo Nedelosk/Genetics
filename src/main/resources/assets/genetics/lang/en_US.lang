@@ -1,0 +1,16 @@
+################
+# ALLELES
+################
+genetics.allele.true=Yes
+genetics.allele.false=No
+
+genetics.i1d=1
+genetics.i2d=2
+genetics.i3d=3
+genetics.i4d=4
+genetics.i5d=5
+genetics.i6d=6
+genetics.i7d=7
+genetics.i8d=8
+genetics.i9d=9
+genetics.i10d=10

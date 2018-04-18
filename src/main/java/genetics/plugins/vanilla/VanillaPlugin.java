@@ -12,7 +12,7 @@ public class VanillaPlugin implements IGeneticPlugin {
 	@Override
 	public void registerAlleles(IAlleleRegistry registry) {
 		for (DefaultAlleles.Integer integer : DefaultAlleles.Integer.values()) {
-			registry.registerAllele("i", integer.ordinal() + "d", integer.ordinal(), true, integer);
+			registry.registerAllele("i", integer.ordinal() + 1 + "d", integer.ordinal() + 1, true, integer);
 		}
 		registry.registerAllele("bool", Boolean.toString(true), true, false, DefaultAlleles.Boolean.TRUE);
 		registry.registerAllele("bool", Boolean.toString(false), false, false, DefaultAlleles.Boolean.FALSE);

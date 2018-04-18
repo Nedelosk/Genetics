@@ -33,6 +33,7 @@ public class PluginManager {
 		return first.ordinal() > second.ordinal() ? 1 : -1;
 	};
 	private static List<IGeneticPlugin> plugins = Collections.emptyList();
+	/* The modID of the current active plugin*/
 	@Nullable
 	private static String activePlugin = null;
 
@@ -80,7 +81,7 @@ public class PluginManager {
 		});
 	}
 
-	public static void setActivePlugin(@Nullable String activePlugin) {
+	static void setActivePlugin(@Nullable String activePlugin) {
 		PluginManager.activePlugin = activePlugin;
 	}
 
