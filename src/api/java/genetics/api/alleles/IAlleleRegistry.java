@@ -29,9 +29,9 @@ public interface IAlleleRegistry {
 	 *
 	 * @param category
 	 * @param valueName
-	 * @param value      the value of the allele
-	 * @param dominant   if true the allele is dominant, otherwise the allele is recessive.
-	 * @param keys       allele keys for this allele.
+	 * @param value     the value of the allele
+	 * @param dominant  if true the allele is dominant, otherwise the allele is recessive.
+	 * @param keys      allele keys for this allele.
 	 */
 	<V> IAlleleRegistry registerAllele(String category, String valueName, V value, boolean dominant, IAlleleKey... keys);
 

@@ -1,11 +1,9 @@
 package genetics.api.root;
 
 import java.util.Map;
-import java.util.Optional;
 
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticPlugin;
-import genetics.api.individual.IIndividual;
 
 /**
  * <p>
@@ -19,7 +17,7 @@ public interface IRootRegistry {
 	 * Retrieve the {@link IIndividualRoot} with the given uid.
 	 *
 	 * @param uid Unique id for the species class, i.e. "rootBees", "rootTrees", "rootButterflies".
-	 * @return a {@link Optional} that contains the {@link IIndividualRoot} if it exists, a empty optional otherwise.
+	 * @return a {@link IOptionalRoot} that contains the {@link IIndividualRoot} if it exists, a empty optional otherwise.
 	 */
-	<I extends IIndividual, R extends IIndividualRoot<I>> IOptionalRoot<R> getRoot(String uid);
+	<R extends IIndividualRoot> IOptionalRoot<R> getRoot(String uid);
 }

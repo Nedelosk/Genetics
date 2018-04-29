@@ -3,15 +3,13 @@ package genetics.api.root;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import genetics.api.individual.IIndividual;
-
 /**
  * A empty instance of an {@link IOptionalRoot}.
  */
 public final class EmptyOptionalRoot implements IOptionalRoot {
 	private static final EmptyOptionalRoot INSTANCE = new EmptyOptionalRoot();
 
-	public static <I extends IIndividual, R extends IIndividualRoot<I>> IOptionalRoot<R> empty() {
+	public static <R extends IIndividualRoot> IOptionalRoot<R> empty() {
 		@SuppressWarnings("unchecked")
 		IOptionalRoot<R> t = (IOptionalRoot<R>) INSTANCE;
 		return t;

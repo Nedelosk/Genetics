@@ -21,12 +21,12 @@ public interface IRootManager {
 	 * @param <I>         The type of the individual that the root that the definition contains defines.
 	 * @param <R>         The type of the root that the definition contains.
 	 */
-	<I extends IIndividual, R extends IIndividualRoot<I>> IIndividualRootBuilder<I, R> createRoot(String name, IKaryotype karyotype, IIndividualRootFactory<I, R> rootFactory);
+	<I extends IIndividual> IIndividualRootBuilder<I> createRoot(String name, IKaryotype karyotype, IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory);
 
 	/**
 	 * Gets an IGeneticDefinitionBuilder
 	 *
 	 * @param name The string based unique identifier of this definition to retrieve.
 	 */
-	<I extends IIndividual, R extends IIndividualRoot<I>> Optional<IIndividualRootBuilder<I, R>> getRoot(String name);
+	<I extends IIndividual> Optional<IIndividualRootBuilder<I>> getRoot(String name);
 }

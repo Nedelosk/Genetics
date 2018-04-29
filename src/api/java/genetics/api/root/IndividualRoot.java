@@ -13,6 +13,11 @@ import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
 import genetics.api.root.translator.IIndividualTranslator;
 
+/**
+ * Abstract implementation of the {@link IIndividualRoot} interface.
+ *
+ * @param <I> The type of the individual that this root provides.
+ */
 public abstract class IndividualRoot<I extends IIndividual> implements IIndividualRoot<I> {
 	protected final IOrganismTypes<I> types;
 	protected final IIndividualTranslator<I> translator;

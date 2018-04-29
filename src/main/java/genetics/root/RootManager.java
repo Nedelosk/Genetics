@@ -14,16 +14,16 @@ public class RootManager implements IRootManager {
 	private final HashMap<String, IndividualRootBuilder> definitionBuilders = new HashMap<>();
 
 	@Override
-	public <I extends IIndividual, R extends IIndividualRoot<I>> IIndividualRootBuilder<I, R> createRoot(String name, IKaryotype karyotype, IIndividualRootFactory<I, R> rootFactory) {
-		IndividualRootBuilder<I, R> builder = new IndividualRootBuilder<>(name, karyotype, rootFactory);
+	public <I extends IIndividual> IIndividualRootBuilder<I> createRoot(String name, IKaryotype karyotype, IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory) {
+		IndividualRootBuilder<I> builder = new IndividualRootBuilder<>(name, karyotype, rootFactory);
 		definitionBuilders.put(name, builder);
 		return builder;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <I extends IIndividual, R extends IIndividualRoot<I>> Optional<IIndividualRootBuilder<I, R>> getRoot(String uid) {
-		return Optional.ofNullable((IndividualRootBuilder<I, R>) definitionBuilders.get(uid));
+	public <I extends IIndividual> Optional<IIndividualRootBuilder<I>> getRoot(String uid) {
+		return Optional.ofNullable((IndividualRootBuilder<I>) definitionBuilders.get(uid));
 	}
 
 	public RootRegistry createRegistry() {

@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import genetics.api.individual.IIndividual;
 import genetics.api.root.EmptyOptionalRoot;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IOptionalRoot;
@@ -25,7 +24,7 @@ public class RootRegistry implements IRootRegistry {
 	}
 
 	@Override
-	public <I extends IIndividual, R extends IIndividualRoot<I>> IOptionalRoot<R> getRoot(String uid) {
+	public <R extends IIndividualRoot> IOptionalRoot<R> getRoot(String uid) {
 		@SuppressWarnings("unchecked")
 		IOptionalRoot<R> definition = (IOptionalRoot<R>) definitions.get(uid);
 		if (definition == null) {

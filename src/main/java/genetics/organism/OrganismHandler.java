@@ -8,14 +8,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.root.IIndividualRoot;
+import genetics.api.root.IOptionalRoot;
 
 public class OrganismHandler<I extends IIndividual> implements IOrganismHandler<I> {
 	private static final String INDIVIDUAL_KEY = "Individual";
-	protected final IIndividualRoot<I> root;
+	protected final IOptionalRoot<IIndividualRoot<I>> optionalRoot;
 	protected final ItemStack stack;
 
-	public OrganismHandler(IIndividualRoot<I> root, ItemStack stack) {
-		this.root = root;
+	public OrganismHandler(IOptionalRoot<IIndividualRoot<I>> optionalRoot, ItemStack stack) {
+		this.optionalRoot = optionalRoot;
 		this.stack = stack;
 	}
 
@@ -29,9 +30,10 @@ public class OrganismHandler<I extends IIndividual> implements IOrganismHandler<
 	@Override
 	public Optional<I> createIndividual(ItemStack itemStack) {
 		NBTTagCompound tagCompound = itemStack.getSubCompound(INDIVIDUAL_KEY);
-		if (tagCompound == null) {
+		if (tagCompound == null || !optionalRoot.isPresent()) {
 			return Optional.empty();
 		}
+		IIndividualRoot<I> root = this.optionalRoot.get();
 		return Optional.of(root.create(tagCompound));
 	}
 

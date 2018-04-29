@@ -1,6 +1,7 @@
 package genetics.alleles;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
@@ -29,7 +30,7 @@ public final class AlleleTemplate implements IAlleleTemplate {
 
 	@Override
 	public IAllele[] alleles() {
-		return alleles;
+		return Arrays.copyOf(alleles, alleles.length);
 	}
 
 	@Override
