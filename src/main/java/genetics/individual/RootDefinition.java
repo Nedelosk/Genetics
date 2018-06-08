@@ -6,9 +6,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import genetics.api.root.IIndividualRoot;
-import genetics.api.root.IOptionalRoot;
+import genetics.api.root.IRootDefinition;
 
-public class OptionalRoot<R extends IIndividualRoot> implements IOptionalRoot<R> {
+public class RootDefinition<R extends IIndividualRoot> implements IRootDefinition<R> {
 	@Nullable
 	private R root = null;
 
@@ -17,7 +17,7 @@ public class OptionalRoot<R extends IIndividualRoot> implements IOptionalRoot<R>
 	}
 
 	@Override
-	public Optional<R> maybeDefinition() {
+	public Optional<R> maybeRoot() {
 		return Optional.ofNullable(root);
 	}
 

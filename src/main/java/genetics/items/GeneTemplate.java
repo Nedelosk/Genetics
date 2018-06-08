@@ -72,7 +72,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	@Override
 	public void deserializeNBT(NBTTagCompound compound) {
 		if (compound.hasKey(TYPE_NBT_KEY) && compound.hasKey(DEFINITION_NBT_KEY)) {
-			ApiInstance.INSTANCE.getRootRegistry().getRoot(compound.getString(DEFINITION_NBT_KEY)).ifPresent(def -> {
+			ApiInstance.INSTANCE.getRoot(compound.getString(DEFINITION_NBT_KEY)).ifPresent(def -> {
 				this.root = def;
 				type = def.getKaryotype().getChromosomeTypes()[compound.getByte(TYPE_NBT_KEY)];
 			});

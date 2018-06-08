@@ -12,8 +12,10 @@ import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
+import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.root.IIndividualRoot;
+import genetics.api.root.IRootDefinition;
 
 /**
  * A factory that can be used to create some default implementations.
@@ -92,6 +94,14 @@ public interface IGeneticFactory {
 	 * @return A instance of {@link IOrganism}.
 	 */
 	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualRoot<I> root);
+
+	/**
+	 * @param optionalRoot
+	 * @param stack
+	 * @param <I>
+	 * @return
+	 */
+	<I extends IIndividual> IOrganismHandler<I> createOrganismHandler(IRootDefinition<IIndividualRoot<I>> optionalRoot, ItemStack stack);
 
 	/**
 	 * Creates a default implementation of a {@link IGeneTemplate}

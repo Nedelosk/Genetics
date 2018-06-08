@@ -29,7 +29,7 @@ import genetics.api.root.translator.IItemTranslator;
  * <p>
  * After every {@link IGeneticPlugin} received {@link IGeneticPlugin#registerGenes(IGeneFactory)} all
  * {@link IIndividualRootBuilder}s will be build automatically to {@link IIndividualRoot}s. You can get the instance
- * of you root from {@link IRootRegistry#getRoot(String)} after it was created or you can use {@link #getOptional()}.
+ * of you root from {@link IRootRegistry#getRoot(String)} after it was created or you can use {@link #getDefinition()}.
  * <p>
  * You can create a instance of this with {@link IRootManager#createRoot(String, IKaryotype, IIndividualRootFactory)}.
  *
@@ -99,5 +99,5 @@ public interface IIndividualRootBuilder<I extends IIndividual> {
 	 * @return An optional that contains the root object of this builder if it was already built, otherwise an empty
 	 * optional.
 	 */
-	<R extends IIndividualRoot<I>> IOptionalRoot<R> getOptional();
+	<R extends IIndividualRoot<I>> IRootDefinition<R> getDefinition();
 }

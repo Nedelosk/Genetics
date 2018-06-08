@@ -16,8 +16,10 @@ import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
+import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.root.IIndividualRoot;
+import genetics.api.root.IRootDefinition;
 
 import genetics.alleles.AlleleTemplate;
 import genetics.alleles.AlleleTemplateBuilder;
@@ -64,9 +66,15 @@ public enum GeneticFactory implements IGeneticFactory {
 		return Chromosome.create(firstAllele, secondAllele, type);
 	}
 
+
 	@Override
 	public <I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualRoot<I> definition) {
 		return new Organism<>(itemStack, () -> definition, () -> type);
+	}
+
+	@Override
+	public <I extends IIndividual> IOrganismHandler<I> createOrganismHandler(IRootDefinition<IIndividualRoot<I>> optionalRoot, ItemStack stack) {
+		return null;
 	}
 
 	@Override

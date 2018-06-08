@@ -4,22 +4,22 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * A empty instance of an {@link IOptionalRoot}.
+ * A empty instance of an {@link IRootDefinition}.
  */
-public final class EmptyOptionalRoot implements IOptionalRoot {
-	private static final EmptyOptionalRoot INSTANCE = new EmptyOptionalRoot();
+public final class EmptyRootDefinition implements IRootDefinition {
+	private static final EmptyRootDefinition INSTANCE = new EmptyRootDefinition();
 
-	public static <R extends IIndividualRoot> IOptionalRoot<R> empty() {
+	public static <R extends IIndividualRoot> IRootDefinition<R> empty() {
 		@SuppressWarnings("unchecked")
-		IOptionalRoot<R> t = (IOptionalRoot<R>) INSTANCE;
+		IRootDefinition<R> t = (IRootDefinition<R>) INSTANCE;
 		return t;
 	}
 
-	private EmptyOptionalRoot() {
+	private EmptyRootDefinition() {
 	}
 
 	@Override
-	public Optional<IIndividualRoot> maybeDefinition() {
+	public Optional<IIndividualRoot> maybeRoot() {
 		return Optional.empty();
 	}
 

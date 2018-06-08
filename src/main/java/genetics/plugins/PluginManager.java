@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -18,6 +19,7 @@ import genetics.Genetics;
 import genetics.alleles.AlleleRegistry;
 import genetics.classification.ClassificationRegistry;
 import genetics.gene.GeneFactory;
+import genetics.root.IndividualRootBuilder;
 import genetics.root.KaryotypeFactory;
 import genetics.root.RootManager;
 
@@ -68,9 +70,12 @@ public class PluginManager {
 		//
 		RootManager rootManager = new RootManager();
 		handlePlugins(p -> p.createRoot(rootManager));
-		handlePlugins(p -> p.postRootCreation(rootManager));
+		handlePlugins(p -> p.initRoots(rootManager));
+		Map<String, IndividualRootBuilder> rootBuilders = rootManager.getRootBuilders();
+		for (IndividualRootBuilder builder : rootBuilders.values()) {
+			builder.create();
+		}
 		handlePlugins(p -> p.onFinishRegistration(rootManager, GeneticsAPI.apiInstance));
-		ApiInstance.INSTANCE.setRootRegistry(rootManager.createRegistry());
 	}
 
 	private static void handlePlugins(Consumer<IGeneticPlugin> pluginConsumer) {

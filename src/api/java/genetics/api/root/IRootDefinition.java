@@ -8,13 +8,13 @@ import java.util.function.Consumer;
  * A optional that describes a {@link IIndividualRoot}.
  * <p>
  * You can get the optional of an {@link IIndividualRoot} by calling
- * {@link IRootRegistry#getRoot(String)} or {@link IIndividualRootBuilder#getOptional()} at
+ * {@link IRootRegistry#getRoot(String)} or {@link IIndividualRootBuilder#getDefinition()} at
  * the definition builder of the definition.
  *
  * @param <R> @param <R> The type of the root of the individual.
  */
-public interface IOptionalRoot<R extends IIndividualRoot> {
-	Optional<R> maybeDefinition();
+public interface IRootDefinition<R extends IIndividualRoot> {
+	Optional<R> maybeRoot();
 
 	/**
 	 * Returns the described definition of this optional.

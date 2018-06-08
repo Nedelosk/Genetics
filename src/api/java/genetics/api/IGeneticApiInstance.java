@@ -5,13 +5,11 @@ import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.classification.IClassification;
 import genetics.api.classification.IClassificationRegistry;
-import genetics.api.gene.IGene;
 import genetics.api.gene.IGeneFactory;
 import genetics.api.gene.IGeneRegistry;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootBuilder;
-import genetics.api.root.IRootManager;
-import genetics.api.root.IRootRegistry;
+import genetics.api.root.IRootDefinition;
 
 public interface IGeneticApiInstance {
 	/**
@@ -39,14 +37,6 @@ public interface IGeneticApiInstance {
 	IGeneRegistry getGeneRegistry();
 
 	/**
-	 * This instance of the genetic system can be used to get {@link IIndividualRoot}s and {@link IGene}s.
-	 * It's available after was called {@link IGeneticPlugin#onFinishRegistration(IRootManager, IGeneticApiInstance)}.
-	 *
-	 * @throws IllegalStateException if the method gets called before {@link IGeneticPlugin#onFinishRegistration(IRootManager, IGeneticApiInstance)} was called at all plugins.
-	 */
-	IRootRegistry getRootRegistry();
-
-	/**
 	 * This instance is available before any method of a {@link IGeneticPlugin} was called.
 	 *
 	 * @throws IllegalStateException if the method gets called before the pre-init phase of fml.
@@ -59,6 +49,16 @@ public interface IGeneticApiInstance {
 	 * @throws IllegalStateException if the method gets called before the pre-init phase of fml.
 	 */
 	IGeneticSaveHandler getSaveHandler();
+
+	/**
+	 * Retrieve the {@link IRootDefinition} with the given uid and computes one if there currently is no definition
+	 * for the given uid.
+	 *
+	 * @param rootUID The uid that the {@link IIndividualRoot} object of the {@link IRootDefinition} is associated with.
+	 * @param <R>     The type of the {@link IIndividualRoot} object that the definition contains.
+	 * @return The definition that is associated with given uid.
+	 */
+	<R extends IIndividualRoot> IRootDefinition<R> getRoot(String rootUID);
 
 	/**
 	 * @return Checks if the genetics mod is present.

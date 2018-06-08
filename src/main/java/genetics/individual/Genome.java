@@ -120,7 +120,7 @@ public final class Genome implements IGenome {
 		IAllele allele = getActiveAllele(geneType);
 		V value = AlleleUtils.getAlleleValue(allele, valueClass, null);
 		if (value == null) {
-			throw new IllegalArgumentException(String.format("The allele '%s' at the inactive position of the chromosome type '%s' has no value.", allele, geneType));
+			throw new IllegalArgumentException(String.format("The allele '%s' at the active position of the chromosome type '%s' has no value.", allele, geneType));
 		}
 		return value;
 	}

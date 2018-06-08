@@ -19,7 +19,6 @@ public interface IRootManager {
 	 * @param karyotype   The karyotype of individual.
 	 * @param rootFactory A function that creates the root of the definition.
 	 * @param <I>         The type of the individual that the root that the definition contains defines.
-	 * @param <R>         The type of the root that the definition contains.
 	 */
 	<I extends IIndividual> IIndividualRootBuilder<I> createRoot(String name, IKaryotype karyotype, IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory);
 

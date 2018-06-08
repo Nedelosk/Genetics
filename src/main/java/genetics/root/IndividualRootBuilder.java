@@ -11,8 +11,11 @@ import java.util.function.Function;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
+import genetics.api.events.RootCreationEvent;
 import genetics.api.gene.IChromosomeType;
 import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IIndividual;
@@ -26,7 +29,8 @@ import genetics.api.root.translator.IBlockTranslator;
 import genetics.api.root.translator.IIndividualTranslator;
 import genetics.api.root.translator.IItemTranslator;
 
-import genetics.individual.OptionalRoot;
+import genetics.ApiInstance;
+import genetics.individual.RootDefinition;
 import genetics.organism.OrganismTypes;
 
 public class IndividualRootBuilder<I extends IIndividual> implements IIndividualRootBuilder<I> {
@@ -37,7 +41,7 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 	private final HashMap<String, IAllele[]> templates = new HashMap<>();
 	private final Map<Item, IItemTranslator<I>> itemTranslators = new HashMap<>();
 	private final Map<Block, IBlockTranslator<I>> blockTranslators = new HashMap<>();
-	private final OptionalRoot<IIndividualRoot<I>> optional;
+	private final RootDefinition<IIndividualRoot<I>> definition;
 	private BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IIndividualTranslator<I>> translatorFactory = IndividualTranslator::new;
 	private Function<Map<IOrganismType, IOrganismHandler<I>>, IOrganismTypes<I>> typesFactory = OrganismTypes::new;
 
@@ -45,7 +49,7 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 		this.uid = uid;
 		this.karyotype = karyotype;
 		this.rootFactory = rootFactory;
-		this.optional = new OptionalRoot<>();
+		this.definition = ApiInstance.INSTANCE.getRoot(uid);
 	}
 
 	@Override
@@ -101,16 +105,15 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 		return karyotype;
 	}
 
-	@SuppressWarnings("unchecked")
-	public OptionalRoot create() {
+	public void create() {
 		IIndividualTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
 		IOrganismTypes<I> typesInstance = typesFactory.apply(this.types);
-		optional.setRoot(rootFactory.createRoot(typesInstance, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates)), karyotype));
-		return optional;
+		definition.setRoot(rootFactory.createRoot(typesInstance, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates)), karyotype));
+		MinecraftForge.EVENT_BUS.register(new RootCreationEvent<>(definition));
 	}
 
 	@SuppressWarnings("unchecked")
-	public <R extends IIndividualRoot<I>> OptionalRoot<R> getOptional() {
-		return (OptionalRoot<R>) optional;
+	public <R extends IIndividualRoot<I>> RootDefinition<R> getDefinition() {
+		return (RootDefinition<R>) definition;
 	}
 }

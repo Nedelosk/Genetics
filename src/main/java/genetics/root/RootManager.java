@@ -11,22 +11,22 @@ import genetics.api.root.IIndividualRootFactory;
 import genetics.api.root.IRootManager;
 
 public class RootManager implements IRootManager {
-	private final HashMap<String, IndividualRootBuilder> definitionBuilders = new HashMap<>();
+	private final HashMap<String, IndividualRootBuilder> rootBuilders = new HashMap<>();
 
 	@Override
 	public <I extends IIndividual> IIndividualRootBuilder<I> createRoot(String name, IKaryotype karyotype, IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory) {
 		IndividualRootBuilder<I> builder = new IndividualRootBuilder<>(name, karyotype, rootFactory);
-		definitionBuilders.put(name, builder);
+		rootBuilders.put(name, builder);
 		return builder;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <I extends IIndividual> Optional<IIndividualRootBuilder<I>> getRoot(String uid) {
-		return Optional.ofNullable((IndividualRootBuilder<I>) definitionBuilders.get(uid));
+		return Optional.ofNullable((IndividualRootBuilder<I>) rootBuilders.get(uid));
 	}
 
-	public RootRegistry createRegistry() {
-		return new RootRegistry(definitionBuilders);
+	public HashMap<String, IndividualRootBuilder> getRootBuilders() {
+		return rootBuilders;
 	}
 }

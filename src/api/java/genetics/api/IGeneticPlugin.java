@@ -63,7 +63,7 @@ public interface IGeneticPlugin {
 	/**
 	 * Called after {@link #createRoot(IRootManager)} was called at all {@link IGeneticPlugin}s.
 	 */
-	default void postRootCreation(IRootManager manager) {
+	default void initRoots(IRootManager manager) {
 		//Default Implementation
 	}
 

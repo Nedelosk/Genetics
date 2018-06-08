@@ -5,7 +5,9 @@ import net.minecraftforge.fml.common.Loader;
 import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.classification.IClassificationRegistry;
 import genetics.api.gene.IGeneRegistry;
-import genetics.api.root.IRootRegistry;
+import genetics.api.root.EmptyRootDefinition;
+import genetics.api.root.IIndividualRoot;
+import genetics.api.root.IRootDefinition;
 
 public class DummyApiInstance implements IGeneticApiInstance {
 	private static final String ERROR_MESSAGE = "The mod %s tried to access the genetics api without checking if the mod is present. Please report this to the mod author.";
@@ -26,11 +28,6 @@ public class DummyApiInstance implements IGeneticApiInstance {
 	}
 
 	@Override
-	public IRootRegistry getRootRegistry() {
-		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
-	}
-
-	@Override
 	public IGeneticFactory getGeneticFactory() {
 		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
 	}
@@ -38,6 +35,11 @@ public class DummyApiInstance implements IGeneticApiInstance {
 	@Override
 	public IGeneticSaveHandler getSaveHandler() {
 		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
+	}
+
+	@Override
+	public <R extends IIndividualRoot> IRootDefinition<R> getRoot(String rootUID) {
+		return EmptyRootDefinition.empty();
 	}
 
 	@Override
