@@ -1,24 +1,30 @@
 package genetics.api.events;
 
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryManager;
+
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.IContextSetter;
 
+import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleKey;
+import genetics.api.alleles.IAlleleRegistry;
 
-public class AlleleRegisterEvent extends Event {
-	private final IAllele allele;
-	private final IAlleleKey[] keys;
+public class AlleleRegisterEvent extends Event implements IContextSetter {
 
-	public AlleleRegisterEvent(IAllele allele, IAlleleKey... keys) {
-		this.allele = allele;
-		this.keys = keys;
+	private final IAlleleRegistry alleleRegistry;
+	private final IForgeRegistry<IAllele> registry;
+
+	public AlleleRegisterEvent() {
+		this.alleleRegistry = GeneticsAPI.apiInstance.getAlleleRegistry();
+		this.registry = RegistryManager.ACTIVE.getRegistry(IAllele.class);
 	}
 
-	public IAllele getAllele() {
-		return allele;
+	public IAlleleRegistry getAlleleRegistry() {
+		return alleleRegistry;
 	}
 
-	public IAlleleKey[] getKeys() {
-		return keys;
+	public IForgeRegistry<IAllele> getRegistry() {
+		return registry;
 	}
 }

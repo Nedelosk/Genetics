@@ -3,6 +3,9 @@ package genetics.plugins;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+
 import genetics.api.IRegistryHelper;
 import genetics.api.alleles.IAlleleConstant;
 import genetics.api.alleles.IAlleleRegistry;
@@ -16,17 +19,20 @@ public enum RegistryHelper implements IRegistryHelper {
 
 	@Override
 	public void addGene(String name, IChromosomeType type, IAlleleConstant[] constants) {
-		genes.add(new GeneData(PluginManager.getCurrentModId(), name, type, constants));
+		genes.add(new GeneData(PluginManager.getActiveContainer(), name, type, constants));
 	}
 
 	void onRegisterAlleles(IAlleleRegistry registry) {
+		Loader loader = Loader.instance();
 		for (GeneData gene : genes) {
-			PluginManager.setActivePlugin(gene.modId);
+			loader.setActiveModContainer(gene.container);
+			PluginManager.setActiveContainer(gene.container);
 			for (IAlleleConstant data : gene.constants) {
 				registry.registerAllele(data);
 			}
-			PluginManager.setActivePlugin(null);
 		}
+		loader.setActiveModContainer(null);
+		PluginManager.setActiveContainer(null);
 	}
 
 	void onRegister(IGeneFactory registry) {
@@ -45,10 +51,12 @@ public enum RegistryHelper implements IRegistryHelper {
 		private final String name;
 		private final IChromosomeType type;
 		private final IAlleleConstant[] constants;
+		private final ModContainer container;
 		private final String modId;
 
-		private GeneData(String modId, String name, IChromosomeType type, IAlleleConstant[] constants) {
-			this.modId = modId;
+		private GeneData(ModContainer container, String name, IChromosomeType type, IAlleleConstant[] constants) {
+			this.modId = container.getModId();
+			this.container = container;
 			this.name = name;
 			this.type = type;
 			this.constants = constants;

@@ -12,7 +12,6 @@ import java.util.Set;
 
 import net.minecraft.util.ResourceLocation;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
@@ -21,7 +20,6 @@ import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleHandler;
 import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleRegistry;
-import genetics.api.events.AlleleRegisterEvent;
 
 import genetics.Genetics;
 import genetics.plugins.PluginManager;
@@ -61,7 +59,6 @@ public class AlleleRegistry implements IAlleleRegistry {
 			handlers.forEach(h -> h.onRegisterAllele(allele));
 		}
 		addValidAlleleKeys(allele, keys);
-		MinecraftForge.EVENT_BUS.register(new AlleleRegisterEvent(allele, keys));
 		return this;
 	}
 

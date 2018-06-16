@@ -21,7 +21,7 @@ public class AlleleUtils {
 		}
 		IAlleleValue alleleValue = (IAlleleValue) allele;
 		Object value = alleleValue.getValue();
-		if (valueClass.isInstance(valueClass)) {
+		if (valueClass.isInstance(value)) {
 			return valueClass.cast(value);
 		}
 		return fallback;

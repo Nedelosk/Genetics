@@ -1,12 +1,14 @@
 package genetics.plugins;
 
+import com.google.common.collect.ImmutableSortedMap;
+
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 
@@ -23,28 +25,27 @@ import genetics.root.IndividualRootBuilder;
 import genetics.root.KaryotypeFactory;
 import genetics.root.RootManager;
 
-import joptsimple.internal.Strings;
-
 public class PluginManager {
 	private static final Comparator<IGeneticPlugin> PLUGIN_COMPARATOR = (firstPlugin, secondPlugin) -> {
 		EventPriority first = firstPlugin.getClass().getAnnotation(GeneticPlugin.class).priority();
 		EventPriority second = secondPlugin.getClass().getAnnotation(GeneticPlugin.class).priority();
 		if (first.equals(second)) {
-			return 0;
+			return firstPlugin.hashCode() - secondPlugin.hashCode();
 		}
 		return first.ordinal() > second.ordinal() ? 1 : -1;
 	};
-	private static List<IGeneticPlugin> plugins = Collections.emptyList();
+	private static ImmutableSortedMap<IGeneticPlugin, ModContainer> plugins;
 	/* The modID of the current active plugin*/
 	@Nullable
-	private static String activePlugin = null;
+	private static ModContainer activeContainer = null;
 
 	private PluginManager() {
 	}
 
 	public static void create(FMLPreInitializationEvent event) {
-		plugins = PluginUtil.getPlugins(event.getAsmData());
-		plugins.sort(PLUGIN_COMPARATOR);
+		ImmutableSortedMap.Builder<IGeneticPlugin, ModContainer> builder = new ImmutableSortedMap.Builder<>(PLUGIN_COMPARATOR);
+		builder.putAll(PluginUtil.getPlugins(event.getAsmData()));
+		plugins = builder.build();
 	}
 
 	public static void initPlugins() {
@@ -79,21 +80,32 @@ public class PluginManager {
 	}
 
 	private static void handlePlugins(Consumer<IGeneticPlugin> pluginConsumer) {
-		plugins.forEach(p -> {
-			setActivePlugin(p.getClass().getAnnotation(GeneticPlugin.class).modId());
-			pluginConsumer.accept(p);
-			setActivePlugin(null);
+		Loader loader = Loader.instance();
+		ModContainer oldContainer = loader.activeModContainer();
+		plugins.forEach((plugin, container) -> {
+			loader.setActiveModContainer(container);
+			setActiveContainer(container);
+			pluginConsumer.accept(plugin);
+			setActiveContainer(null);
 		});
+		loader.setActiveModContainer(oldContainer);
 	}
 
-	static void setActivePlugin(@Nullable String activePlugin) {
-		PluginManager.activePlugin = activePlugin;
+	static void setActiveContainer(@Nullable ModContainer activeContainer) {
+		PluginManager.activeContainer = activeContainer;
 	}
 
 	public static String getCurrentModId() {
-		if (activePlugin == null || Strings.isNullOrEmpty(activePlugin)) {
+		if (activeContainer == null) {
 			return Genetics.MOD_ID;
 		}
-		return activePlugin;
+		return activeContainer.getModId();
+	}
+
+	public static ModContainer getActiveContainer() {
+		if (activeContainer == null) {
+			throw new IllegalStateException();
+		}
+		return activeContainer;
 	}
 }
