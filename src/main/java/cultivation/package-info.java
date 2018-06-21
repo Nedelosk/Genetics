@@ -1,7 +1,7 @@
 @ParametersAreNonnullByDefault
 @FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package genetics.gene;
+package cultivation;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

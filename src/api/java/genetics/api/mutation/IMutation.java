@@ -3,6 +3,7 @@ package genetics.api.mutation;
 import java.util.Collection;
 
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleSpecies;
 
 /**
  * Individuals can be seeded either as hive drops or as mutation results.
@@ -17,12 +18,12 @@ public interface IMutation {
 	/**
 	 * @return first of the alleles implementing IAlleleSpecies required for this mutation.
 	 */
-	IAllele getFirstAllele();
+	IAlleleSpecies getFirstAllele();
 
 	/**
 	 * @return second of the alleles implementing IAlleleSpecies required for this mutation.
 	 */
-	IAllele getSecondAllele();
+	IAlleleSpecies getSecondAllele();
 
 	/**
 	 * @return Array of {@link IAllele} representing the full default genome of the mutated side.

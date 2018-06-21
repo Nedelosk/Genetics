@@ -1,5 +1,6 @@
-package genetics.api.gene;
+package genetics.api.individual;
 
+import genetics.api.alleles.IAllele;
 import genetics.api.root.IIndividualRoot;
 
 /**
@@ -21,4 +22,6 @@ public interface IChromosomeType {
 	 * @return Short identifier.
 	 */
 	String getName();
+
+	boolean isValid(IAllele allele);
 }

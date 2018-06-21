@@ -4,9 +4,11 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
 import genetics.api.root.IIndividualRoot;
 
@@ -16,7 +18,7 @@ import genetics.api.root.IIndividualRoot;
  * You can use {@link IGeneticFactory#createOrganism(ItemStack, IOrganismType, IIndividualRoot)} to create an
  * instance of this or you can use your own implementation.
  */
-public interface IOrganism<I extends IIndividual> {
+public interface IOrganism<I extends IIndividual> extends ICapabilityProvider {
 
 	/**
 	 * @return Creates the individual out of the nbt of the item.

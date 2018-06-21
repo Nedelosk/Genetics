@@ -1,5 +1,6 @@
 package genetics.root;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Arrays;
@@ -8,7 +9,7 @@ import java.util.Map;
 import java.util.Random;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IKaryotype;
+import genetics.api.individual.IKaryotype;
 import genetics.api.root.ITemplateContainer;
 
 public class TemplateContainer implements ITemplateContainer {
@@ -23,6 +24,11 @@ public class TemplateContainer implements ITemplateContainer {
 	@Override
 	public Map<String, IAllele[]> getGenomeTemplates() {
 		return templates;
+	}
+
+	@Override
+	public ImmutableCollection<IAllele[]> getTemplates() {
+		return templates.values();
 	}
 
 	@Override

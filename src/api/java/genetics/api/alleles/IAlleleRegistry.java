@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticPlugin;
+import genetics.api.individual.IChromosomeType;
 
 /**
  * The {@link IAlleleRegistry} offers several functions for registering and retrieving alleles.
@@ -15,47 +16,52 @@ import genetics.api.IGeneticPlugin;
  * Later you can get the instance from {@link IGeneticApiInstance#getAlleleRegistry()}.
  */
 public interface IAlleleRegistry {
-
 	/**
 	 * Creates a allele with the data that the {@link IAlleleData} contains.
 	 */
-	default IAlleleRegistry registerAllele(IAlleleData value) {
-		return registerAllele(value.getCategory(), value.getName(), value.getValue(), value.isDominant(), value.getKey());
+	default IAllele registerAllele(IAlleleData value, IChromosomeType... types) {
+		return registerAllele(value.getCategory(), value.getName(), value.getValue(), value.isDominant(), types);
 	}
 
 	/**
 	 * Creates and registers an allele that contains the given value and has the given dominant state if no allele with
-	 * the value and the given dominant state exists, otherwise it adds the keys to the existing {@link IAllele}.
+	 * the value and the given dominant state exists, otherwise it adds the types to the existing {@link IAllele}.
 	 *
 	 * @param category
 	 * @param valueName
 	 * @param value     the value of the allele
 	 * @param dominant  if true the allele is dominant, otherwise the allele is recessive.
-	 * @param keys      allele keys for this allele.
+	 * @param types      chromosome types for this allele.
 	 */
-	<V> IAlleleRegistry registerAllele(String category, String valueName, V value, boolean dominant, IAlleleKey... keys);
+	<V> IAllele registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types);
 
 	/**
 	 * Registers an allele.
 	 *
 	 * @param allele IAllele to register.
-	 * @param keys   allele keys for this allele.
+	 * @param types   allele keys for this allele.
 	 */
-	IAlleleRegistry registerAllele(IAllele allele, IAlleleKey... keys);
-
-	default IAlleleRegistry addValidAlleleKeys(String registryName, IAlleleKey... keys) {
-		return addValidAlleleKeys(new ResourceLocation(registryName), keys);
-	}
-
-	IAlleleRegistry addValidAlleleKeys(ResourceLocation registryName, IAlleleKey... keys);
+	IAllele registerAllele(IAllele allele, IChromosomeType... types);
 
 	/**
-	 * Returns the allele that is associated with the given key.
-	 *
-	 * @param key the key whose associated allele is to be returned
-	 * @return an {@code Optional} describing the allele which is associated with the given key.
+	 * Add more valid chromosome types for an allele.
+	 * Used by addons that create new chromosome types beyond bees, trees, and butterflies.
 	 */
-	Optional<IAllele> getAllele(IAlleleKey key);
+	default IAlleleRegistry addValidAlleleTypes(String registryName, IChromosomeType... types) {
+		return addValidAlleleTypes(new ResourceLocation(registryName), types);
+	}
+
+	/**
+	 * Add more valid chromosome types for an allele.
+	 * Used by addons that create new chromosome types beyond bees, trees, and butterflies.
+	 */
+	IAlleleRegistry addValidAlleleTypes(ResourceLocation registryName, IChromosomeType... types);
+
+	/**
+	 * Add more valid chromosome types for an allele.
+	 * Used by addons that create new chromosome types beyond bees, trees, and butterflies.
+	 */
+	IAlleleRegistry addValidAlleleTypes(IAllele allele, IChromosomeType... types);
 
 	/**
 	 * Gets an allele
@@ -76,12 +82,25 @@ public interface IAlleleRegistry {
 	Optional<IAllele> getAllele(ResourceLocation registryName);
 
 	/**
-	 * Gets all keys for the given allele.
-	 *
-	 * @return all keys that were registered for the given keys.
+	 * @return unmodifiable collection of all the known chromosome types.
 	 */
-	Collection<IAlleleKey> getKeys(IAllele allele);
+	Collection<IChromosomeType> getChromosomeTypes(IAllele allele);
 
+	/**
+	 * @return unmodifiable collection of all the known allele variations for the given chromosome type.
+	 */
+	Collection<IAllele> getRegisteredAlleles(IChromosomeType type);
+
+	/**
+	 * Returns true if the given allele is a valid allele for the given chromosome type.
+	 *
+	 * @param allele
+	 * @param type
+	 * @return
+	 */
+	boolean isValidAllele(IAllele allele, IChromosomeType type);
+
+	/* ALLELE HANDLERS */
 	/**
 	 * Registers a new IAlleleHandler
 	 *
@@ -93,4 +112,31 @@ public interface IAlleleRegistry {
 	 * @return all handlers that were registered.
 	 */
 	Collection<IAlleleHandler> getHandlers();
+
+	/* BLACKLIST */
+	/**
+	 * Blacklist an allele identified by its UID from mutation.
+	 *
+	 * @param registryName UID of the allele to blacklist.
+	 */
+	void blacklistAllele(String registryName);
+
+	default void blacklistAllele(ResourceLocation registryName){
+		blacklistAllele(registryName.toString());
+	}
+
+	/**
+	 * @return Current blacklisted alleles.
+	 */
+	Collection<String> getAlleleBlacklist();
+
+	/**
+	 * @param registryName UID of the species to vet.
+	 * @return true if the allele is blacklisted.
+	 */
+	boolean isBlacklisted(String registryName);
+
+	default boolean isBlacklisted(ResourceLocation registryName){
+		return isBlacklisted(registryName.toString());
+	}
 }

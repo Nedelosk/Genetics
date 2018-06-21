@@ -6,8 +6,6 @@ import java.util.Optional;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
 import genetics.api.root.IIndividualRoot;
 
 /**
@@ -15,7 +13,7 @@ import genetics.api.root.IIndividualRoot;
  */
 public interface IIndividual {
 	/**
-	 * @return The {@link IAllele#getRegistryName()} of the allele that is at the {@link IKaryotype#getTemplateType()}
+	 * @return The {@link IAllele#getRegistryName()} of the allele that is at the {@link IKaryotype#getSpeciesType()}
 	 * of the {@link IGenome} of this individual.
 	 */
 	String getIdentifier();

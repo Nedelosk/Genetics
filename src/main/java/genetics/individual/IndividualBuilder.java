@@ -3,14 +3,13 @@ package genetics.individual;
 import net.minecraft.util.ResourceLocation;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IIndividualBuilder;
+import genetics.api.individual.IKaryotype;
 import genetics.api.root.IIndividualRoot;
 
 public final class IndividualBuilder<I extends IIndividual> implements IIndividualBuilder<I> {
@@ -33,12 +32,6 @@ public final class IndividualBuilder<I extends IIndividual> implements IIndividu
 	public void setAllele(IChromosomeType type, IAllele allele, boolean active) {
 		IAlleleTemplateBuilder builder = active ? activeBuilder : inactiveBuilder;
 		builder.set(type, allele);
-	}
-
-	@Override
-	public void setAllele(IChromosomeType type, IAlleleKey key, boolean active) {
-		IAlleleTemplateBuilder builder = active ? activeBuilder : inactiveBuilder;
-		builder.set(type, key);
 	}
 
 	@Override

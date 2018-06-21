@@ -11,10 +11,12 @@ import net.minecraft.util.ResourceLocation;
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleRegistry;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IGene;
 import genetics.api.individual.IChromosome;
+import genetics.api.individual.IChromosomeType;
+import genetics.api.individual.IKaryotype;
 import genetics.api.root.ITemplateContainer;
+
+import genetics.ApiInstance;
 
 @Immutable
 public class Chromosome implements IChromosome {
@@ -59,33 +61,23 @@ public class Chromosome implements IChromosome {
 	}
 
 	private static IAllele validateAllele(@Nullable String templateIdentifier, IChromosomeType type, @Nullable IAllele allele) {
-		Optional<IGene> optional = GeneticsAPI.apiInstance.getGeneRegistry().getGene(type);
-		if (!optional.isPresent()) {
-			return getDefaultAllele(null, templateIdentifier, type);
-		}
-		IGene gene = optional.get();
-		if (allele == null || gene.isValidAllele(allele)) {
-			return getDefaultAllele(gene, templateIdentifier, type);
+		IAlleleRegistry alleleRegistry = ApiInstance.INSTANCE.getAlleleRegistry();
+		if(allele == null || !alleleRegistry.isValidAllele(allele, type)){
+			ITemplateContainer container = type.getRoot().getTemplates();
+			IKaryotype karyotype = container.getKaryotype();
+			IAllele[] template = null;
+
+			if (templateIdentifier != null) {
+				template = container.getTemplate(templateIdentifier);
+			}
+
+			if (template == null) {
+				template = karyotype.getDefaultTemplate().alleles();
+			}
+
+			return template[type.getIndex()];
 		}
 		return allele;
-	}
-
-	private static IAllele getDefaultAllele(@Nullable IGene gene, @Nullable String templateIdentifier, IChromosomeType type) {
-		ITemplateContainer container = type.getRoot().getTemplates();
-		if (gene == null) {
-			return container.getKaryotype().getDefaultTemplate().get(type);
-		}
-		IAllele[] template = new IAllele[0];
-
-		if (templateIdentifier != null) {
-			template = container.getTemplate(templateIdentifier);
-		}
-
-		if (template.length == 0) {
-			return gene.getDefaultAllele();
-		}
-
-		return template[type.getIndex()];
 	}
 
 	public static Chromosome create(IAllele allele, IChromosomeType geneType) {

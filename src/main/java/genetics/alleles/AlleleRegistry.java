@@ -3,10 +3,10 @@ package genetics.alleles;
 import com.google.common.collect.HashMultimap;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,8 +18,8 @@ import net.minecraftforge.registries.RegistryBuilder;
 import genetics.api.alleles.AlleleCategorized;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleHandler;
-import genetics.api.alleles.IAlleleKey;
 import genetics.api.alleles.IAlleleRegistry;
+import genetics.api.individual.IChromosomeType;
 
 import genetics.Genetics;
 import genetics.plugins.PluginManager;
@@ -29,9 +29,9 @@ public class AlleleRegistry implements IAlleleRegistry {
 	private static final int ALLELE_ARRAY_SIZE = 2048;
 
 	/* ALLELES */
-	private final HashMultimap<IAllele, IAlleleKey> keysByAllele = HashMultimap.create(ALLELE_ARRAY_SIZE, 1);
-	private final HashMap<IAlleleKey, IAllele> alleleByKey = new LinkedHashMap<>(ALLELE_ARRAY_SIZE);
 	private final ForgeRegistry<IAllele> registry;
+	private final HashMultimap<IChromosomeType, IAllele> allelesByType = HashMultimap.create();
+	private final HashMultimap<IAllele, IChromosomeType> typesByAllele = HashMultimap.create();
 	/*
 	 * Internal Set of all alleleHandlers, which trigger when an allele or branch is registered
 	 */
@@ -48,38 +48,48 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	@Override
-	public <V> IAlleleRegistry registerAllele(String category, String valueName, V value, boolean dominant, IAlleleKey... keys) {
-		return registerAllele(new AlleleCategorized<>(PluginManager.getCurrentModId(), category, valueName, value, dominant), keys);
+	public <V> IAllele registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types) {
+		return registerAllele(new AlleleCategorized<>(PluginManager.getCurrentModId(), category, valueName, value, dominant), types);
 	}
 
 	@Override
-	public IAlleleRegistry registerAllele(IAllele allele, IAlleleKey... keys) {
+	public IAllele registerAllele(IAllele allele, IChromosomeType... types) {
 		if (!registry.containsKey(allele.getRegistryName())) {
 			registry.register(allele);
 			handlers.forEach(h -> h.onRegisterAllele(allele));
 		}
-		addValidAlleleKeys(allele, keys);
-		return this;
+		addValidAlleleTypes(allele, types);
+		return allele;
 	}
 
 	@Override
-	public IAlleleRegistry addValidAlleleKeys(ResourceLocation registryName, IAlleleKey... keys) {
+	public IAlleleRegistry addValidAlleleTypes(ResourceLocation registryName, IChromosomeType... types) {
 		Optional<IAllele> alleleOptional = getAllele(registryName);
-		alleleOptional.ifPresent(allele -> addValidAlleleKeys(allele, keys));
+		alleleOptional.ifPresent(allele -> addValidAlleleTypes(allele, types));
 		return this;
 	}
 
-	private void addValidAlleleKeys(IAllele allele, IAlleleKey... keys) {
-		for (IAlleleKey key : keys) {
-			keysByAllele.put(allele, key);
-			alleleByKey.put(key, allele);
+	@Override
+	public IAlleleRegistry addValidAlleleTypes(IAllele allele, IChromosomeType... types) {
+		handlers.forEach(h -> h.onAddTypes(allele, types));
+		for (IChromosomeType chromosomeType : types) {
+			if (!chromosomeType.isValid(allele)) {
+				//throw new IllegalArgumentException("Allele class (" + allele.getClass() + ") does not match chromosome type (" + chromosomeType.getAlleleClass() + ").");
+			}
+			allelesByType.put(chromosomeType, allele);
+			typesByAllele.put(allele, chromosomeType);
 		}
-		handlers.forEach(h -> h.onAddKeys(allele, keys));
+		return this;
 	}
 
 	@Override
-	public Optional<IAllele> getAllele(IAlleleKey key) {
-		return Optional.ofNullable(alleleByKey.get(key));
+	public Collection<IChromosomeType> getChromosomeTypes(IAllele allele) {
+		return typesByAllele.get(allele);
+	}
+
+	@Override
+	public Collection<IAllele> getRegisteredAlleles(IChromosomeType type) {
+		return allelesByType.get(type);
 	}
 
 	@Override
@@ -88,8 +98,8 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	@Override
-	public Collection<IAlleleKey> getKeys(IAllele allele) {
-		return keysByAllele.get(allele);
+	public boolean isValidAllele(IAllele allele, IChromosomeType type) {
+		return type.isValid(allele);
 	}
 
 	@Override
@@ -113,6 +123,24 @@ public class AlleleRegistry implements IAlleleRegistry {
 	@Nullable
 	public IAllele getAllele(int id) {
 		return registry.getValue(id);
+	}
+
+	/* BLACKLIST */
+	private final ArrayList<String> blacklist = new ArrayList<>();
+
+	@Override
+	public void blacklistAllele(String registryName) {
+		blacklist.add(registryName);
+	}
+
+	@Override
+	public Collection<String> getAlleleBlacklist() {
+		return Collections.unmodifiableCollection(blacklist);
+	}
+
+	@Override
+	public boolean isBlacklisted(String registryName) {
+		return blacklist.contains(registryName);
 	}
 
 }

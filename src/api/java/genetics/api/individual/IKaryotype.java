@@ -1,39 +1,28 @@
-package genetics.api.gene;
+package genetics.api.individual;
 
 import javax.annotation.Nullable;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.individual.IChromosome;
-import genetics.api.individual.IGenome;
 import genetics.api.root.ITemplateContainer;
-
-import genetics.ApiInstance;
 
 /**
  * The IKaryotype defines how many chromosomes a {@link IGenome} contains and which type the {@link IChromosome}s have.
  * <p>
  * You can use a {@link IKaryotypeBuilder} to create an instance or you create the instance directly with
- * {@link IKaryotypeFactory#createKaryotype(Class, String)} if you have a enum that contains your {@link IChromosomeType}s.
+ * {@link IKaryotypeFactory#createKaryotype(String, Class)} if you have a enum that contains your {@link IChromosomeType}s.
  */
 public interface IKaryotype {
 	/**
 	 * @return Short identifier that is only used if something went wrong.
 	 */
-	String getIdentifier();
+	String getUID();
 
 	/**
 	 * @return All gene types of this IKaryotype.
 	 */
 	IChromosomeType[] getChromosomeTypes();
-
-	/**
-	 * Checks if this karyotype contains any of the types of this gene.
-	 */
-	default boolean contains(IGene gene) {
-		return ApiInstance.INSTANCE.getGeneRegistry().getTypes(gene).stream().anyMatch(this::contains);
-	}
 
 	/**
 	 * Checks if this karyotype contains the given type.
@@ -45,7 +34,7 @@ public interface IKaryotype {
 	 * It uses the {@link IAllele#getRegistryName()} of the allele that is at the active position of the template in the
 	 * chromosome with this type.
 	 */
-	IChromosomeType getTemplateType();
+	IChromosomeType getSpeciesType();
 
 	/**
 	 * Creates a template builder that contains a copy of the default template allele array.
@@ -56,6 +45,8 @@ public interface IKaryotype {
 	 * Creates a template builder that contains a copy of the allele array.
 	 */
 	IAlleleTemplateBuilder createTemplate(IAllele[] alleles);
+
+	IAlleleTemplateBuilder createEmptyTemplate();
 
 	/**
 	 * @return Default individual template for use when stuff breaks.

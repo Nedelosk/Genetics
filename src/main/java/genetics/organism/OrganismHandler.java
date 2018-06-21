@@ -1,6 +1,7 @@
 package genetics.organism;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,17 +13,17 @@ import genetics.api.root.IRootDefinition;
 
 public class OrganismHandler<I extends IIndividual> implements IOrganismHandler<I> {
 	private static final String INDIVIDUAL_KEY = "Individual";
-	private final IRootDefinition<IIndividualRoot<I>> optionalRoot;
-	private final ItemStack stack;
+	private final IRootDefinition<? extends IIndividualRoot<I>> optionalRoot;
+	private final Supplier<ItemStack> stack;
 
-	public OrganismHandler(IRootDefinition<IIndividualRoot<I>> optionalRoot, ItemStack stack) {
+	public OrganismHandler(IRootDefinition<? extends IIndividualRoot<I>> optionalRoot, Supplier<ItemStack> stack) {
 		this.optionalRoot = optionalRoot;
 		this.stack = stack;
 	}
 
 	@Override
 	public ItemStack createStack(I individual) {
-		ItemStack itemStack = stack.copy();
+		ItemStack itemStack = stack.get();
 		itemStack.setTagInfo(INDIVIDUAL_KEY, individual.writeToNBT(new NBTTagCompound()));
 		return itemStack;
 	}

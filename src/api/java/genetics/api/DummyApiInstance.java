@@ -1,12 +1,15 @@
 package genetics.api;
 
+import java.util.Collections;
+import java.util.Map;
+
 import net.minecraftforge.fml.common.Loader;
 
 import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.classification.IClassificationRegistry;
-import genetics.api.gene.IGeneRegistry;
 import genetics.api.root.EmptyRootDefinition;
 import genetics.api.root.IIndividualRoot;
+import genetics.api.root.IIndividualRootHelper;
 import genetics.api.root.IRootDefinition;
 
 public class DummyApiInstance implements IGeneticApiInstance {
@@ -23,11 +26,6 @@ public class DummyApiInstance implements IGeneticApiInstance {
 	}
 
 	@Override
-	public IGeneRegistry getGeneRegistry() {
-		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
-	}
-
-	@Override
 	public IGeneticFactory getGeneticFactory() {
 		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
 	}
@@ -38,8 +36,18 @@ public class DummyApiInstance implements IGeneticApiInstance {
 	}
 
 	@Override
+	public IIndividualRootHelper getRootHelper() {
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
+	}
+
+	@Override
 	public <R extends IIndividualRoot> IRootDefinition<R> getRoot(String rootUID) {
 		return EmptyRootDefinition.empty();
+	}
+
+	@Override
+	public Map<String, IRootDefinition> getRoots() {
+		return Collections.emptyMap();
 	}
 
 	@Override

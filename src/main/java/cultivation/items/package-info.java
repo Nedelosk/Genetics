@@ -1,7 +1,10 @@
 @ParametersAreNonnullByDefault
+@FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package genetics.api.gene;
+package cultivation.items;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import mcp.MethodsReturnNonnullByDefault;
+
+import genetics.FieldsAreNonnullByDefault;

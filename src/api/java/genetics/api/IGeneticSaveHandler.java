@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IKaryotype;
 
 /**
  * This handler provides some functions to save and load {@link IAllele}s, {@link IChromosome}s and {@link IGenome}s.
@@ -39,49 +39,49 @@ public interface IGeneticSaveHandler {
 	 * Quickly gets the species without loading the whole genome. And without creating absent chromosomes.
 	 *
 	 * @param genomeNBT The NBT-Data that contains the information about the chromosome
-	 * @param geneType  The gene type of the chromosome.
+	 * @param chromosomeType  The gene type of the chromosome.
 	 * @param active    if the returned allele should be the active one.
 	 * @return The active or inactive allele of the chromosome if the chromosome is present.
 	 */
 	@Nullable
-	IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active);
+	IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType chromosomeType, boolean active);
 
 	/**
 	 * Quickly gets the allele without loading the whole genome. And without creating absent chromosomes.
 	 *
 	 * @param itemStack The stack that contains the information about the chromosome
-	 * @param geneType  The gene type of the chromosome.
+	 * @param chromosomeType  The gene type of the chromosome.
 	 * @param active    if the returned allele should be the active one.
 	 * @return The active or inactive allele of the chromosome if the chromosome is present.
 	 */
 	@Nullable
-	IAllele getAlleleDirectly(ItemStack itemStack, IChromosomeType geneType, boolean active);
+	IAllele getAlleleDirectly(ItemStack itemStack, IChromosomeType chromosomeType, boolean active);
 
 	/**
 	 * Tries to load the chromosome of the given type and creates it if it is absent.
 	 *
 	 * @param itemStack The stack that contains the information about the chromosome
-	 * @param geneType  The gene type of the chromosome.
+	 * @param chromosomeType  The gene type of the chromosome.
 	 * @param active    if the returned allele should be the active one.
 	 * @return The active or inactive allele of the chromosome.
 	 */
-	IAllele getAllele(ItemStack itemStack, IChromosomeType geneType, boolean active);
+	IAllele getAllele(ItemStack itemStack, IChromosomeType chromosomeType, boolean active);
 
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
 	 *
 	 * @param genomeNBT The NBT-Data that contains the information about the chromosome
-	 * @param geneType  The gene type of the chromosome.
+	 * @param chromosomeType  The gene type of the chromosome.
 	 * @return The chromosome.
 	 */
-	IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IChromosomeType geneType);
+	IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IChromosomeType chromosomeType);
 
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
 	 *
 	 * @param itemStack The stack that contains the information about the chromosome
-	 * @param geneType  The gene type of the chromosome.
+	 * @param chromosomeType  The gene type of the chromosome.
 	 * @return The chromosome.
 	 */
-	IChromosome getSpecificChromosome(ItemStack itemStack, IChromosomeType geneType);
+	IChromosome getSpecificChromosome(ItemStack itemStack, IChromosomeType chromosomeType);
 }

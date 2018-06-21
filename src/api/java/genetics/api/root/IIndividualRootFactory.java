@@ -1,7 +1,7 @@
 package genetics.api.root;
 
-import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IKaryotype;
 import genetics.api.organism.IOrganismTypes;
 import genetics.api.root.translator.IIndividualTranslator;
 

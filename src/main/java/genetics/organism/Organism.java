@@ -9,26 +9,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
 import genetics.api.root.IIndividualRoot;
+import genetics.api.root.IRootDefinition;
 
 import genetics.Genetics;
 import genetics.individual.GeneticSaveHandler;
 
-public class Organism<I extends IIndividual> implements IOrganism<I>, ICapabilityProvider {
+public class Organism<I extends IIndividual> implements IOrganism<I> {
 	private final ItemStack container;
-	private final Supplier<IIndividualRoot<I>> definitionSupplier;
+	private final IRootDefinition<? extends IIndividualRoot<I>> definition;
 	private final Supplier<IOrganismType> typeSupplier;
 
-	public Organism(ItemStack container, Supplier<IIndividualRoot<I>> geneticDefinitionSupplier, Supplier<IOrganismType> typeSupplier) {
+	public Organism(ItemStack container, IRootDefinition<? extends IIndividualRoot<I>> geneticDefinitionSupplier, Supplier<IOrganismType> typeSupplier) {
 		this.container = container;
-		this.definitionSupplier = geneticDefinitionSupplier;
+		this.definition = geneticDefinitionSupplier;
 		this.typeSupplier = typeSupplier;
 	}
 
@@ -44,7 +44,7 @@ public class Organism<I extends IIndividual> implements IOrganism<I>, ICapabilit
 
 	@Override
 	public IIndividualRoot<I> getRoot() {
-		return definitionSupplier.get();
+		return definition.get();
 	}
 
 	@Override

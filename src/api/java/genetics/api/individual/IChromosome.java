@@ -7,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticSaveHandler;
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
 
 
 /**

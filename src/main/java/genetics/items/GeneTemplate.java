@@ -12,7 +12,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.root.IIndividualRoot;
 
 import genetics.ApiInstance;

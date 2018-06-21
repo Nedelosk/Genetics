@@ -2,6 +2,7 @@ package genetics.api.root;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A empty instance of an {@link IRootDefinition}.
@@ -36,5 +37,10 @@ public final class EmptyRootDefinition implements IRootDefinition {
 	@Override
 	public void ifPresent(Consumer consumer) {
 		//The optional is empty, so we have nothing to call.
+	}
+
+	@Override
+	public Optional map(Function mapper) {
+		return Optional.empty();
 	}
 }

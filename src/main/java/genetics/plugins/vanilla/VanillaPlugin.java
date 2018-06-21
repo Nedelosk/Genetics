@@ -2,7 +2,6 @@ package genetics.plugins.vanilla;
 
 import genetics.api.GeneticPlugin;
 import genetics.api.IGeneticPlugin;
-import genetics.api.alleles.DefaultAlleles;
 import genetics.api.alleles.IAlleleRegistry;
 
 import genetics.Genetics;
@@ -11,10 +10,10 @@ import genetics.Genetics;
 public class VanillaPlugin implements IGeneticPlugin {
 	@Override
 	public void registerAlleles(IAlleleRegistry registry) {
-		for (DefaultAlleles.Integer integer : DefaultAlleles.Integer.values()) {
-			registry.registerAllele("i", integer.ordinal() + 1 + "d", integer.ordinal() + 1, true, integer);
+		for (int i = 1;i <= 10;i++) {
+			registry.registerAllele("i", i + "d", i, true);
 		}
-		registry.registerAllele("bool", Boolean.toString(true), true, false, DefaultAlleles.Boolean.TRUE);
-		registry.registerAllele("bool", Boolean.toString(false), false, false, DefaultAlleles.Boolean.FALSE);
+		registry.registerAllele("bool", Boolean.toString(true), true, false);
+		registry.registerAllele("bool", Boolean.toString(false), false, false);
 	}
 }

@@ -5,8 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
 
 /**
  * Holds the {@link IChromosome}s which comprise the traits of a given individual.
@@ -22,29 +20,29 @@ public interface IGenome {
 	IChromosome[] getChromosomes();
 
 	/**
-	 * @return The active allele of the chromosome with the given gene type.
+	 * @return The active allele of the chromosome with the given type.
 	 */
-	IAllele getActiveAllele(IChromosomeType geneType);
+	IAllele getActiveAllele(IChromosomeType chromosomeType);
 
 	/**
-	 * @return The value of the active allele of the chromosome with the given gene type.
+	 * @return The value of the active allele of the chromosome with the given type.
 	 */
-	<V> V getActiveValue(IChromosomeType geneType, Class<? extends V> valueClass);
+	<V> V getActiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass);
 
 	/**
-	 * @return The inactive allele of the chromosome with the given gene type.
+	 * @return The inactive allele of the chromosome with the given type.
 	 */
-	IAllele getInactiveAllele(IChromosomeType geneType);
+	IAllele getInactiveAllele(IChromosomeType chromosomeType);
 
 	/**
-	 * @return The value of the inactive allele of the chromosome with the given gene type.
+	 * @return The value of the inactive allele of the chromosome with the given type.
 	 */
-	<V> V getInactiveValue(IChromosomeType geneType, Class<? extends V> valueClass);
+	<V> V getInactiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass);
 
 	/**
-	 * @return The chromosome with the given gene type.
+	 * @return The chromosome with the given type.
 	 */
-	IChromosome getChromosome(IChromosomeType geneType);
+	IChromosome getChromosome(IChromosomeType chromosomeType);
 
 	/**
 	 * @return A array that contains all active alleles of this genome.
@@ -64,7 +62,7 @@ public interface IGenome {
 	/**
 	 * @return true if this chromosome has the same active and inactive allele.
 	 */
-	boolean isPureBred(IChromosomeType geneType);
+	boolean isPureBred(IChromosomeType chromosomeType);
 
 	/**
 	 * @return The karyotype of this genome. It defines the positions of the chromosomes in the array and the length

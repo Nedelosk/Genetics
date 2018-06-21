@@ -3,22 +3,26 @@ package genetics.root;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.common.MinecraftForge;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
-import genetics.api.events.RootCreationEvent;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
+import genetics.api.events.RootEvent;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IKaryotype;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
@@ -30,11 +34,13 @@ import genetics.api.root.translator.IIndividualTranslator;
 import genetics.api.root.translator.IItemTranslator;
 
 import genetics.ApiInstance;
+import genetics.GeneticFactory;
+import genetics.Log;
 import genetics.individual.RootDefinition;
 import genetics.organism.OrganismTypes;
 
 public class IndividualRootBuilder<I extends IIndividual> implements IIndividualRootBuilder<I> {
-	private final Map<IOrganismType, IOrganismHandler<I>> types = new HashMap<>();
+	private final Map<IOrganismType, IOrganismHandler<I>> types = new LinkedHashMap<>();
 	private final IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory;
 	private final String uid;
 	private final IKaryotype karyotype;
@@ -43,7 +49,9 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 	private final Map<Block, IBlockTranslator<I>> blockTranslators = new HashMap<>();
 	private final RootDefinition<IIndividualRoot<I>> definition;
 	private BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IIndividualTranslator<I>> translatorFactory = IndividualTranslator::new;
-	private Function<Map<IOrganismType, IOrganismHandler<I>>, IOrganismTypes<I>> typesFactory = OrganismTypes::new;
+	private BiFunction<Map<IOrganismType, IOrganismHandler<I>>, IOrganismType, IOrganismTypes<I>> typesFactory = OrganismTypes::new;
+	@Nullable
+	private IOrganismType defaultType;
 
 	public IndividualRootBuilder(String uid, IKaryotype karyotype, IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory) {
 		this.uid = uid;
@@ -53,9 +61,17 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 	}
 
 	@Override
-	public IIndividualRootBuilder<I> registerType(IOrganismType type, IOrganismHandler<I> handler) {
+	public IIndividualRootBuilder<I> registerType(IOrganismType type, IOrganismHandler<I> handler, boolean defaultType) {
 		types.put(type, handler);
+		if(defaultType){
+			this.defaultType = type;
+		}
 		return this;
+	}
+
+	@Override
+	public IIndividualRootBuilder<I> registerType(IOrganismType type, Supplier<ItemStack> stack, boolean defaultType) {
+		return registerType(type, GeneticFactory.INSTANCE.createOrganismHandler(definition, stack), defaultType);
 	}
 
 	@Override
@@ -75,7 +91,7 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 		Preconditions.checkNotNull(template, "Tried to register null template");
 		Preconditions.checkArgument(template.length > 0, "Tried to register empty template");
 
-		IChromosomeType templateType = karyotype.getTemplateType();
+		IChromosomeType templateType = karyotype.getSpeciesType();
 		IAllele templateAllele = template[templateType.getIndex()];
 		String identifier = templateAllele.getRegistryName().toString();
 		templates.put(identifier, template);
@@ -95,7 +111,7 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 	}
 
 	@Override
-	public IIndividualRootBuilder<I> setTypes(Function<Map<IOrganismType, IOrganismHandler<I>>, IOrganismTypes<I>> typesFactory) {
+	public IIndividualRootBuilder<I> setTypes(BiFunction<Map<IOrganismType, IOrganismHandler<I>>, IOrganismType, IOrganismTypes<I>> typesFactory) {
 		this.typesFactory = typesFactory;
 		return this;
 	}
@@ -107,9 +123,19 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 
 	public void create() {
 		IIndividualTranslator<I> translator = translatorFactory.apply(itemTranslators, blockTranslators);
-		IOrganismTypes<I> typesInstance = typesFactory.apply(this.types);
+		if(defaultType == null){
+			Iterator<IOrganismType> organismTypes = types.keySet().iterator();
+			if(!organismTypes.hasNext()){
+				String message = String.format("No types were registered for the individual root '%s'.", uid);
+				throw new IllegalStateException(message);
+			}
+			defaultType = organismTypes.next();
+
+			Log.debug("No default type was registered for individual root '{}' used first registered type.", uid);
+		}
+		IOrganismTypes<I> typesInstance = typesFactory.apply(this.types, defaultType);
 		definition.setRoot(rootFactory.createRoot(typesInstance, translator, new TemplateContainer(karyotype, ImmutableMap.copyOf(templates)), karyotype));
-		MinecraftForge.EVENT_BUS.register(new RootCreationEvent<>(definition));
+		MinecraftForge.EVENT_BUS.register(new RootEvent.CreationEvent<>(definition));
 	}
 
 	@SuppressWarnings("unchecked")

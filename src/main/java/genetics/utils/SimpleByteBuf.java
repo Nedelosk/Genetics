@@ -6,9 +6,9 @@ import java.util.Arrays;
 import net.minecraft.util.ResourceLocation;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
+import genetics.api.individual.IChromosomeType;
+import genetics.api.individual.IKaryotype;
 
 import genetics.ApiInstance;
 import genetics.alleles.AlleleRegistry;
@@ -144,7 +144,7 @@ public class SimpleByteBuf {
 			Chromosome chromosome = readChromosome(type, primaryTemplateIdentifier, secondaryTemplateIdentifier);
 			chromosomes[index] = chromosome;
 
-			if (type.equals(karyotype.getTemplateType())) {
+			if (type.equals(karyotype.getSpeciesType())) {
 				primaryTemplateIdentifier = chromosome.getActiveAllele().getRegistryName();
 				secondaryTemplateIdentifier = chromosome.getInactiveAllele().getRegistryName();
 			}
@@ -218,7 +218,7 @@ public class SimpleByteBuf {
 		for (IChromosomeType key : keys) {
 			if (geneType.equals(key)) {
 				return info.setChromosome(readChromosome(key, info));
-			} else if (karyotype.getTemplateType().equals(key)) {
+			} else if (karyotype.getSpeciesType().equals(key)) {
 				Chromosome chromosome = readChromosome(key, info);
 
 				info.setSpeciesInfo(chromosome.getActiveAllele().getRegistryName(), chromosome.getInactiveAllele().getRegistryName());

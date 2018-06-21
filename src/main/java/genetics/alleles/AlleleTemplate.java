@@ -6,11 +6,11 @@ import java.util.Arrays;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IKaryotype;
 import genetics.api.root.IIndividualRoot;
 
 public final class AlleleTemplate implements IAlleleTemplate {
@@ -22,7 +22,6 @@ public final class AlleleTemplate implements IAlleleTemplate {
 		this.karyotype = karyotype;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public IAllele get(IChromosomeType type) {
 		return alleles[type.getIndex()];
@@ -66,5 +65,10 @@ public final class AlleleTemplate implements IAlleleTemplate {
 	@Override
 	public IChromosome[] toChromosomes(@Nullable IAlleleTemplate inactiveTemplate) {
 		return karyotype.templateAsChromosomes(alleles, inactiveTemplate == null ? null : inactiveTemplate.alleles());
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(alleles);
 	}
 }

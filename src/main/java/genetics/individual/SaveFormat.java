@@ -7,9 +7,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
+import genetics.api.individual.IChromosomeType;
+import genetics.api.individual.IKaryotype;
 
 import genetics.utils.SimpleByteBuf;
 
@@ -48,7 +48,7 @@ public enum SaveFormat {
 					Chromosome chromosome = Chromosome.create(primaryTemplateIdentifier, secondaryTemplateIdentifier, geneType, chromosomeNBT);
 					chromosomes[chromosomeOrdinal] = chromosome;
 
-					if (geneType.equals(karyotype.getTemplateType())) {
+					if (geneType.equals(karyotype.getSpeciesType())) {
 						primaryTemplateIdentifier = chromosome.getActiveAllele().getRegistryName();
 						secondaryTemplateIdentifier = chromosome.getInactiveAllele().getRegistryName();
 					}
@@ -107,7 +107,7 @@ public enum SaveFormat {
 					Chromosome chromosome = Chromosome.create(primaryTemplateIdentifier, secondaryTemplateIdentifier, geneType, chromosomeNBT);
 					chromosomes[chromosomeOrdinal] = chromosome;
 
-					if (geneType == karyotype.getTemplateType()) {
+					if (geneType == karyotype.getSpeciesType()) {
 						primaryTemplateIdentifier = chromosome.getActiveAllele().getRegistryName();
 						secondaryTemplateIdentifier = chromosome.getInactiveAllele().getRegistryName();
 					}

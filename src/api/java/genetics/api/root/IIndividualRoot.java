@@ -1,16 +1,21 @@
 package genetics.api.root;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IKaryotype;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IGenomeWrapper;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IKaryotype;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
@@ -27,8 +32,7 @@ import genetics.api.root.translator.IIndividualTranslator;
  * @param <I> The type of the individual that this root provides.
  */
 public interface IIndividualRoot<I extends IIndividual> {
-	/* Individual Creation*/
-
+	/* Individual Creation */
 	/**
 	 * Uses the information that the NBT-Data contains to create a {@link IIndividual}.
 	 */
@@ -76,7 +80,6 @@ public interface IIndividualRoot<I extends IIndividual> {
 	I getDefaultMember();
 
 	/* Item Stacks */
-
 	/**
 	 * Creates an {@link ItemStack} that uses the {@link IAllele} template of the given allele and has the
 	 * given organism type.
@@ -89,14 +92,15 @@ public interface IIndividualRoot<I extends IIndividual> {
 	ItemStack createStack(IAllele allele, IOrganismType type);
 
 	/* Genome */
-
 	/**
 	 * Creates a wrapper that can be used to give access to the values of the alleles that the genome contains.
 	 */
 	IGenomeWrapper createWrapper(IGenome genome);
 
-	/* Components */
+	/* Individuals */
 
+	List<I> getIndividualTemplates();
+	/* Components */
 	/**
 	 * Returns the template container that contains all registered templates for the individual of this root.
 	 * Templates have to be registered at the {@link IIndividualRootBuilder} of the root before the root itself was
@@ -107,7 +111,7 @@ public interface IIndividualRoot<I extends IIndividual> {
 	ITemplateContainer getTemplates();
 
 	/**
-	 * The Karyotype defines how many {@link genetics.api.gene.IChromosomeType}s the {@link IGenome} of an
+	 * The Karyotype defines how many {@link IChromosomeType}s the {@link IGenome} of an
 	 * {@link IIndividual} has.
 	 *
 	 * @return The karyotype of this root.
@@ -132,9 +136,11 @@ public interface IIndividualRoot<I extends IIndividual> {
 	IOrganismTypes<I> getTypes();
 
 	/* Util */
-
 	/**
 	 * @return The string based unique identifier of this definition.
 	 */
 	String getUID();
+
+	@SideOnly(Side.CLIENT)
+	IDisplayHelper getDisplayHelper();
 }

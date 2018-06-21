@@ -7,59 +7,45 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
 import genetics.api.IRegistryHelper;
+import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleConstant;
 import genetics.api.alleles.IAlleleRegistry;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IGeneBuilder;
-import genetics.api.gene.IGeneFactory;
+import genetics.api.individual.IChromosomeType;
 
 public enum RegistryHelper implements IRegistryHelper {
 	INSTANCE;
-	private Set<GeneData> genes = new HashSet<>();
+	private Set<AlleleData> alleleData = new HashSet<>();
 
 	@Override
-	public void addGene(String name, IChromosomeType type, IAlleleConstant[] constants) {
-		genes.add(new GeneData(PluginManager.getActiveContainer(), name, type, constants));
+	public void addAlleles(IAlleleConstant[] constants, IChromosomeType... types) {
+		alleleData.add(new AlleleData(PluginManager.getActiveContainer(), constants, types));
 	}
 
 	void onRegisterAlleles(IAlleleRegistry registry) {
 		Loader loader = Loader.instance();
-		for (GeneData gene : genes) {
+		for (AlleleData gene : alleleData) {
 			loader.setActiveModContainer(gene.container);
 			PluginManager.setActiveContainer(gene.container);
-			for (IAlleleConstant data : gene.constants) {
-				registry.registerAllele(data);
+			for (int i = 0;i < gene.constants.length;i++) {
+				IAlleleConstant data = gene.constants[i];
+				gene.alleles[i] = registry.registerAllele(data, gene.types);
 			}
 		}
 		loader.setActiveModContainer(null);
 		PluginManager.setActiveContainer(null);
 	}
 
-	void onRegister(IGeneFactory registry) {
-		for (GeneData gene : genes) {
-			IGeneBuilder geneBuilder = registry.addGene(gene.name).addType(gene.type);
-			for (IAlleleConstant constant : gene.constants) {
-				if (constant.isDefault()) {
-					geneBuilder.setDefaultAllele(constant.getKey());
-				}
-				geneBuilder.addAlleles(constant.getKey());
-			}
-		}
-	}
-
-	private static class GeneData {
-		private final String name;
-		private final IChromosomeType type;
-		private final IAlleleConstant[] constants;
+	private static class AlleleData {
 		private final ModContainer container;
-		private final String modId;
+		private final IChromosomeType[] types;
+		private final IAlleleConstant[] constants;
+		private final IAllele[] alleles;
 
-		private GeneData(ModContainer container, String name, IChromosomeType type, IAlleleConstant[] constants) {
-			this.modId = container.getModId();
+		private AlleleData(ModContainer container, IAlleleConstant[] constants, IChromosomeType[] types) {
 			this.container = container;
-			this.name = name;
-			this.type = type;
+			this.types = types;
 			this.constants = constants;
+			this.alleles = new IAllele[constants.length];
 		}
 	}
 }

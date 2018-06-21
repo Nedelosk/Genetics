@@ -56,6 +56,15 @@ public interface IOrganismTypes<I extends IIndividual> {
 	Optional<IOrganismType> getType(ItemStack itemStack);
 
 	/**
+	 * Gets the default type that will be used by the {@link genetics.api.root.IDisplayHelper} of the
+	 * {@link genetics.api.root.IIndividualRoot} and every time a {@link IOrganismType} is required and no other type
+	 * was provided.
+	 *
+	 * @return The default type that was registered at the builder.
+	 */
+	IOrganismType getDefaultType();
+
+	/**
 	 * Gets the handler that handles the {@link ItemStack}s of the given genetic type.
 	 *
 	 * @return A empty optional if the given {@link IOrganismType} was not registered in the

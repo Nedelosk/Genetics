@@ -1,6 +1,6 @@
 package genetics.api.alleles;
 
-import genetics.api.gene.IChromosomeType;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 
 /**

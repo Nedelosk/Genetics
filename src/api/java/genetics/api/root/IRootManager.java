@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticPlugin;
-import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IKaryotype;
 
 public interface IRootManager {
 
@@ -13,14 +13,14 @@ public interface IRootManager {
 	 * Creates a {@link IIndividualRootBuilder} with the given parameters.
 	 * Later before {@link IGeneticPlugin#onFinishRegistration(IRootManager, IGeneticApiInstance)} is passed to your genetic plugin the
 	 * definition will be build and registered.
-	 * You can get a instance of the definition with {@link IRootRegistry#getRoot(String)}.
+	 * You can get a instance of the definition with {@link IGeneticApiInstance#getRoot(String)}.
 	 *
-	 * @param name        The string based unique identifier of this definition.
+	 * @param uid        The string based unique identifier of this definition.
 	 * @param karyotype   The karyotype of individual.
 	 * @param rootFactory A function that creates the root of the definition.
 	 * @param <I>         The type of the individual that the root that the definition contains defines.
 	 */
-	<I extends IIndividual> IIndividualRootBuilder<I> createRoot(String name, IKaryotype karyotype, IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory);
+	<I extends IIndividual> IIndividualRootBuilder<I> createRoot(String uid, IKaryotype karyotype, IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory);
 
 	/**
 	 * Gets an IGeneticDefinitionBuilder

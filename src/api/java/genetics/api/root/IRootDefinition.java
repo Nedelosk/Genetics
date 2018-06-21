@@ -3,6 +3,7 @@ package genetics.api.root;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A optional that describes a {@link IIndividualRoot}.
@@ -32,4 +33,6 @@ public interface IRootDefinition<R extends IIndividualRoot> {
 	boolean isPresent();
 
 	void ifPresent(Consumer<R> consumer);
+
+	<U> Optional<U> map(Function<? super R, ? extends U> mapper);
 }

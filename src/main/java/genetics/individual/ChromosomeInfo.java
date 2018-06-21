@@ -4,8 +4,8 @@ import javax.annotation.Nullable;
 
 import net.minecraft.util.ResourceLocation;
 
-import genetics.api.gene.IChromosomeType;
 import genetics.api.individual.IChromosome;
+import genetics.api.individual.IChromosomeType;
 
 public class ChromosomeInfo {
 	public final IChromosomeType chromosomeType;

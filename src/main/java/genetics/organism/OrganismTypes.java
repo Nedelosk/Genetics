@@ -16,9 +16,11 @@ import genetics.Genetics;
 
 public class OrganismTypes<I extends IIndividual> implements IOrganismTypes<I> {
 	private final Map<IOrganismType, IOrganismHandler<I>> types;
+	private final IOrganismType defaultType;
 
-	public OrganismTypes(Map<IOrganismType, IOrganismHandler<I>> types) {
+	public OrganismTypes(Map<IOrganismType, IOrganismHandler<I>> types, IOrganismType defaultType) {
 		this.types = types;
+		this.defaultType = defaultType;
 	}
 
 	@Override
@@ -66,6 +68,11 @@ public class OrganismTypes<I extends IIndividual> implements IOrganismTypes<I> {
 			return Optional.empty();
 		}
 		return Optional.of(organism.getType());
+	}
+
+	@Override
+	public IOrganismType getDefaultType() {
+		return defaultType;
 	}
 
 	@Override

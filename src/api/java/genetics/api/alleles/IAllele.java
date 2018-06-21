@@ -38,6 +38,9 @@ public interface IAllele extends IForgeRegistryEntry<IAllele> {
 	 */
 	String getUnlocalizedName();
 
+	/**
+	 * @return The registry name
+	 */
 	@Nonnull
 	ResourceLocation getRegistryName();
 }

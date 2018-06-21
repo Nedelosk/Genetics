@@ -5,9 +5,6 @@ import java.util.Optional;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
-
 import genetics.ApiInstance;
 import genetics.individual.IndividualBuilder;
 
@@ -50,7 +47,7 @@ public abstract class Individual implements IIndividual {
 
 	@Override
 	public String getIdentifier() {
-		return genome.getActiveAllele(getRoot().getKaryotype().getTemplateType()).getRegistryName().toString();
+		return genome.getActiveAllele(getRoot().getKaryotype().getSpeciesType()).getRegistryName().toString();
 	}
 
 	@Override

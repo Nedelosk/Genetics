@@ -1,5 +1,6 @@
 package genetics;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismType;
@@ -76,6 +77,17 @@ public class Genetics {
 
 			@Override
 			public Optional<IAllele> getAlleleDirectly(IChromosomeType type, boolean active) {
+				throw new UnsupportedOperationException("Cannot use default implementation");
+			}
+
+			@Override
+			public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+				throw new UnsupportedOperationException("Cannot use default implementation");
+			}
+
+			@Nullable
+			@Override
+			public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 		});

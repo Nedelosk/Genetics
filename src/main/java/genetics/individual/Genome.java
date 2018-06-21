@@ -3,16 +3,15 @@ package genetics.individual;
 import com.google.common.base.MoreObjects;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IGene;
-import genetics.api.gene.IKaryotype;
+import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.individual.IChromosome;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IKaryotype;
 
 import genetics.ApiInstance;
 import genetics.utils.AlleleUtils;
@@ -35,51 +34,44 @@ public final class Genome implements IGenome {
 	@SuppressWarnings("all")
 	private void checkChromosomes(IChromosome[] chromosomes) {
 		if (chromosomes.length != karyotype.getChromosomeTypes().length) {
-			String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template.\n%s", karyotype.getIdentifier(), chromosomesToString(chromosomes));
+			String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template.\n%s", karyotype.getUID(), chromosomesToString(chromosomes));
 			throw new IllegalArgumentException(message);
 		}
 
-		IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
-		for (int i = 0; i < geneTypes.length; i++) {
-			IChromosomeType geneType = geneTypes[i];
-			Optional<IGene> optionalGene = ApiInstance.INSTANCE.getGeneRegistry().getGene(geneType);
-			if (!optionalGene.isPresent()) {
-				String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template. " +
-					"Unregistered gene type '%s'.\n%s", karyotype.getIdentifier(), geneType.getName(), chromosomesToString(chromosomes));
-				throw new IllegalArgumentException(message);
-			}
-			IGene gene = optionalGene.get();
+		IAlleleRegistry registry = ApiInstance.INSTANCE.getAlleleRegistry();
+		IChromosomeType[] chromosomeTypes = karyotype.getChromosomeTypes();
+		for (int i = 0; i < chromosomeTypes.length; i++) {
+			IChromosomeType chromosomeType = chromosomeTypes[i];
 			IChromosome chromosome = chromosomes[i];
 			if (chromosome == null) {
 				String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template. " +
-					"Missing chromosome '%s'.\n%s", karyotype.getIdentifier(), geneType.getName(), chromosomesToString(chromosomes));
+					"Missing chromosome '%s'.\n%s", karyotype.getUID(), chromosomeType.getName(), chromosomesToString(chromosomes));
 				throw new IllegalArgumentException(message);
 			}
-
 
 			IAllele primary = chromosome.getActiveAllele();
 			if (primary == null) {
 				String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template. " +
-					"Missing active allele for '%s'.\n%s", karyotype.getIdentifier(), geneType.getName(), chromosomesToString(chromosomes));
+					"Missing active allele for '%s'.\n%s", karyotype.getUID(), chromosomeType.getName(), chromosomesToString(chromosomes));
 				throw new IllegalArgumentException(message);
 			}
 
 			IAllele secondary = chromosome.getInactiveAllele();
 			if (secondary == null) {
 				String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template. " +
-					"Missing inactive allele for '%s'.\n%s", karyotype.getIdentifier(), geneType.getName(), chromosomesToString(chromosomes));
+					"Missing inactive allele for '%s'.\n%s", karyotype.getUID(), chromosomeType.getName(), chromosomesToString(chromosomes));
 				throw new IllegalArgumentException(message);
 			}
 
-			if (!gene.isValidAllele(primary)) {
+			if (!registry.isValidAllele(primary, chromosomeType)) {
 				String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template. " +
-					"Incorrect type for active allele '%s'.\n%s.", karyotype.getIdentifier(), geneType.getName(), chromosomesToString(chromosomes));
+					"Incorrect type for active allele '%s'.\n%s.", karyotype.getUID(), chromosomeType.getName(), chromosomesToString(chromosomes));
 				throw new IllegalArgumentException(message);
 			}
 
-			if (!gene.isValidAllele(secondary)) {
+			if (!registry.isValidAllele(secondary, chromosomeType)) {
 				String message = String.format("Tried to create a genome for '%s' from an invalid chromosome template. " +
-					"Incorrect type for inaktive allele '%s'.\n%s.", karyotype.getIdentifier(), geneType.getName(), chromosomesToString(chromosomes));
+					"Incorrect type for inaktive allele '%s'.\n%s.", karyotype.getUID(), chromosomeType.getName(), chromosomesToString(chromosomes));
 				throw new IllegalArgumentException(message);
 			}
 		}
@@ -87,11 +79,11 @@ public final class Genome implements IGenome {
 
 	private String chromosomesToString(IChromosome[] chromosomes) {
 		StringBuilder stringBuilder = new StringBuilder();
-		IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
+		IChromosomeType[] chromosomeTypes = karyotype.getChromosomeTypes();
 		for (int i = 0; i < chromosomes.length; i++) {
-			IChromosomeType geneType = geneTypes[i];
+			IChromosomeType chromosomeType = chromosomeTypes[i];
 			IChromosome chromosome = chromosomes[i];
-			stringBuilder.append(geneType.getName()).append(": ").append(chromosome).append("\n");
+			stringBuilder.append(chromosomeType.getName()).append(": ").append(chromosome).append("\n");
 		}
 
 		return stringBuilder.toString();
@@ -104,40 +96,40 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
-	public IAllele getActiveAllele(IChromosomeType geneType) {
-		IChromosome chromosome = getChromosome(geneType);
+	public IAllele getActiveAllele(IChromosomeType chromosomeType) {
+		IChromosome chromosome = getChromosome(chromosomeType);
 		return chromosome.getActiveAllele();
 	}
 
 	@Override
-	public IAllele getInactiveAllele(IChromosomeType geneType) {
-		IChromosome chromosome = getChromosome(geneType);
+	public IAllele getInactiveAllele(IChromosomeType chromosomeType) {
+		IChromosome chromosome = getChromosome(chromosomeType);
 		return chromosome.getInactiveAllele();
 	}
 
 	@Override
-	public <V> V getActiveValue(IChromosomeType geneType, Class<? extends V> valueClass) {
-		IAllele allele = getActiveAllele(geneType);
+	public <V> V getActiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass) {
+		IAllele allele = getActiveAllele(chromosomeType);
 		V value = AlleleUtils.getAlleleValue(allele, valueClass, null);
 		if (value == null) {
-			throw new IllegalArgumentException(String.format("The allele '%s' at the active position of the chromosome type '%s' has no value.", allele, geneType));
+			throw new IllegalArgumentException(String.format("The allele '%s' at the active position of the chromosome type '%s' has no value.", allele, chromosomeType));
 		}
 		return value;
 	}
 
 	@Override
-	public <V> V getInactiveValue(IChromosomeType geneType, Class<? extends V> valueClass) {
-		IAllele allele = getInactiveAllele(geneType);
+	public <V> V getInactiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass) {
+		IAllele allele = getInactiveAllele(chromosomeType);
 		V value = AlleleUtils.getAlleleValue(allele, valueClass, null);
 		if (value == null) {
-			throw new IllegalArgumentException(String.format("The allele '%s' at the inactive position of the chromosome type '%s' has no value.", allele, geneType));
+			throw new IllegalArgumentException(String.format("The allele '%s' at the inactive position of the chromosome type '%s' has no value.", allele, chromosomeType));
 		}
 		return value;
 	}
 
 	@Override
-	public IChromosome getChromosome(IChromosomeType geneType) {
-		return chromosomes[geneType.getIndex()];
+	public IChromosome getChromosome(IChromosomeType chromosomeType) {
+		return chromosomes[chromosomeType.getIndex()];
 	}
 
 	@Override
@@ -169,8 +161,8 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
-	public boolean isPureBred(IChromosomeType geneType) {
-		IChromosome chromosome = getChromosome(geneType);
+	public boolean isPureBred(IChromosomeType chromosomeType) {
+		IChromosome chromosome = getChromosome(chromosomeType);
 		return chromosome.isPureBred();
 	}
 

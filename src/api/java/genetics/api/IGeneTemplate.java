@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.gene.IChromosomeType;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.root.IIndividualRoot;
 

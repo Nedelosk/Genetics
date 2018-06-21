@@ -1,19 +1,28 @@
 package genetics.api;
 
+import java.util.function.Supplier;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IKaryotype;
+import genetics.api.mutation.IMutation;
+import genetics.api.mutation.IMutationContainer;
+import genetics.api.mutation.IMutationRoot;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
+import genetics.api.root.IDisplayHelper;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IRootDefinition;
 
@@ -93,15 +102,22 @@ public interface IGeneticFactory {
 	 * @param root      The definition that describes the individual.
 	 * @return A instance of {@link IOrganism}.
 	 */
-	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IIndividualRoot<I> root);
+	<I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IRootDefinition<? extends IIndividualRoot<I>> root);
 
 	/**
-	 * @param optionalRoot
-	 * @param stack
-	 * @param <I>
-	 * @return
+	 * Creates the default implementation of a {@link IOrganismHandler}.
+	 *
+	 * @param rootDefinition The definition of the root that the {@link IOrganismHandler} will be registered for.
+	 * @param stack   A supplier that supplies the stack that will be used as the default stack for every stack that
+	 *                   will be created with {@link IOrganismHandler#createStack(IIndividual)}.
+	 * @return A instance of {@link IOrganismHandler}.
 	 */
-	<I extends IIndividual> IOrganismHandler<I> createOrganismHandler(IRootDefinition<IIndividualRoot<I>> optionalRoot, ItemStack stack);
+	<I extends IIndividual> IOrganismHandler<I> createOrganismHandler(IRootDefinition<? extends IIndividualRoot<I>> rootDefinition, Supplier<ItemStack> stack);
+
+	<I extends IIndividual, M extends IMutation> IMutationContainer<M> createMutationContainer(IMutationRoot<I, M> root, Class<? extends M> mutationClass);
+
+	@SideOnly(Side.CLIENT)
+	<I extends IIndividual> IDisplayHelper createDisplayHelper(IIndividualRoot<I> root);
 
 	/**
 	 * Creates a default implementation of a {@link IGeneTemplate}

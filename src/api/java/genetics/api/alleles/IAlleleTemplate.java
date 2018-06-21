@@ -2,11 +2,11 @@ package genetics.api.alleles;
 
 import javax.annotation.Nullable;
 
-import genetics.api.gene.IChromosomeType;
-import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IChromosome;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IKaryotype;
 import genetics.api.root.IIndividualRoot;
 
 /**

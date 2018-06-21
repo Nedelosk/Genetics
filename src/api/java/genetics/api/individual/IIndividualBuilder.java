@@ -3,8 +3,6 @@ package genetics.api.individual;
 import net.minecraft.util.ResourceLocation;
 
 import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleKey;
-import genetics.api.gene.IChromosomeType;
 import genetics.api.root.IIndividualRoot;
 
 /**
@@ -26,15 +24,6 @@ public interface IIndividualBuilder<I extends IIndividual> {
 	 * @param active True if you want to set the active allele, false otherwise.
 	 */
 	void setAllele(IChromosomeType type, IAllele allele, boolean active);
-
-	/**
-	 * Sets a allele at a position of the chromosome.
-	 *
-	 * @param key    The key of the allele that should be set at the position.
-	 * @param type   The position at the chromosome array.
-	 * @param active True if you want to set the active allele, false otherwise.
-	 */
-	void setAllele(IChromosomeType type, IAlleleKey key, boolean active);
 
 	/**
 	 * Sets a allele at a position of the chromosome.

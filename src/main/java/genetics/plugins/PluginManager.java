@@ -7,6 +7,8 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -17,10 +19,10 @@ import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticPlugin;
 
 import genetics.ApiInstance;
+import genetics.GeneticFactory;
 import genetics.Genetics;
 import genetics.alleles.AlleleRegistry;
 import genetics.classification.ClassificationRegistry;
-import genetics.gene.GeneFactory;
 import genetics.root.IndividualRootBuilder;
 import genetics.root.KaryotypeFactory;
 import genetics.root.RootManager;
@@ -46,6 +48,9 @@ public class PluginManager {
 		ImmutableSortedMap.Builder<IGeneticPlugin, ModContainer> builder = new ImmutableSortedMap.Builder<>(PLUGIN_COMPARATOR);
 		builder.putAll(PluginUtil.getPlugins(event.getAsmData()));
 		plugins = builder.build();
+		for(IGeneticPlugin plugin : plugins.keySet()){
+			MinecraftForge.EVENT_BUS.register(plugin);
+		}
 	}
 
 	public static void initPlugins() {
@@ -61,16 +66,9 @@ public class PluginManager {
 		RegistryHelper.INSTANCE.onRegisterAlleles(alleleRegistry);
 		handlePlugins(p -> p.registerAlleles(alleleRegistry));
 		//
-		GeneFactory geneFactory = new GeneFactory();
-		RegistryHelper.INSTANCE.onRegister(geneFactory);
-		handlePlugins(p -> p.registerGenes(geneFactory));
-		ApiInstance.INSTANCE.setGeneRegistry(geneFactory.createRegistry());
-		//
 		KaryotypeFactory karyotypeFactory = new KaryotypeFactory();
-		handlePlugins(p -> p.createKaryotype(karyotypeFactory));
-		//
 		RootManager rootManager = new RootManager();
-		handlePlugins(p -> p.createRoot(rootManager));
+		handlePlugins(p -> p.createRoot(karyotypeFactory, rootManager, GeneticFactory.INSTANCE));
 		handlePlugins(p -> p.initRoots(rootManager));
 		Map<String, IndividualRootBuilder> rootBuilders = rootManager.getRootBuilders();
 		for (IndividualRootBuilder builder : rootBuilders.values()) {

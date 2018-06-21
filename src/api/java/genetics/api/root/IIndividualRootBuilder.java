@@ -2,19 +2,20 @@ package genetics.api.root;
 
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import genetics.api.IGeneticApiInstance;
+import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
-import genetics.api.gene.IGeneFactory;
-import genetics.api.gene.IKaryotype;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IKaryotype;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
@@ -27,9 +28,9 @@ import genetics.api.root.translator.IItemTranslator;
  * The IIndividualRootBuilder offers several functions to register templates, types or something similar that can be
  * later retrieved from the {@link IIndividualRoot}.
  * <p>
- * After every {@link IGeneticPlugin} received {@link IGeneticPlugin#registerGenes(IGeneFactory)} all
+ * After every {@link IGeneticPlugin} received {@link IGeneticPlugin#initRoots(IRootManager)} all
  * {@link IIndividualRootBuilder}s will be build automatically to {@link IIndividualRoot}s. You can get the instance
- * of you root from {@link IRootRegistry#getRoot(String)} after it was created or you can use {@link #getDefinition()}.
+ * of you root from {@link IGeneticApiInstance#getRoot(String)} after it was created or you can use {@link #getDefinition()}.
  * <p>
  * You can create a instance of this with {@link IRootManager#createRoot(String, IKaryotype, IIndividualRootFactory)}.
  *
@@ -39,12 +40,39 @@ public interface IIndividualRootBuilder<I extends IIndividual> {
 
 	/**
 	 * Registers a {@link IOrganismType} for the {@link IIndividual} of the root.
+	 * <p>
+	 * {@link IGeneticFactory#createOrganismHandler(IRootDefinition, Supplier)} can be used to create the default
+	 * implementation of an {@link IOrganismHandler}.
 	 *
 	 * @param type    The organism type itself.
 	 * @param handler The organism handler that handles the creation of the {@link IIndividual} and the {@link ItemStack}
 	 *                that contains the {@link IOrganism}.
+	 * @param defaultType If the registered type should be the default type of the described individual. The first
+	 *                       registered type will be used if no type has been registered as the default type.
 	 */
-	IIndividualRootBuilder<I> registerType(IOrganismType type, IOrganismHandler<I> handler);
+	IIndividualRootBuilder<I> registerType(IOrganismType type, IOrganismHandler<I> handler, boolean defaultType);
+
+	default IIndividualRootBuilder<I> registerType(IOrganismType type, IOrganismHandler<I> handler){
+		return registerType(type, handler, false);
+	}
+
+	/**
+	 * Registers a {@link IOrganismType} for the {@link IIndividual} of the root.
+	 * <p>
+	 * Uses {@link IGeneticFactory#createOrganismHandler(IRootDefinition, Supplier)} to create the default
+	 * implementation of an {@link IOrganismHandler} with the given parameters.
+	 *
+	 * @param type    The organism type itself.
+	 * @param stack   A supplier that supplies the stack that will be used as the default stack for every stack that
+	 *                   will be created with {@link IOrganismHandler#createStack(IIndividual)}.
+	 * @param defaultType If the registered type should be the default type of the described individual. The first
+	 *                       registered type will be used if no type has been registered as the default type.
+	 */
+	IIndividualRootBuilder<I> registerType(IOrganismType type, Supplier<ItemStack> stack, boolean defaultType);
+
+	default IIndividualRootBuilder<I> registerType(IOrganismType type, Supplier<ItemStack> stack){
+		return registerType(type, stack, false);
+	}
 
 	/**
 	 * Registers a translator that translates a {@link IBlockState} into a  {@link IIndividual} or an {@link ItemStack}
@@ -84,7 +112,7 @@ public interface IIndividualRootBuilder<I extends IIndividual> {
 	/**
 	 * ets a factory that crates {@link IOrganismTypes} object.
 	 */
-	IIndividualRootBuilder<I> setTypes(Function<Map<IOrganismType, IOrganismHandler<I>>, IOrganismTypes<I>> typesFactory);
+	IIndividualRootBuilder<I> setTypes(BiFunction<Map<IOrganismType, IOrganismHandler<I>>, IOrganismType, IOrganismTypes<I>> typesFactory);
 
 	/**
 	 * The karyotype that was used to create this builder.
