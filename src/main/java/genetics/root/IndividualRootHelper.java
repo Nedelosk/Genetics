@@ -1,6 +1,5 @@
 package genetics.root;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,14 +23,14 @@ public class IndividualRootHelper implements IIndividualRootHelper {
 
 		Map<String, IRootDefinition> definitions = ApiInstance.INSTANCE.getRoots();
 		for (IRootDefinition definition : definitions.values()) {
-			if(!definition.isPresent()){
+		/*	if(!definition.isPresent()){
 				continue;
 			}
 			IIndividualRoot root = definition.get();
 			IOrganismTypes types = root.getTypes();
 			if (definition.isMember(stack)) {
 				return definition;
-			}
+			}*/
 		}
 		return EmptyRootDefinition.empty();
 	}
@@ -47,7 +46,7 @@ public class IndividualRootHelper implements IIndividualRootHelper {
 		return null;
 	}
 
-	@Override
+	/*@Override
 	@Nullable
 	public ISpeciesRoot getSpeciesRoot(Class<? extends IIndividual> individualClass) {
 		for (ISpeciesRoot root : rootMap.values()) {
@@ -61,7 +60,7 @@ public class IndividualRootHelper implements IIndividualRootHelper {
 	@Override
 	public ISpeciesRoot getSpeciesRoot(IIndividual individual) {
 		return individual.getGenome().getSpeciesRoot();
-	}
+	}*/
 
 	@Override
 	public boolean isIndividual(ItemStack stack) {

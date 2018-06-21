@@ -33,6 +33,9 @@ public class ItemSeed extends Item {
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if(!isInCreativeTab(tab)){
+			return;
+		}
 		PlantRoot plantRoot = CultivationPlugin.DEFINITION.get();
 		for(Plant plant : plantRoot.getIndividualTemplates()){
 			ItemStack stack = new ItemStack(this);
