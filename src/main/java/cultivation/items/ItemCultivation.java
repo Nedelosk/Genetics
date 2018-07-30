@@ -10,40 +10,34 @@ import net.minecraft.util.NonNullList;
 
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import genetics.api.GeneticsAPI;
-import genetics.api.organism.IOrganism;
-
-import genetics.Genetics;
+import genetics.api.organism.OrganismHelper;
 
 import cultivation.CultivationPlugin;
 import cultivation.indivudual.Plant;
 import cultivation.indivudual.PlantRoot;
 import cultivation.indivudual.PlantType;
 
-public class ItemSeed extends Item {
-	public ItemSeed() {
+public class ItemCultivation extends Item {
+	public ItemCultivation(String name) {
 		setCreativeTab(CreativeTabs.MISC);
-		setUnlocalizedName("seed");
+		setRegistryName(name);
+		setUnlocalizedName(name);
 	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return GeneticsAPI.apiInstance.getGeneticFactory().createOrganism(stack, PlantType.SEED, CultivationPlugin.DEFINITION);
+		return OrganismHelper.createOrganism(stack, PlantType.SEED, CultivationPlugin.DEFINITION);
 	}
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-		if(!isInCreativeTab(tab)){
+		if (!isInCreativeTab(tab)) {
 			return;
 		}
 		PlantRoot plantRoot = CultivationPlugin.DEFINITION.get();
-		for(Plant plant : plantRoot.getIndividualTemplates()){
+		for (Plant plant : plantRoot.getIndividualTemplates()) {
 			ItemStack stack = new ItemStack(this);
-			@SuppressWarnings("unchecked")
-			IOrganism<Plant> organism = stack.getCapability(Genetics.ORGANISM, null);
-			if(organism != null) {
-				organism.setIndividual(plant);
-			}
+			OrganismHelper.setIndividual(stack, plant);
 			items.add(stack);
 		}
 	}

@@ -15,7 +15,7 @@ public interface IRootManager {
 	 * definition will be build and registered.
 	 * You can get a instance of the definition with {@link IGeneticApiInstance#getRoot(String)}.
 	 *
-	 * @param uid        The string based unique identifier of this definition.
+	 * @param uid         The string based unique identifier of this definition.
 	 * @param karyotype   The karyotype of individual.
 	 * @param rootFactory A function that creates the root of the definition.
 	 * @param <I>         The type of the individual that the root that the definition contains defines.

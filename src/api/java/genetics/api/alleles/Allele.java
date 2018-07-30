@@ -13,10 +13,10 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
  */
 public abstract class Allele extends IForgeRegistryEntry.Impl<IAllele> implements IAllele {
 	protected final boolean dominant;
-	protected final String unlocalizedName;
+	protected final String localisationKey;
 
-	protected Allele(String unlocalizedName, boolean dominant) {
-		this.unlocalizedName = unlocalizedName;
+	protected Allele(String localisationKey, boolean dominant) {
+		this.localisationKey = localisationKey;
 		this.dominant = dominant;
 	}
 
@@ -32,12 +32,12 @@ public abstract class Allele extends IForgeRegistryEntry.Impl<IAllele> implement
 
 	@Override
 	public String getLocalizedName() {
-		return I18n.format(unlocalizedName);
+		return I18n.format(localisationKey);
 	}
 
 	@Override
-	public final String getUnlocalizedName() {
-		return unlocalizedName;
+	public final String getLocalisationKey() {
+		return localisationKey;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public abstract class Allele extends IForgeRegistryEntry.Impl<IAllele> implement
 			.toStringHelper(this)
 			.add("name", getRegistryName())
 			.add("dominant", dominant)
-			.add("unloc", unlocalizedName)
+			.add("key", localisationKey)
 			.add("loc", getLocalizedName())
 			.toString();
 	}

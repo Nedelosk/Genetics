@@ -9,29 +9,23 @@ import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
 
-import net.minecraftforge.common.MinecraftForge;
-
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleSpecies;
-import genetics.api.events.RootEvent;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
 import genetics.api.mutation.IMutation;
 import genetics.api.mutation.IMutationContainer;
-import genetics.api.mutation.IMutationRoot;
+import genetics.api.root.IIndividualRoot;
 
 public class MutationContainer<I extends IIndividual, M extends IMutation> implements IMutationContainer<M> {
 
 	private final ImmutableList<M> mutations;
-	private final IMutationRoot<I, M> root;
+	private final IIndividualRoot<I> root;
 
-	public MutationContainer(IMutationRoot<I, M> root, Class<? extends M> mutationClass) {
+	public MutationContainer(IIndividualRoot<I> root, ImmutableList<M> mutations) {
 		this.root = root;
-		ImmutableList.Builder<M> builder = new ImmutableList.Builder<>();
-		RootEvent.MutationEvent<M> event = new RootEvent.MutationEvent<>(root, mutationClass);
-		MinecraftForge.EVENT_BUS.post(event);
-		this.mutations = ImmutableList.copyOf(event.getMutations());
+		this.mutations = mutations;
 	}
 
 	@Override
@@ -43,7 +37,7 @@ public class MutationContainer<I extends IIndividual, M extends IMutation> imple
 	}
 
 	@Override
-	public List<M> getCombinations(IAllele other) {
+	public List<M> getCombinations(IAlleleSpecies other) {
 		List<M> combinations = new ArrayList<>();
 		for (M mutation : getMutations(false)) {
 			if (mutation.isPartner(other)) {
@@ -57,31 +51,31 @@ public class MutationContainer<I extends IIndividual, M extends IMutation> imple
 	@Override
 	public List<M> getResultantMutations(IAllele other) {
 		IKaryotype karyotype = root.getKaryotype();
-		List<M> mutations = new ArrayList<>();
+		List<M> resultants = new ArrayList<>();
 		int speciesIndex = karyotype.getSpeciesType().getIndex();
 		for (M mutation : getMutations(false)) {
 			IAllele[] template = mutation.getTemplate();
-			if(template.length <= speciesIndex){
+			if (template.length <= speciesIndex) {
 				continue;
 			}
 			IAllele speciesAllele = template[speciesIndex];
 			if (speciesAllele == other) {
-				mutations.add(mutation);
+				resultants.add(mutation);
 			}
 		}
 
-		return mutations;
+		return resultants;
 	}
 
 	@Override
 	public List<M> getCombinations(IAlleleSpecies parentFirst, IAlleleSpecies parentSecond, boolean shuffle) {
 		List<M> combinations = new ArrayList<>();
 
-		ResourceLocation parentSpecies1RN = parentSecond.getRegistryName();
+		ResourceLocation parentSpecies = parentSecond.getRegistryName();
 		for (M mutation : getMutations(shuffle)) {
 			if (mutation.isPartner(parentFirst)) {
 				IAllele partner = mutation.getPartner(parentFirst);
-				if (partner.getRegistryName().equals(parentSpecies1RN)) {
+				if (partner.getRegistryName().equals(parentSpecies)) {
 					combinations.add(mutation);
 				}
 			}

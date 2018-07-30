@@ -16,9 +16,6 @@ import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
-import genetics.api.mutation.IMutation;
-import genetics.api.mutation.IMutationContainer;
-import genetics.api.mutation.IMutationRoot;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
@@ -108,13 +105,11 @@ public interface IGeneticFactory {
 	 * Creates the default implementation of a {@link IOrganismHandler}.
 	 *
 	 * @param rootDefinition The definition of the root that the {@link IOrganismHandler} will be registered for.
-	 * @param stack   A supplier that supplies the stack that will be used as the default stack for every stack that
-	 *                   will be created with {@link IOrganismHandler#createStack(IIndividual)}.
+	 * @param stack          A supplier that supplies the stack that will be used as the default stack for every stack that
+	 *                       will be created with {@link IOrganismHandler#createStack(IIndividual)}.
 	 * @return A instance of {@link IOrganismHandler}.
 	 */
 	<I extends IIndividual> IOrganismHandler<I> createOrganismHandler(IRootDefinition<? extends IIndividualRoot<I>> rootDefinition, Supplier<ItemStack> stack);
-
-	<I extends IIndividual, M extends IMutation> IMutationContainer<M> createMutationContainer(IMutationRoot<I, M> root, Class<? extends M> mutationClass);
 
 	@SideOnly(Side.CLIENT)
 	<I extends IIndividual> IDisplayHelper createDisplayHelper(IIndividualRoot<I> root);

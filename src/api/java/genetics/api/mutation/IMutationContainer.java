@@ -6,8 +6,10 @@ import java.util.List;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleSpecies;
 import genetics.api.individual.IChromosomeType;
+import genetics.api.root.components.IRootComponent;
 
-public interface IMutationContainer<M extends IMutation> {
+public interface IMutationContainer<M extends IMutation> extends IRootComponent {
+
 	/**
 	 * @return All registered mutations.
 	 */
@@ -17,7 +19,7 @@ public interface IMutationContainer<M extends IMutation> {
 	 * @param other Allele to match mutations against.
 	 * @return All registered mutations the given allele is part of.
 	 */
-	List<? extends M> getCombinations(IAllele other);
+	List<? extends M> getCombinations(IAlleleSpecies other);
 
 	/**
 	 * @param other Allele to match mutations against.

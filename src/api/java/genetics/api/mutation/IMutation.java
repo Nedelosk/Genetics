@@ -18,12 +18,17 @@ public interface IMutation {
 	/**
 	 * @return first of the alleles implementing IAlleleSpecies required for this mutation.
 	 */
-	IAlleleSpecies getFirstAllele();
+	IAlleleSpecies getFirstParent();
 
 	/**
 	 * @return second of the alleles implementing IAlleleSpecies required for this mutation.
 	 */
-	IAlleleSpecies getSecondAllele();
+	IAlleleSpecies getSecondParent();
+
+	/**
+	 * @return the allele implementing IAlleleSpecies the resulted of this mutation.
+	 */
+	IAlleleSpecies getResultingSpecies();
 
 	/**
 	 * @return Array of {@link IAllele} representing the full default genome of the mutated side.
@@ -45,12 +50,12 @@ public interface IMutation {
 	/**
 	 * @return true if the passed allele is one of the alleles participating in this mutation.
 	 */
-	boolean isPartner(IAllele allele);
+	boolean isPartner(IAlleleSpecies allele);
 
 	/**
 	 * @return the other allele which was not passed as argument.
 	 */
-	IAllele getPartner(IAllele allele);
+	IAllele getPartner(IAlleleSpecies allele);
 
 	/**
 	 * @return true if the mutation should not be displayed in a gui that displays all mutations.

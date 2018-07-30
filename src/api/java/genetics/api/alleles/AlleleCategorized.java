@@ -2,6 +2,9 @@ package genetics.api.alleles;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import net.minecraft.util.text.translation.I18n;
+
+
 /**
  * Alleles that have a category with several values inherit from this class.
  * For example, temperature tolerances or speeds are categories with several values.
@@ -24,7 +27,7 @@ public class AlleleCategorized<V> extends AlleleValue<V> {
 
 	private static String getUnlocalizedName(String modId, String category, String valueName) {
 		String customName = modId + '.' + "allele." + category + '.' + valueName;
-		if (net.minecraft.util.text.translation.I18n.canTranslate(customName)) {
+		if (I18n.canTranslate(customName)) {
 			return customName;
 		} else {
 			return modId + '.' + "allele." + valueName;

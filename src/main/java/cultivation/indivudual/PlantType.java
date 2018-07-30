@@ -5,7 +5,7 @@ import java.util.Locale;
 import genetics.api.organism.IOrganismType;
 
 public enum PlantType implements IOrganismType {
-	SEED;
+	SEED, PLANT;
 
 	private final String name;
 

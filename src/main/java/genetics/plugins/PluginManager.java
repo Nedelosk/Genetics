@@ -48,7 +48,7 @@ public class PluginManager {
 		ImmutableSortedMap.Builder<IGeneticPlugin, ModContainer> builder = new ImmutableSortedMap.Builder<>(PLUGIN_COMPARATOR);
 		builder.putAll(PluginUtil.getPlugins(event.getAsmData()));
 		plugins = builder.build();
-		for(IGeneticPlugin plugin : plugins.keySet()){
+		for (IGeneticPlugin plugin : plugins.keySet()) {
 			MinecraftForge.EVENT_BUS.register(plugin);
 		}
 	}

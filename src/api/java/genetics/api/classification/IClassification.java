@@ -2,7 +2,7 @@ package genetics.api.classification;
 
 import javax.annotation.Nullable;
 
-import genetics.api.alleles.IAlleleClassified;
+import genetics.api.alleles.IAlleleSpecies;
 
 /**
  * Biological classifications from domain down to genus.
@@ -83,12 +83,12 @@ public interface IClassification {
 	/**
 	 * @return Member species of this group.
 	 */
-	IAlleleClassified[] getMemberSpecies();
+	IAlleleSpecies[] getMemberSpecies();
 
 	/**
 	 * Used by the allele registry to populate internal collection of branch members on the fly.
 	 */
-	void addMemberSpecies(IAlleleClassified species);
+	void addMemberSpecies(IAlleleSpecies species);
 
 	/**
 	 * @return Parent classification, null if this is root.

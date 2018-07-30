@@ -1,5 +1,7 @@
 package genetics.root;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,7 +19,7 @@ public class IndividualTranslator<I extends IIndividual> implements IIndividualT
 	private final Map<Item, IItemTranslator<I>> itemTranslators;
 	private final Map<Block, IBlockTranslator<I>> blockTranslators;
 
-	public IndividualTranslator(Map<Item, IItemTranslator<I>> itemTranslators, Map<Block, IBlockTranslator<I>> blockTranslators) {
+	public IndividualTranslator(ImmutableMap<Item, IItemTranslator<I>> itemTranslators, ImmutableMap<Block, IBlockTranslator<I>> blockTranslators) {
 		this.itemTranslators = itemTranslators;
 		this.blockTranslators = blockTranslators;
 	}

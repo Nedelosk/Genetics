@@ -14,7 +14,8 @@ import genetics.api.root.IRootDefinition;
 
 import genetics.ApiInstance;
 
-public class IndividualRootHelper implements IIndividualRootHelper {
+public enum IndividualRootHelper implements IIndividualRootHelper {
+	INSTANCE;
 	@Override
 	public IRootDefinition getSpeciesRoot(ItemStack stack) {
 		if (stack.isEmpty()) {
@@ -70,7 +71,7 @@ public class IndividualRootHelper implements IIndividualRootHelper {
 	@Override
 	public Optional<? extends IIndividual> getIndividual(ItemStack stack) {
 		IRootDefinition<?> rootDefinition = getSpeciesRoot(stack);
-		if(!rootDefinition.isPresent()){
+		if (!rootDefinition.isPresent()) {
 			return Optional.empty();
 		}
 		IIndividualRoot<?> root = rootDefinition.get();

@@ -9,13 +9,14 @@ import net.minecraft.item.ItemStack;
 
 import genetics.api.individual.IIndividual;
 import genetics.api.root.IIndividualRootBuilder;
+import genetics.api.root.components.IRootComponent;
 
 /**
  * Translates a item or a block that does not contain any genetic information into a {@link ItemStack} or a
  * {@link IIndividual} if a {@link IItemTranslator} or {@link IBlockTranslator} was registered for it at the
  * {@link IIndividualRootBuilder}.
  */
-public interface IIndividualTranslator<I extends IIndividual> {
+public interface IIndividualTranslator<I extends IIndividual> extends IRootComponent {
 	/**
 	 * @param translatorKey The key of the translator, by default it is the item of the {@link ItemStack} that you want
 	 *                      to translate with the translator.

@@ -26,7 +26,6 @@ public interface IAlleleData<V> {
 	String getCategory();
 
 	/**
-	 *
 	 * @return The name that is used for the unlocalized name and the registration name of the allele.
 	 */
 	String getName();

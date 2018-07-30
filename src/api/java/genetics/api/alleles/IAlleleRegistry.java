@@ -31,7 +31,7 @@ public interface IAlleleRegistry {
 	 * @param valueName
 	 * @param value     the value of the allele
 	 * @param dominant  if true the allele is dominant, otherwise the allele is recessive.
-	 * @param types      chromosome types for this allele.
+	 * @param types     chromosome types for this allele.
 	 */
 	<V> IAllele registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types);
 
@@ -39,7 +39,7 @@ public interface IAlleleRegistry {
 	 * Registers an allele.
 	 *
 	 * @param allele IAllele to register.
-	 * @param types   allele keys for this allele.
+	 * @param types  allele keys for this allele.
 	 */
 	IAllele registerAllele(IAllele allele, IChromosomeType... types);
 
@@ -101,6 +101,7 @@ public interface IAlleleRegistry {
 	boolean isValidAllele(IAllele allele, IChromosomeType type);
 
 	/* ALLELE HANDLERS */
+
 	/**
 	 * Registers a new IAlleleHandler
 	 *
@@ -114,6 +115,7 @@ public interface IAlleleRegistry {
 	Collection<IAlleleHandler> getHandlers();
 
 	/* BLACKLIST */
+
 	/**
 	 * Blacklist an allele identified by its UID from mutation.
 	 *
@@ -121,7 +123,7 @@ public interface IAlleleRegistry {
 	 */
 	void blacklistAllele(String registryName);
 
-	default void blacklistAllele(ResourceLocation registryName){
+	default void blacklistAllele(ResourceLocation registryName) {
 		blacklistAllele(registryName.toString());
 	}
 
@@ -136,7 +138,11 @@ public interface IAlleleRegistry {
 	 */
 	boolean isBlacklisted(String registryName);
 
-	default boolean isBlacklisted(ResourceLocation registryName){
+	default boolean isBlacklisted(ResourceLocation registryName) {
 		return isBlacklisted(registryName.toString());
+	}
+
+	default boolean isBlacklisted(IAllele allele) {
+		return isBlacklisted(allele.getRegistryName());
 	}
 }

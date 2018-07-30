@@ -22,14 +22,14 @@ public class Karyotype implements IKaryotype {
 	private final String uid;
 	private final IChromosomeType[] chromosomeTypes;
 	private final IChromosomeType speciesType;
-	private final Function<IKaryotype, IAlleleTemplate> defaultTemplateSupplier;
+	private final Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplateSupplier;
 	private final BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory;
 	@Nullable
 	private IAlleleTemplate defaultTemplate = null;
 	@Nullable
 	private IGenome defaultGenome = null;
 
-	private Karyotype(String uid, Set<IChromosomeType> chromosomeTypes, IChromosomeType speciesType, BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory, Function<IKaryotype, IAlleleTemplate> defaultTemplateSupplier) {
+	private Karyotype(String uid, Set<IChromosomeType> chromosomeTypes, IChromosomeType speciesType, BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory, Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplateSupplier) {
 		this.uid = uid;
 		this.speciesType = speciesType;
 		this.chromosomeTypes = new IChromosomeType[chromosomeTypes.size()];
@@ -62,15 +62,15 @@ public class Karyotype implements IKaryotype {
 
 	@Override
 	public IAlleleTemplate getDefaultTemplate() {
-		if(defaultTemplate == null){
-			defaultTemplate = defaultTemplateSupplier.apply(this);
+		if (defaultTemplate == null) {
+			defaultTemplate = defaultTemplateSupplier.apply(createEmptyTemplate());
 		}
 		return defaultTemplate;
 	}
 
 	@Override
 	public IGenome getDefaultGenome() {
-		if(defaultGenome == null){
+		if (defaultGenome == null) {
 			defaultGenome = getDefaultTemplate().toGenome();
 		}
 		return defaultGenome;
@@ -113,11 +113,11 @@ public class Karyotype implements IKaryotype {
 	public static class Builder implements IKaryotypeBuilder {
 		private final Set<IChromosomeType> chromosomeTypes = new HashSet<>();
 		private final IChromosomeType speciesType;
-		private final Function<IKaryotype, IAlleleTemplate> defaultTemplate;
+		private final Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate;
 		private final String uid;
 		private BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory = AlleleTemplateBuilder::new;
 
-		public Builder(String uid, IChromosomeType speciesType, Function<IKaryotype, IAlleleTemplate> defaultTemplate) {
+		public Builder(String uid, IChromosomeType speciesType, Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate) {
 			this.uid = uid;
 			this.speciesType = speciesType;
 			this.defaultTemplate = defaultTemplate;

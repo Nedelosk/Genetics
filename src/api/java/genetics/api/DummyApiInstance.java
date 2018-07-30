@@ -11,6 +11,7 @@ import genetics.api.root.EmptyRootDefinition;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootHelper;
 import genetics.api.root.IRootDefinition;
+import genetics.api.root.components.IRootComponentRegistry;
 
 public class DummyApiInstance implements IGeneticApiInstance {
 	private static final String ERROR_MESSAGE = "The mod %s tried to access the genetics api without checking if the mod is present. Please report this to the mod author.";
@@ -37,6 +38,11 @@ public class DummyApiInstance implements IGeneticApiInstance {
 
 	@Override
 	public IIndividualRootHelper getRootHelper() {
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
+	}
+
+	@Override
+	public IRootComponentRegistry getComponentRegistry() {
 		throw new IllegalStateException(String.format(ERROR_MESSAGE, Loader.instance().activeModContainer()));
 	}
 

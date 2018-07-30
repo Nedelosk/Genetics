@@ -31,6 +31,16 @@ public interface IAlleleTemplateBuilder {
 	IAlleleTemplateBuilder set(IChromosomeType chromosomeType, ResourceLocation registryName);
 
 	/**
+	 * Sets a allele at a position of the chromosome.
+	 *
+	 * @param chromosomeType The key of the allele that should be set at the position.
+	 * @param registryName   The registry name of the allele.
+	 */
+	default IAlleleTemplateBuilder set(IChromosomeType chromosomeType, String registryName) {
+		return set(chromosomeType, new ResourceLocation(registryName));
+	}
+
+	/**
 	 * @return The karyotype that defines the {@link #size()} and which alleles this template can contain.
 	 */
 	IKaryotype getKaryotype();

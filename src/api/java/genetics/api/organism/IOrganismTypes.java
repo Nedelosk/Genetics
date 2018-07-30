@@ -10,6 +10,7 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import genetics.api.individual.IIndividual;
 import genetics.api.root.IIndividualRootBuilder;
+import genetics.api.root.components.IRootComponent;
 
 /**
  * The IGeneticTypes offers several functions to retrieving genetic information from an {@link ItemStack}.
@@ -19,7 +20,7 @@ import genetics.api.root.IIndividualRootBuilder;
  *
  * @param <I> The type of {@link IIndividual} that all items are containing.
  */
-public interface IOrganismTypes<I extends IIndividual> {
+public interface IOrganismTypes<I extends IIndividual> extends IRootComponent {
 
 	/**
 	 * Creates a stack that has the item of the given type an the genetic information of the given individual with the

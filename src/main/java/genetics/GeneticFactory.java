@@ -19,9 +19,6 @@ import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
-import genetics.api.mutation.IMutation;
-import genetics.api.mutation.IMutationContainer;
-import genetics.api.mutation.IMutationRoot;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
@@ -37,7 +34,6 @@ import genetics.items.GeneTemplate;
 import genetics.organism.Organism;
 import genetics.organism.OrganismHandler;
 import genetics.root.DisplayHelper;
-import genetics.root.MutationContainer;
 
 public enum GeneticFactory implements IGeneticFactory {
 	INSTANCE;
@@ -86,11 +82,6 @@ public enum GeneticFactory implements IGeneticFactory {
 	@Override
 	public <I extends IIndividual> IOrganismHandler<I> createOrganismHandler(IRootDefinition<? extends IIndividualRoot<I>> rootDefinition, Supplier<ItemStack> stack) {
 		return new OrganismHandler<>(rootDefinition, stack);
-	}
-
-	@Override
-	public <I extends IIndividual, M extends IMutation> IMutationContainer<M> createMutationContainer(IMutationRoot<I, M> root, Class<? extends M> mutationClass) {
-		return new MutationContainer<>(root, mutationClass);
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 			throw new IllegalArgumentException(message);
 		}
 		IAlleleRegistry registry = ApiInstance.INSTANCE.getAlleleRegistry();
-		if(!registry.isValidAllele(allele, chromosomeType)){
+		if (!registry.isValidAllele(allele, chromosomeType)) {
 			String message = String.format("Tried to change a allele template at the position of the chromosome type '%s'. " +
 				"Incorrect type for allele '%s'.", chromosomeType, allele);
 			throw new IllegalArgumentException(message);
@@ -49,13 +49,13 @@ public final class AlleleTemplateBuilder implements IAlleleTemplateBuilder {
 		}
 		IAlleleRegistry alleleRegistry = ApiInstance.INSTANCE.getAlleleRegistry();
 		Optional<IAllele> alleleOptional = alleleRegistry.getAllele(registryName);
-		if(!alleleOptional.isPresent()){
+		if (!alleleOptional.isPresent()) {
 			String message = String.format("Tried to change a allele template at the position of the chromosome type '%s'. " +
 				"No allele was registered for the given registry name '%s'.", chromosomeType, registryName);
 			throw new IllegalArgumentException(message);
 		}
 		IAllele allele = alleleOptional.get();
-		if(!alleleRegistry.isValidAllele(allele, chromosomeType)){
+		if (!alleleRegistry.isValidAllele(allele, chromosomeType)) {
 			String message = String.format("Tried to change a allele template at the position of the chromosome type '%s'. " +
 				"Incorrect type for allele '%s'.", chromosomeType, allele);
 			throw new IllegalArgumentException(message);

@@ -36,7 +36,7 @@ public interface IAllele extends IForgeRegistryEntry<IAllele> {
 	/**
 	 * @return The unlocalized identifier
 	 */
-	String getUnlocalizedName();
+	String getLocalisationKey();
 
 	/**
 	 * @return The registry name

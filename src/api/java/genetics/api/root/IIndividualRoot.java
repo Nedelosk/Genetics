@@ -19,6 +19,9 @@ import genetics.api.individual.IKaryotype;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
 import genetics.api.organism.IOrganismTypes;
+import genetics.api.root.components.ComponentKey;
+import genetics.api.root.components.IRootComponent;
+import genetics.api.root.components.IRootComponentBuilder;
 import genetics.api.root.translator.IIndividualTranslator;
 
 /**
@@ -33,6 +36,7 @@ import genetics.api.root.translator.IIndividualTranslator;
  */
 public interface IIndividualRoot<I extends IIndividual> {
 	/* Individual Creation */
+
 	/**
 	 * Uses the information that the NBT-Data contains to create a {@link IIndividual}.
 	 */
@@ -80,6 +84,7 @@ public interface IIndividualRoot<I extends IIndividual> {
 	I getDefaultMember();
 
 	/* Item Stacks */
+
 	/**
 	 * Creates an {@link ItemStack} that uses the {@link IAllele} template of the given allele and has the
 	 * given organism type.
@@ -92,6 +97,7 @@ public interface IIndividualRoot<I extends IIndividual> {
 	ItemStack createStack(IAllele allele, IOrganismType type);
 
 	/* Genome */
+
 	/**
 	 * Creates a wrapper that can be used to give access to the values of the alleles that the genome contains.
 	 */
@@ -101,6 +107,7 @@ public interface IIndividualRoot<I extends IIndividual> {
 
 	List<I> getIndividualTemplates();
 	/* Components */
+
 	/**
 	 * Returns the template container that contains all registered templates for the individual of this root.
 	 * Templates have to be registered at the {@link IIndividualRootBuilder} of the root before the root itself was
@@ -136,11 +143,16 @@ public interface IIndividualRoot<I extends IIndividual> {
 	IOrganismTypes<I> getTypes();
 
 	/* Util */
+
 	/**
 	 * @return The string based unique identifier of this definition.
 	 */
 	String getUID();
 
+	<C extends IRootComponent, B extends IRootComponentBuilder<C>> Optional<C> getComponent(ComponentKey<C, B> key);
+
 	@SideOnly(Side.CLIENT)
 	IDisplayHelper getDisplayHelper();
+
+	IRootDefinition getDefinition();
 }

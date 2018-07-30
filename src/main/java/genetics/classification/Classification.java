@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import net.minecraft.client.resources.I18n;
 
-import genetics.api.alleles.IAlleleClassified;
+import genetics.api.alleles.IAlleleSpecies;
 import genetics.api.classification.IClassification;
 
 import genetics.ApiInstance;
@@ -19,7 +19,7 @@ public class Classification implements IClassification {
 	@Nullable
 	private IClassification parent;
 
-	private final ArrayList<IAlleleClassified> members = new ArrayList<>();
+	private final ArrayList<IAlleleSpecies> members = new ArrayList<>();
 	private final ArrayList<IClassification> groups = new ArrayList<>();
 
 	public Classification(EnumClassLevel level, String uid, String scientific) {
@@ -77,12 +77,12 @@ public class Classification implements IClassification {
 	}
 
 	@Override
-	public IAlleleClassified[] getMemberSpecies() {
-		return members.toArray(new IAlleleClassified[0]);
+	public IAlleleSpecies[] getMemberSpecies() {
+		return members.toArray(new IAlleleSpecies[0]);
 	}
 
 	@Override
-	public void addMemberSpecies(IAlleleClassified species) {
+	public void addMemberSpecies(IAlleleSpecies species) {
 		members.add(species);
 	}
 

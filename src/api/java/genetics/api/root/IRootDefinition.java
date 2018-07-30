@@ -5,11 +5,13 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import genetics.api.IGeneticApiInstance;
+
 /**
  * A optional that describes a {@link IIndividualRoot}.
  * <p>
  * You can get the optional of an {@link IIndividualRoot} by calling
- * {@link IRootRegistry#getRoot(String)} or {@link IIndividualRootBuilder#getDefinition()} at
+ * {@link IGeneticApiInstance#getRoot(String)} or {@link IIndividualRootBuilder#getDefinition()} at
  * the definition builder of the definition.
  *
  * @param <R> @param <R> The type of the root of the individual.

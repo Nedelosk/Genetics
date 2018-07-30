@@ -14,11 +14,14 @@ import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootHelper;
 import genetics.api.root.IRootDefinition;
+import genetics.api.root.components.IRootComponentRegistry;
 
 import genetics.alleles.AlleleRegistry;
 import genetics.classification.ClassificationRegistry;
 import genetics.individual.GeneticSaveHandler;
 import genetics.individual.RootDefinition;
+import genetics.root.IndividualRootHelper;
+import genetics.root.RootComponentRegistry;
 
 public enum ApiInstance implements IGeneticApiInstance {
 	INSTANCE;
@@ -63,8 +66,13 @@ public enum ApiInstance implements IGeneticApiInstance {
 	}
 
 	@Override
+	public IRootComponentRegistry getComponentRegistry() {
+		return RootComponentRegistry.INSTANCE;
+	}
+
+	@Override
 	public IIndividualRootHelper getRootHelper() {
-		return null;
+		return IndividualRootHelper.INSTANCE;
 	}
 
 	@Override

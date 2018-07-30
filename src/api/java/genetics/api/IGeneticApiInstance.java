@@ -9,6 +9,7 @@ import genetics.api.classification.IClassificationRegistry;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootHelper;
 import genetics.api.root.IRootDefinition;
+import genetics.api.root.components.IRootComponentRegistry;
 
 public interface IGeneticApiInstance {
 	/**
@@ -46,6 +47,13 @@ public interface IGeneticApiInstance {
 	 * @throws IllegalStateException if the method gets called before the pre-init phase of fml.
 	 */
 	IIndividualRootHelper getRootHelper();
+
+	/**
+	 * This instance is available before any method of a {@link IGeneticPlugin} was called.
+	 *
+	 * @throws IllegalStateException if the method gets called before the pre-init phase of fml.
+	 */
+	IRootComponentRegistry getComponentRegistry();
 
 	/**
 	 * Retrieve the {@link IRootDefinition} with the given uid and computes one if there currently is no definition

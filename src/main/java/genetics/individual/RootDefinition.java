@@ -46,9 +46,9 @@ public class RootDefinition<R extends IIndividualRoot> implements IRootDefinitio
 	@Override
 	public <U> Optional<U> map(Function<? super R, ? extends U> mapper) {
 		Objects.requireNonNull(mapper);
-		if (!isPresent())
+		if (!isPresent()) {
 			return Optional.empty();
-		else {
+		} else {
 			return Optional.ofNullable(mapper.apply(root));
 		}
 	}

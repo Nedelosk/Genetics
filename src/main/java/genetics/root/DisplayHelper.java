@@ -26,22 +26,22 @@ public class DisplayHelper<I extends IIndividual> implements IDisplayHelper<I> {
 	}
 
 	@Override
-	public String getShortName(IChromosomeType chromosomeType) {
-		return I18n.format(getUnlocalizedShortName(chromosomeType));
+	public String getLocalizedShortName(IChromosomeType chromosomeType) {
+		return I18n.format(getTranslationKeyShort(chromosomeType));
 	}
 
 	@Override
-	public String getUnlocalizedShortName(IChromosomeType chromosomeType) {
+	public String getTranslationKeyShort(IChromosomeType chromosomeType) {
 		return "chromosome." + chromosomeType.getName() + ".short";
 	}
 
 	@Override
 	public String getLocalizedName(IChromosomeType chromosomeType) {
-		return I18n.format(getUnlocalizedName(chromosomeType));
+		return I18n.format(getTranslationKey(chromosomeType));
 	}
 
 	@Override
-	public String getUnlocalizedName(IChromosomeType chromosomeType) {
+	public String getTranslationKey(IChromosomeType chromosomeType) {
 		return "chromosome." + chromosomeType.getName();
 	}
 
@@ -49,7 +49,7 @@ public class DisplayHelper<I extends IIndividual> implements IDisplayHelper<I> {
 	public ItemStack getDisplayStack(IAlleleSpecies species, IOrganismType type) {
 		String registryName = species.getRegistryName().toString();
 		ItemStack stack = iconStacks.get(type, registryName);
-		if(stack == null){
+		if (stack == null) {
 			stack = root.createStack(species, type);
 			iconStacks.put(type, registryName, stack);
 		}

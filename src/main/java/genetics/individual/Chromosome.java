@@ -62,7 +62,7 @@ public class Chromosome implements IChromosome {
 
 	private static IAllele validateAllele(@Nullable String templateIdentifier, IChromosomeType type, @Nullable IAllele allele) {
 		IAlleleRegistry alleleRegistry = ApiInstance.INSTANCE.getAlleleRegistry();
-		if(allele == null || !alleleRegistry.isValidAllele(allele, type)){
+		if (allele == null || !alleleRegistry.isValidAllele(allele, type)) {
 			ITemplateContainer container = type.getRoot().getTemplates();
 			IKaryotype karyotype = container.getKaryotype();
 			IAllele[] template = null;

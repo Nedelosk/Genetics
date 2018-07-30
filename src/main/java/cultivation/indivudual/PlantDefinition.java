@@ -5,13 +5,17 @@ import java.util.Arrays;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
+import genetics.api.individual.IGeneticDefinition;
 import genetics.api.individual.IGenome;
-import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
-import genetics.api.individual.ITemplateProvider;
+import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootBuilder;
+import genetics.api.root.ITemplateRegistry;
+import genetics.api.root.components.ComponentKey;
+import genetics.api.root.components.ComponentKeys;
+import genetics.api.root.components.IRootComponentBuilder;
 
-public enum PlantDefinition implements ITemplateProvider {
+public enum PlantDefinition implements IGeneticDefinition {
 	WHEAT("wheat");
 
 	private final IAllele allele;
@@ -29,13 +33,7 @@ public enum PlantDefinition implements ITemplateProvider {
 		this.allele = new AllelePlantSpecies(name, dominant).setRegistryName(name);
 	}
 
-	public static void preInit(IIndividualRootBuilder builder){
-		for(PlantDefinition definition : values()){
-			definition.init(builder);
-		}
-	}
-
-	private void init(IIndividualRootBuilder builder) {
+	public void init(ITemplateRegistry templateRegistry, IIndividualRootBuilder builder) {
 		IKaryotype karyotype = builder.getKaryotype();
 		IAlleleTemplateBuilder template = karyotype.createTemplate();
 		template.set(PlantChromosomes.SPECIES, allele);
@@ -43,14 +41,46 @@ public enum PlantDefinition implements ITemplateProvider {
 
 		this.templateAlleles = template.build().alleles();
 		genome = karyotype.templateAsGenome(this.templateAlleles);
-		builder.registerTemplate(this.templateAlleles);
+		templateRegistry.registerTemplate(this.templateAlleles);
 	}
 
-	protected void createTemplate(IAlleleTemplateBuilder template){
+	public static void registerTemplates(ITemplateRegistry registry) {
+		IKaryotype karyotype = registry.getRoot().getKaryotype();
+		for (PlantDefinition definition : values()) {
+			definition.registerTemplate(karyotype, registry);
+		}
 	}
 
-	public static IAlleleTemplate getDefaultTemplate(IKaryotype karyotype){
-		IAlleleTemplateBuilder template = karyotype.createEmptyTemplate();
+	private void registerTemplate(IKaryotype karyotype, ITemplateRegistry registry) {
+		IAlleleTemplateBuilder template = karyotype.createTemplate();
+		template.set(PlantChromosomes.SPECIES, allele);
+		createTemplate(template);
+
+		this.templateAlleles = template.build().alleles();
+		this.genome = karyotype.templateAsGenome(this.templateAlleles);
+		registry.registerTemplate(this.templateAlleles);
+	}
+
+	@Override
+	public <B extends IRootComponentBuilder> void onComponent(ComponentKey<?, B> key, B builder) {
+		IIndividualRoot root = builder.getRoot();
+		IKaryotype karyotype = root.getKaryotype();
+		if (key == ComponentKeys.TEMPLATES) {
+			ITemplateRegistry registry = (ITemplateRegistry) builder;
+			IAlleleTemplateBuilder template = karyotype.createTemplate();
+			template.set(PlantChromosomes.SPECIES, allele);
+			createTemplate(template);
+
+			this.templateAlleles = template.build().alleles();
+			this.genome = karyotype.templateAsGenome(this.templateAlleles);
+			registry.registerTemplate(this.templateAlleles);
+		}
+	}
+
+	protected void createTemplate(IAlleleTemplateBuilder template) {
+	}
+
+	public static IAlleleTemplate createDefaultTemplate(IAlleleTemplateBuilder template) {
 		template.set(PlantChromosomes.SPECIES, PlantDefinition.WHEAT.getAllele());
 		PlantDefinition.WHEAT.createTemplate(template);
 		return template.build();
@@ -71,7 +101,7 @@ public enum PlantDefinition implements ITemplateProvider {
 	}
 
 	@Override
-	public IIndividual createIndividual() {
+	public Plant createIndividual() {
 		return new Plant(genome);
 	}
 }

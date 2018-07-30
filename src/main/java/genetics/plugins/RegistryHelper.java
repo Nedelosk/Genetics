@@ -26,7 +26,7 @@ public enum RegistryHelper implements IRegistryHelper {
 		for (AlleleData gene : alleleData) {
 			loader.setActiveModContainer(gene.container);
 			PluginManager.setActiveContainer(gene.container);
-			for (int i = 0;i < gene.constants.length;i++) {
+			for (int i = 0; i < gene.constants.length; i++) {
 				IAlleleConstant data = gene.constants[i];
 				gene.alleles[i] = registry.registerAllele(data, gene.types);
 			}

@@ -1,28 +1,18 @@
 package genetics.api.root;
 
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Supplier;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import java.util.function.Consumer;
 
 import genetics.api.IGeneticApiInstance;
-import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticPlugin;
-import genetics.api.alleles.IAllele;
-import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
-import genetics.api.organism.IOrganism;
-import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
-import genetics.api.organism.IOrganismTypes;
-import genetics.api.root.translator.IBlockTranslator;
+import genetics.api.root.components.ComponentKey;
+import genetics.api.root.components.IRootComponent;
+import genetics.api.root.components.IRootComponentBuilder;
+import genetics.api.root.components.IRootComponentFactory;
+import genetics.api.root.components.IRootComponentRegistry;
 import genetics.api.root.translator.IIndividualTranslator;
-import genetics.api.root.translator.IItemTranslator;
 
 /**
  * The IIndividualRootBuilder offers several functions to register templates, types or something similar that can be
@@ -37,83 +27,6 @@ import genetics.api.root.translator.IItemTranslator;
  * @param <I> The type of the individual that the root describes.
  */
 public interface IIndividualRootBuilder<I extends IIndividual> {
-
-	/**
-	 * Registers a {@link IOrganismType} for the {@link IIndividual} of the root.
-	 * <p>
-	 * {@link IGeneticFactory#createOrganismHandler(IRootDefinition, Supplier)} can be used to create the default
-	 * implementation of an {@link IOrganismHandler}.
-	 *
-	 * @param type    The organism type itself.
-	 * @param handler The organism handler that handles the creation of the {@link IIndividual} and the {@link ItemStack}
-	 *                that contains the {@link IOrganism}.
-	 * @param defaultType If the registered type should be the default type of the described individual. The first
-	 *                       registered type will be used if no type has been registered as the default type.
-	 */
-	IIndividualRootBuilder<I> registerType(IOrganismType type, IOrganismHandler<I> handler, boolean defaultType);
-
-	default IIndividualRootBuilder<I> registerType(IOrganismType type, IOrganismHandler<I> handler){
-		return registerType(type, handler, false);
-	}
-
-	/**
-	 * Registers a {@link IOrganismType} for the {@link IIndividual} of the root.
-	 * <p>
-	 * Uses {@link IGeneticFactory#createOrganismHandler(IRootDefinition, Supplier)} to create the default
-	 * implementation of an {@link IOrganismHandler} with the given parameters.
-	 *
-	 * @param type    The organism type itself.
-	 * @param stack   A supplier that supplies the stack that will be used as the default stack for every stack that
-	 *                   will be created with {@link IOrganismHandler#createStack(IIndividual)}.
-	 * @param defaultType If the registered type should be the default type of the described individual. The first
-	 *                       registered type will be used if no type has been registered as the default type.
-	 */
-	IIndividualRootBuilder<I> registerType(IOrganismType type, Supplier<ItemStack> stack, boolean defaultType);
-
-	default IIndividualRootBuilder<I> registerType(IOrganismType type, Supplier<ItemStack> stack){
-		return registerType(type, stack, false);
-	}
-
-	/**
-	 * Registers a translator that translates a {@link IBlockState} into a  {@link IIndividual} or an {@link ItemStack}
-	 * that contains an {@link IOrganism}.
-	 *
-	 * @param translatorKey The key of the translator the block of {@link IBlockState} that you want to translate
-	 *                      with the translator.
-	 * @param translator    A translator that should be used to translate the data.
-	 */
-	IIndividualRootBuilder<I> registerTranslator(Block translatorKey, IBlockTranslator<I> translator);
-
-	/**
-	 * Registers a translator that translates an {@link ItemStack} that does not contain an {@link IOrganism} into a
-	 * {@link IIndividual} or another {@link ItemStack} that contains an {@link IOrganism}.
-	 *
-	 * @param translatorKey The key of the translator it is the item of the {@link ItemStack} that you want to translate
-	 *                      with the translator.
-	 * @param translator    A translator that should be used to translate the data.
-	 */
-	IIndividualRootBuilder<I> registerTranslator(Item translatorKey, IItemTranslator<I> translator);
-
-	/**
-	 * Registers a allele template using the UID of the first allele as identifier.
-	 */
-	IIndividualRootBuilder<I> registerTemplate(IAllele[] template);
-
-	/**
-	 * Registers a allele template using the UID of the first allele as identifier.
-	 */
-	IIndividualRootBuilder<I> registerTemplate(IAlleleTemplate template);
-
-	/**
-	 * Sets a factory that crates the {@link IIndividualTranslator} object.
-	 */
-	IIndividualRootBuilder<I> setTranslator(BiFunction<Map<Item, IItemTranslator<I>>, Map<Block, IBlockTranslator<I>>, IIndividualTranslator<I>> translatorFactory);
-
-	/**
-	 * ets a factory that crates {@link IOrganismTypes} object.
-	 */
-	IIndividualRootBuilder<I> setTypes(BiFunction<Map<IOrganismType, IOrganismHandler<I>>, IOrganismType, IOrganismTypes<I>> typesFactory);
-
 	/**
 	 * The karyotype that was used to create this builder.
 	 */
@@ -128,4 +41,53 @@ public interface IIndividualRootBuilder<I extends IIndividual> {
 	 * optional.
 	 */
 	<R extends IIndividualRoot<I>> IRootDefinition<R> getDefinition();
+
+	/**
+	 * Adds the default component factory that was registered with {@link IRootComponentRegistry#registerFactory(ComponentKey, IRootComponentFactory)}
+	 * to this root.
+	 * <p>
+	 * {@link IRootComponentFactory#create(IIndividualRoot)} gets called later after all components were added and the
+	 * builder starts to build the root.
+	 * After all {@link IRootComponentBuilder}s were created all registered listeners get called and then the
+	 * {@link IRootComponentBuilder} gets finally build with {@link IRootComponentBuilder#create()} and added to the
+	 * root object.
+	 *
+	 * @param key The key associated with the component and the builder of this component.
+	 * @param <C> The type of the component of the key.
+	 * @param <B> the type of the component builder that the is associated with the key and created by the factory.
+	 */
+	<C extends IRootComponent, B extends IRootComponentBuilder> void addComponent(ComponentKey<C, B> key);
+
+
+	/**
+	 * Adds the given component factory to this root.
+	 * <p>
+	 * {@link IRootComponentFactory#create(IIndividualRoot)} gets called later after all components were added and the
+	 * builder starts to build the root.
+	 * After all {@link IRootComponentBuilder}s were created all registered listeners get called and then the
+	 * {@link IRootComponentBuilder} gets finally build with {@link IRootComponentBuilder#create()} and added to the
+	 * root object.
+	 *
+	 * @param key     The key associated with the component and the builder of this component.
+	 * @param factory The factory that creates the instance of the component builder.
+	 * @param <C>     The type of the component of the key.
+	 * @param <B>     the type of the component builder that the is associated with the key and created by the factory.
+	 */
+	<C extends IRootComponent, B extends IRootComponentBuilder> void addComponent(ComponentKey<C, B> key, IRootComponentFactory<I, B> factory);
+
+	/**
+	 * Adds a component listener.
+	 * <p>
+	 * This method can be used to register {@link IOrganismType}s, {@link IIndividualTranslator}s and other things
+	 * at their {@link IRootComponentBuilder}.
+	 * <p>
+	 * {@link Consumer#accept(Object)} will get called between the creation of the {@link IRootComponentBuilder} and the
+	 * creation of the {@link IRootComponent} with {@link IRootComponentBuilder#create()}.
+	 *
+	 * @param key      The key associated with the component and the builder of this component.
+	 * @param consumer A consumer that receives the instance of the component builder before the component gets created.
+	 * @param <C>      The type of the component of the key.
+	 * @param <B>      the type of the component builder that the is associated with the key and created by the factory.
+	 */
+	<C extends IRootComponent, B extends IRootComponentBuilder> void addListener(ComponentKey<C, B> key, Consumer<B> consumer);
 }

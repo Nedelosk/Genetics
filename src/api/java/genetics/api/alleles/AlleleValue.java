@@ -45,7 +45,7 @@ public class AlleleValue<V> extends Allele implements IAlleleValue<V> {
 			.add("name", getRegistryName())
 			.add("value", value)
 			.add("dominant", dominant)
-			.add("unloc", unlocalizedName)
+			.add("unloc", localisationKey)
 			.add("loc", getLocalizedName())
 			.toString();
 	}

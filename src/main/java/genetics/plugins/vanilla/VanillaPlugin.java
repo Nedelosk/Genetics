@@ -10,7 +10,7 @@ import genetics.Genetics;
 public class VanillaPlugin implements IGeneticPlugin {
 	@Override
 	public void registerAlleles(IAlleleRegistry registry) {
-		for (int i = 1;i <= 10;i++) {
+		for (int i = 1; i <= 10; i++) {
 			registry.registerAllele("i", i + "d", i, true);
 		}
 		registry.registerAllele("bool", Boolean.toString(true), true, false);

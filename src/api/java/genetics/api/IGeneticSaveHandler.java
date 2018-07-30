@@ -38,9 +38,9 @@ public interface IGeneticSaveHandler {
 	/**
 	 * Quickly gets the species without loading the whole genome. And without creating absent chromosomes.
 	 *
-	 * @param genomeNBT The NBT-Data that contains the information about the chromosome
-	 * @param chromosomeType  The gene type of the chromosome.
-	 * @param active    if the returned allele should be the active one.
+	 * @param genomeNBT      The NBT-Data that contains the information about the chromosome
+	 * @param chromosomeType The gene type of the chromosome.
+	 * @param active         if the returned allele should be the active one.
 	 * @return The active or inactive allele of the chromosome if the chromosome is present.
 	 */
 	@Nullable
@@ -49,9 +49,9 @@ public interface IGeneticSaveHandler {
 	/**
 	 * Quickly gets the allele without loading the whole genome. And without creating absent chromosomes.
 	 *
-	 * @param itemStack The stack that contains the information about the chromosome
-	 * @param chromosomeType  The gene type of the chromosome.
-	 * @param active    if the returned allele should be the active one.
+	 * @param itemStack      The stack that contains the information about the chromosome
+	 * @param chromosomeType The gene type of the chromosome.
+	 * @param active         if the returned allele should be the active one.
 	 * @return The active or inactive allele of the chromosome if the chromosome is present.
 	 */
 	@Nullable
@@ -60,9 +60,9 @@ public interface IGeneticSaveHandler {
 	/**
 	 * Tries to load the chromosome of the given type and creates it if it is absent.
 	 *
-	 * @param itemStack The stack that contains the information about the chromosome
-	 * @param chromosomeType  The gene type of the chromosome.
-	 * @param active    if the returned allele should be the active one.
+	 * @param itemStack      The stack that contains the information about the chromosome
+	 * @param chromosomeType The gene type of the chromosome.
+	 * @param active         if the returned allele should be the active one.
 	 * @return The active or inactive allele of the chromosome.
 	 */
 	IAllele getAllele(ItemStack itemStack, IChromosomeType chromosomeType, boolean active);
@@ -70,8 +70,8 @@ public interface IGeneticSaveHandler {
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
 	 *
-	 * @param genomeNBT The NBT-Data that contains the information about the chromosome
-	 * @param chromosomeType  The gene type of the chromosome.
+	 * @param genomeNBT      The NBT-Data that contains the information about the chromosome
+	 * @param chromosomeType The gene type of the chromosome.
 	 * @return The chromosome.
 	 */
 	IChromosome getSpecificChromosome(NBTTagCompound genomeNBT, IChromosomeType chromosomeType);
@@ -79,8 +79,8 @@ public interface IGeneticSaveHandler {
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
 	 *
-	 * @param itemStack The stack that contains the information about the chromosome
-	 * @param chromosomeType  The gene type of the chromosome.
+	 * @param itemStack      The stack that contains the information about the chromosome
+	 * @param chromosomeType The gene type of the chromosome.
 	 * @return The chromosome.
 	 */
 	IChromosome getSpecificChromosome(ItemStack itemStack, IChromosomeType chromosomeType);

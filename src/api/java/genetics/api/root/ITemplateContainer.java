@@ -6,12 +6,13 @@ import java.util.Random;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.individual.IKaryotype;
+import genetics.api.root.components.IRootComponent;
 
 /**
  * The ITemplateContainer contains all templates of the {@link IIndividualRoot} that were added with the
  * {@link IIndividualRootBuilder}.
  */
-public interface ITemplateContainer {
+public interface ITemplateContainer extends IRootComponent {
 
 	/**
 	 * Retrieves a registered template using the passed species unique identifier.
