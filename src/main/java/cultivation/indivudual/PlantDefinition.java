@@ -9,14 +9,15 @@ import genetics.api.individual.IGeneticDefinition;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IKaryotype;
 import genetics.api.root.IIndividualRoot;
-import genetics.api.root.IIndividualRootBuilder;
 import genetics.api.root.ITemplateRegistry;
 import genetics.api.root.components.ComponentKey;
 import genetics.api.root.components.ComponentKeys;
 import genetics.api.root.components.IRootComponentBuilder;
 
 public enum PlantDefinition implements IGeneticDefinition {
-	WHEAT("wheat");
+	WHEAT("wheat"),
+	PUMPKIN("pumpkin"),
+	MELON("melon");
 
 	private final IAllele allele;
 
@@ -31,17 +32,6 @@ public enum PlantDefinition implements IGeneticDefinition {
 
 	PlantDefinition(String name, boolean dominant) {
 		this.allele = new AllelePlantSpecies(name, dominant).setRegistryName(name);
-	}
-
-	public void init(ITemplateRegistry templateRegistry, IIndividualRootBuilder builder) {
-		IKaryotype karyotype = builder.getKaryotype();
-		IAlleleTemplateBuilder template = karyotype.createTemplate();
-		template.set(PlantChromosomes.SPECIES, allele);
-		createTemplate(template);
-
-		this.templateAlleles = template.build().alleles();
-		genome = karyotype.templateAsGenome(this.templateAlleles);
-		templateRegistry.registerTemplate(this.templateAlleles);
 	}
 
 	public static void registerTemplates(ITemplateRegistry registry) {

@@ -81,6 +81,12 @@ public class OrganismTypes<I extends IIndividual> implements IOrganismTypes<I> {
 	}
 
 	@Override
+	public Optional<IOrganismHandler<I>> getHandler(ItemStack itemStack) {
+		Optional<IOrganismType> type = getType(itemStack);
+		return type.flatMap(this::getHandler);
+	}
+
+	@Override
 	public Collection<IOrganismType> getTypes() {
 		return types.keySet();
 	}

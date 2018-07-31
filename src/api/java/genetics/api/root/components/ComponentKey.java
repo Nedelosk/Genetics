@@ -1,11 +1,29 @@
 package genetics.api.root.components;
 
+import genetics.api.root.IIndividualRoot;
+import genetics.api.root.IIndividualRootBuilder;
+
+/**
+ * A key that is associated with a specific root component and its builder.
+ * <p>
+ * It can be used to add a component with {@link IIndividualRootBuilder#addComponent(ComponentKey)} or
+ * {@link IIndividualRootBuilder#addComponent(ComponentKey, IRootComponentFactory)}.
+ * <p>
+ * Also it can be used to get a component with {@link IIndividualRoot#getComponent(ComponentKey)}.
+ *
+ * @param <C> The type of the component.
+ * @param <B> The type of the component builder.
+ */
 public class ComponentKey<C extends IRootComponent, B extends IRootComponentBuilder> {
+
+	public static <C extends IRootComponent, B extends IRootComponentBuilder> ComponentKey<C, B> create(String name, Class<C> componentClass) {
+		return new ComponentKey<>(name, componentClass);
+	}
 
 	private final String name;
 	private final Class<C> componentClass;
 
-	public ComponentKey(String name, Class<C> componentClass) {
+	private ComponentKey(String name, Class<C> componentClass) {
 		this.name = name;
 		this.componentClass = componentClass;
 	}

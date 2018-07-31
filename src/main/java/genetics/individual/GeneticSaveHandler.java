@@ -12,7 +12,12 @@ import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
+import genetics.api.organism.IOrganismHandler;
+import genetics.api.organism.IOrganismType;
+import genetics.api.organism.OrganismHelper;
+import genetics.api.root.IIndividualRoot;
 import genetics.api.root.ITemplateContainer;
 
 import genetics.ApiInstance;
@@ -55,13 +60,18 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	 * Quickly gets the species without loading the whole genome. And without creating absent chromosomes.
 	 */
 	@Nullable
-	public IAllele getAlleleDirectly(ItemStack itemStack, IChromosomeType chromosomeType, boolean active) {
+	public IAllele getAlleleDirectly(ItemStack itemStack, IOrganismType type, IChromosomeType chromosomeType, boolean active) {
 		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
-		if (nbtTagCompound == null) {
+		if (nbtTagCompound == null || nbtTagCompound.hasNoTags()) {
 			return null;
 		}
 
-		NBTTagCompound genomeNBT = nbtTagCompound.getCompoundTag(GENOME_TAG);
+		NBTTagCompound individualNBT = getIndividualDataDirectly(itemStack, type, chromosomeType.getRoot());
+		if (individualNBT == null || individualNBT.hasNoTags()) {
+			return null;
+		}
+
+		NBTTagCompound genomeNBT = individualNBT.getCompoundTag(GENOME_TAG);
 		if (genomeNBT.hasNoTags()) {
 			return null;
 		}
@@ -75,8 +85,8 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 
 	// NBT RETRIEVAL
 
-	public IAllele getAllele(ItemStack itemStack, IChromosomeType chromosomeType, boolean active) {
-		IChromosome chromosome = getSpecificChromosome(itemStack, chromosomeType);
+	public IAllele getAllele(ItemStack itemStack, IOrganismType type, IChromosomeType chromosomeType, boolean active) {
+		IChromosome chromosome = getSpecificChromosome(itemStack, type, chromosomeType);
 		return active ? chromosome.getActiveAllele() : chromosome.getInactiveAllele();
 	}
 
@@ -88,25 +98,53 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
 	 */
-	public IChromosome getSpecificChromosome(ItemStack itemStack, IChromosomeType chromosomeType) {
+	public IChromosome getSpecificChromosome(ItemStack itemStack, IOrganismType type, IChromosomeType chromosomeType) {
 		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
 		if (nbtTagCompound == null) {
 			nbtTagCompound = new NBTTagCompound();
 			itemStack.setTagCompound(nbtTagCompound);
 		}
-		NBTTagCompound genomeNBT = nbtTagCompound.getCompoundTag(GENOME_TAG);
+
+		NBTTagCompound individualNBT = getIndividualData(itemStack, type, chromosomeType.getRoot());
+		NBTTagCompound genomeNBT = individualNBT.getCompoundTag(GENOME_TAG);
+
+		return getSpecificChromosome(genomeNBT, chromosomeType);
+	}
+
+	@Nullable
+	@Override
+	public NBTTagCompound getIndividualDataDirectly(ItemStack itemStack, IOrganismType type, IIndividualRoot<IIndividual> root) {
+		IOrganismHandler organismHandler = OrganismHelper.getOrganismHandler(root, type);
+		return organismHandler.getIndividualData(itemStack);
+	}
+
+	@Override
+	public void setIndividualData(ItemStack itemStack, IOrganismType type, IIndividualRoot<IIndividual> root, NBTTagCompound compound) {
+		IOrganismHandler organismHandler = OrganismHelper.getOrganismHandler(root, type);
+		organismHandler.setIndividualData(itemStack, compound);
+	}
+
+	@Override
+	public NBTTagCompound getIndividualData(ItemStack itemStack, IOrganismType type, IIndividualRoot<IIndividual> root) {
+		IOrganismHandler organismHandler = OrganismHelper.getOrganismHandler(root, type);
+		NBTTagCompound compound = organismHandler.getIndividualData(itemStack);
+		if (compound != null) {
+			return compound;
+		}
+		compound = new NBTTagCompound();
+		NBTTagCompound genomeNBT = compound.getCompoundTag(GENOME_TAG);
 
 		if (genomeNBT.hasNoTags()) {
 			Log.error("Got a genetic item with no genome, setting it to a default value.");
 			genomeNBT = new NBTTagCompound();
 
-			ITemplateContainer container = chromosomeType.getRoot().getTemplates();
+			ITemplateContainer container = root.getTemplates();
 			IAlleleTemplate defaultTemplate = container.getKaryotype().getDefaultTemplate();
 			IGenome genome = defaultTemplate.toGenome(null);
 			genome.writeToNBT(genomeNBT);
-			nbtTagCompound.setTag(GENOME_TAG, genomeNBT);
+			compound.setTag(GENOME_TAG, genomeNBT);
 		}
-
-		return getSpecificChromosome(genomeNBT, chromosomeType);
+		organismHandler.setIndividualData(itemStack, compound);
+		return compound;
 	}
 }

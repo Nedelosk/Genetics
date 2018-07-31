@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleSpecies;
+import genetics.api.root.IIndividualRoot;
 
 /**
  * Individuals can be seeded either as hive drops or as mutation results.
@@ -11,9 +12,9 @@ import genetics.api.alleles.IAlleleSpecies;
 public interface IMutation {
 
 	/**
-	 * @return {@link IMutationRoot} this mutation is associated with.
+	 * @return {@link IIndividualRoot} this mutation is associated with.
 	 */
-	IMutationRoot getRoot();
+	IIndividualRoot getRoot();
 
 	/**
 	 * @return first of the alleles implementing IAlleleSpecies required for this mutation.

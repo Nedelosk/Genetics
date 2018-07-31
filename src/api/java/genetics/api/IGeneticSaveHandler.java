@@ -9,7 +9,10 @@ import genetics.api.alleles.IAllele;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
+import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
+import genetics.api.organism.IOrganismType;
+import genetics.api.root.IIndividualRoot;
 
 /**
  * This handler provides some functions to save and load {@link IAllele}s, {@link IChromosome}s and {@link IGenome}s.
@@ -50,22 +53,22 @@ public interface IGeneticSaveHandler {
 	 * Quickly gets the allele without loading the whole genome. And without creating absent chromosomes.
 	 *
 	 * @param itemStack      The stack that contains the information about the chromosome
-	 * @param chromosomeType The gene type of the chromosome.
+	 * @param type
+	 * @param chromosomeType The gene type of the chromosome.   @return The active or inactive allele of the chromosome if the chromosome is present.
 	 * @param active         if the returned allele should be the active one.
-	 * @return The active or inactive allele of the chromosome if the chromosome is present.
 	 */
 	@Nullable
-	IAllele getAlleleDirectly(ItemStack itemStack, IChromosomeType chromosomeType, boolean active);
+	IAllele getAlleleDirectly(ItemStack itemStack, IOrganismType type, IChromosomeType chromosomeType, boolean active);
 
 	/**
 	 * Tries to load the chromosome of the given type and creates it if it is absent.
 	 *
 	 * @param itemStack      The stack that contains the information about the chromosome
+	 * @param type
 	 * @param chromosomeType The gene type of the chromosome.
-	 * @param active         if the returned allele should be the active one.
-	 * @return The active or inactive allele of the chromosome.
+	 * @param active         if the returned allele should be the active one.   @return The active or inactive allele of the chromosome.
 	 */
-	IAllele getAllele(ItemStack itemStack, IChromosomeType chromosomeType, boolean active);
+	IAllele getAllele(ItemStack itemStack, IOrganismType type, IChromosomeType chromosomeType, boolean active);
 
 	/**
 	 * Tries to load a specific chromosome and creates it if it is absent.
@@ -80,8 +83,15 @@ public interface IGeneticSaveHandler {
 	 * Tries to load a specific chromosome and creates it if it is absent.
 	 *
 	 * @param itemStack      The stack that contains the information about the chromosome
-	 * @param chromosomeType The gene type of the chromosome.
-	 * @return The chromosome.
+	 * @param type
+	 * @param chromosomeType The gene type of the chromosome.  @return The chromosome.
 	 */
-	IChromosome getSpecificChromosome(ItemStack itemStack, IChromosomeType chromosomeType);
+	IChromosome getSpecificChromosome(ItemStack itemStack, IOrganismType type, IChromosomeType chromosomeType);
+
+	@Nullable
+	NBTTagCompound getIndividualDataDirectly(ItemStack itemStack, IOrganismType type, IIndividualRoot<IIndividual> root);
+
+	NBTTagCompound getIndividualData(ItemStack itemStack, IOrganismType type, IIndividualRoot<IIndividual> root);
+
+	void setIndividualData(ItemStack itemStack, IOrganismType type, IIndividualRoot<IIndividual> root, NBTTagCompound compound);
 }

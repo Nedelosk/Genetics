@@ -17,6 +17,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 import genetics.api.alleles.AlleleCategorized;
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleData;
 import genetics.api.alleles.IAlleleHandler;
 import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.individual.IChromosomeType;
@@ -48,11 +49,6 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	@Override
-	public <V> IAllele registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types) {
-		return registerAllele(new AlleleCategorized<>(PluginManager.getCurrentModId(), category, valueName, value, dominant), types);
-	}
-
-	@Override
 	public IAllele registerAllele(IAllele allele, IChromosomeType... types) {
 		if (!registry.containsKey(allele.getRegistryName())) {
 			registry.register(allele);
@@ -70,11 +66,30 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	@Override
+	public <V> IAllele registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types) {
+		return registerAllele(new AlleleCategorized<>(PluginManager.getCurrentModId(), category, valueName, value, dominant), types);
+	}
+
+	@Override
+	public IAllele registerAllele(IAlleleData value, IChromosomeType... types) {
+		return registerAllele(value.getCategory(), value.getName(), value.getValue(), value.isDominant(), types);
+	}
+
+	@Override
+	public IAllele[] registerAlleles(IAlleleData[] values, IChromosomeType... types) {
+		IAllele[] alleles = new IAllele[values.length];
+		for (int i = 0; i < values.length; i++) {
+			alleles[i] = registerAllele(values[i], types);
+		}
+		return alleles;
+	}
+
+	@Override
 	public IAlleleRegistry addValidAlleleTypes(IAllele allele, IChromosomeType... types) {
 		handlers.forEach(h -> h.onAddTypes(allele, types));
 		for (IChromosomeType chromosomeType : types) {
-			if (!chromosomeType.isValid(allele)) {
-				//throw new IllegalArgumentException("Allele class (" + allele.getClass() + ") does not match chromosome type (" + chromosomeType.getAlleleClass() + ").");
+			if (!isValidAllele(allele, chromosomeType)) {
+				throw new IllegalArgumentException("Allele (" + allele + ") is not a valid allele for the chromosome type (" + chromosomeType + ").");
 			}
 			allelesByType.put(chromosomeType, allele);
 			typesByAllele.put(allele, chromosomeType);

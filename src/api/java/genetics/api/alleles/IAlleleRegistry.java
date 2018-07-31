@@ -17,18 +17,33 @@ import genetics.api.individual.IChromosomeType;
  */
 public interface IAlleleRegistry {
 	/**
-	 * Creates a allele with the data that the {@link IAlleleData} contains.
+	 * Creates a allele with the data that the {@link IAlleleData} contains and registers it with the given chromosome
+	 * types.
+	 *
+	 * @param value An object that contains all information that is needed to create a allele with an specific value.
+	 * @param types chromosome types for the allele.
+	 *
+	 * @return Returns the created and registered allele.
 	 */
-	default IAllele registerAllele(IAlleleData value, IChromosomeType... types) {
-		return registerAllele(value.getCategory(), value.getName(), value.getValue(), value.isDominant(), types);
-	}
+	IAllele registerAllele(IAlleleData value, IChromosomeType... types);
+
+	/**
+	 * Creates a allele for every entry in the given array. All alleles will be registered with the given chromosome
+	 * types.
+	 *
+	 * @param values A array that contains all the data for the alleles that should be created.
+	 * @param types  All chromosomes types with that the alleles should be registered.
+	 * @return A array that contains all created and registered alleles. With the same index of their data in the given
+	 * array.
+	 */
+	IAllele[] registerAlleles(IAlleleData[] values, IChromosomeType... types);
 
 	/**
 	 * Creates and registers an allele that contains the given value and has the given dominant state if no allele with
 	 * the value and the given dominant state exists, otherwise it adds the types to the existing {@link IAllele}.
 	 *
-	 * @param category
-	 * @param valueName
+	 * @param category The category is used for custom localisation and the registration name.
+	 * @param valueName The category is used for custom localisation and the registration name.
 	 * @param value     the value of the allele
 	 * @param dominant  if true the allele is dominant, otherwise the allele is recessive.
 	 * @param types     chromosome types for this allele.
@@ -94,9 +109,10 @@ public interface IAlleleRegistry {
 	/**
 	 * Returns true if the given allele is a valid allele for the given chromosome type.
 	 *
-	 * @param allele
-	 * @param type
-	 * @return
+	 * @param allele The allele to test.
+	 * @param type The chromosome type.
+	 *
+	 * @return True if the given allele is a valid allele for the given chromosome type, false otherwise.
 	 */
 	boolean isValidAllele(IAllele allele, IChromosomeType type);
 

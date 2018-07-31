@@ -16,6 +16,7 @@ import genetics.ApiInstance;
 
 public enum IndividualRootHelper implements IIndividualRootHelper {
 	INSTANCE;
+
 	@Override
 	public IRootDefinition getSpeciesRoot(ItemStack stack) {
 		if (stack.isEmpty()) {

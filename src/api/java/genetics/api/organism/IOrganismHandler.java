@@ -1,8 +1,10 @@
 package genetics.api.organism;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.individual.IIndividual;
 
@@ -27,4 +29,9 @@ public interface IOrganismHandler<I extends IIndividual> {
 	 * Writes the genetic information of the given individual to the NBT-Data of the given stack
 	 */
 	boolean setIndividual(ItemStack itemStack, I individual);
+
+	@Nullable
+	NBTTagCompound getIndividualData(ItemStack itemStack);
+
+	void setIndividualData(ItemStack itemStack, NBTTagCompound compound);
 }

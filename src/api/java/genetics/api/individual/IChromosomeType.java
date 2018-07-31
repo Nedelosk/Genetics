@@ -1,6 +1,9 @@
 package genetics.api.individual;
 
+import javax.annotation.Nullable;
+
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleValue;
 import genetics.api.root.IIndividualRoot;
 
 /**
@@ -23,5 +26,17 @@ public interface IChromosomeType {
 	 */
 	String getName();
 
-	boolean isValid(IAllele allele);
+	@Nullable
+	Class<?> getValueClass();
+
+	default boolean isValid(IAllele allele) {
+		if (getValueClass() == null) {
+			return true;
+		}
+		if (!(allele instanceof IAlleleValue)) {
+			return false;
+		}
+		IAlleleValue alleleValue = (IAlleleValue) allele;
+		return getValueClass().isInstance(alleleValue.getValue());
+	}
 }

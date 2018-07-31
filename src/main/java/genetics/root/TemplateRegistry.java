@@ -15,7 +15,7 @@ import genetics.api.root.ITemplateContainer;
 import genetics.api.root.ITemplateRegistry;
 import genetics.api.root.components.RootComponentBuilder;
 
-public class TemplateRegistry<I extends IIndividual> extends RootComponentBuilder<ITemplateContainer, I> implements ITemplateRegistry {
+public class TemplateRegistry<I extends IIndividual> extends RootComponentBuilder<ITemplateContainer, I> implements ITemplateRegistry<I> {
 	private final HashMap<String, IAllele[]> templates = new HashMap<>();
 	private final IKaryotype karyotype;
 

@@ -1,6 +1,8 @@
 package genetics.api.individual;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Iterator;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
@@ -13,7 +15,7 @@ import genetics.api.root.ITemplateContainer;
  * You can use a {@link IKaryotypeBuilder} to create an instance or you create the instance directly with
  * {@link IKaryotypeFactory#createKaryotype(String, Class)} if you have a enum that contains your {@link IChromosomeType}s.
  */
-public interface IKaryotype {
+public interface IKaryotype extends Iterable<IChromosomeType> {
 	/**
 	 * @return Short identifier that is only used if something went wrong.
 	 */
@@ -69,4 +71,9 @@ public interface IKaryotype {
 	}
 
 	IGenome templateAsGenome(IAllele[] templateActive, @Nullable IAllele[] templateInactive);
+
+	@Override
+	default Iterator<IChromosomeType> iterator() {
+		return Arrays.stream(getChromosomeTypes()).iterator();
+	}
 }

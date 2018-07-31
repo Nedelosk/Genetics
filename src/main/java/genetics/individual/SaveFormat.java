@@ -6,6 +6,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
+import net.minecraftforge.common.util.Constants;
+
 import genetics.api.alleles.IAllele;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IChromosomeType;
@@ -34,7 +36,7 @@ public enum SaveFormat {
 		@Override
 		IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
 			IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
-			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, 10);
+			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
 			IChromosome[] chromosomes = new IChromosome[geneTypes.length];
 			ResourceLocation primaryTemplateIdentifier = null;
 			ResourceLocation secondaryTemplateIdentifier = null;
@@ -60,7 +62,7 @@ public enum SaveFormat {
 		@Nullable
 		@Override
 		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active) {
-			NBTTagList tagList = genomeNBT.getTagList(CHROMOSOMES_TAG, 10);
+			NBTTagList tagList = genomeNBT.getTagList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
 			if (tagList.hasNoTags()) {
 				return null;
 			}
@@ -93,7 +95,7 @@ public enum SaveFormat {
 		@Override
 		IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
 			IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
-			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, 10);
+			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
 			IChromosome[] chromosomes = new IChromosome[geneTypes.length];
 			ResourceLocation primaryTemplateIdentifier = null;
 			ResourceLocation secondaryTemplateIdentifier = null;
@@ -119,7 +121,7 @@ public enum SaveFormat {
 		@Nullable
 		@Override
 		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active) {
-			NBTTagList tagList = genomeNBT.getTagList(CHROMOSOMES_TAG, 10);
+			NBTTagList tagList = genomeNBT.getTagList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
 			if (tagList.hasNoTags()) {
 				return null;
 			}
@@ -148,7 +150,7 @@ public enum SaveFormat {
 
 		@Override
 		NBTTagCompound writeTag(IChromosome[] chromosomes, IKaryotype karyotype, NBTTagCompound tagCompound) {
-			SimpleByteBuf byteBuf = new SimpleByteBuf();
+			SimpleByteBuf byteBuf = new SimpleByteBuf(chromosomes.length);
 			byteBuf.writeChromosomes(chromosomes, karyotype);
 			tagCompound.setByteArray(DATA_TAG, byteBuf.toByteArray());
 			tagCompound.setInteger(VERSION_TAG, VERSION);

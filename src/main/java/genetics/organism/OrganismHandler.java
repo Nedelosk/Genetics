@@ -43,4 +43,14 @@ public class OrganismHandler<I extends IIndividual> implements IOrganismHandler<
 		itemStack.setTagInfo(INDIVIDUAL_KEY, individual.writeToNBT(new NBTTagCompound()));
 		return true;
 	}
+
+	@Override
+	public void setIndividualData(ItemStack itemStack, NBTTagCompound compound) {
+		itemStack.setTagInfo(INDIVIDUAL_KEY, compound);
+	}
+
+	@Override
+	public NBTTagCompound getIndividualData(ItemStack itemStack) {
+		return itemStack.getSubCompound(INDIVIDUAL_KEY);
+	}
 }

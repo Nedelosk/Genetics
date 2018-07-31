@@ -21,14 +21,7 @@ public interface IGeneticPlugin {
 	}
 
 	/**
-	 * Register simple genes
-	 */
-	default void registerSimple(IRegistryHelper helper) {
-		//Default Implementation
-	}
-
-	/**
-	 * Register alleles
+	 * This method can be used to register alleles. For
 	 */
 	default void registerAlleles(IAlleleRegistry registry) {
 		//Default Implementation

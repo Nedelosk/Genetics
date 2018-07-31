@@ -1,15 +1,22 @@
 package cultivation.indivudual;
 
+import javax.annotation.Nullable;
 import java.util.Locale;
 
-import genetics.api.alleles.IAllele;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.root.IIndividualRoot;
 
 import cultivation.CultivationPlugin;
 
 public enum PlantChromosomes implements IChromosomeType {
-	SPECIES;
+	SPECIES(null);
+
+	@Nullable
+	private final Class<?> valueClass;
+
+	PlantChromosomes(@Nullable Class<?> valueClass) {
+		this.valueClass = valueClass;
+	}
 
 	@Override
 	public int getIndex() {
@@ -26,8 +33,9 @@ public enum PlantChromosomes implements IChromosomeType {
 		return name().toLowerCase(Locale.ENGLISH);
 	}
 
+	@Nullable
 	@Override
-	public boolean isValid(IAllele allele) {
-		return true;
+	public Class<?> getValueClass() {
+		return valueClass;
 	}
 }

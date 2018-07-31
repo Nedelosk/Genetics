@@ -73,6 +73,8 @@ public interface IOrganismTypes<I extends IIndividual> extends IRootComponent {
 	 */
 	Optional<IOrganismHandler<I>> getHandler(IOrganismType type);
 
+	Optional<IOrganismHandler<I>> getHandler(ItemStack itemStack);
+
 	/**
 	 * All types that were registered at the {@link IIndividualRootBuilder}.
 	 */

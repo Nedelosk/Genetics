@@ -58,12 +58,9 @@ public class PluginManager {
 		ClassificationRegistry classificationRegistry = new ClassificationRegistry();
 		ApiInstance.INSTANCE.setClassificationRegistry(classificationRegistry);
 		handlePlugins(p -> p.registerClassifications(classificationRegistry));
-		//
-		handlePlugins(p -> p.registerSimple(RegistryHelper.INSTANCE));
 		//register all alleles
 		AlleleRegistry alleleRegistry = new AlleleRegistry();
 		ApiInstance.INSTANCE.setAlleleRegistry(alleleRegistry);
-		RegistryHelper.INSTANCE.onRegisterAlleles(alleleRegistry);
 		handlePlugins(p -> p.registerAlleles(alleleRegistry));
 		//
 		KaryotypeFactory karyotypeFactory = new KaryotypeFactory();

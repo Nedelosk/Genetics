@@ -68,7 +68,7 @@ public class SimpleByteBuf {
 	 * @param karyotype   The species root of the genome that contains the chromosomes.
 	 */
 	public void writeChromosomes(IChromosome[] chromosomes, IKaryotype karyotype) {
-		for (IChromosomeType type : karyotype.getChromosomeTypes()) {
+		for (IChromosomeType type : karyotype) {
 			int index = type.getIndex();
 			if (index >= chromosomes.length) {
 				continue;

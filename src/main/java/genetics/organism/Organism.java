@@ -53,17 +53,17 @@ public class Organism<I extends IIndividual> implements IOrganism<I> {
 	}
 
 	@Override
-	public IAllele getAllele(IChromosomeType type, boolean active) {
-		IAllele allele = GeneticSaveHandler.INSTANCE.getAlleleDirectly(container, type, active);
+	public IAllele getAllele(IChromosomeType chromosomeType, boolean active) {
+		IAllele allele = GeneticSaveHandler.INSTANCE.getAlleleDirectly(container, getType(), chromosomeType, active);
 		if (allele == null) {
-			allele = GeneticSaveHandler.INSTANCE.getAllele(container, type, active);
+			allele = GeneticSaveHandler.INSTANCE.getAllele(container, getType(), chromosomeType, active);
 		}
 		return allele;
 	}
 
 	@Override
 	public Optional<IAllele> getAlleleDirectly(IChromosomeType type, boolean active) {
-		return Optional.ofNullable(GeneticSaveHandler.INSTANCE.getAlleleDirectly(container, type, active));
+		return Optional.ofNullable(GeneticSaveHandler.INSTANCE.getAlleleDirectly(container, getType(), type, active));
 	}
 
 	@Override
