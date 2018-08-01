@@ -1,20 +1,28 @@
-package genetics.api.organism;
+package genetics.api;
 
 import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
-import genetics.api.GeneticsAPI;
-import genetics.api.IGeneticFactory;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+
 import genetics.api.individual.IIndividual;
+import genetics.api.organism.IOrganism;
+import genetics.api.organism.IOrganismHandler;
+import genetics.api.organism.IOrganismType;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IRootDefinition;
 
-import genetics.Genetics;
+/**
+ * A helper class that contains some help methods.
+ */
+public class GeneticHelper {
 
-public class OrganismHelper {
+	@CapabilityInject(IOrganism.class)
+	public static Capability<IOrganism> ORGANISM;
 
-	private OrganismHelper() {
+	private GeneticHelper() {
 	}
 
 	public static <I extends IIndividual> IOrganism<I> createOrganism(ItemStack itemStack, IOrganismType type, IRootDefinition<? extends IIndividualRoot<I>> root) {
@@ -24,12 +32,12 @@ public class OrganismHelper {
 
 	@SuppressWarnings("unchecked")
 	public static <I extends IIndividual> IOrganism<I> getOrganism(ItemStack itemStack) {
-		return (IOrganism<I>) itemStack.getCapability(Genetics.ORGANISM, null);
+		return (IOrganism<I>) itemStack.getCapability(ORGANISM, null);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <I extends IIndividual> boolean setIndividual(ItemStack itemStack, I individual) {
-		IOrganism<I> organism = itemStack.getCapability(Genetics.ORGANISM, null);
+		IOrganism<I> organism = itemStack.getCapability(ORGANISM, null);
 		return organism != null && organism.setIndividual(individual);
 	}
 

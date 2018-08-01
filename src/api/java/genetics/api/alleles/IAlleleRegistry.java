@@ -22,7 +22,6 @@ public interface IAlleleRegistry {
 	 *
 	 * @param value An object that contains all information that is needed to create a allele with an specific value.
 	 * @param types chromosome types for the allele.
-	 *
 	 * @return Returns the created and registered allele.
 	 */
 	IAllele registerAllele(IAlleleData value, IChromosomeType... types);
@@ -42,7 +41,7 @@ public interface IAlleleRegistry {
 	 * Creates and registers an allele that contains the given value and has the given dominant state if no allele with
 	 * the value and the given dominant state exists, otherwise it adds the types to the existing {@link IAllele}.
 	 *
-	 * @param category The category is used for custom localisation and the registration name.
+	 * @param category  The category is used for custom localisation and the registration name.
 	 * @param valueName The category is used for custom localisation and the registration name.
 	 * @param value     the value of the allele
 	 * @param dominant  if true the allele is dominant, otherwise the allele is recessive.
@@ -110,8 +109,7 @@ public interface IAlleleRegistry {
 	 * Returns true if the given allele is a valid allele for the given chromosome type.
 	 *
 	 * @param allele The allele to test.
-	 * @param type The chromosome type.
-	 *
+	 * @param type   The chromosome type.
 	 * @return True if the given allele is a valid allele for the given chromosome type, false otherwise.
 	 */
 	boolean isValidAllele(IAllele allele, IChromosomeType type);

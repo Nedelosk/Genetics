@@ -16,9 +16,9 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import genetics.api.GeneticHelper;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.organism.IOrganism;
-import genetics.api.organism.OrganismHelper;
 import genetics.api.root.IDisplayHelper;
 import genetics.api.root.IIndividualRoot;
 
@@ -38,14 +38,14 @@ public class ItemCultivation extends Item {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		IOrganism<Plant> organism = OrganismHelper.getOrganism(stack);
+		IOrganism<Plant> organism = GeneticHelper.getOrganism(stack);
 		return organism.getAllele(PlantChromosomes.SPECIES, true).getRegistryName() + " " + organism.getType().getName();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		IOrganism<Plant> organism = OrganismHelper.getOrganism(stack);
+		IOrganism<Plant> organism = GeneticHelper.getOrganism(stack);
 		IIndividualRoot root = organism.getRoot();
 		IDisplayHelper displayHelper = root.getDisplayHelper();
 		for (IChromosomeType type : root.getKaryotype()) {
@@ -55,7 +55,7 @@ public class ItemCultivation extends Item {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return OrganismHelper.createOrganism(stack, this == Cultivation.seed ? PlantType.SEED : PlantType.PLANT, CultivationPlugin.DEFINITION);
+		return GeneticHelper.createOrganism(stack, this == Cultivation.seed ? PlantType.SEED : PlantType.PLANT, CultivationPlugin.DEFINITION);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class ItemCultivation extends Item {
 		PlantRoot plantRoot = CultivationPlugin.DEFINITION.get();
 		for (Plant plant : plantRoot.getIndividualTemplates()) {
 			ItemStack stack = new ItemStack(this);
-			OrganismHelper.setIndividual(stack, plant);
+			GeneticHelper.setIndividual(stack, plant);
 			items.add(stack);
 		}
 	}

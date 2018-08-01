@@ -18,6 +18,7 @@ import genetics.api.individual.IChromosome;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IIndividualBuilder;
 import genetics.api.individual.IKaryotype;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismHandler;
@@ -30,6 +31,7 @@ import genetics.alleles.AlleleTemplate;
 import genetics.alleles.AlleleTemplateBuilder;
 import genetics.individual.Chromosome;
 import genetics.individual.Genome;
+import genetics.individual.IndividualBuilder;
 import genetics.items.GeneTemplate;
 import genetics.organism.Organism;
 import genetics.organism.OrganismHandler;
@@ -93,5 +95,10 @@ public enum GeneticFactory implements IGeneticFactory {
 	@Override
 	public IGeneTemplate createGeneTemplate() {
 		return new GeneTemplate();
+	}
+
+	@Override
+	public <I extends IIndividual> IIndividualBuilder<I> createIndividualBuilder(I individual) {
+		return new IndividualBuilder<>(individual);
 	}
 }

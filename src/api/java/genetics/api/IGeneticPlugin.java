@@ -4,9 +4,8 @@ import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.classification.IClassificationRegistry;
 import genetics.api.individual.IKaryotypeFactory;
 import genetics.api.root.IIndividualRoot;
+import genetics.api.root.IIndividualRootBuilder;
 import genetics.api.root.IRootManager;
-
-import genetics.root.IndividualRootBuilder;
 
 /**
  * The main class to implement to create a Genetic plugin. Everything communicated between a mod and Genetics is through
@@ -21,14 +20,14 @@ public interface IGeneticPlugin {
 	}
 
 	/**
-	 * This method can be used to register alleles. For
+	 * This method can be used to register alleles.
 	 */
 	default void registerAlleles(IAlleleRegistry registry) {
 		//Default Implementation
 	}
 
 	/**
-	 * Create {@link IndividualRootBuilder}s.
+	 * Create {@link IIndividualRootBuilder}s.
 	 */
 	default void createRoot(IKaryotypeFactory karyotypeFactory, IRootManager rootManager, IGeneticFactory geneticFactory) {
 		//Default Implementation

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import genetics.api.GeneticHelper;
 import genetics.api.IGeneticSaveHandler;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleRegistry;
@@ -16,7 +17,6 @@ import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
 import genetics.api.organism.IOrganismHandler;
 import genetics.api.organism.IOrganismType;
-import genetics.api.organism.OrganismHelper;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.ITemplateContainer;
 
@@ -114,19 +114,19 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	@Nullable
 	@Override
 	public NBTTagCompound getIndividualDataDirectly(ItemStack itemStack, IOrganismType type, IIndividualRoot<IIndividual> root) {
-		IOrganismHandler organismHandler = OrganismHelper.getOrganismHandler(root, type);
+		IOrganismHandler organismHandler = GeneticHelper.getOrganismHandler(root, type);
 		return organismHandler.getIndividualData(itemStack);
 	}
 
 	@Override
 	public void setIndividualData(ItemStack itemStack, IOrganismType type, IIndividualRoot<IIndividual> root, NBTTagCompound compound) {
-		IOrganismHandler organismHandler = OrganismHelper.getOrganismHandler(root, type);
+		IOrganismHandler organismHandler = GeneticHelper.getOrganismHandler(root, type);
 		organismHandler.setIndividualData(itemStack, compound);
 	}
 
 	@Override
 	public NBTTagCompound getIndividualData(ItemStack itemStack, IOrganismType type, IIndividualRoot<IIndividual> root) {
-		IOrganismHandler organismHandler = OrganismHelper.getOrganismHandler(root, type);
+		IOrganismHandler organismHandler = GeneticHelper.getOrganismHandler(root, type);
 		NBTTagCompound compound = organismHandler.getIndividualData(itemStack);
 		if (compound != null) {
 			return compound;

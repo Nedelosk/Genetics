@@ -15,6 +15,7 @@ import genetics.api.individual.IChromosome;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
+import genetics.api.individual.IIndividualBuilder;
 import genetics.api.individual.IKaryotype;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismHandler;
@@ -118,4 +119,6 @@ public interface IGeneticFactory {
 	 * Creates a default implementation of a {@link IGeneTemplate}
 	 */
 	IGeneTemplate createGeneTemplate();
+
+	<I extends IIndividual> IIndividualBuilder<I> createIndividualBuilder(I individual);
 }
