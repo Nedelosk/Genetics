@@ -2,7 +2,6 @@ package genetics.individual;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -14,9 +13,6 @@ import genetics.api.individual.IChromosome;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IKaryotype;
-import genetics.api.individual.IKaryotypeBuilder;
-
-import genetics.alleles.AlleleTemplateBuilder;
 
 public class Karyotype implements IKaryotype {
 	private final String uid;
@@ -29,7 +25,7 @@ public class Karyotype implements IKaryotype {
 	@Nullable
 	private IGenome defaultGenome = null;
 
-	private Karyotype(String uid, Set<IChromosomeType> chromosomeTypes, IChromosomeType speciesType, BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory, Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplateSupplier) {
+	public Karyotype(String uid, Set<IChromosomeType> chromosomeTypes, IChromosomeType speciesType, BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory, Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplateSupplier) {
 		this.uid = uid;
 		this.speciesType = speciesType;
 		this.chromosomeTypes = new IChromosomeType[chromosomeTypes.size()];
@@ -108,37 +104,5 @@ public class Karyotype implements IKaryotype {
 	@Override
 	public IGenome templateAsGenome(IAllele[] templateActive, @Nullable IAllele[] templateInactive) {
 		return new Genome(this, templateAsChromosomes(templateActive, templateInactive));
-	}
-
-	public static class Builder implements IKaryotypeBuilder {
-		private final Set<IChromosomeType> chromosomeTypes = new HashSet<>();
-		private final IChromosomeType speciesType;
-		private final Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate;
-		private final String uid;
-		private BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory = AlleleTemplateBuilder::new;
-
-		public Builder(String uid, IChromosomeType speciesType, Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate) {
-			this.uid = uid;
-			this.speciesType = speciesType;
-			this.defaultTemplate = defaultTemplate;
-			add(speciesType);
-		}
-
-		@Override
-		public Builder setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
-			this.templateFactory = templateFactory;
-			return this;
-		}
-
-		@Override
-		public IKaryotypeBuilder add(IChromosomeType type) {
-			this.chromosomeTypes.add(type);
-			return this;
-		}
-
-		@Override
-		public IKaryotype build() {
-			return new Karyotype(uid, chromosomeTypes, speciesType, templateFactory, defaultTemplate);
-		}
 	}
 }

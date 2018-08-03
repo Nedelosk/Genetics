@@ -24,7 +24,6 @@ import genetics.Genetics;
 import genetics.alleles.AlleleRegistry;
 import genetics.classification.ClassificationRegistry;
 import genetics.root.IndividualRootBuilder;
-import genetics.root.KaryotypeFactory;
 import genetics.root.RootManager;
 
 public class PluginManager {
@@ -63,9 +62,8 @@ public class PluginManager {
 		ApiInstance.INSTANCE.setAlleleRegistry(alleleRegistry);
 		handlePlugins(p -> p.registerAlleles(alleleRegistry));
 		//
-		KaryotypeFactory karyotypeFactory = new KaryotypeFactory();
 		RootManager rootManager = new RootManager();
-		handlePlugins(p -> p.createRoot(karyotypeFactory, rootManager, GeneticFactory.INSTANCE));
+		handlePlugins(p -> p.createRoot(rootManager, GeneticFactory.INSTANCE));
 		handlePlugins(p -> p.initRoots(rootManager));
 		Map<String, IndividualRootBuilder> rootBuilders = rootManager.getRootBuilders();
 		for (IndividualRootBuilder builder : rootBuilders.values()) {

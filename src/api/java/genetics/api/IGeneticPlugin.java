@@ -1,10 +1,11 @@
 package genetics.api;
 
+import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleData;
 import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.classification.IClassificationRegistry;
-import genetics.api.individual.IKaryotypeFactory;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.root.IIndividualRoot;
-import genetics.api.root.IIndividualRootBuilder;
 import genetics.api.root.IRootManager;
 
 /**
@@ -21,20 +22,28 @@ public interface IGeneticPlugin {
 
 	/**
 	 * This method can be used to register alleles.
+	 * <p>
+	 * {@link IAlleleRegistry#registerAllele(IAllele, IChromosomeType...)} can be use to register your own implementation
+	 * of {@link IAllele} or {@link genetics.api.alleles.Allele}.
+	 * You also can use {@link IAlleleRegistry#registerAllele(String, String, Object, boolean, IChromosomeType...)} to
+	 * register a allele that with one value or you use {@link IAlleleRegistry#registerAllele(IAlleleData, IChromosomeType...)}
+	 * if you want to keep the data in an object like an enum.
 	 */
 	default void registerAlleles(IAlleleRegistry registry) {
 		//Default Implementation
 	}
 
 	/**
-	 * Create {@link IIndividualRootBuilder}s.
+	 * This method can be used to create {@link genetics.api.root.IIndividualRootBuilder}s. They will later automatically
+	 * create the {@link IIndividualRoot}s. You can accesses the root object through the {@link genetics.api.root.IRootDefinition}
+	 * of the root.
 	 */
-	default void createRoot(IKaryotypeFactory karyotypeFactory, IRootManager rootManager, IGeneticFactory geneticFactory) {
+	default void createRoot(IRootManager rootManager, IGeneticFactory geneticFactory) {
 		//Default Implementation
 	}
 
 	/**
-	 * Called after {@link #createRoot(IKaryotypeFactory, IRootManager, IGeneticFactory)} was called at all {@link IGeneticPlugin}s.
+	 * Called after {@link #createRoot(IRootManager, IGeneticFactory)} was called at all {@link IGeneticPlugin}s.
 	 */
 	default void initRoots(IRootManager manager) {
 		//Default Implementation

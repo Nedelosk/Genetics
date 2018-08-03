@@ -10,8 +10,6 @@ import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAlleleRegistry;
-import genetics.api.individual.IKaryotype;
-import genetics.api.individual.IKaryotypeFactory;
 import genetics.api.root.IIndividualRootBuilder;
 import genetics.api.root.IRootDefinition;
 import genetics.api.root.IRootManager;
@@ -37,9 +35,8 @@ public class CultivationPlugin implements IGeneticPlugin {
 	}
 
 	@Override
-	public void createRoot(IKaryotypeFactory karyotypeFactory, IRootManager rootManager, IGeneticFactory geneticFactory) {
-		IKaryotype karyotype = karyotypeFactory.createKaryotype(PlantRoot.UID, PlantChromosomes.class, PlantDefinition::createDefaultTemplate);
-		IIndividualRootBuilder<Plant> rootBuilder = rootManager.createRoot(PlantRoot.UID, karyotype, PlantRoot::new);
+	public void createRoot(IRootManager rootManager, IGeneticFactory geneticFactory) {
+		IIndividualRootBuilder<Plant> rootBuilder = rootManager.createRoot(PlantRoot.UID, PlantChromosomes.class, PlantDefinition::createDefaultTemplate, PlantRoot::new);
 		rootBuilder.addListener(ComponentKeys.TYPES, types -> {
 			types.registerType(PlantType.SEED, () -> new ItemStack(Cultivation.seed));
 			types.registerType(PlantType.PLANT, () -> new ItemStack(Cultivation.plant));

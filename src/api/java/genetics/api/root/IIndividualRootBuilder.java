@@ -1,9 +1,13 @@
 package genetics.api.root;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticPlugin;
+import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleTemplateBuilder;
+import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
 import genetics.api.organism.IOrganismType;
@@ -22,15 +26,26 @@ import genetics.api.root.translator.IIndividualTranslator;
  * {@link IIndividualRootBuilder}s will be build automatically to {@link IIndividualRoot}s. You can get the instance
  * of you root from {@link IGeneticApiInstance#getRoot(String)} after it was created or you can use {@link #getDefinition()}.
  * <p>
- * You can create a instance of this with {@link IRootManager#createRoot(String, IKaryotype, IIndividualRootFactory)}.
+ * You can create a instance of this with {@link IRootManager#createRoot(IKaryotype, IIndividualRootFactory)}.
  *
  * @param <I> The type of the individual that the root describes.
  */
 public interface IIndividualRootBuilder<I extends IIndividual> {
+
 	/**
-	 * The karyotype that was used to create this builder.
+	 * Adds a type
 	 */
-	IKaryotype getKaryotype();
+	IIndividualRootBuilder addChromosome(IChromosomeType type);
+
+	/**
+	 * Adds a type
+	 */
+	IIndividualRootBuilder addChromosome(IChromosomeType... types);
+
+	/**
+	 * Sets the function that is used to create a template builder.
+	 */
+	IIndividualRootBuilder setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory);
 
 	/**
 	 * Returns an optional that contains the created root object.
