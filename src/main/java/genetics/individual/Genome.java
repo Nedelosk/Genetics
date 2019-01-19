@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleRegistry;
+import genetics.api.alleles.IAlleleSpecies;
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
@@ -96,9 +97,37 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
+	public IAlleleSpecies getPrimary() {
+		return getActiveAllele(karyotype.getSpeciesType(), IAlleleSpecies.class);
+	}
+
+	@Override
+	public IAlleleSpecies getSecondary() {
+		return getInactiveAllele(karyotype.getSpeciesType(), IAlleleSpecies.class);
+	}
+
+	@Override
 	public IAllele getActiveAllele(IChromosomeType chromosomeType) {
 		IChromosome chromosome = getChromosome(chromosomeType);
 		return chromosome.getActiveAllele();
+	}
+
+	@Override
+	public <A extends IAllele> A getActiveAllele(IChromosomeType chromosomeType, Class<? extends A> alleleClass) {
+		IAllele allele = getActiveAllele(chromosomeType);
+		if (!alleleClass.isInstance(allele)) {
+			throw new IllegalArgumentException(String.format("The allele '%s' at the active position of the chromosome type '%s' is not an instance of the class '%s'.", allele, chromosomeType, alleleClass));
+		}
+		return alleleClass.cast(allele);
+	}
+
+	@Override
+	public <A extends IAllele> A getActiveAllele(IChromosomeType chromosomeType, Class<? extends A> alleleClass, A fallback) {
+		IAllele allele = getActiveAllele(chromosomeType);
+		if (!alleleClass.isInstance(allele)) {
+			return fallback;
+		}
+		return alleleClass.cast(allele);
 	}
 
 	@Override
@@ -108,9 +137,27 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
+	public <A extends IAllele> A getInactiveAllele(IChromosomeType chromosomeType, Class<? extends A> alleleClass) {
+		IAllele allele = getInactiveAllele(chromosomeType);
+		if (!alleleClass.isInstance(allele)) {
+			throw new IllegalArgumentException(String.format("The allele '%s' at the inactive position of the chromosome type '%s' is not an instance of the class '%s'.", allele, chromosomeType, alleleClass));
+		}
+		return alleleClass.cast(allele);
+	}
+
+	@Override
+	public <A extends IAllele> A getInactiveAllele(IChromosomeType chromosomeType, Class<? extends A> alleleClass, A fallback) {
+		IAllele allele = getInactiveAllele(chromosomeType);
+		if (!alleleClass.isInstance(allele)) {
+			return fallback;
+		}
+		return alleleClass.cast(allele);
+	}
+
+	@Override
 	public <V> V getActiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass) {
 		IAllele allele = getActiveAllele(chromosomeType);
-		V value = AlleleUtils.getAlleleValue(allele, valueClass, null);
+		V value = AlleleUtils.getAlleleValue(allele, valueClass);
 		if (value == null) {
 			throw new IllegalArgumentException(String.format("The allele '%s' at the active position of the chromosome type '%s' has no value.", allele, chromosomeType));
 		}
@@ -118,9 +165,15 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
+	public <V> V getActiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass, V fallback) {
+		IAllele allele = getActiveAllele(chromosomeType);
+		return AlleleUtils.getAlleleValue(allele, valueClass, fallback);
+	}
+
+	@Override
 	public <V> V getInactiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass) {
 		IAllele allele = getInactiveAllele(chromosomeType);
-		V value = AlleleUtils.getAlleleValue(allele, valueClass, null);
+		V value = AlleleUtils.getAlleleValue(allele, valueClass);
 		if (value == null) {
 			throw new IllegalArgumentException(String.format("The allele '%s' at the inactive position of the chromosome type '%s' has no value.", allele, chromosomeType));
 		}
@@ -128,8 +181,25 @@ public final class Genome implements IGenome {
 	}
 
 	@Override
+	public <V> V getInactiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass, V fallback) {
+		IAllele allele = getInactiveAllele(chromosomeType);
+		return AlleleUtils.getAlleleValue(allele, valueClass, fallback);
+	}
+
+	@Override
 	public IChromosome getChromosome(IChromosomeType chromosomeType) {
 		return chromosomes[chromosomeType.getIndex()];
+	}
+
+	@Override
+	public IAllele[][] getAlleles() {
+		IAllele[][] alleles = new IAllele[chromosomes.length][2];
+		for (IChromosome chromosome : chromosomes) {
+			IAllele[] chromosomeAlleles = alleles[chromosome.getType().getIndex()];
+			chromosomeAlleles[0] = chromosome.getActiveAllele();
+			chromosomeAlleles[1] = chromosome.getInactiveAllele();
+		}
+		return alleles;
 	}
 
 	@Override
@@ -164,6 +234,16 @@ public final class Genome implements IGenome {
 	public boolean isPureBred(IChromosomeType chromosomeType) {
 		IChromosome chromosome = getChromosome(chromosomeType);
 		return chromosome.isPureBred();
+	}
+
+	@Override
+	public boolean isPureBred() {
+		for(IChromosomeType chromosomeType : karyotype) {
+			if(!isPureBred(chromosomeType)){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override

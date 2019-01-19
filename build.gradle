@@ -1,97 +1,125 @@
 buildscript {
 	repositories {
+		maven { url = "https://files.minecraftforge.net/maven" }
 		jcenter()
-		maven { url = "http://files.minecraftforge.net/maven" }
+		mavenCentral()
+	}
+	// This is only here while FG is under active development
+	configurations.classpath {
+		resolutionStrategy {
+			cacheDynamicVersionsFor 10, "seconds"
+			cacheChangingModulesFor 0, "seconds"
+		}
 	}
 	dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
+		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
 	}
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+plugins {
+	id "se.bjurr.gitchangelog.git-changelog-gradle-plugin" version "1.32"
+}
 apply plugin: 'idea'
-apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: "net.minecraftforge.gradle"
 
-version = version_major + '.' + version_minor + '.' + version_patch
+version = version_major + "." + version_minor + "." + version_patch
+group = "genetics" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 
-group= "genetics" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "genetics_" + mcversion
+//adds the build number to the end of the version string if on a build server
+if (System.getenv().BUILD_NUMBER != null) {
+	version += ".${System.getenv().BUILD_NUMBER}"
+}
 
-// java version
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-minecraft {
-	version = mcversion + "-" + forgeversion
-	runDir = "run"
-	mappings = mcp_mappings
-
-	replace '@VERSION@', project.version
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+compileJava {
+	sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 repositories {
-	maven {
-		url "http://dvs1.progwml6.com/files/maven"
+	maven { url 'http://repo1.maven.org/maven2' }
+}
+
+sourceSets {
+	api
+	main {
+		compileClasspath += sourceSets.api.output
+		runtimeClasspath += sourceSets.api.output
 	}
-	maven {
-		name = "forestry"
-		url = "http://maven.ic2.player.to/"
+	test {
+		compileClasspath += sourceSets.api.output
+		runtimeClasspath += sourceSets.api.output
 	}
+}
+
+configurations {
+	apiCompile.extendsFrom(compile)
 }
 
 dependencies {
-    // JUnit Jupiter API and TestEngine implementation
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.1.0")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.1.0")
-
-	// Forestry (Only for testing) 
-	deobfCompile("net.sengir.forestry:forestry_${forestry_mcversion}:${forestry_version}")
+	minecraft([
+		group  : "${project.forgegroup}",
+		name   : "forge",
+		version: "${project.mcversion}-${project.forgeversion}"
+	])
+	testCompile([
+		group: "junit",
+		name: "junit",
+		version: "4.12"
+	])
 }
 
-junitPlatform {
-    logManager 'org.apache.logging.log4j.jul.LogManager'
-}
+minecraft {
+	//	runDir = "run"
+	//	replace "@VERSION@", project.version
+	mappings channel: "snapshot", version: "${project.mcp_mappings}".toString()
+	
+	accessTransformer = file('src/main/resources/META-INF/genetics_at.cfg')
 
-processResources {
-
-	// this will ensure that this task is redone when the versions change.
-	inputs.property "version", project.version
-	inputs.property "mcversion", project.minecraft.version
-
-	// replace stuff in mcmod.info, nothing else
-	from(sourceSets.main.resources.srcDirs) {
-		include 'mcmod.info'
-
-		// replace version and mcversion
-		expand 'version':project.version, 'mcversion':project.minecraft.version
+	runs {
+		client = {
+			workingDirectory project.file('run').canonicalPath
+			source sourceSets.main
+			source sourceSets.api
+		}
+		server = {
+			workingDirectory project.file('run').canonicalPath
+			source sourceSets.main
+			source sourceSets.api
+		}
 	}
+}
 
-	// copy everything else, thats not the mcmod.info
-	from(sourceSets.main.resources.srcDirs) {
-		exclude 'mcmod.info'
-		exclude '**/*.md'
+// prevent java 8's strict doclint for javadocs from failing builds
+if (JavaVersion.current().isJava8Compatible()) {
+	tasks.withType(Javadoc) {
+		options.addStringOption('Xdoclint:none', '-quiet')
 	}
 }
 
 jar {
-	from sourceSets.main.output
-	from sourceSets.api.output
+//	duplicatesStrategy = DuplicatesStrategy.FAIL
+	from sourceSets.main.output.classesDirs
+	from sourceSets.api.output.classesDirs
+	from sourceSets.main.output.resourcesDir
+	from sourceSets.api.output.resourcesDir
 }
- 
- task javadocJar(type: Jar, dependsOn: javadoc) {
-	classifier = 'javadoc'
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+//	duplicatesStrategy = DuplicatesStrategy.FAIL
+	classifier = "javadoc"
 	from javadoc.destinationDir
 }
 
 task sourcesJar(type: Jar) {
-	classifier = 'sources'
+//	duplicatesStrategy = DuplicatesStrategy.FAIL
+	classifier = "sources"
 	from sourceSets.main.allJava
 	from sourceSets.api.allJava
 }
 
 task apiJar(type: Jar) {
-	classifier = 'api'
+//	duplicatesStrategy = DuplicatesStrategy.FAIL
+	classifier = "api"
 	from sourceSets.api.output
 
 	// TODO: when FG bug is fixed, remove allJava from the api jar.
@@ -104,4 +132,27 @@ artifacts {
 	archives javadocJar
 	archives sourcesJar
 	archives apiJar
+}
+
+task("uploadJars", dependsOn: "build") {
+	description = "uploads JARs"
+	if (project.hasProperty("local_maven")) {
+		apply plugin: "maven"
+		uploadArchives {
+			repositories {
+				mavenDeployer {
+					repository(url: "file://${local_maven}")
+				}
+			}
+		}
+	}
+}
+
+idea {
+	module {
+		for (String excludeDirName in ["run", "out", "logs", "gradle"]) {
+			File excludeDir = new File(projectDir, excludeDirName);
+			excludeDirs.add(excludeDir)
+		}
+	}
 }

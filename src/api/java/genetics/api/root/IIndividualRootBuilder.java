@@ -2,10 +2,12 @@ package genetics.api.root;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticPlugin;
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
@@ -26,26 +28,31 @@ import genetics.api.root.translator.IIndividualTranslator;
  * {@link IIndividualRootBuilder}s will be build automatically to {@link IIndividualRoot}s. You can get the instance
  * of you root from {@link IGeneticApiInstance#getRoot(String)} after it was created or you can use {@link #getDefinition()}.
  * <p>
- * You can create a instance of this with {@link IRootManager#createRoot(IKaryotype, IIndividualRootFactory)}.
+ * You can create a instance of this with {@link IRootManager#createRoot(IKaryotype)}.
  *
  * @param <I> The type of the individual that the root describes.
  */
 public interface IIndividualRootBuilder<I extends IIndividual> {
+	/**
+	 * Adds a type
+	 */
+	IIndividualRootBuilder<I> addChromosome(IChromosomeType type);
 
 	/**
 	 * Adds a type
 	 */
-	IIndividualRootBuilder addChromosome(IChromosomeType type);
+	IIndividualRootBuilder<I> addChromosome(IChromosomeType... types);
 
-	/**
-	 * Adds a type
-	 */
-	IIndividualRootBuilder addChromosome(IChromosomeType... types);
+	IIndividualRootBuilder<I> setSpeciesType(IChromosomeType speciesType);
 
 	/**
 	 * Sets the function that is used to create a template builder.
 	 */
-	IIndividualRootBuilder setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory);
+	IIndividualRootBuilder<I> setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory);
+
+	IIndividualRootBuilder<I> setRootFactory(IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory);
+
+	IIndividualRootBuilder<I> setDefaultTemplate(Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate);
 
 	/**
 	 * Returns an optional that contains the created root object.

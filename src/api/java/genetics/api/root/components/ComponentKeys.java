@@ -1,7 +1,7 @@
 package genetics.api.root.components;
 
 import genetics.api.mutation.IMutationContainer;
-import genetics.api.mutation.IMutationContainerBuilder;
+import genetics.api.mutation.IMutationRegistry;
 import genetics.api.organism.IOrganismTypes;
 import genetics.api.organism.IOrganismTypesBuilder;
 import genetics.api.root.ITemplateContainer;
@@ -18,8 +18,7 @@ public class ComponentKeys {
 	public static final ComponentKey<IOrganismTypes, IOrganismTypesBuilder> TYPES = ComponentKey.create("types", IOrganismTypes.class);
 	/* Components that are optional. */
 	public static final ComponentKey<IIndividualTranslator, IIndividualTranslatorBuilder> TRANSLATORS = ComponentKey.create("translators", IIndividualTranslator.class);
-	public static final ComponentKey<IMutationContainer, IMutationContainerBuilder> MUTATIONS = ComponentKey.create("mutations", IMutationContainer.class);
-	public static final String RESEARCH_COMPONENT = "research";
+	public static final ComponentKey<IMutationContainer, IMutationRegistry> MUTATIONS = ComponentKey.create("mutations", IMutationContainer.class);
 
 	private ComponentKeys() {
 	}

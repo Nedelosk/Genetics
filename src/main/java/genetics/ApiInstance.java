@@ -6,16 +6,20 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import genetics.api.IGeneticApiInstance;
 import genetics.api.IGeneticFactory;
 import genetics.api.IGeneticSaveHandler;
+import genetics.api.alleles.IAlleleHelper;
 import genetics.api.alleles.IAlleleRegistry;
+import genetics.api.individual.IKaryotype;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootHelper;
 import genetics.api.root.IRootDefinition;
 import genetics.api.root.components.IRootComponentRegistry;
 
+import genetics.alleles.AlleleHelper;
 import genetics.alleles.AlleleRegistry;
 import genetics.classification.ClassificationRegistry;
 import genetics.individual.GeneticSaveHandler;
@@ -56,6 +60,11 @@ public enum ApiInstance implements IGeneticApiInstance {
 	}
 
 	@Override
+	public IAlleleHelper getAlleleHelper() {
+		return AlleleHelper.INSTANCE;
+	}
+
+	@Override
 	public IGeneticFactory getGeneticFactory() {
 		return GeneticFactory.INSTANCE;
 	}
@@ -79,6 +88,11 @@ public enum ApiInstance implements IGeneticApiInstance {
 	@SuppressWarnings("unchecked")
 	public <R extends IIndividualRoot> RootDefinition<R> getRoot(String rootUID) {
 		return rootDefinitionByUID.computeIfAbsent(rootUID, uid -> new RootDefinition<>());
+	}
+
+	@Override
+	public Optional<IKaryotype> getKaryotype(String rootUID) {
+		return Optional.empty();
 	}
 
 	@Override

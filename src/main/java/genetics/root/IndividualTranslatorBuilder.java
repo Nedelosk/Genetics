@@ -26,14 +26,18 @@ public class IndividualTranslatorBuilder<I extends IIndividual> extends RootComp
 	}
 
 	@Override
-	public IIndividualTranslatorBuilder<I> registerTranslator(Block translatorKey, IBlockTranslator<I> translator) {
-		blockTranslators.put(translatorKey, translator);
+	public IIndividualTranslatorBuilder<I> registerTranslator(IBlockTranslator<I> translator, Block... translatorKeys) {
+		for(Block key : translatorKeys) {
+			blockTranslators.put(key, translator);
+		}
 		return this;
 	}
 
 	@Override
-	public IIndividualTranslatorBuilder<I> registerTranslator(Item translatorKey, IItemTranslator<I> translator) {
-		itemTranslators.put(translatorKey, translator);
+	public IIndividualTranslatorBuilder<I> registerTranslator(IItemTranslator<I> translator, Item... translatorKeys) {
+		for(Item key : translatorKeys) {
+			itemTranslators.put(key, translator);
+		}
 		return this;
 	}
 

@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleSpecies;
 import genetics.api.alleles.IAlleleTemplate;
 
 /**
@@ -19,10 +20,18 @@ public interface IGenome {
 	 */
 	IChromosome[] getChromosomes();
 
+	IAlleleSpecies getPrimary();
+
+	IAlleleSpecies getSecondary();
+
 	/**
 	 * @return The active allele of the chromosome with the given type.
 	 */
 	IAllele getActiveAllele(IChromosomeType chromosomeType);
+
+	<A extends IAllele> A getActiveAllele(IChromosomeType chromosomeType, Class<? extends A> alleleClass);
+
+	<A extends IAllele> A getActiveAllele(IChromosomeType chromosomeType, Class<? extends A> alleleClass, A fallback);
 
 	/**
 	 * @return The value of the active allele of the chromosome with the given type.
@@ -30,19 +39,40 @@ public interface IGenome {
 	<V> V getActiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass);
 
 	/**
+	 * @return The value of the active allele of the chromosome with the given type.
+	 */
+	<V> V getActiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass, V fallback);
+
+	/**
 	 * @return The inactive allele of the chromosome with the given type.
 	 */
 	IAllele getInactiveAllele(IChromosomeType chromosomeType);
 
+	<A extends IAllele> A getInactiveAllele(IChromosomeType chromosomeType, Class<? extends A> alleleClass);
+
+	<A extends IAllele> A getInactiveAllele(IChromosomeType chromosomeType, Class<? extends A> alleleClass, A fallback);
+
 	/**
+	 * @throws IllegalArgumentException if the allele has no value or if the value is not an instance of the given class.
 	 * @return The value of the inactive allele of the chromosome with the given type.
 	 */
 	<V> V getInactiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass);
 
 	/**
+	 * @return The value of the inactive allele of the chromosome with the given type.
+	 */
+	<V> V getInactiveValue(IChromosomeType chromosomeType, Class<? extends V> valueClass, V fallback);
+
+	/**
 	 * @return The chromosome with the given type.
 	 */
 	IChromosome getChromosome(IChromosomeType chromosomeType);
+
+	/**
+	 * @return A 2-dimensional array that contains all alleles of this genome. The first dimension is the index of the
+	 * chromosome type and the second dimension is 0 for the active allele and 1 for the inactive allele.
+	 */
+	IAllele[][] getAlleles();
 
 	/**
 	 * @return A array that contains all active alleles of this genome.
@@ -63,6 +93,11 @@ public interface IGenome {
 	 * @return true if this chromosome has the same active and inactive allele.
 	 */
 	boolean isPureBred(IChromosomeType chromosomeType);
+
+	/**
+	 * @return true if every chromosome of this genome has the same active and inactive allele.
+	 */
+	boolean isPureBred();
 
 	/**
 	 * @return The karyotype of this genome. It defines the positions of the chromosomes in the array and the length

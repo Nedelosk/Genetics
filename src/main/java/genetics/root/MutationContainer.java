@@ -37,7 +37,7 @@ public class MutationContainer<I extends IIndividual, M extends IMutation> imple
 	}
 
 	@Override
-	public List<M> getCombinations(IAlleleSpecies other) {
+	public List<M> getCombinations(IAllele other) {
 		List<M> combinations = new ArrayList<>();
 		for (M mutation : getMutations(false)) {
 			if (mutation.isPartner(other)) {

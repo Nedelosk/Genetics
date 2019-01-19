@@ -17,7 +17,7 @@ import genetics.api.IGeneticApiInstance;
  * @param <R> @param <R> The type of the root of the individual.
  */
 public interface IRootDefinition<R extends IIndividualRoot> {
-	Optional<R> maybeRoot();
+	Optional<R> maybe();
 
 	/**
 	 * Returns the described definition of this optional.
@@ -32,7 +32,7 @@ public interface IRootDefinition<R extends IIndividualRoot> {
 	 *
 	 * @return {@code true} if there is a definition present, otherwise {@code false}
 	 */
-	boolean isPresent();
+	boolean isRootPresent();
 
 	void ifPresent(Consumer<R> consumer);
 

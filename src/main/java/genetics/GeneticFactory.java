@@ -6,9 +6,6 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import genetics.api.IGeneTemplate;
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
@@ -87,7 +84,6 @@ public enum GeneticFactory implements IGeneticFactory {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public <I extends IIndividual> IDisplayHelper createDisplayHelper(IIndividualRoot<I> root) {
 		return new DisplayHelper<>(root);
 	}

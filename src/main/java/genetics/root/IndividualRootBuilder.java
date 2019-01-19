@@ -1,14 +1,16 @@
 package genetics.root;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -37,23 +39,22 @@ import genetics.individual.Karyotype;
 import genetics.individual.RootDefinition;
 
 public class IndividualRootBuilder<I extends IIndividual> implements IIndividualRootBuilder<I> {
-	private final IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory;
 	private final String uid;
-	private final Set<IChromosomeType> chromosomeTypes = new HashSet<>();
-	private final IChromosomeType speciesType;
-	private final Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate;
+	private final List<IChromosomeType> chromosomeTypes = new ArrayList<>();
+	@Nullable
+	private IChromosomeType speciesType;
 	private final Multimap<ComponentKey, Consumer> componentListeners = HashMultimap.create();
 	private final Map<ComponentKey, IRootComponentFactory> componentFactories = new HashMap<>();
 	private final RootDefinition<IIndividualRoot<I>> definition;
 	private BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory = AlleleTemplateBuilder::new;
+	@Nullable
+	private Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate;
+	@Nullable
+	private IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory;
 
-	IndividualRootBuilder(String uid, IChromosomeType speciesType, Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate, IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory) {
+	IndividualRootBuilder(String uid) {
 		this.uid = uid;
-		this.speciesType = speciesType;
-		this.defaultTemplate = defaultTemplate;
-		this.rootFactory = rootFactory;
 		this.definition = ApiInstance.INSTANCE.getRoot(uid);
-		addChromosome(speciesType);
 		addComponent(ComponentKeys.TEMPLATES);
 		addComponent(ComponentKeys.TYPES);
 	}
@@ -61,12 +62,39 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 	@Override
 	public IIndividualRootBuilder addChromosome(IChromosomeType type) {
 		chromosomeTypes.add(type);
+		if(speciesType == null){
+			speciesType = type;
+		}
 		return this;
 	}
 
 	@Override
 	public IIndividualRootBuilder addChromosome(IChromosomeType... types) {
+		if(speciesType == null && types.length > 0){
+			speciesType = types[0];
+		}
 		chromosomeTypes.addAll(Arrays.asList(types));
+		return this;
+	}
+
+	@Override
+	public IIndividualRootBuilder setSpeciesType(IChromosomeType speciesType) {
+		this.speciesType = speciesType;
+		if(!chromosomeTypes.contains(speciesType)){
+			addChromosome(speciesType);
+		}
+		return this;
+	}
+
+	@Override
+	public IIndividualRootBuilder setRootFactory(IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory) {
+		this.rootFactory = rootFactory;
+		return this;
+	}
+
+	@Override
+	public IIndividualRootBuilder setDefaultTemplate(Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate) {
+		this.defaultTemplate = defaultTemplate;
 		return this;
 	}
 
@@ -78,6 +106,10 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 
 	@SuppressWarnings("unchecked")
 	public void create() {
+		Preconditions.checkNotNull(speciesType);
+		Preconditions.checkNotNull(templateFactory);
+		Preconditions.checkNotNull(defaultTemplate);
+		Preconditions.checkNotNull(rootFactory);
 		IKaryotype karyotype = new Karyotype(uid, chromosomeTypes, speciesType, templateFactory, defaultTemplate);
 		definition.setRoot(rootFactory.createRoot(karyotype, root -> {
 			Map<ComponentKey, IRootComponentBuilder> builders = new HashMap<>();

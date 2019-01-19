@@ -1,11 +1,14 @@
 package genetics.api;
 
 import java.util.Map;
+import java.util.Optional;
 
 import genetics.api.alleles.IAllele;
+import genetics.api.alleles.IAlleleHelper;
 import genetics.api.alleles.IAlleleRegistry;
 import genetics.api.classification.IClassification;
 import genetics.api.classification.IClassificationRegistry;
+import genetics.api.individual.IKaryotype;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootHelper;
 import genetics.api.root.IRootDefinition;
@@ -26,6 +29,8 @@ public interface IGeneticApiInstance {
 	 * @throws IllegalStateException if the method gets called before {@link IGeneticPlugin#registerAlleles(IAlleleRegistry)}  was called at all plugins.
 	 */
 	IAlleleRegistry getAlleleRegistry();
+
+	IAlleleHelper getAlleleHelper();
 
 	/**
 	 * This instance is available before any method of a {@link IGeneticPlugin} was called.
@@ -64,6 +69,8 @@ public interface IGeneticApiInstance {
 	 * @return The definition that is associated with given uid.
 	 */
 	<R extends IIndividualRoot> IRootDefinition<R> getRoot(String rootUID);
+
+	Optional<IKaryotype> getKaryotype(String rootUID);
 
 	/**
 	 * @return A map that contains every root definition that was created by calling {@link #getRoot(String)}.

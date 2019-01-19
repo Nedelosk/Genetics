@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
+import genetics.api.GeneticHelper;
+import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.individual.IIndividual;
-import genetics.api.organism.IOrganismTypes;
+import genetics.api.organism.IOrganism;
 import genetics.api.root.EmptyRootDefinition;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootHelper;
@@ -25,58 +27,52 @@ public enum IndividualRootHelper implements IIndividualRootHelper {
 
 		Map<String, IRootDefinition> definitions = ApiInstance.INSTANCE.getRoots();
 		for (IRootDefinition definition : definitions.values()) {
-		/*	if(!definition.isPresent()){
+			if(!definition.isRootPresent()){
 				continue;
 			}
 			IIndividualRoot root = definition.get();
-			IOrganismTypes types = root.getTypes();
-			if (definition.isMember(stack)) {
+			if (root.isMember(stack)) {
 				return definition;
-			}*/
+			}
 		}
 		return EmptyRootDefinition.empty();
 	}
 
 	@Override
 	public IRootDefinition getSpeciesRoot(Class<? extends IIndividual> individualClass) {
-		return null;
+		Map<String, IRootDefinition> definitions = ApiInstance.INSTANCE.getRoots();
+		for(IRootDefinition rootDefinition : definitions.values()){
+			if(!rootDefinition.isRootPresent()) {
+				continue;
+			}
+			IIndividualRoot<?> root = rootDefinition.get();
+			if(root.getMemberClass().isAssignableFrom(individualClass)){
+				return rootDefinition;
+			}
+
+		}
+		return EmptyRootDefinition.empty();
 	}
 
 	@Override
 	public IRootDefinition getSpeciesRoot(IIndividual individual) {
-
-		return null;
+		return individual.getRoot().getDefinition();
 	}
-
-	/*@Override
-	@Nullable
-	public ISpeciesRoot getSpeciesRoot(Class<? extends IIndividual> individualClass) {
-		for (ISpeciesRoot root : rootMap.values()) {
-			if (root.getMemberClass().isAssignableFrom(individualClass)) {
-				return root;
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public ISpeciesRoot getSpeciesRoot(IIndividual individual) {
-		return individual.getGenome().getSpeciesRoot();
-	}*/
 
 	@Override
 	public boolean isIndividual(ItemStack stack) {
-		return getSpeciesRoot(stack).isPresent();
+		return getSpeciesRoot(stack).isRootPresent();
 	}
 
 	@Override
 	public Optional<? extends IIndividual> getIndividual(ItemStack stack) {
-		IRootDefinition<?> rootDefinition = getSpeciesRoot(stack);
-		if (!rootDefinition.isPresent()) {
-			return Optional.empty();
-		}
-		IIndividualRoot<?> root = rootDefinition.get();
-		IOrganismTypes<? extends IIndividual> types = root.getTypes();
-		return types.createIndividual(stack);
+		IOrganism<? extends IIndividual> organism = GeneticHelper.getOrganism(stack);
+		return organism.getIndividual();
+	}
+
+	@Override
+	public IAlleleTemplateBuilder createTemplate(String uid) {
+		ApiInstance.INSTANCE.getRoot(uid);
+		return null;
 	}
 }

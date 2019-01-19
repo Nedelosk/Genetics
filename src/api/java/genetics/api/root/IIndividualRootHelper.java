@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
+import genetics.api.alleles.IAlleleTemplateBuilder;
 import genetics.api.individual.IIndividual;
 
 public interface IIndividualRootHelper {
@@ -31,4 +32,6 @@ public interface IIndividualRootHelper {
 	boolean isIndividual(ItemStack stack);
 
 	Optional<? extends IIndividual> getIndividual(ItemStack stack);
+
+	IAlleleTemplateBuilder createTemplate(String uid);
 }

@@ -30,8 +30,8 @@ public class OrganismHandler<I extends IIndividual> implements IOrganismHandler<
 
 	@Override
 	public Optional<I> createIndividual(ItemStack itemStack) {
-		NBTTagCompound tagCompound = itemStack.getSubCompound(INDIVIDUAL_KEY);
-		if (tagCompound == null || !optionalRoot.isPresent()) {
+		NBTTagCompound tagCompound = itemStack.getChildTag(INDIVIDUAL_KEY);
+		if (tagCompound == null || !optionalRoot.isRootPresent()) {
 			return Optional.empty();
 		}
 		IIndividualRoot<I> root = this.optionalRoot.get();
@@ -51,6 +51,6 @@ public class OrganismHandler<I extends IIndividual> implements IOrganismHandler<
 
 	@Override
 	public NBTTagCompound getIndividualData(ItemStack itemStack) {
-		return itemStack.getSubCompound(INDIVIDUAL_KEY);
+		return itemStack.getChildTag(INDIVIDUAL_KEY);
 	}
 }

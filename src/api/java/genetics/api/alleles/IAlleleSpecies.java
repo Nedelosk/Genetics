@@ -7,7 +7,7 @@ public interface IAlleleSpecies extends IAllele {
 	/**
 	 * @return the {@link IIndividualRoot} associated with this species.
 	 */
-	IIndividualRoot getRoot();
+	IIndividualRoot<?> getRoot();
 
 	/**
 	 * @return Localized short description of this species. (May be null.)

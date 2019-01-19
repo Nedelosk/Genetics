@@ -6,9 +6,6 @@ import com.google.common.collect.Table;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import genetics.api.alleles.IAlleleSpecies;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
@@ -16,7 +13,6 @@ import genetics.api.organism.IOrganismType;
 import genetics.api.root.IDisplayHelper;
 import genetics.api.root.IIndividualRoot;
 
-@SideOnly(Side.CLIENT)
 public class DisplayHelper<I extends IIndividual> implements IDisplayHelper<I> {
 	private final IIndividualRoot<I> root;
 	private final Table<IOrganismType, String, ItemStack> iconStacks = HashBasedTable.create();

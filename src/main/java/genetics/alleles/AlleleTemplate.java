@@ -39,12 +39,12 @@ public final class AlleleTemplate implements IAlleleTemplate {
 
 	@Override
 	public IAlleleTemplate copy() {
-		return new AlleleTemplate(alleles, karyotype);
+		return new AlleleTemplate(alleles(), karyotype);
 	}
 
 	@Override
 	public IAlleleTemplateBuilder createBuilder() {
-		return new AlleleTemplateBuilder(karyotype, alleles);
+		return new AlleleTemplateBuilder(karyotype, alleles());
 	}
 
 	@Override

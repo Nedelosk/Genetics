@@ -20,7 +20,7 @@ public enum RootComponentRegistry implements IRootComponentRegistry {
 		registerFactory(ComponentKeys.TEMPLATES, TemplateRegistry::new);
 		registerFactory(ComponentKeys.TYPES, OrganismTypesBuilder::new);
 		registerFactory(ComponentKeys.TRANSLATORS, IndividualTranslatorBuilder::new);
-		registerFactory(ComponentKeys.MUTATIONS, MutationContainerBuilder::new);
+		registerFactory(ComponentKeys.MUTATIONS, MutationRegistry::new);
 	}
 
 	@Override

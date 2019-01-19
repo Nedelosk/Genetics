@@ -40,6 +40,8 @@ public interface IOrganism<I extends IIndividual> extends ICapabilityProvider {
 	 */
 	IOrganismType getType();
 
+	boolean isEmpty();
+
 	/**
 	 * Quickly gets the allele without loading the whole genome and creates it if it is absent.
 	 *

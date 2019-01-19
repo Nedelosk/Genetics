@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
+import genetics.api.GeneticHelper;
 import genetics.api.individual.IIndividual;
 import genetics.api.organism.IOrganism;
 import genetics.api.organism.IOrganismHandler;
@@ -60,14 +61,8 @@ public class OrganismTypes<I extends IIndividual> implements IOrganismTypes<I> {
 
 	@Override
 	public Optional<IOrganismType> getType(ItemStack itemStack) {
-		if (!itemStack.hasCapability(Genetics.ORGANISM, null)) {
-			return Optional.empty();
-		}
-		IOrganism organism = itemStack.getCapability(Genetics.ORGANISM, null);
-		if (organism == null) {
-			return Optional.empty();
-		}
-		return Optional.of(organism.getType());
+		IOrganism organism = itemStack.getCapability(Genetics.ORGANISM).orElse(GeneticHelper.EMPTY);
+		return organism.isEmpty() ? Optional.empty() : Optional.of(organism.getType());
 	}
 
 	@Override

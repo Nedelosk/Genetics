@@ -26,7 +26,7 @@ public enum SaveFormat {
 					NBTTagCompound chromosomeTag = new NBTTagCompound();
 					chromosomeTag.setByte(SLOT_TAG, (byte) i);
 					chromosomes[i].writeToNBT(chromosomeTag);
-					tagList.appendTag(chromosomeTag);
+					tagList.add(chromosomeTag);
 				}
 			}
 			tagCompound.setTag(CHROMOSOMES_TAG, tagList);
@@ -36,13 +36,13 @@ public enum SaveFormat {
 		@Override
 		IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
 			IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
-			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
+			NBTTagList chromosomesNBT = tagCompound.getList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
 			IChromosome[] chromosomes = new IChromosome[geneTypes.length];
 			ResourceLocation primaryTemplateIdentifier = null;
 			ResourceLocation secondaryTemplateIdentifier = null;
 
-			for (int i = 0; i < chromosomesNBT.tagCount(); i++) {
-				NBTTagCompound chromosomeNBT = chromosomesNBT.getCompoundTagAt(i);
+			for (int i = 0; i < chromosomesNBT.size(); i++) {
+				NBTTagCompound chromosomeNBT = chromosomesNBT.getCompound(i);
 				byte chromosomeOrdinal = chromosomeNBT.getByte(SLOT_TAG);
 
 				if (chromosomeOrdinal >= 0 && chromosomeOrdinal < chromosomes.length) {
@@ -62,12 +62,12 @@ public enum SaveFormat {
 		@Nullable
 		@Override
 		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active) {
-			NBTTagList tagList = genomeNBT.getTagList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
-			if (tagList.hasNoTags()) {
+			NBTTagList tagList = genomeNBT.getList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
+			if (tagList.isEmpty()) {
 				return null;
 			}
-			NBTTagCompound chromosomeTag = tagList.getCompoundTagAt(geneType.getIndex());
-			if (chromosomeTag.hasNoTags()) {
+			NBTTagCompound chromosomeTag = tagList.getCompound(geneType.getIndex());
+			if (chromosomeTag.isEmpty()) {
 				return null;
 			}
 			return (active ? Chromosome.getActiveAllele(chromosomeTag) : Chromosome.getInactiveAllele(chromosomeTag)).orElse(null);
@@ -95,13 +95,13 @@ public enum SaveFormat {
 		@Override
 		IChromosome[] readTag(IKaryotype karyotype, NBTTagCompound tagCompound) {
 			IChromosomeType[] geneTypes = karyotype.getChromosomeTypes();
-			NBTTagList chromosomesNBT = tagCompound.getTagList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
+			NBTTagList chromosomesNBT = tagCompound.getList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
 			IChromosome[] chromosomes = new IChromosome[geneTypes.length];
 			ResourceLocation primaryTemplateIdentifier = null;
 			ResourceLocation secondaryTemplateIdentifier = null;
 
-			for (int i = 0; i < chromosomesNBT.tagCount(); i++) {
-				NBTTagCompound chromosomeNBT = chromosomesNBT.getCompoundTagAt(i);
+			for (int i = 0; i < chromosomesNBT.size(); i++) {
+				NBTTagCompound chromosomeNBT = chromosomesNBT.getCompound(i);
 				byte chromosomeOrdinal = chromosomeNBT.getByte(SLOT_TAG);
 
 				if (chromosomeOrdinal >= 0 && chromosomeOrdinal < chromosomes.length) {
@@ -121,12 +121,12 @@ public enum SaveFormat {
 		@Nullable
 		@Override
 		IAllele getAlleleDirectly(NBTTagCompound genomeNBT, IChromosomeType geneType, boolean active) {
-			NBTTagList tagList = genomeNBT.getTagList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
-			if (tagList.hasNoTags()) {
+			NBTTagList tagList = genomeNBT.getList(CHROMOSOMES_TAG, Constants.NBT.TAG_COMPOUND);
+			if (tagList.isEmpty()) {
 				return null;
 			}
-			NBTTagCompound chromosomeTag = tagList.getCompoundTagAt(geneType.getIndex());
-			if (chromosomeTag.hasNoTags()) {
+			NBTTagCompound chromosomeTag = tagList.getCompound(geneType.getIndex());
+			if (chromosomeTag.isEmpty()) {
 				return null;
 			}
 			IChromosome chromosome = Chromosome.create(null, null, geneType, chromosomeTag);
@@ -153,7 +153,7 @@ public enum SaveFormat {
 			SimpleByteBuf byteBuf = new SimpleByteBuf(chromosomes.length);
 			byteBuf.writeChromosomes(chromosomes, karyotype);
 			tagCompound.setByteArray(DATA_TAG, byteBuf.toByteArray());
-			tagCompound.setInteger(VERSION_TAG, VERSION);
+			tagCompound.setInt(VERSION_TAG, VERSION);
 
 			return tagCompound;
 		}

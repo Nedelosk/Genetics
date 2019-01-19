@@ -20,7 +20,7 @@ public final class EmptyRootDefinition implements IRootDefinition {
 	}
 
 	@Override
-	public Optional<IIndividualRoot> maybeRoot() {
+	public Optional<IIndividualRoot> maybe() {
 		return Optional.empty();
 	}
 
@@ -30,7 +30,7 @@ public final class EmptyRootDefinition implements IRootDefinition {
 	}
 
 	@Override
-	public boolean isPresent() {
+	public boolean isRootPresent() {
 		return false;
 	}
 

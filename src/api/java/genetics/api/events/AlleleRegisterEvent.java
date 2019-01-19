@@ -1,16 +1,14 @@
 package genetics.api.events;
 
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
-
-import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.IContextSetter;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleRegistry;
 
-public class AlleleRegisterEvent extends Event implements IContextSetter {
+public class AlleleRegisterEvent extends Event /*implements IContextSetter*/ {
 
 	private final IAlleleRegistry alleleRegistry;
 	private final IForgeRegistry<IAllele> registry;

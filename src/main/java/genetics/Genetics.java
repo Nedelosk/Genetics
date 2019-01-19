@@ -4,17 +4,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.INBTBase;
 import net.minecraft.util.EnumFacing;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.OptionalCapabilityInstance;
 
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.javafmlmod.FMLModLoadingContext;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneTemplate;
@@ -29,11 +30,9 @@ import genetics.individual.GeneticSaveHandler;
 import genetics.individual.SaveFormat;
 import genetics.plugins.PluginManager;
 
-@Mod(modid = Genetics.MOD_ID, name = Genetics.NAME, version = Genetics.VERSION)
+@Mod(Genetics.MOD_ID)
 public class Genetics {
 	public static final String MOD_ID = "geneticsapi";
-	public static final String NAME = "Genetics";
-	public static final String VERSION = "@VERSION@";
 
 	/**
 	 * Capability for {@link IOrganism}.
@@ -45,10 +44,11 @@ public class Genetics {
 
 	public Genetics() {
 		GeneticsAPI.apiInstance = ApiInstance.INSTANCE;
+		FMLModLoadingContext.get().getModEventBus().addListener(this::preInit);
+		FMLModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
 	}
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit(FMLCommonSetupEvent event) {
 		CapabilityManager.INSTANCE.register(IOrganism.class, new NullStorage<>(), () -> new IOrganism<IIndividual>() {
 			@Override
 			public Optional<IIndividual> getIndividual() {
@@ -71,6 +71,11 @@ public class Genetics {
 			}
 
 			@Override
+			public boolean isEmpty() {
+				return false;
+			}
+
+			@Override
 			public IAllele getAllele(IChromosomeType type, boolean active) {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
@@ -80,15 +85,10 @@ public class Genetics {
 				throw new UnsupportedOperationException("Cannot use default implementation");
 			}
 
+			@Nonnull
 			@Override
-			public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-				throw new UnsupportedOperationException("Cannot use default implementation");
-			}
-
-			@Nullable
-			@Override
-			public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-				throw new UnsupportedOperationException("Cannot use default implementation");
+			public <T> OptionalCapabilityInstance<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing facing) {
+				return OptionalCapabilityInstance.empty();
 			}
 		});
 		CapabilityManager.INSTANCE.register(IGeneTemplate.class, new NullStorage<>(), () -> new IGeneTemplate() {
@@ -112,23 +112,25 @@ public class Genetics {
 			}
 		});
 
-		PluginManager.create(event);
+		PluginManager.create();
 
 		PluginManager.initPlugins();
 	}
 
-	@EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event) {
 		GeneticSaveHandler.setWriteFormat(SaveFormat.BINARY);
 	}
 
 	public class NullStorage<T> implements Capability.IStorage<T> {
 		@Nullable
-		public NBTBase writeNBT(Capability<T> capability, T instance, EnumFacing side) {
+		public INBTBase writeNBT(Capability<T> capability, T instance, EnumFacing side) {
 			/* compiled code */
 			return null;
 		}
 
-		public void readNBT(Capability<T> capability, T instance, EnumFacing side, NBTBase nbt) { /* compiled code */ }
+		@Override
+		public void readNBT(Capability<T> capability, T instance, EnumFacing side, INBTBase nbt) {
+			/* compiled code */
+		}
 	}
 }

@@ -7,9 +7,6 @@ import java.util.Optional;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import genetics.api.alleles.IAllele;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IGenome;
@@ -50,6 +47,8 @@ public interface IIndividualRoot<I extends IIndividual> {
 	 * Creates a {@link IIndividual} that contains the two genome.
 	 */
 	I create(IGenome genome, IGenome mate);
+
+	Class<? extends I> getMemberClass();
 
 	/**
 	 * Creates a optional that describes an {@link IIndividual} that contains the {@link IAllele} template that is
@@ -94,6 +93,8 @@ public interface IIndividualRoot<I extends IIndividual> {
 	 * @return A stack with the given {@link IOrganismType} and the allele template of the given allele.
 	 */
 	ItemStack createStack(IAllele allele, IOrganismType type);
+
+	boolean isMember(ItemStack stack);
 
 	/* Genome */
 
@@ -150,7 +151,6 @@ public interface IIndividualRoot<I extends IIndividual> {
 
 	<C extends IRootComponent> Optional<C> getComponent(ComponentKey<C, ?> key);
 
-	@SideOnly(Side.CLIENT)
 	IDisplayHelper getDisplayHelper();
 
 	IRootDefinition getDefinition();

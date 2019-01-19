@@ -12,7 +12,8 @@ public interface IAlleleHandler {
 	 *
 	 * @param allele The registered allele.
 	 */
-	void onRegisterAllele(IAllele allele);
+	default void onRegisterAllele(IAllele allele){
+	}
 
 	/**
 	 * Called after keys were added to a allele.
@@ -20,5 +21,9 @@ public interface IAlleleHandler {
 	 * @param allele The allele to that the keys were added.
 	 * @param types  The added chromosome types.
 	 */
-	void onAddTypes(IAllele allele, IChromosomeType... types);
+	default void onAddTypes(IAllele allele, IChromosomeType... types){
+	}
+
+	default <V> void onRegisterData(IAlleleValue<V> allele, IAlleleData<V> alleleData){
+	}
 }

@@ -21,6 +21,7 @@ public class GeneticHelper {
 
 	@CapabilityInject(IOrganism.class)
 	public static Capability<IOrganism> ORGANISM;
+	public static IOrganism<?> EMPTY;
 
 	private GeneticHelper() {
 	}
@@ -32,13 +33,18 @@ public class GeneticHelper {
 
 	@SuppressWarnings("unchecked")
 	public static <I extends IIndividual> IOrganism<I> getOrganism(ItemStack itemStack) {
-		return (IOrganism<I>) itemStack.getCapability(ORGANISM, null);
+		return itemStack.getCapability(ORGANISM).orElse(EMPTY);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <I extends IIndividual> boolean setIndividual(ItemStack itemStack, I individual) {
-		IOrganism<I> organism = itemStack.getCapability(ORGANISM, null);
-		return organism != null && organism.setIndividual(individual);
+		IOrganism organism = itemStack.getCapability(ORGANISM).orElse(EMPTY);
+		return organism.setIndividual(individual);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <I extends IIndividual> Optional<I> getIndividual(ItemStack itemStack) {
+		return itemStack.getCapability(ORGANISM).orElse(EMPTY).getIndividual();
 	}
 
 	public static IOrganismHandler getOrganismHandler(IIndividualRoot<IIndividual> root, IOrganismType type) {

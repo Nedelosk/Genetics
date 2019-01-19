@@ -24,7 +24,7 @@ public interface IAlleleRegistry {
 	 * @param types chromosome types for the allele.
 	 * @return Returns the created and registered allele.
 	 */
-	IAllele registerAllele(IAlleleData value, IChromosomeType... types);
+	<V> IAlleleValue<V> registerAllele(IAlleleData<V> value, IChromosomeType... types);
 
 	/**
 	 * Creates a allele for every entry in the given array. All alleles will be registered with the given chromosome
@@ -35,7 +35,7 @@ public interface IAlleleRegistry {
 	 * @return A array that contains all created and registered alleles. With the same index of their data in the given
 	 * array.
 	 */
-	IAllele[] registerAlleles(IAlleleData[] values, IChromosomeType... types);
+	<V> IAlleleValue<V>[] registerAlleles(IAlleleData<V>[] values, IChromosomeType... types);
 
 	/**
 	 * Creates and registers an allele that contains the given value and has the given dominant state if no allele with
@@ -47,7 +47,7 @@ public interface IAlleleRegistry {
 	 * @param dominant  if true the allele is dominant, otherwise the allele is recessive.
 	 * @param types     chromosome types for this allele.
 	 */
-	<V> IAllele registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types);
+	<V> IAlleleValue<V> registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types);
 
 	/**
 	 * Registers an allele.
@@ -55,7 +55,7 @@ public interface IAlleleRegistry {
 	 * @param allele IAllele to register.
 	 * @param types  allele keys for this allele.
 	 */
-	IAllele registerAllele(IAllele allele, IChromosomeType... types);
+	<A extends IAllele> A registerAllele(A allele, IChromosomeType... types);
 
 	/**
 	 * Add more valid chromosome types for an allele.

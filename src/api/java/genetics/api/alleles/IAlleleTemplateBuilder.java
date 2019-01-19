@@ -1,7 +1,10 @@
 package genetics.api.alleles;
 
+import java.util.Optional;
+
 import net.minecraft.util.ResourceLocation;
 
+import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticFactory;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IKaryotype;
@@ -21,6 +24,18 @@ public interface IAlleleTemplateBuilder {
 	 * @param chromosomeType The position at the chromosome array.
 	 */
 	IAlleleTemplateBuilder set(IChromosomeType chromosomeType, IAllele allele);
+
+	default IAlleleTemplateBuilder set(IChromosomeType chromosomeType, IAlleleProvider provider){
+		return set(chromosomeType, provider.getAllele());
+	}
+
+	default IAlleleTemplateBuilder set(IChromosomeType chromosomeType, Object value){
+		Optional<IAlleleValue<Object>> optionalAllele = GeneticsAPI.apiInstance.getAlleleHelper().getAllele(chromosomeType, value);
+		if(!optionalAllele.isPresent()){
+			throw new IllegalArgumentException("Attempted to set the allele at the position '" + chromosomeType + "' to the allele with the value '" + value + "'.But no allele was registered with that value for that chromosome type.");
+		}
+		return set(chromosomeType, optionalAllele.get());
+	}
 
 	/**
 	 * Sets a allele at a position of the chromosome.

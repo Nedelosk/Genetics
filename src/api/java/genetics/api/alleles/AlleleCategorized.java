@@ -1,8 +1,7 @@
 package genetics.api.alleles;
 
-import org.apache.commons.lang3.text.WordUtils;
-
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 
 /**
@@ -21,13 +20,13 @@ public class AlleleCategorized<V> extends AlleleValue<V> {
 		setRegistryName(createRegistryName(modId, category, valueName));
 	}
 
-	private static String createRegistryName(String modId, String category, String valueName) {
-		return modId + ':' + category + WordUtils.capitalize(valueName);
+	private static ResourceLocation createRegistryName(String modId, String category, String valueName) {
+		return new ResourceLocation(modId, category + "_" + valueName);
 	}
 
 	private static String getUnlocalizedName(String modId, String category, String valueName) {
 		String customName = modId + '.' + "allele." + category + '.' + valueName;
-		if (I18n.canTranslate(customName)) {
+		if (I18n.hasKey(customName)) {
 			return customName;
 		} else {
 			return modId + '.' + "allele." + valueName;

@@ -15,15 +15,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
+import net.minecraftforge.fml.ModThreadContext;
+
 import genetics.api.alleles.AlleleCategorized;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleData;
 import genetics.api.alleles.IAlleleHandler;
 import genetics.api.alleles.IAlleleRegistry;
+import genetics.api.alleles.IAlleleValue;
 import genetics.api.individual.IChromosomeType;
 
 import genetics.Genetics;
-import genetics.plugins.PluginManager;
 
 public class AlleleRegistry implements IAlleleRegistry {
 
@@ -46,10 +48,11 @@ public class AlleleRegistry implements IAlleleRegistry {
 			.setType(IAllele.class);
 		//Cast the registry to the class type so we can get the ids of the alleles
 		this.registry = (ForgeRegistry<IAllele>) builder.create();
+		registerHandler(AlleleHelper.INSTANCE);
 	}
 
 	@Override
-	public IAllele registerAllele(IAllele allele, IChromosomeType... types) {
+	public <A extends IAllele> A registerAllele(A allele, IChromosomeType... types) {
 		if (!registry.containsKey(allele.getRegistryName())) {
 			registry.register(allele);
 			handlers.forEach(h -> h.onRegisterAllele(allele));
@@ -66,18 +69,21 @@ public class AlleleRegistry implements IAlleleRegistry {
 	}
 
 	@Override
-	public <V> IAllele registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types) {
-		return registerAllele(new AlleleCategorized<>(PluginManager.getCurrentModId(), category, valueName, value, dominant), types);
+	public <V> IAlleleValue<V> registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types) {
+		return registerAllele(new AlleleCategorized<>(ModThreadContext.get().getActiveContainer().getModId(), category, valueName, value, dominant), types);
 	}
 
 	@Override
-	public IAllele registerAllele(IAlleleData value, IChromosomeType... types) {
-		return registerAllele(value.getCategory(), value.getName(), value.getValue(), value.isDominant(), types);
+	public <V> IAlleleValue<V> registerAllele(IAlleleData<V> value, IChromosomeType... types) {
+		IAlleleValue<V> alleleValue = registerAllele(value.getCategory(), value.getName(), value.getValue(), value.isDominant(), types);
+		handlers.forEach(handler -> handler.onRegisterData(alleleValue, value));
+		return alleleValue;
 	}
 
 	@Override
-	public IAllele[] registerAlleles(IAlleleData[] values, IChromosomeType... types) {
-		IAllele[] alleles = new IAllele[values.length];
+	@SuppressWarnings("unchecked")
+	public <V> IAlleleValue<V>[] registerAlleles(IAlleleData<V>[] values, IChromosomeType... types) {
+		IAlleleValue<V>[] alleles = new IAlleleValue[values.length];
 		for (int i = 0; i < values.length; i++) {
 			alleles[i] = registerAllele(values[i], types);
 		}

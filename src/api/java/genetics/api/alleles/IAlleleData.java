@@ -1,5 +1,10 @@
 package genetics.api.alleles;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+
+import genetics.api.GeneticsAPI;
 import genetics.api.individual.IChromosomeType;
 
 /**
@@ -11,7 +16,7 @@ import genetics.api.individual.IChromosomeType;
  *
  * @param <V> The type of the value that this constant provides.
  */
-public interface IAlleleData<V> {
+public interface IAlleleData<V> extends IAlleleProvider{
 
 	/**
 	 * @return The value of the allele.
@@ -32,4 +37,26 @@ public interface IAlleleData<V> {
 	 * @return The name that is used for the unlocalized name and the registration name of the allele.
 	 */
 	String getName();
+
+	default Optional<IAlleleValue<V>> getAlleleValue(){
+		return GeneticsAPI.apiInstance.getAlleleHelper().getAllele(this);
+	}
+
+	@Override
+	default IAllele getAllele(){
+		Optional<IAlleleValue<V>> optionalAllele = getAlleleValue();
+		if(!optionalAllele.isPresent()){
+			throw new IllegalStateException("Attempted to get the allele from an allele data that was not registered! Please register the allele data before you use it.");
+		}
+		return optionalAllele.get();
+	}
+
+	default Collection<IChromosomeType> getTypes(){
+		Optional<IAlleleValue<V>> optionalAllele = getAlleleValue();
+		if(!optionalAllele.isPresent()){
+			return Collections.emptySet();
+		}
+		IAlleleValue<V> alleleValue = optionalAllele.get();
+		return GeneticsAPI.apiInstance.getAlleleRegistry().getChromosomeTypes(alleleValue);
+	}
 }

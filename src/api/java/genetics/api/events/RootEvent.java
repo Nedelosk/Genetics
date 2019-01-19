@@ -2,8 +2,8 @@ package genetics.api.events;
 
 import java.lang.reflect.Type;
 
-import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.IGenericEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.IGenericEvent;
 
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IRootDefinition;

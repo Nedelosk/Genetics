@@ -32,13 +32,13 @@ public abstract class Individual implements IIndividual {
 	public Individual(NBTTagCompound compound) {
 		IKaryotype karyotype = getRoot().getKaryotype();
 		if (compound.hasKey(GENOME_KEY)) {
-			genome = GeneticsAPI.apiInstance.getGeneticFactory().createGenome(karyotype, compound.getCompoundTag(GENOME_KEY));
+			genome = GeneticsAPI.apiInstance.getGeneticFactory().createGenome(karyotype, compound.getCompound(GENOME_KEY));
 		} else {
 			genome = karyotype.getDefaultGenome();
 		}
 
 		if (compound.hasKey(MATE_KEY)) {
-			mate = GeneticsAPI.apiInstance.getGeneticFactory().createGenome(karyotype, compound.getCompoundTag(MATE_KEY));
+			mate = GeneticsAPI.apiInstance.getGeneticFactory().createGenome(karyotype, compound.getCompound(MATE_KEY));
 		}
 
 		isAnalyzed = compound.getBoolean(ANALYZED_KEY);

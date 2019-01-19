@@ -19,7 +19,7 @@ public interface IMutationContainer<M extends IMutation> extends IRootComponent 
 	 * @param other Allele to match mutations against.
 	 * @return All registered mutations the given allele is part of.
 	 */
-	List<? extends M> getCombinations(IAlleleSpecies other);
+	List<? extends M> getCombinations(IAllele other);
 
 	/**
 	 * @param other Allele to match mutations against.

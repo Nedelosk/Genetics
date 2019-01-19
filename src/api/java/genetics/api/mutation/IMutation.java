@@ -51,12 +51,12 @@ public interface IMutation {
 	/**
 	 * @return true if the passed allele is one of the alleles participating in this mutation.
 	 */
-	boolean isPartner(IAlleleSpecies allele);
+	boolean isPartner(IAllele allele);
 
 	/**
 	 * @return the other allele which was not passed as argument.
 	 */
-	IAllele getPartner(IAlleleSpecies allele);
+	IAllele getPartner(IAllele allele);
 
 	/**
 	 * @return true if the mutation should not be displayed in a gui that displays all mutations.

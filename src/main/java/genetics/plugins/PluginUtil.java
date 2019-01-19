@@ -1,47 +1,60 @@
 package genetics.plugins;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
 
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.discovery.ASMDataTable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraftforge.forgespi.language.ModFileScanData;
+
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModList;
 
 import genetics.api.GeneticPlugin;
 import genetics.api.IGeneticPlugin;
 
-import genetics.Log;
+import org.objectweb.asm.Type;
 
 public class PluginUtil {
+	private static final Logger LOGGER = LogManager.getLogger();
+
 	private PluginUtil() {
 
 	}
 
-	static Map<IGeneticPlugin, ModContainer> getPlugins(ASMDataTable asmDataTable) {
-		return getInstances(asmDataTable, GeneticPlugin.class, IGeneticPlugin.class);
-	}
-
-	private static <T> Map<T, ModContainer> getInstances(ASMDataTable asmDataTable, Class annotationClass, Class<T> instanceClass) {
-		String annotationClassName = annotationClass.getCanonicalName();
-		Set<ASMDataTable.ASMData> abmData = asmDataTable.getAll(annotationClassName);
-		Map<String, ModContainer> containerByID = new HashMap<>();
-		Loader.instance().getActiveModList().forEach(modContainer -> containerByID.put(modContainer.getModId(), modContainer));
-		Map<T, ModContainer> instances = new HashMap<>();
-		for (ASMDataTable.ASMData asmData : abmData) {
+	public static Map<IGeneticPlugin, ModContainer> getPlugins() {
+		Type annotationType = Type.getType(GeneticPlugin.class);
+		List<ModFileScanData> allScanData = ModList.get().getAllScanData();
+		Function<String, Optional<? extends ModContainer>> getContainer = (modId)->ModList.get().getModContainerById(modId);
+		List<String> pluginClassNames = new ArrayList<>();
+		for (ModFileScanData scanData : allScanData) {
+			List<ModFileScanData.AnnotationData> annotations = scanData.getAnnotations();
+			for (ModFileScanData.AnnotationData a : annotations) {
+				if (Objects.equals(a.getAnnotationType(), annotationType)) {
+					String memberName = a.getMemberName();
+					pluginClassNames.add(memberName);
+				}
+			}
+		}
+		Map<IGeneticPlugin, ModContainer> instances = new HashMap<>();
+		for (String className : pluginClassNames) {
 			try {
-				Class<?> asmClass = Class.forName(asmData.getClassName());
-				Class<? extends T> asmInstanceClass = asmClass.asSubclass(instanceClass);
-				T instance = asmInstanceClass.newInstance();
+				Class<?> asmClass = Class.forName(className);
+				Class<? extends IGeneticPlugin> asmInstanceClass = asmClass.asSubclass(IGeneticPlugin.class);
+				IGeneticPlugin instance = asmInstanceClass.newInstance();
 				GeneticPlugin plugin = asmInstanceClass.getAnnotation(GeneticPlugin.class);
 				if (plugin != null) {
-					ModContainer container = containerByID.get(plugin.modId());
-					if (container != null) {
-						instances.put(instance, container);
-					}
+					Optional<? extends ModContainer> modContainer = getContainer.apply(plugin.modId());
+					modContainer.ifPresent(container->instances.put(instance, container));
 				}
-			} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-				Log.error("Failed to load: {}", asmData.getClassName(), e);
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | LinkageError e) {
+				LOGGER.error("Failed to load: {}", className, e);
 			}
 		}
 		return instances;

@@ -2,17 +2,15 @@ package genetics.plugins;
 
 import com.google.common.collect.ImmutableSortedMap;
 
-import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.function.Consumer;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModThreadContext;
 
 import genetics.api.GeneticPlugin;
 import genetics.api.GeneticsAPI;
@@ -20,7 +18,6 @@ import genetics.api.IGeneticPlugin;
 
 import genetics.ApiInstance;
 import genetics.GeneticFactory;
-import genetics.Genetics;
 import genetics.alleles.AlleleRegistry;
 import genetics.classification.ClassificationRegistry;
 import genetics.root.IndividualRootBuilder;
@@ -36,16 +33,13 @@ public class PluginManager {
 		return first.ordinal() > second.ordinal() ? 1 : -1;
 	};
 	private static ImmutableSortedMap<IGeneticPlugin, ModContainer> plugins;
-	/* The modID of the current active plugin*/
-	@Nullable
-	private static ModContainer activeContainer = null;
 
 	private PluginManager() {
 	}
 
-	public static void create(FMLPreInitializationEvent event) {
+	public static void create() {
 		ImmutableSortedMap.Builder<IGeneticPlugin, ModContainer> builder = new ImmutableSortedMap.Builder<>(PLUGIN_COMPARATOR);
-		builder.putAll(PluginUtil.getPlugins(event.getAsmData()));
+		builder.putAll(PluginUtil.getPlugins());
 		plugins = builder.build();
 		for (IGeneticPlugin plugin : plugins.keySet()) {
 			MinecraftForge.EVENT_BUS.register(plugin);
@@ -73,32 +67,11 @@ public class PluginManager {
 	}
 
 	private static void handlePlugins(Consumer<IGeneticPlugin> pluginConsumer) {
-		Loader loader = Loader.instance();
-		ModContainer oldContainer = loader.activeModContainer();
+		ModContainer oldContainer = ModThreadContext.get().getActiveContainer();
 		plugins.forEach((plugin, container) -> {
-			loader.setActiveModContainer(container);
-			setActiveContainer(container);
+			ModThreadContext.get().setActiveContainer(container);
 			pluginConsumer.accept(plugin);
-			setActiveContainer(null);
 		});
-		loader.setActiveModContainer(oldContainer);
-	}
-
-	static void setActiveContainer(@Nullable ModContainer activeContainer) {
-		PluginManager.activeContainer = activeContainer;
-	}
-
-	public static String getCurrentModId() {
-		if (activeContainer == null) {
-			return Genetics.MOD_ID;
-		}
-		return activeContainer.getModId();
-	}
-
-	public static ModContainer getActiveContainer() {
-		if (activeContainer == null) {
-			throw new IllegalStateException();
-		}
-		return activeContainer;
+		ModThreadContext.get().setActiveContainer(oldContainer);
 	}
 }

@@ -6,12 +6,12 @@ import java.util.Objects;
 
 import net.minecraft.client.resources.I18n;
 
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
  * A default implementation of a simple allele.
  */
-public abstract class Allele extends IForgeRegistryEntry.Impl<IAllele> implements IAllele {
+public abstract class Allele extends ForgeRegistryEntry<IAllele> implements IAllele {
 	protected final boolean dominant;
 	protected final String localisationKey;
 

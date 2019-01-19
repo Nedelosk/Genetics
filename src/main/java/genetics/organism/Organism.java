@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.OptionalCapabilityInstance;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.individual.IChromosomeType;
@@ -22,6 +23,7 @@ import genetics.Genetics;
 import genetics.individual.GeneticSaveHandler;
 
 public class Organism<I extends IIndividual> implements IOrganism<I> {
+	private final OptionalCapabilityInstance<IOrganism> holder = OptionalCapabilityInstance.of(() -> this);
 	private final ItemStack container;
 	private final IRootDefinition<? extends IIndividualRoot<I>> definition;
 	private final Supplier<IOrganismType> typeSupplier;
@@ -53,6 +55,11 @@ public class Organism<I extends IIndividual> implements IOrganism<I> {
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return false;
+	}
+
+	@Override
 	public IAllele getAllele(IChromosomeType chromosomeType, boolean active) {
 		IAllele allele = GeneticSaveHandler.INSTANCE.getAlleleDirectly(container, getType(), chromosomeType, active);
 		if (allele == null) {
@@ -67,13 +74,7 @@ public class Organism<I extends IIndividual> implements IOrganism<I> {
 	}
 
 	@Override
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == Genetics.ORGANISM;
-	}
-
-	@Nullable
-	@Override
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == Genetics.ORGANISM ? Genetics.ORGANISM.cast(this) : null;
+	public <T> OptionalCapabilityInstance<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing facing) {
+		return OptionalCapabilityInstance.orEmpty(cap, Genetics.ORGANISM, holder);
 	}
 }

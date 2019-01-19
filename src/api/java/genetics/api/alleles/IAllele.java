@@ -6,9 +6,6 @@ import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import genetics.api.individual.IChromosome;
 import genetics.api.individual.IGenome;
 import genetics.api.individual.IIndividual;
@@ -30,11 +27,10 @@ public interface IAllele extends IForgeRegistryEntry<IAllele> {
 	/**
 	 * @return Localized short, human-readable identifier used in tooltips and beealyzer.
 	 */
-	@SideOnly(Side.CLIENT)
 	String getLocalizedName();
 
 	/**
-	 * @return The unlocalized identifier
+	 * @return The localisation identifier for this allele.
 	 */
 	String getLocalisationKey();
 

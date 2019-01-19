@@ -19,7 +19,7 @@ public class RootDefinition<R extends IIndividualRoot> implements IRootDefinitio
 	}
 
 	@Override
-	public Optional<R> maybeRoot() {
+	public Optional<R> maybe() {
 		return Optional.ofNullable(root);
 	}
 
@@ -32,7 +32,7 @@ public class RootDefinition<R extends IIndividualRoot> implements IRootDefinitio
 	}
 
 	@Override
-	public boolean isPresent() {
+	public boolean isRootPresent() {
 		return root != null;
 	}
 
@@ -46,7 +46,7 @@ public class RootDefinition<R extends IIndividualRoot> implements IRootDefinitio
 	@Override
 	public <U> Optional<U> map(Function<? super R, ? extends U> mapper) {
 		Objects.requireNonNull(mapper);
-		if (!isPresent()) {
+		if (!isRootPresent()) {
 			return Optional.empty();
 		} else {
 			return Optional.ofNullable(mapper.apply(root));

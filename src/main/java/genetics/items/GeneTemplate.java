@@ -9,6 +9,7 @@ import net.minecraft.util.EnumFacing;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.capabilities.OptionalCapabilityInstance;
 
 import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
@@ -22,6 +23,8 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	private static final String ALLELE_NBT_KEY = "Allele";
 	private static final String TYPE_NBT_KEY = "Type";
 	private static final String DEFINITION_NBT_KEY = "Definition";
+
+	private final OptionalCapabilityInstance<IGeneTemplate> holder = OptionalCapabilityInstance.of(() -> this);
 
 	@Nullable
 	private IAllele allele;
@@ -72,7 +75,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	@Override
 	public void deserializeNBT(NBTTagCompound compound) {
 		if (compound.hasKey(TYPE_NBT_KEY) && compound.hasKey(DEFINITION_NBT_KEY)) {
-			ApiInstance.INSTANCE.getRoot(compound.getString(DEFINITION_NBT_KEY)).ifPresent(def -> {
+			ApiInstance.INSTANCE.getRoot(compound.getString(DEFINITION_NBT_KEY)).maybe().ifPresent(def -> {
 				this.root = def;
 				type = def.getKaryotype().getChromosomeTypes()[compound.getByte(TYPE_NBT_KEY)];
 			});
@@ -83,13 +86,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	}
 
 	@Override
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == Genetics.GENE_TEMPLATE;
-	}
-
-	@Nullable
-	@Override
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == Genetics.GENE_TEMPLATE ? Genetics.GENE_TEMPLATE.cast(this) : null;
+	public <T> OptionalCapabilityInstance<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing facing) {
+		return OptionalCapabilityInstance.orEmpty(cap, Genetics.GENE_TEMPLATE, holder);
 	}
 }

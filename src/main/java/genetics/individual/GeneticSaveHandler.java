@@ -61,18 +61,18 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	 */
 	@Nullable
 	public IAllele getAlleleDirectly(ItemStack itemStack, IOrganismType type, IChromosomeType chromosomeType, boolean active) {
-		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
-		if (nbtTagCompound == null || nbtTagCompound.hasNoTags()) {
+		NBTTagCompound nbtTagCompound = itemStack.getTag();
+		if (nbtTagCompound == null || nbtTagCompound.isEmpty()) {
 			return null;
 		}
 
 		NBTTagCompound individualNBT = getIndividualDataDirectly(itemStack, type, chromosomeType.getRoot());
-		if (individualNBT == null || individualNBT.hasNoTags()) {
+		if (individualNBT == null || individualNBT.isEmpty()) {
 			return null;
 		}
 
-		NBTTagCompound genomeNBT = individualNBT.getCompoundTag(GENOME_TAG);
-		if (genomeNBT.hasNoTags()) {
+		NBTTagCompound genomeNBT = individualNBT.getCompound(GENOME_TAG);
+		if (genomeNBT.isEmpty()) {
 			return null;
 		}
 		IAllele allele = getAlleleDirectly(genomeNBT, chromosomeType, active);
@@ -99,14 +99,14 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 	 * Tries to load a specific chromosome and creates it if it is absent.
 	 */
 	public IChromosome getSpecificChromosome(ItemStack itemStack, IOrganismType type, IChromosomeType chromosomeType) {
-		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
+		NBTTagCompound nbtTagCompound = itemStack.getTag();
 		if (nbtTagCompound == null) {
 			nbtTagCompound = new NBTTagCompound();
-			itemStack.setTagCompound(nbtTagCompound);
+			itemStack.setTag(nbtTagCompound);
 		}
 
 		NBTTagCompound individualNBT = getIndividualData(itemStack, type, chromosomeType.getRoot());
-		NBTTagCompound genomeNBT = individualNBT.getCompoundTag(GENOME_TAG);
+		NBTTagCompound genomeNBT = individualNBT.getCompound(GENOME_TAG);
 
 		return getSpecificChromosome(genomeNBT, chromosomeType);
 	}
@@ -132,9 +132,9 @@ public enum GeneticSaveHandler implements IGeneticSaveHandler {
 			return compound;
 		}
 		compound = new NBTTagCompound();
-		NBTTagCompound genomeNBT = compound.getCompoundTag(GENOME_TAG);
+		NBTTagCompound genomeNBT = compound.getCompound(GENOME_TAG);
 
-		if (genomeNBT.hasNoTags()) {
+		if (genomeNBT.isEmpty()) {
 			Log.error("Got a genetic item with no genome, setting it to a default value.");
 			genomeNBT = new NBTTagCompound();
 

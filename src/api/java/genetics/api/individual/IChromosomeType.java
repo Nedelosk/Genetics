@@ -30,13 +30,20 @@ public interface IChromosomeType {
 	Class<?> getValueClass();
 
 	default boolean isValid(IAllele allele) {
-		if (getValueClass() == null) {
+		Class<?> valueClass = getValueClass();
+		if (valueClass == null) {
 			return true;
 		}
-		if (!(allele instanceof IAlleleValue)) {
-			return false;
+		Object value;
+		if(IAllele.class.isAssignableFrom(valueClass)){
+			value = allele;
+		}else {
+			if (!(allele instanceof IAlleleValue)) {
+				return false;
+			}
+			IAlleleValue alleleValue = (IAlleleValue) allele;
+			value = alleleValue.getValue();
 		}
-		IAlleleValue alleleValue = (IAlleleValue) allele;
-		return getValueClass().isInstance(alleleValue.getValue());
+		return valueClass.isInstance(value);
 	}
 }

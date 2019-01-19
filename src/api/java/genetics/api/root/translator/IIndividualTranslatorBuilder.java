@@ -14,19 +14,19 @@ public interface IIndividualTranslatorBuilder<I extends IIndividual> extends IRo
 	 * Registers a translator that translates a {@link IBlockState} into a  {@link IIndividual} or an {@link ItemStack}
 	 * that contains an {@link IOrganism}.
 	 *
-	 * @param translatorKey The key of the translator the block of {@link IBlockState} that you want to translate
+	 * @param translatorKeys The key of the translator the block of {@link IBlockState} that you want to translate
 	 *                      with the translator.
 	 * @param translator    A translator that should be used to translate the data.
 	 */
-	IIndividualTranslatorBuilder<I> registerTranslator(Block translatorKey, IBlockTranslator<I> translator);
+	IIndividualTranslatorBuilder<I> registerTranslator(IBlockTranslator<I> translator, Block... translatorKeys);
 
 	/**
 	 * Registers a translator that translates an {@link ItemStack} that does not contain an {@link IOrganism} into a
 	 * {@link IIndividual} or another {@link ItemStack} that contains an {@link IOrganism}.
 	 *
-	 * @param translatorKey The key of the translator it is the item of the {@link ItemStack} that you want to translate
+	 * @param translatorKeys The key of the translator it is the item of the {@link ItemStack} that you want to translate
 	 *                      with the translator.
 	 * @param translator    A translator that should be used to translate the data.
 	 */
-	IIndividualTranslatorBuilder<I> registerTranslator(Item translatorKey, IItemTranslator<I> translator);
+	IIndividualTranslatorBuilder<I> registerTranslator(IItemTranslator<I> translator, Item... translatorKeys);
 }

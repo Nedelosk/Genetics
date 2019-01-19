@@ -7,6 +7,7 @@ import genetics.api.classification.IClassificationRegistry;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IRootManager;
+import genetics.api.root.components.IRootComponentRegistry;
 
 /**
  * The main class to implement to create a Genetic plugin. Everything communicated between a mod and Genetics is through
@@ -30,6 +31,10 @@ public interface IGeneticPlugin {
 	 * if you want to keep the data in an object like an enum.
 	 */
 	default void registerAlleles(IAlleleRegistry registry) {
+		//Default Implementation
+	}
+
+	default void registerComponents(IRootComponentRegistry componentRegistry){
 		//Default Implementation
 	}
 

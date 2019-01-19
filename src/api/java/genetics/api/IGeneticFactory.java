@@ -5,9 +5,6 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
@@ -112,7 +109,6 @@ public interface IGeneticFactory {
 	 */
 	<I extends IIndividual> IOrganismHandler<I> createOrganismHandler(IRootDefinition<? extends IIndividualRoot<I>> rootDefinition, Supplier<ItemStack> stack);
 
-	@SideOnly(Side.CLIENT)
 	<I extends IIndividual> IDisplayHelper createDisplayHelper(IIndividualRoot<I> root);
 
 	/**

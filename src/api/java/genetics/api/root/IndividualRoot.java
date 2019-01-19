@@ -11,9 +11,6 @@ import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneticFactory;
 import genetics.api.alleles.IAllele;
@@ -41,7 +38,6 @@ public abstract class IndividualRoot<I extends IIndividual> implements IIndividu
 	private final I defaultMember;
 	private final Map<ComponentKey, IRootComponent> componentByKey;
 	@Nullable
-	@SideOnly(Side.CLIENT)
 	private IDisplayHelper<I> displayHelper;
 
 	public IndividualRoot(IKaryotype karyotype, Function<IIndividualRoot<I>, Map<ComponentKey, IRootComponent>> components) {
@@ -90,6 +86,11 @@ public abstract class IndividualRoot<I extends IIndividual> implements IIndividu
 	}
 
 	@Override
+	public boolean isMember(ItemStack stack) {
+		return types.getType(stack).isPresent();
+	}
+
+	@Override
 	public ITemplateContainer getTemplates() {
 		return templates;
 	}
@@ -130,7 +131,6 @@ public abstract class IndividualRoot<I extends IIndividual> implements IIndividu
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	@SuppressWarnings("unchecked")
 	public IDisplayHelper getDisplayHelper() {
 		if (displayHelper == null) {
