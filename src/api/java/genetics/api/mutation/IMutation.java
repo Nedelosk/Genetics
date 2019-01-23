@@ -5,9 +5,23 @@ import java.util.Collection;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleSpecies;
 import genetics.api.root.IIndividualRoot;
+import genetics.api.root.components.ComponentKey;
+import genetics.api.root.components.IRootComponentBuilder;
 
 /**
- * Individuals can be seeded either as hive drops or as mutation results.
+ * A mutation provides a type of progression to the genetic system under the right conditions an offspring of the
+ * two {@link IAlleleSpecies} can mutate into a completely new {@link IAlleleSpecies}.
+ * <p>
+ * In forestry the newly created {@link genetics.api.individual.IIndividual} that contains the new species contains
+ * the default template of the species.
+ * <p>
+ * Mutations can be registered at the {@link IMutationContainerBuilder} with the
+ * {@link IMutationContainerBuilder#registerMutation(IMutation)} method. As an example the
+ * {@link genetics.api.individual.ISpeciesDefinition#onComponent(ComponentKey, IRootComponentBuilder)}
+ * method can be used to do this without any complex implementation.
+ *
+ * @see IMutationContainer
+ * @see IMutationContainerBuilder
  */
 public interface IMutation {
 

@@ -11,11 +11,11 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 /**
  * A default implementation of a simple allele.
  */
-public abstract class Allele extends ForgeRegistryEntry<IAllele> implements IAllele {
+public class Allele extends ForgeRegistryEntry<IAllele> implements IAllele {
 	protected final boolean dominant;
 	protected final String localisationKey;
 
-	protected Allele(String localisationKey, boolean dominant) {
+	public Allele(String localisationKey, boolean dominant) {
 		this.localisationKey = localisationKey;
 		this.dominant = dominant;
 	}

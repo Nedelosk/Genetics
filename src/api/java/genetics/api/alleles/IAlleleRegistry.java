@@ -78,6 +78,13 @@ public interface IAlleleRegistry {
 	IAlleleRegistry addValidAlleleTypes(IAllele allele, IChromosomeType... types);
 
 	/**
+	 * @return The default allele that will be used insteadof null for every allele.
+	 */
+	IAllele getDefaultAllele();
+
+	ResourceLocation getDefaultKey();
+
+	/**
 	 * Gets an allele
 	 *
 	 * @param registryName The registry name of the allele to retrieve as a {@link String}.

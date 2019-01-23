@@ -20,10 +20,12 @@ import net.minecraftforge.common.MinecraftForge;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleTemplate;
 import genetics.api.alleles.IAlleleTemplateBuilder;
+import genetics.api.events.RootBuilderEvents;
 import genetics.api.events.RootEvent;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
 import genetics.api.individual.IKaryotype;
+import genetics.api.individual.ISpeciesDefinition;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.IIndividualRootBuilder;
 import genetics.api.root.IIndividualRootFactory;
@@ -60,7 +62,7 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 	}
 
 	@Override
-	public IIndividualRootBuilder addChromosome(IChromosomeType type) {
+	public IIndividualRootBuilder<I> addChromosome(IChromosomeType type) {
 		chromosomeTypes.add(type);
 		if(speciesType == null){
 			speciesType = type;
@@ -69,7 +71,7 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 	}
 
 	@Override
-	public IIndividualRootBuilder addChromosome(IChromosomeType... types) {
+	public IIndividualRootBuilder<I> addChromosome(IChromosomeType... types) {
 		if(speciesType == null && types.length > 0){
 			speciesType = types[0];
 		}
@@ -78,7 +80,7 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 	}
 
 	@Override
-	public IIndividualRootBuilder setSpeciesType(IChromosomeType speciesType) {
+	public IIndividualRootBuilder<I> setSpeciesType(IChromosomeType speciesType) {
 		this.speciesType = speciesType;
 		if(!chromosomeTypes.contains(speciesType)){
 			addChromosome(speciesType);
@@ -87,19 +89,19 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 	}
 
 	@Override
-	public IIndividualRootBuilder setRootFactory(IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory) {
+	public IIndividualRootBuilder<I> setRootFactory(IIndividualRootFactory<I, IIndividualRoot<I>> rootFactory) {
 		this.rootFactory = rootFactory;
 		return this;
 	}
 
 	@Override
-	public IIndividualRootBuilder setDefaultTemplate(Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate) {
+	public IIndividualRootBuilder<I> setDefaultTemplate(Function<IAlleleTemplateBuilder, IAlleleTemplate> defaultTemplate) {
 		this.defaultTemplate = defaultTemplate;
 		return this;
 	}
 
 	@Override
-	public IIndividualRootBuilder setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
+	public IIndividualRootBuilder<I> setTemplateFactory(BiFunction<IKaryotype, IAllele[], IAlleleTemplateBuilder> templateFactory) {
 		this.templateFactory = templateFactory;
 		return this;
 	}
@@ -116,7 +118,14 @@ public class IndividualRootBuilder<I extends IIndividual> implements IIndividual
 			componentFactories.forEach((componentKey, factory) -> builders.put(componentKey, factory.create(root)));
 			componentListeners.forEach((componentKey, consumer) -> consumer.accept(builders.get(componentKey)));
 			ImmutableMap.Builder<ComponentKey, IRootComponent> components = new ImmutableMap.Builder<>();
-			builders.forEach((componentKey, builder) -> components.put(componentKey, builder.create()));
+			RootBuilderEvents.GatherDefinitions<I> gatherDefinitions = new RootBuilderEvents.GatherDefinitions<>(this);
+			MinecraftForge.EVENT_BUS.post(gatherDefinitions);
+			List<ISpeciesDefinition> definitions = gatherDefinitions.getDefinitions();
+			builders.forEach((componentKey, builder) -> {
+				MinecraftForge.EVENT_BUS.post(new RootBuilderEvents.BuildComponent<>(this, componentKey, builder));
+				definitions.forEach(speciesDefinition -> speciesDefinition.onComponent(componentKey, builder));
+				components.put(componentKey, builder.create());
+			});
 			return components.build();
 		}));
 		MinecraftForge.EVENT_BUS.register(new RootEvent.CreationEvent<>(definition));

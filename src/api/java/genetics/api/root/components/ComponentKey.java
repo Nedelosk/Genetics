@@ -16,16 +16,18 @@ import genetics.api.root.IIndividualRootBuilder;
  */
 public class ComponentKey<C extends IRootComponent, B extends IRootComponentBuilder> {
 
-	public static <C extends IRootComponent, B extends IRootComponentBuilder> ComponentKey<C, B> create(String name, Class<C> componentClass) {
-		return new ComponentKey<>(name, componentClass);
+	public static <C extends IRootComponent, B extends IRootComponentBuilder> ComponentKey<C, B> create(String name, Class<C> componentClass, Class<B> builderClass) {
+		return new ComponentKey<>(name, componentClass, builderClass);
 	}
 
 	private final String name;
 	private final Class<C> componentClass;
+	private final Class<B> builderClass;
 
-	private ComponentKey(String name, Class<C> componentClass) {
+	private ComponentKey(String name, Class<C> componentClass, Class<B> builderClass) {
 		this.name = name;
 		this.componentClass = componentClass;
+		this.builderClass = builderClass;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -35,6 +37,10 @@ public class ComponentKey<C extends IRootComponent, B extends IRootComponentBuil
 
 	public Class<C> getComponentClass() {
 		return componentClass;
+	}
+
+	public Class<B> getBuilderClass() {
+		return builderClass;
 	}
 
 	public String getName() {

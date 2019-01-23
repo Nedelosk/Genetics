@@ -5,6 +5,9 @@ import java.util.Map;
 
 import genetics.api.classification.IClassification.EnumClassLevel;
 
+/**
+ * Main interface for the registration of {@link IClassification}s.
+ */
 public interface IClassificationRegistry {
 	/**
 	 * @return HashMap of all currently registered classifications.

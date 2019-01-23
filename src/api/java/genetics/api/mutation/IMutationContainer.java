@@ -8,6 +8,13 @@ import genetics.api.alleles.IAlleleSpecies;
 import genetics.api.individual.IChromosomeType;
 import genetics.api.root.components.IRootComponent;
 
+/**
+ * This component contains all mutations of the {@link genetics.api.root.IIndividualRootBuilder}.
+ * <p>
+ * This is an optional component.
+ *
+ * @param <M> The type of the mutation.
+ */
 public interface IMutationContainer<M extends IMutation> extends IRootComponent {
 
 	/**

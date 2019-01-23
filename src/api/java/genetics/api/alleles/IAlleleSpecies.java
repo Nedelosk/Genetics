@@ -3,6 +3,16 @@ package genetics.api.alleles;
 import genetics.api.classification.IClassification;
 import genetics.api.root.IIndividualRoot;
 
+/**
+ * The species of an {@link genetics.api.individual.IIndividual} is one of the most important {@link IAllele} of the
+ * whole {@link genetics.api.individual.IGenome}. In most cases it defines the model and name of the genetic item and
+ * the products of the {@link genetics.api.individual.IIndividual} like for an example which type of honey combs a bee
+ * produces or which type of fruit a tree bears in the case of the forestry bees and trees.
+ * <p>
+ * If the {@link genetics.api.individual.IIndividual} produces offsprings in the most cases the default templates of the
+ * two species that  the {@link genetics.api.individual.IGenome} contains are providing the alleles for the template of
+ * the offspring. This is the case in forestry as well as in as in binnies mods.
+ */
 public interface IAlleleSpecies extends IAllele {
 	/**
 	 * @return the {@link IIndividualRoot} associated with this species.

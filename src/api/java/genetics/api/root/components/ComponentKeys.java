@@ -14,11 +14,11 @@ import genetics.api.root.translator.IIndividualTranslatorBuilder;
  */
 public class ComponentKeys {
 	/* Components that are added automatically at the creation of the IIndividualRootBuilder. */
-	public static final ComponentKey<ITemplateContainer, ITemplateRegistry> TEMPLATES = ComponentKey.create("templates", ITemplateContainer.class);
-	public static final ComponentKey<IOrganismTypes, IOrganismTypesBuilder> TYPES = ComponentKey.create("types", IOrganismTypes.class);
+	public static final ComponentKey<ITemplateContainer, ITemplateRegistry> TEMPLATES = ComponentKey.create("templates", ITemplateContainer.class, ITemplateRegistry.class);
+	public static final ComponentKey<IOrganismTypes, IOrganismTypesBuilder> TYPES = ComponentKey.create("types", IOrganismTypes.class, IOrganismTypesBuilder.class);
 	/* Components that are optional. */
-	public static final ComponentKey<IIndividualTranslator, IIndividualTranslatorBuilder> TRANSLATORS = ComponentKey.create("translators", IIndividualTranslator.class);
-	public static final ComponentKey<IMutationContainer, IMutationRegistry> MUTATIONS = ComponentKey.create("mutations", IMutationContainer.class);
+	public static final ComponentKey<IIndividualTranslator, IIndividualTranslatorBuilder> TRANSLATORS = ComponentKey.create("translators", IIndividualTranslator.class, IIndividualTranslatorBuilder.class);
+	public static final ComponentKey<IMutationContainer, IMutationRegistry> MUTATIONS = ComponentKey.create("mutations", IMutationContainer.class, IMutationRegistry.class);
 
 	private ComponentKeys() {
 	}

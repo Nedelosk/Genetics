@@ -28,21 +28,24 @@ import genetics.api.root.translator.IIndividualTranslator;
  * {@link IIndividualRootBuilder}s will be build automatically to {@link IIndividualRoot}s. You can get the instance
  * of you root from {@link IGeneticApiInstance#getRoot(String)} after it was created or you can use {@link #getDefinition()}.
  * <p>
- * You can create a instance of this with {@link IRootManager#createRoot(IKaryotype)}.
+ * You can create a instance of this with {@link IRootManager#getRoot(String)}.
  *
  * @param <I> The type of the individual that the root describes.
  */
 public interface IIndividualRootBuilder<I extends IIndividual> {
 	/**
-	 * Adds a type
+	 * Adds a chromosome type to the prototype of this individual.
 	 */
 	IIndividualRootBuilder<I> addChromosome(IChromosomeType type);
 
 	/**
-	 * Adds a type
+	 * Adds the given chromosome types to the prototype of this individual.
 	 */
 	IIndividualRootBuilder<I> addChromosome(IChromosomeType... types);
 
+	/**
+	 * Sets the species type of the prototype of this individual.
+	 */
 	IIndividualRootBuilder<I> setSpeciesType(IChromosomeType speciesType);
 
 	/**

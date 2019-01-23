@@ -44,8 +44,24 @@ description='''
 The Genetic API providers a api to add and manage items with genetic data.
 '''
 
+# A list of mods - how many allowed here is determined by the individual mod loader
+[[mods]] #mandatory
+
+# The modid of the mod
+modId="mariculture" #mandatory
+
+# The version number of the mod
+version="${version}" #mandatory
+
+# A display name for the mod
+displayName="Mariculture" #mandatory
+
+# The description text for the mod (multi line!) (#mandatory)
+description='''
+'''
+
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.genetics]]
+[[dependencies.geneticsapi]]
     modId="forge" #mandatory
     mandatory=false #mandatory
     versionRange="[24.0.42,)" #mandatory
@@ -53,3 +69,14 @@ The Genetic API providers a api to add and manage items with genetic data.
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
+	
+# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+[[dependencies.mariculture]]
+    modId="forge" #mandatory
+    mandatory=false #mandatory
+    versionRange="[24.0.42,)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+

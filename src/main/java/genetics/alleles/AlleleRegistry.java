@@ -17,6 +17,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 import net.minecraftforge.fml.ModThreadContext;
 
+import genetics.api.alleles.Allele;
 import genetics.api.alleles.AlleleCategorized;
 import genetics.api.alleles.IAllele;
 import genetics.api.alleles.IAlleleData;
@@ -35,6 +36,8 @@ public class AlleleRegistry implements IAlleleRegistry {
 	private final ForgeRegistry<IAllele> registry;
 	private final HashMultimap<IChromosomeType, IAllele> allelesByType = HashMultimap.create();
 	private final HashMultimap<IAllele, IChromosomeType> typesByAllele = HashMultimap.create();
+	private final ResourceLocation DEFAULT_NAME = new ResourceLocation(Genetics.MOD_ID, "default");
+	private final IAllele defaultAllele = new Allele("default", false).setRegistryName(DEFAULT_NAME);
 	/*
 	 * Internal Set of all alleleHandlers, which trigger when an allele or branch is registered
 	 */
@@ -45,6 +48,7 @@ public class AlleleRegistry implements IAlleleRegistry {
 		RegistryBuilder<IAllele> builder = new RegistryBuilder()
 			.setMaxID(ALLELE_ARRAY_SIZE)
 			.setName(new ResourceLocation(Genetics.MOD_ID, "alleles"))
+			.setDefaultKey(DEFAULT_NAME)
 			.setType(IAllele.class);
 		//Cast the registry to the class type so we can get the ids of the alleles
 		this.registry = (ForgeRegistry<IAllele>) builder.create();
@@ -101,6 +105,16 @@ public class AlleleRegistry implements IAlleleRegistry {
 			typesByAllele.put(allele, chromosomeType);
 		}
 		return this;
+	}
+
+	@Override
+	public IAllele getDefaultAllele() {
+		return defaultAllele;
+	}
+
+	@Override
+	public ResourceLocation getDefaultKey() {
+		return DEFAULT_NAME;
 	}
 
 	@Override
