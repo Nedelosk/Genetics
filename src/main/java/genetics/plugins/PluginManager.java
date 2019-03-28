@@ -10,7 +10,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 
 import net.minecraftforge.fml.ModContainer;
-import net.minecraftforge.fml.ModThreadContext;
+import net.minecraftforge.fml.ModLoadingContext;
 
 import genetics.api.GeneticPlugin;
 import genetics.api.GeneticsAPI;
@@ -67,11 +67,13 @@ public class PluginManager {
 	}
 
 	private static void handlePlugins(Consumer<IGeneticPlugin> pluginConsumer) {
-		ModContainer oldContainer = ModThreadContext.get().getActiveContainer();
+		ModLoadingContext context = ModLoadingContext.get();
+		ModContainer oldContainer = context.getActiveContainer();
+		Object languageExtension = context.extension();
 		plugins.forEach((plugin, container) -> {
-			ModThreadContext.get().setActiveContainer(container);
+			ModLoadingContext.get().setActiveContainer(container, languageExtension);
 			pluginConsumer.accept(plugin);
 		});
-		ModThreadContext.get().setActiveContainer(oldContainer);
+		ModLoadingContext.get().setActiveContainer(oldContainer, languageExtension);
 	}
 }

@@ -9,7 +9,6 @@ import net.minecraft.util.EnumFacing;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.capabilities.OptionalCapabilityInstance;
 
 import genetics.api.IGeneTemplate;
 import genetics.api.alleles.IAllele;
@@ -18,13 +17,14 @@ import genetics.api.root.IIndividualRoot;
 
 import genetics.ApiInstance;
 import genetics.Genetics;
+import net.minecraftforge.common.util.LazyOptional;
 
 public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTTagCompound> {
 	private static final String ALLELE_NBT_KEY = "Allele";
 	private static final String TYPE_NBT_KEY = "Type";
 	private static final String DEFINITION_NBT_KEY = "Definition";
 
-	private final OptionalCapabilityInstance<IGeneTemplate> holder = OptionalCapabilityInstance.of(() -> this);
+	private final LazyOptional<IGeneTemplate> holder = LazyOptional.of(() -> this);
 
 	@Nullable
 	private IAllele allele;
@@ -86,7 +86,7 @@ public class GeneTemplate implements IGeneTemplate, ICapabilitySerializable<NBTT
 	}
 
 	@Override
-	public <T> OptionalCapabilityInstance<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing facing) {
-		return OptionalCapabilityInstance.orEmpty(cap, Genetics.GENE_TEMPLATE, holder);
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing facing) {
+		return Genetics.GENE_TEMPLATE.orEmpty(cap, holder);
 	}
 }

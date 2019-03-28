@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.OptionalCapabilityInstance;
 
 import genetics.api.alleles.IAllele;
 import genetics.api.individual.IChromosomeType;
@@ -21,9 +20,10 @@ import genetics.api.root.IRootDefinition;
 
 import genetics.Genetics;
 import genetics.individual.GeneticSaveHandler;
+import net.minecraftforge.common.util.LazyOptional;
 
 public class Organism<I extends IIndividual> implements IOrganism<I> {
-	private final OptionalCapabilityInstance<IOrganism> holder = OptionalCapabilityInstance.of(() -> this);
+	private final LazyOptional<IOrganism> holder = LazyOptional.of(() -> this);
 	private final ItemStack container;
 	private final IRootDefinition<? extends IIndividualRoot<I>> definition;
 	private final Supplier<IOrganismType> typeSupplier;
@@ -74,7 +74,7 @@ public class Organism<I extends IIndividual> implements IOrganism<I> {
 	}
 
 	@Override
-	public <T> OptionalCapabilityInstance<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing facing) {
-		return OptionalCapabilityInstance.orEmpty(cap, Genetics.ORGANISM, holder);
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing facing) {
+		return Genetics.ORGANISM.orEmpty(cap, holder);
 	}
 }

@@ -2,7 +2,7 @@ package mariculture;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import genetics.api.GeneticsAPI;
 
@@ -13,7 +13,7 @@ public class Mariculture {
 
 	public Mariculture() {
 		GeneticsAPI.apiInstance = ApiInstance.INSTANCE;
-		FMLModLoadingContext.get().getModEventBus().addListener(this::preInit);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::preInit);
 	}
 
 	public void preInit(FMLCommonSetupEvent event) {

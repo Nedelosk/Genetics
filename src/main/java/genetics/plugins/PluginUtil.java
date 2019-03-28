@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
+import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,7 +36,7 @@ public class PluginUtil {
 		Function<String, Optional<? extends ModContainer>> getContainer = (modId)->ModList.get().getModContainerById(modId);
 		List<String> pluginClassNames = new ArrayList<>();
 		for (ModFileScanData scanData : allScanData) {
-			List<ModFileScanData.AnnotationData> annotations = scanData.getAnnotations();
+			Set<AnnotationData> annotations = scanData.getAnnotations();
 			for (ModFileScanData.AnnotationData a : annotations) {
 				if (Objects.equals(a.getAnnotationType(), annotationType)) {
 					String memberName = a.getMemberName();

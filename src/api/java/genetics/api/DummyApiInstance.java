@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-import net.minecraftforge.fml.ModThreadContext;
+import net.minecraftforge.fml.ModLoadingContext;
 
 import genetics.api.alleles.IAlleleHelper;
 import genetics.api.alleles.IAlleleRegistry;
@@ -21,37 +21,37 @@ public class DummyApiInstance implements IGeneticApiInstance {
 
 	@Override
 	public IClassificationRegistry getClassificationRegistry() {
-		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModThreadContext.get().getActiveContainer()));
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModLoadingContext.get().getActiveContainer()));
 	}
 
 	@Override
 	public IAlleleRegistry getAlleleRegistry() {
-		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModThreadContext.get().getActiveContainer()));
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModLoadingContext.get().getActiveContainer()));
 	}
 
 	@Override
 	public IAlleleHelper getAlleleHelper() {
-		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModThreadContext.get().getActiveContainer()));
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModLoadingContext.get().getActiveContainer()));
 	}
 
 	@Override
 	public IGeneticFactory getGeneticFactory() {
-		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModThreadContext.get().getActiveContainer()));
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModLoadingContext.get().getActiveContainer()));
 	}
 
 	@Override
 	public IGeneticSaveHandler getSaveHandler() {
-		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModThreadContext.get().getActiveContainer()));
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModLoadingContext.get().getActiveContainer()));
 	}
 
 	@Override
 	public IIndividualRootHelper getRootHelper() {
-		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModThreadContext.get().getActiveContainer()));
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModLoadingContext.get().getActiveContainer()));
 	}
 
 	@Override
 	public IRootComponentRegistry getComponentRegistry() {
-		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModThreadContext.get().getActiveContainer()));
+		throw new IllegalStateException(String.format(ERROR_MESSAGE, ModLoadingContext.get().getActiveContainer()));
 	}
 
 	@Override

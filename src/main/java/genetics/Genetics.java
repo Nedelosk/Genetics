@@ -10,12 +10,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.OptionalCapabilityInstance;
 
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.javafmlmod.FMLModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import genetics.api.GeneticsAPI;
 import genetics.api.IGeneTemplate;
@@ -44,8 +44,8 @@ public class Genetics {
 
 	public Genetics() {
 		GeneticsAPI.apiInstance = ApiInstance.INSTANCE;
-		FMLModLoadingContext.get().getModEventBus().addListener(this::preInit);
-		FMLModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::preInit);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
 	}
 
 	public void preInit(FMLCommonSetupEvent event) {
@@ -87,8 +87,8 @@ public class Genetics {
 
 			@Nonnull
 			@Override
-			public <T> OptionalCapabilityInstance<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing facing) {
-				return OptionalCapabilityInstance.empty();
+			public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing facing) {
+				return LazyOptional.empty();
 			}
 		});
 		CapabilityManager.INSTANCE.register(IGeneTemplate.class, new NullStorage<>(), () -> new IGeneTemplate() {
