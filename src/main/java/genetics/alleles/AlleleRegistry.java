@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-import net.minecraftforge.fml.ModThreadContext;
+import net.minecraftforge.fml.ModLoadingContext;
 
 import genetics.api.alleles.Allele;
 import genetics.api.alleles.AlleleCategorized;
@@ -74,7 +74,7 @@ public class AlleleRegistry implements IAlleleRegistry {
 
 	@Override
 	public <V> IAlleleValue<V> registerAllele(String category, String valueName, V value, boolean dominant, IChromosomeType... types) {
-		return registerAllele(new AlleleCategorized<>(ModThreadContext.get().getActiveContainer().getModId(), category, valueName, value, dominant), types);
+		return registerAllele(new AlleleCategorized<>(ModLoadingContext.get().getActiveContainer().getModId(), category, valueName, value, dominant), types);
 	}
 
 	@Override

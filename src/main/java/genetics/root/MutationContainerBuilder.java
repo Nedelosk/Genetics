@@ -9,11 +9,11 @@ import genetics.api.individual.IChromosomeType;
 import genetics.api.individual.IIndividual;
 import genetics.api.mutation.IMutation;
 import genetics.api.mutation.IMutationContainer;
-import genetics.api.mutation.IMutationContainerBuilder;
+import genetics.api.mutation.IMutationRegistry;
 import genetics.api.root.IIndividualRoot;
 import genetics.api.root.components.RootComponentBuilder;
 
-public class MutationContainerBuilder<I extends IIndividual, M extends IMutation> extends RootComponentBuilder<IMutationContainer<M>, I> implements IMutationContainerBuilder<M> {
+public class MutationContainerBuilder<I extends IIndividual, M extends IMutation> extends RootComponentBuilder<IMutationContainer<M>, I> implements IMutationRegistry<M> {
 	private final ImmutableList.Builder<M> mutations;
 
 	public MutationContainerBuilder(IIndividualRoot<I> root) {
